@@ -1,0 +1,14 @@
+urban.urb: Urban parameters - General
+NUMB   NAME  FIMP  FCIMP  CURBDEN  URBCOEF  DIRTMX  THALF  TNCONC  TPCONC  TNO3CONC  URBCN2                 Description
+   1   URHD  0.60   0.44     0.24     0.18  225.00   0.75  550.00  223.00      7.20   98.00    Residential-High Density
+   2   URMD  0.38   0.30     0.24     0.18  225.00   0.75  550.00  223.00      7.20   98.00  Residential-Medium Density
+   3   URML  0.20   0.17     0.24     0.18  225.00   0.75  460.00  196.00      6.00   98.00 Residential-Med/Low Density
+   4   URLD  0.12   0.10     0.24     0.18  225.00   0.75  460.00  196.00      6.00   98.00     Residential-Low Density
+   5   UCOM  0.67   0.62     0.28     0.18  200.00   1.60  420.00  240.00      5.50   98.00                  Commercial
+   6   UIDU  0.84   0.79     0.14     0.18  400.00   2.35  430.00  104.00      5.60   98.00                  Industrial
+   7   UTRN  0.98   0.95     0.12     0.18  340.00   3.90  480.00  212.00      6.30   98.00              Transportation
+   8   UINS  0.51   0.47     0.12     0.18  340.00   3.90  480.00  212.00      6.30   98.00               Institutional
+   9   URBN  0.38   0.30     0.24     0.18  225.00   0.75  550.00  223.00      7.20   98.00                 Residential
+
+   
+   

@@ -1,0 +1,4 @@
+datafiles.dat: File names of databases included - General
+FERT               PEST              URBAN               TILLAGE             SEPTIC              PLANT            ATMO
+fert_parms.dat     pest_parms.dat    urban_parms.dat     tillage_parms.dat   septic_parms.dat    plant_parms.dat  atmo_mon.dat
+

@@ -1,0 +1,4 @@
+waterqual.res file
+    NUMB    NAME         CHLAR  PST_CONC  PST_KOC  PST_MIX  PST_REA  PST_RSP  PST_STL  PST_VOL  SPST_ACT  SPST_BRY  SPST_CONC  SPST_REA  OFLOMN_FPS  SECCIR  NSETLR1  NSETLR2  PSETLR1  PSETLR2        
+       1    Lake_Belton    0.1       0.0      0.5     0.01     0.02     0.01      0.2     0.01       0.2      0.05       0.01       1.0         0.1     0.5     10.0      5.0     20.0     10.0  
+       2    Stillhouse     0.1       0.0      0.5     0.01     0.02     0.01      0.2     0.01       0.2      0.05       0.01       1.0         0.1     0.6     10.0      5.0     20.0     10.0 

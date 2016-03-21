@@ -1,0 +1,79 @@
+condition.ctl - Little River Watershed
+  4
+
+ NAME   	CONDS	ALTS	ACTS
+autoirr_str.8	  1	 1	 1
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1
+w_stress 	plant	  	 1	null		  -	  	 0.7		 <
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+irrigate	drip_high	file	  0		drip			 	  y
+
+ NAME   	CONDS	ALTS	ACTS
+sw_deficit75	  1	 1	 1
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1
+soil_water 	hru	  	 0	fcap_mm	  -	  	 75.		 <
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+irrigate	sprinkler_high	rate	 0		sprinkler_high		 	 y
+
+ NAME   	CONDS	ALTS	ACTS
+spring_fert	  2	 2	 2
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2
+n_stress 	plant	  	 1	null		  -	  	 0.7		 -	 >
+phu_base0 	null	  	 0	null		  -	  	 0.14		 >	 -
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+fertilize	ammonia_spring	file	  0		anh-nh3			 	  y    	 n
+fertilize	side_dress	file	  0		urea				  n	 y
+
+ NAME   	CONDS	ALTS	ACTS
+minimum_till	  2	 1	 1
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1
+soil_water 	hru	  	 0	fcap_fr		  *	  	 0.7		 <
+phu_base0 	null	  	 0	null		  -	  	 0.13		 >
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+till		field_cult	file	  0		fldcult			 	  y
+
+ NAME   	CONDS	ALTS	ACTS
+plant_c-sb	  4	 2	 2
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2
+soil_water 	hru	  	 0	fcap_fr		  *	  	 0.7		 <	 <
+phu_base0 	null	  	 0	null		  -	  	 0.15		 >	 >
+year_rot 	null	  	 0	null		  -	  	 1		 =	 -
+year_rot 	null	  	 0	null		  -	  	 2		 -	 =
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+plant		plant_corn	file	  0		corn			 	  y	 n
+plant		plant_soyb	file	  0		soyb			 	  n	 y
+
+ NAME   	CONDS	ALTS	ACTS
+harvest_grain	  2	 1	 1
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1
+soil_water 	hru	  	 0	fcap_fr		  *	  	 0.7		 <
+phu_base0 	null	  	 0	phu_mat		  -	  	 1.15		 >
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+harvest_kill	grain_harv	file	  0		grain			 	  y
+
+ NAME   	CONDS	ALTS	ACTS
+corps_med_res	  5	 5	 5
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2	ALT3	ALT4	ALT5
+ vol 		res	  	 0	pvol		  *	  	  1.0		 <	 >	 -	 >	 -
+ vol 		res	  	 0	pvol		  *	  	  1.3		 -	 <	 >	 -	 -
+ vol 		res	  	 0	evol		  *	  	  1.0		 -	 -	 <	 <	 >
+ month		null	  	 0	null		  -	  	   5		 -	 >	 >	 <	 -
+ month		null	  	 0	null		  -	  	   9		 -	 <	 <	 >	 -
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+ release	below_prinipal	rate	  .1		null				 y       n       n       n       n
+ release	non_flood<1.3	rate	  .1		null				 n       y       n       n       n
+ release	non_flood>1.3	rate	  5.		null				 n       n       y       n       n
+ release	flood		rate	 10.		null				 n       n       n       y       n
+ release	over_emergency	days	 15.		null				 n       n       n       n       y
+
+ NAME   	CONDS	ALTS	ACTS
+rice_paddy_.5	  3	 3	 3
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2	ALT3
+ vol 		hru	  	 0	pvol		  *	  	  0.5		 <	 >	 -
+ vol 		hru	  	 0	pvol		  *	  	  1.0		 -	 <	 -
+ vol 		hru	  	 0	evol		  *	  	  1.0		 -	 -	 >
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+ release	below_prin.5	weir	  1		shape001			 y       n       n
+ release	above_prin.5	weir	  2		shape002			 n       y       n	
+ release	over_emergency	days	  5.		null				 n       n       y
+

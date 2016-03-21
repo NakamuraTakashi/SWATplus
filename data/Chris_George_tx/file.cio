@@ -1,0 +1,27 @@
+file.cio: control input/output - (SWAT-DEG)
+SIMULATION    time.sim  print.prt  null  object.cnt  
+CLIMATE       weather-sta.cli  weather-wgn.cli  null  null  null  null  null  null  
+CONNECT       null  hru-lte.con  subbasin.con  null  null  null  null  null  null  null  null  null  null  
+CHANNEL       null  null  null  null  null  null  null  
+RESERVOIR     null  null  null  null  null  null  null  
+SUBBASIN      define.sub  element.sub  subbasin.sub  null  
+HRU           null  hru-lte.hru  
+DR            null  
+AQUIFER       null 
+HERD          null  null  null  null
+WATER_RIGHTS  null  null  null  null 
+LINK          null  null  
+BASIN         null  null  
+HYDROLOGY     null  null  null  null  
+EXCO          null  
+BACTERIA      null  null  
+STRUCTURAL    null  null  null  null  null  null  null  null  null  null  null  null  
+PARM_DB       plants.plt  fertilizer.frt  tillage.til  pesticide.pst  urban.urb  septic.sep  null  null  
+OPS           null  null  null  null  null  null  null  null  null  null  
+SCH           null  
+LUM           null  null  
+CHG           null  null  
+INIT          null  null  
+SOILS         null  null  
+DECISION      null  
+CONSTITUENTS  null  null  null  null  null  

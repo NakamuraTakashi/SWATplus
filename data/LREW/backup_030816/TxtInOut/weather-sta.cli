@@ -1,0 +1,3 @@
+weather-sta.cli: Weather stations - Little River Experimental Watershed (Subbasin)
+      NUMB      NAME       WGN    PCPSIM    TMPSIM     RHSIM    SLRSIM    WNDSIM     PGAGE     TGAGE     SGAGE     HGAGE     WGAGE     WNDIR   ATMODEP  MONSOON1  MONSOON2
+         1      CLI1         1         1         1         2         2         2         1         1         0         0         0         0         0     1         10

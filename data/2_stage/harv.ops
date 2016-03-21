@@ -1,0 +1,13 @@
+harv.ops: harvest operations - Little River Experimental Watershed
+ NAME          TYPE          HI_OVR     EFF  BM_MIN
+ grain         grain           0.00    0.95     0.0
+ grass_mulch   biomass         0.50    0.00  2000.0
+ grass_bag     biomass         0.50    1.00  2000.0
+ silage        biomass         0.90    0.95     0.0
+ forest_cut    tree            0.95    0.99     0.0
+ stover_high   residue         0.90    1.00  1000.0
+ stover_med    residue         0.60    1.00  2000.0
+ stover_los    residue         0.30    1.00  3000.0
+ hay_cut_high  biomass         0.80    1.00  3000.0
+ hay_cut_low   biomass         0.80    1.00  1000.0
+ potatoes      tuber           1.10    0.95     0.0

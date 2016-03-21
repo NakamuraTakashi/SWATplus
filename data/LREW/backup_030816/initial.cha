@@ -1,0 +1,3 @@
+initial.cha: Channel initialization - LREW Subbasin March 2016
+     CHA_INI  CHA_INI_NAME        VOL        SED      PARTN       NO3N       NO2N       NH3N      PARTP       SOLP       SECI       SAND       SILT       CLAY      SM_AG       L_AG     GRAVEL      CHL_A    PST_SOL   PST_SORB BACT_LS_PER   BACT_PER
+           1          null      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000       0.000      0.000

@@ -1,0 +1,235 @@
+pesticide.dat: Pesticide parameters - General
+NUMB    PESTNM      SKOC PST_WOF HLIFE_F HLIFE_S   AP_EF    PST_WSOL
+1       245-TP    2600.0     0.4     5.0    20.0    0.75         2.5       0       0       0       1Silvex
+2       2Plus2      20.0    0.95    10.0    21.0    0.75    660000.0       0       0       0       2Mecoprop Amine
+3       Aatrex     171.0    0.45     5.0    60.0    0.75        33.0       0       0       0       3Atrazine
+4       Abate   100000.0    0.65     5.0    30.0    0.75         0.0       0       0       0       4Abate
+5       Acaraben  2000.0    0.05    10.0    20.0    0.75        13.0       0       0       0       5Chlorobenzilate
+6       Accelera    20.0     0.9     7.0     7.0    0.75    100000.0       0       0       0       6Endothall Salt
+7       Acclaim   9490.0     0.2     5.0     9.0    0.75         0.8       0       0       0       7Fenoxaprop-Ethyl
+8       Alanap      20.0    0.95     7.0    14.0    0.75    231000.0       0       0       0       8Naptalam Sodium Salt
+9       Alar        10.0    0.95     4.0     7.0    0.75    100000.0       0       0       0       9Daminozide
+10      Aldrin     300.0    0.05     2.0    28.0    0.75         0.1       0       0       0      10Aldrin
+11      Aliette     20.0    0.95     0.1     0.1    0.75    120000.0       0       0       0      11Fosetyl-Aluminum
+12      Ally        35.0     0.8    30.0   120.0    0.75      9500.0       0       0       0      12Metsulfuron-Methyl
+13      Amiben      15.0    0.95     7.0    14.0    0.75    900000.0       0       0       0      13Chloramben Salts
+14      Amid-Thi   100.0     0.6     5.0    10.0    0.75       100.0       0       0       0      14NAA Amide
+15      AmitrolT   100.0    0.95     5.0    14.0    0.75    360000.0       0       0       0      15Amitrole
+16      Ammo    100000.0     0.4     5.0    30.0    0.75         0.0       0       0       0      16Cypermethrin
+17      Antor     1400.0     0.4    10.0    21.0    0.75       105.0       0       0       0      17Diethatyl-Ethyl
+18      A-Rest     120.0     0.5    30.0   120.0    0.75       650.0       0       0       0      18Ancymidol
+19      Arsenal    100.0     0.9    30.0    90.0    0.75     11000.0       0       0       0      19Imazapyr Acid
+20      Arsonate 10000.0    0.95    30.0   100.0    0.75   1000000.0       0       0       0      20MSMA
+21      Asana     5300.0     0.4     8.0    35.0    0.75         0.0       0       0       0      21Esfenvalerate
+22      Assert(m    66.0    0.65    18.0    35.0    0.75      1370.0       0       0       0      22Imazamethabenz-m
+23      Assert(p    35.0    0.65    18.0    35.0    0.75       875.0       0       0       0      23Imazamethabenz-p
+24      Assure     510.0     0.2    15.0    60.0    0.75         0.3       0       0       0      24Quizalofop-Ethyl
+25      Asulox      40.0    0.95     3.0     7.0    0.75    550000.0       0       0       0      25Asulam Sodium Salt
+26      Avenge   54500.0    0.95    30.0   100.0    0.75    817000.0       0       0       0      26Difenzoquat
+27      Azodrin      1.0    0.95     2.0    30.0    0.75   1000000.0       0       0       0      27Monocrotophos
+28      Balan     9000.0     0.2    10.0    30.0    0.75         0.1       0       0       0      28Benefin
+29      Banol   1000000.    0.95    15.0    30.0    0.75   1000000.0       0       0       0      29Propamocarb
+30      Banvel       2.0    0.65     9.0    14.0    0.75    400000.0       0       0       0      30Dicamba
+31      Basagran    34.0     0.6     2.0    20.0    0.75   2300000.0       0       0       0      31Bentazon
+32      Basta      100.0    0.95     4.0     7.0    0.75   1370000.0       0       0       0      32Glufosinate Ammonia
+33      Bayleton   300.0     0.3     8.0    26.0    0.75        71.5       0       0       0      33Triadimefon
+34      Baytex    1500.0    0.65     2.0    34.0    0.75         4.2       0       0       0      34Fenthion
+35      Baythroi100000.0     0.4     5.0    30.0    0.75         0.0       0       0       0      35Cyfluthrin
+36      Benlate   1900.0    0.25     6.0   240.0    0.75         2.0       0       0       0      36Benomyl
+37      Benzex   55000.0    0.05     3.0   600.0    0.75         0.1       0       0       0      37BHC
+38      Betamix   2400.0     0.7     5.0    30.0    0.75         4.7       0       0       0      38Phenmedipham
+39      Betanex   1500.0     0.7     5.0    30.0    0.75         8.0       0       0       0      39Desmedipham
+40      Bidrin      75.0     0.7    20.0    28.0    0.75   1000000.0       0       0       0      40Dicrotophos
+41      Bladex     190.0     0.6     5.0    14.0    0.75       170.0       0       0       0      41Cyanazine
+42      Bolero     900.0     0.7     7.0    21.0    0.75        28.0       0       0       0      42Thiobencarb
+43      Bolstar  12000.0    0.55     0.5   140.0    0.75         0.3       0       0       0      43Sulprofos
+44      Borderma  1000.0     0.5     8.0    25.0    0.75         5.0       0       0       0      44MCPA Ester
+45      Botran    1000.0     0.5     4.0    10.0    0.75         7.0       0       0       0      45DCNA (Dicloran)
+46      Bravo     1380.0     0.5     5.0    30.0    0.75         0.6       0       0       0      46Chlorothalonil
+47      Buctril  10000.0     0.2     3.0     7.0    0.75         0.1       0       0       0      47Bromoxynil Octan. Est
+48      ButyracE   500.0    0.45     7.0     7.0    0.75         8.0       0       0       0      482,4-DB Ester
+49      Caparol    400.0     0.5    10.0    60.0    0.75        33.0       0       0       0      49Prometryn
+50      Carbamat   300.0     0.9     3.0    17.0    0.75       120.0       0       0       0      50Ferbam
+51      Carsoron   400.0    0.45     5.0    60.0    0.75        21.2       0       0       0      51Dichlobenil
+52      Carzol  1000000.    0.95    30.0   100.0    0.75    500000.0       0       0       0      52Formetanate Hydrochlo
+53      Cerone  100000.0    0.95     5.0    10.0    0.75   1239000.0       0       0       0      53Ethephon
+54      Chem-Hoe   200.0     0.5     2.0    10.0    0.75       250.0       0       0       0      54Propham (IPC)
+55      Chlordan100000.0    0.05     2.5   100.0    0.75         0.1       0       0       0      55Chlordane
+56      Chopper    100.0     0.8    30.0    90.0    0.75    500000.0       0       0       0      56Imazapyr Amine
+57      Classic    110.0     0.9    15.0    40.0    0.75      1200.0       0       0       0      57Chlorimuron-ethyl
+58      Cobra   100000.0     0.2     2.0     3.0    0.75         0.1       0       0       0      58Lactofen
+59      Comite    4000.0     0.2     5.0    56.0    0.75         0.5       0       0       0      59Propargite
+60      Command    300.0     0.8     3.0    24.0    0.75      1000.0       0       0       0      60Clomazone
+61      Cotoran    100.0     0.5    30.0    85.0    0.75       110.0       0       0       0      61Fluometuron
+62      Counter    500.0     0.6     2.5     5.0    0.75         5.0       0       0       0      62Terbufos
+63      Crossbow    20.0    0.95    15.0    46.0    0.75   2100000.0       0       0       0      63Triclopyr Amine
+64      Curacron  2000.0     0.9     3.0     8.0    0.75        28.0       0       0       0      64Profenofos
+65      Cygon       20.0    0.95     3.0     7.0    0.75     39800.0       0       0       0      65Dimethoate
+66      Cyprex  100000.0     0.5    10.0    20.0    0.75       700.0       0       0       0      66Dodine Acetate
+67      Cythion   1800.0     0.9     1.0     1.0    0.75       130.0       0       0       0      67Malathion
+68      Dacamine    20.0    0.45     5.0    10.0    0.75       890.0       0       0       0      682,4-D Acid
+69      Dacthal   5000.0     0.3    10.0   100.0    0.75         0.5       0       0       0      69DCPA
+70      Dalapon      1.0    0.95    37.0    30.0    0.75    900000.0       0       0       0      70Dalapon Sodium Salt
+71      Dasanit  10000.0     0.9     4.0    24.0    0.75         0.0       0       0       0      71Fensulfothion
+72      DDT     240000.0    0.05    10.0   120.0    0.75         0.1       0       0       0      72DDT
+73      Dedweed     20.0    0.95     7.0    25.0    0.75    866000.0       0       0       0      73MCPA Amine
+74      DEF       5000.0    0.25     7.0    30.0    0.75         2.3       0       0       0      74Tribufos
+75      Dessican0  10000    0.95 10000.0 10000.0    0.75     17000.0       0       0       0      75Arsenic Acid
+76      Devrinol   400.0     0.6    15.0    70.0    0.75        74.0       0       0       0      76Napropamide
+77      Di-Systo   600.0     0.5     3.0    30.0    0.75        25.0       0       0       0      77Disulfoton
+78      Dibrom     180.0     0.9     5.0     1.0    0.75      2000.0       0       0       0      78Naled
+79      Dieldrin 50000.0    0.05     5.0  1400.0    0.75         0.1       0       0       0      79Dieldrin
+80      Dimilin  10000.0    0.05    27.0    10.0    0.75         0.1       0       0       0      80Diflubenzuron
+81      Dinitro    500.0     0.6     3.0    20.0    0.75        50.0       0       0       0      81Dinoseb Phenol
+82      Diquat  1000000.    0.95    30.0  1000.0    0.75    718000.0       0       0       0      82Diquat Dibromide
+83      Dithane   2000.0    0.25    10.0    70.0    0.75         6.0       0       0       0      83Mancozeb
+84      Dowpon       4.0    0.95    37.0    30.0    0.75      1000.0       0       0       0      84Dalapon
+85      Dropp      110.0     0.4     3.0    10.0    0.75        20.0       0       0       0      85Thidiazuron
+86      DSMA    100000.0    0.95    30.0  1000.0    0.75   1400000.0       0       0       0      86Methanearsonic Acid N
+87      Du-ter   23000.0     0.4    18.0    75.0    0.75         1.0       0       0       0      87Triphenyltin Hydroxid
+88      Dual       200.0     0.6     5.0    90.0    0.75       530.0       0       0       0      88Metolachlor
+89      Dyfonate   870.0     0.6     2.5    40.0    0.75        16.9       0       0       0      89Fonofos
+90      Dylox       10.0    0.95     3.0    10.0    0.75    120000.0       0       0       0      90Trichlorfon
+91      Dymid      210.0     0.8     5.0    30.0    0.75       260.0       0       0       0      91Diphenamid
+92      Dyrene    3000.0     0.5     5.0     1.0    0.75         8.0       0       0       0      92Anilazine
+93      Elgetol     20.0    0.95     8.0    20.0    0.75    100000.0       0       0       0      93DNOC Sodium Salt
+94      EPN      13000.0     0.6     5.0     5.0    0.75         0.5       0       0       0      94EPN
+95      Eradican   200.0    0.75     3.0     6.0    0.75       344.0       0       0       0      95EPTC
+96      Ethanox  10000.0    0.65     7.0   150.0    0.75         1.1       0       0       0      96Ethion
+97      Evik       300.0    0.65     5.0    60.0    0.75       185.0       0       0       0      97Ametryn
+98      Evital     600.0     0.5    15.0    90.0    0.75        28.0       0       0       0      98Norflurazon
+99      Far-Go    2400.0     0.4    15.0    82.0    0.75         4.0       0       0       0      99Triallate
+100     Fenatrol    20.0    0.95    30.0   180.0    0.75    500000.0       0       0       0     100Fenac
+101     Fenitox   2000.0     0.9     3.0     8.0    0.75        30.0       0       0       0     101Fenitrothion
+102     Fruitone    20.0    0.95     3.0    10.0    0.75    200000.0       0       0       0     1023-CPA Sodium Salt
+103     Fundal  100000.0     0.9     1.0    60.0    0.75    500000.0       0       0       0     103Chlordimeform Hydrocl
+104     Funginex   540.0     0.8     5.0    21.0    0.75        30.0       0       0       0     104Triforine
+105     Furadan     22.0    0.55     2.0    50.0    0.75       351.0       0       0       0     105Carbofuran
+106     Fusilade  5700.0     0.4     4.0    15.0    0.75         2.0       0       0       0     106Fluazifop-P-Butyl
+107     Glean       40.0    0.75    30.0   160.0    0.75      7000.0       0       0       0     107Chlorsulfuron
+108     Goal    100000.0     0.4     8.0    35.0    0.75         0.1       0       0       0     108Oxyfluorfen
+109     Guthion   1000.0    0.65     2.0    10.0    0.75        29.0       0       0       0     109Azinphos-Methyl
+110     Harmony     45.0     0.8     3.0    12.0    0.75      2400.0       0       0       0     110Thifensulfuron-Methyl
+111     Harvade     10.0     0.8     3.0    10.0    0.75      3000.0       0       0       0     111Dimethipin
+112     Hoelon   16000.0    0.45     8.0    37.0    0.75         0.8       0       0       0     112Diclofop-Methyl
+113     Hyvar       32.0    0.75    20.0    60.0    0.75       700.0       0       0       0     113Bromacil
+114     Imidan     820.0     0.9     3.0    19.0    0.75        20.0       0       0       0     114Phosmet
+115     Isotox    1100.0    0.05     2.5   400.0    0.75         7.3       0       0       0     115Lindane
+116     Karate  180000.0     0.4     5.0    30.0    0.75         0.0       0       0       0     116Lambda-Cyhalothrin
+117     Karathan   550.0     0.3     8.0    20.0    0.75         4.0       0       0       0     117Dinocap
+118     Karmex     480.0    0.45    30.0    90.0    0.75        42.0       0       0       0     118Diuron
+119     Kelthane180000.0    0.05     4.0    60.0    0.75         1.0       0       0       0     119Dicofol
+120     Kerb       200.0     0.3    20.0    60.0    0.75        15.0       0       0       0     120Pronamide
+121     Krenite    150.0    0.95     4.0     8.0    0.75   1790000.0       0       0       0     121Fosamine Ammon. Salt
+122     Lannate     72.0    0.55     0.5    30.0    0.75     58000.0       0       0       0     122Methomyl
+123     Larvadex   200.0    0.95    30.0   150.0    0.75    136000.0       0       0       0     123Cyromazine
+124     Larvin     350.0     0.7     4.0     7.0    0.75        19.1       0       0       0     124Thiodicarb
+125     Lasso      170.0     0.4     3.0    15.0    0.75       240.0       0       0       0     125Alachlor
+126     Limit     1000.0     0.7     8.0    20.0    0.75        10.0       0       0       0     126Amidochlor
+127     Lontrel      6.0    0.95     2.0    30.0    0.75    300000.0       0       0       0     127Clopyralid
+128     Lorox      400.0     0.6    15.0    60.0    0.75        75.0       0       0       0     128Linuron
+129     Lorsban   6070.0    0.65     3.3    30.0    0.75         0.4       0       0       0     129Clorpyrifos
+130     Manzate   1000.0    0.65     3.0    12.0    0.75         6.0       0       0       0     130Maneb
+131     Marlate  80000.0    0.05     6.0   120.0    0.75         0.1       0       0       0     131Methoxychlor
+132     Matacil    100.0     0.9     4.0     6.0    0.75       915.0       0       0       0     132Aminocarb
+133     Mavrik  1000000.     0.4     7.0    30.0    0.75         0.0       0       0       0     133Fluvalinate
+134     Metasyst    10.0    0.95     3.0    10.0    0.75   1000000.0       0       0       0     134Oxydemeton-Methyl
+135     Milogard   154.0    0.45     5.0   135.0    0.75         8.6       0       0       0     135Propazine
+136     Miral      100.0    0.65     5.0    34.0    0.75        69.0       0       0       0     136Isazofos
+137     Mitac     1000.0    0.45     1.0     2.0    0.75         1.0       0       0       0     137Amitraz
+138     Modown   10000.0     0.4     3.0     7.0    0.75         0.4       0       0       0     138Bifenox
+139     Monitor      5.0    0.95     4.0     6.0    0.75   1000000.0       0       0       0     139Methamidophos
+140     Morestan  2300.0     0.5    10.0    30.0    0.75         1.0       0       0       0     140Oxythioquinox
+141     Nemacur    240.0     0.7     5.0     5.0    0.75       400.0       0       0       0     141Fenamiphos
+142     NemacurSne     4     0.7    18.0    18.0    0.75       400.0       0       0       0     142Fenamiphos Sulfone
+143     NemacurSxid    4     0.7    42.0    42.0    0.75       400.0       0       0       0     143Fenamiphos Sulfoxide
+144     Norton     340.0    0.65    10.0    30.0    0.75        50.0       0       0       0     144Ethofumesate
+145     Octave     500.0     0.5    30.0   120.0    0.75        34.0       0       0       0     145Prochloraz
+146     Oftanol    600.0    0.65    30.0   150.0    0.75        24.0       0       0       0     146Isofenphos
+147     Orthene      2.0     0.7     2.5     3.0    0.75    818000.0       0       0       0     147Acephate
+148     Orthocid   200.0    0.65     9.0     2.5    0.75         5.1       0       0       0     148Captan
+149     Oust        78.0    0.65    10.0    20.0    0.75        70.0       0       0       0     149Sulfometuron-Methyl
+150     Pay-Off 100000.0     0.4     5.0    21.0    0.75         0.1       0       0       0     150Flucythrinate
+151     Penncap-  5100.0     0.9     3.0     5.0    0.75        60.0       0       0       0     151Methyl Parathion
+152     Phenatox100000.0    0.05     2.0     9.0    0.75         3.0       0       0       0     152Toxaphene
+153     Phosdrin    44.0    0.95     0.6     3.0    0.75    600000.0       0       0       0     153Mevinphos
+154     Phoskil   5000.0     0.7     4.0    14.0    0.75        24.0       0       0       0     154Parathion (Ethyl)
+155     Pipron    5000.0     0.6    10.0    30.0    0.75        20.0       0       0       0     155Piperalin
+156     Pix     1000000.    0.95    30.0  1000.0    0.75   1000000.0       0       0       0     156Mepiquat Chlor. Salt
+157     Plantvax    95.0     0.7    10.0    20.0    0.75      1000.0       0       0       0     157Oxycarboxin
+158     Poast      100.0     0.7     3.0     5.0    0.75      4390.0       0       0       0     158Sethoxydim
+159     Polyram 500000.0     0.4     7.0    20.0    0.75         0.1       0       0       0     159Metiram
+160     Pounce  100000.0     0.3     8.0    30.0    0.75         0.0       0       0       0     160Permethrin
+161     Pramitol   150.0    0.75    30.0   500.0    0.75       720.0       0       0       0     161Prometon
+162     Prefar    1000.0     0.4    30.0   120.0    0.75         5.6       0       0       0     162Bensulide
+163     Prelude 1000000.     0.6    30.0  1000.0    0.75    620000.0       0       0       0     163Paraquat
+164     Prime    10000.0     0.4     7.0    20.0    0.75         0.1       0       0       0     164Flumetralin
+165     Princep    130.0     0.4     5.0    60.0    0.75         6.2       0       0       0     165Simazine
+166     Probe     3000.0     0.4     5.0    14.0    0.75         1.5       0       0       0     166Methazole
+167     Prowl     5000.0     0.4    30.0    90.0    0.75         0.3       0       0       0     167Pendimethalin
+168     Pursuit     10.0     0.9    20.0    90.0    0.75    200000.0       0       0       0     168AC 263,499
+169     Pydrin    5300.0    0.25    10.0    35.0    0.75         0.0       0       0       0     169Fenvalerate
+170     Pyramin    120.0    0.85     5.0    21.0    0.75       400.0       0       0       0     170Pyrazon
+171     Ramrod      80.0     0.4     3.0     6.0    0.75       613.0       0       0       0     171Propaclor
+172     Reflex      60.0    0.95    30.0   100.0    0.75    700000.0       0       0       0     172Fomesafen Salt
+173     Rescue      20.0    0.45     9.0    10.0    0.75    709000.0       0       0       0     1732,4-DB Sodium/amine
+174     Ridomil     50.0     0.7    30.0    70.0    0.75      8400.0       0       0       0     174Metalaxyl
+175     Ro-Neet    430.0     0.5     2.0    30.0    0.75        95.0       0       0       0     175Cycloate
+176     Ronstar   3200.0     0.5    20.0    60.0    0.75         0.7       0       0       0     176Oxadiazon
+177     Roundup  24000.0     0.6     2.5    47.0    0.75    900000.0       0       0       0     177Glyphosate Amine
+178     Rovral     700.0     0.4     5.0    14.0    0.75        13.9       0       0       0     178Iprodione
+179     RoyalSlo    20.0    0.95    10.0    30.0    0.75    400000.0       0       0       0     179Maleic Hydrazide
+180     Rubigan    600.0     0.4    30.0   360.0    0.75        14.0       0       0       0     180Fenarimol
+181     Sancap     900.0     0.4     5.0    30.0    0.75        16.0       0       0       0     181Hexythiazox
+182     Savey     6200.0     0.4     5.0    30.0    0.75         0.5       0       0       0     182Savey
+183     Scepter     20.0    0.95    20.0    60.0    0.75    160000.0       0       0       0     183Imazaquin Ammonium
+184     Sencor      60.0     0.8     5.0    40.0    0.75      1220.0       0       0       0     184Metribuzin
+185     Sevin      300.0    0.55     7.0    10.0    0.75       120.0       0       0       0     185Carbaryl
+186     Sinbar      55.0     0.7    30.0   120.0    0.75       710.0       0       0       0     186Terbacil
+187     Slug-Get   300.0     0.7    10.0    30.0    0.75        24.0       0       0       0     187Methiocarb
+188     Sonalan   4000.0     0.4     4.0    60.0    0.75         0.3       0       0       0     188Ethalfluralin
+189     Spectrac  1000.0     0.9     4.0    40.0    0.75        60.0       0       0       0     189Diazinon
+190     Spike       80.0     0.9    30.0   360.0    0.75      2500.0       0       0       0     190Tebuthiuron
+191     SproutNi   400.0     0.9     8.0    30.0    0.75        89.0       0       0       0     191Chlorpropham
+192     Stam       149.0     0.7     1.0     1.0    0.75       200.0       0       0       0     192Propanil
+193     Supracid   400.0     0.9     3.0     7.0    0.75       220.0       0       0       0     193Methidathion
+194     Surflan    600.0     0.4     5.0    20.0    0.75         2.5       0       0       0     194Oryzalin
+195     1Sutan     400.0     0.3     1.0    13.0    0.75        44.0       0       0       0     195Butylate
+196     Swat         7.0    0.95     5.0    17.0    0.75   1000000.0       0       0       0     196Phosphamidon
+197     Tackle     113.0    0.95     5.0    14.0    0.75    250000.0       0       0       0     197Acifluorfen
+198     Talstar 240000.0     0.4     7.0    26.0    0.75         0.1       0       0       0     198Bifenthrin
+199     Tandem    5600.0     0.4     8.0    28.0    0.75         1.8       0       0       0     199Tridiphane
+200     Tanone     250.0    0.65     2.0    40.0    0.75       200.0       0       0       0     200Phenthoate
+201     Tattoo     570.0    0.85     3.0     5.0    0.75        40.0       0       0       0     201Bendiocarb
+202     TBZ       2500.0     0.6    30.0   403.0    0.75        50.0       0       0       0     202Thiabendazole
+203     Temik       40.0     0.7     7.0     7.0    0.75      6000.0       0       0       0     203Aldicarb
+204     TemikSul    10.0     0.7    20.0    20.0    0.75      6000.0       0       0       0     204Aldicarb Sulfone
+205     TemikSulde     3     0.7    30.0    30.0    0.75      6000.0       0       0       0     205Aldicarb Sulfoxide
+206     Tenoran   3000.0     0.4    15.0    60.0    0.75         2.5       0       0       0     206Chloroxuron
+207     Terbutre  2000.0     0.5     5.0    42.0    0.75        22.0       0       0       0     207Terbutryn
+208     Terrachl  5000.0     0.4     4.0    21.0    0.75         0.4       0       0       0     208PCNB
+209     Terraneb  1650.0     0.5    30.0   130.0    0.75         8.0       0       0       0     209Chloroneb
+210     Terrazol  1000.0     0.6     3.0    20.0    0.75        50.0       0       0       0     210Etridiazole
+211     Thimet    1000.0     0.6     2.0    60.0    0.75        22.0       0       0       0     211Phorate
+212     Thiodan  12400.0    0.05     3.0    50.0    0.75         0.3       0       0       0     212Endosulfan
+213     Thiram     670.0     0.5     8.0    15.0    0.75        30.0       0       0       0     213Thiram
+214     Thistrol    20.0    0.95     7.0    14.0    0.75    200000.0       0       0       0     214MCPB Sodium Salt
+215     Tillam     430.0     0.7     4.0    14.0    0.75       100.0       0       0       0     215Pebulate
+216     Tilt      1000.0     0.7    30.0   110.0    0.75       110.0       0       0       0     216Propiconazole
+217     Tolban    2240.0    0.35     1.0   140.0    0.75         0.1       0       0       0     217Profluralin
+218     Topsin    1830.0     0.4     5.0    10.0    0.75         3.5       0       0       0     218Thiophanate-Methyl
+219     Tordon      16.0     0.6     8.0    90.0    0.75    200000.0       0       0       0     219Picloram
+220     Tralomet100000.0     0.4     1.0    27.0    0.75         0.0       0       0       0     220Tralomethrin
+221     Treflan   8000.0     0.4     3.0    60.0    0.75         0.3       0       0       0     221Trifluralin
+222     Tre-Hold   300.0     0.4     5.0    10.0    0.75       105.0       0       0       0     222NAA Ethyl Ester
+223     Tupersan   420.0     0.7    30.0    90.0    0.75        18.0       0       0       0     223Siduron
+224     Turflon    780.0     0.7    15.0    46.0    0.75        23.0       0       0       0     224Triclopyr Ester
+225     Velpar      54.0     0.9    30.0    90.0    0.75      3300.0       0       0       0     225Hexazinone
+226     Vendex    2300.0     0.2    30.0    90.0    0.75         0.0       0       0       0     226Fenbutatin Oxide
+227     Vernam     260.0     0.8     2.0    12.0    0.75       108.0       0       0       0     227Vernolate
+228     Volckoil  1000.0     0.5     2.0    10.0    0.75       100.0       0       0       0     228Petroleum oil
+229     Vydate      25.0    0.95     4.0     4.0    0.75    282000.0       0       0       0     229Oxamyl
+230     Weedar      20.0    0.45     9.0    10.0    0.75    796000.0       0       0       0     2302,4-D amine
+231     Weed-B-G    80.0    0.45    10.0    24.0    0.75    500000.0       0       0       0     2312,4,5-T Amine
+232     Wedone    1000.0    0.45     9.0    10.0    0.75        50.0       0       0       0     232Dichlorprop Ester
+233     Zolone    1800.0    0.65     8.0    21.0    0.75         3.0       0       0       0     233Phosalone

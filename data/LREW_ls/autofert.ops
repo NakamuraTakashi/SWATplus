@@ -1,0 +1,3 @@
+autofert.ops: Auto-fertilization operations - LREW4
+  AFERT_OP_NAME   FERT_NAME   TRIG_TYPE   FERT_AMT  SURF_FRAC    NS_TRIG  PLANT_TRIG    ANN_MAX   FERT_EFF
+           null        null           1    150.000      0.200      0.950           1     22.500      0.000

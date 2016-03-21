@@ -1,0 +1,3 @@
+weather-sta.cli: Weather stations - LREW_HRU-lte
+    WST_NUMB    WST_NAME    WGN_NAME     PCP_SIM     TMP_SIM      RH_SIM     SLR_SIM     WND_SIM   PCP_NAME   TMP_NAME   SLR_NAME   HMD_NAME   WND_NAME  WIND_DIR_NAME  ATMO_DEP_NAME
+           1        wea1      wgn001        meas        meas         sim         sim         sim lrew01.pcp lrew01.tmp       null       null       null           null           null

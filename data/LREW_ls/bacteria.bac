@@ -1,0 +1,3 @@
+bacteria.bac: Bacteria properties - LREW4
+        NUMB      BACTNM    DO_SOLN    GR_SOLN    DO_SORB    GR_SORB         KD      T_ADJ    WASHOFF    DO_PLNT    GR_PLNT  FR_MANURE      PERCO DET_THRSHD  DO_STREAM  GR_STREAM     DO_RES     GR_RES        SWF   CONC_MIN
+           0        null      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000      0.000

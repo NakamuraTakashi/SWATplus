@@ -1,0 +1,3 @@
+object.prt: User-defined output files - LREW4
+        NUMB       OBTYP     OBTYPNO      HYDTYP    FILENAME
+           1         cha          95         tot  outlet.out

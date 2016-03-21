@@ -1,0 +1,9 @@
+landuse.lum: General land use properties - Little River Experimental Watershed
+NUMB     NAME           CN_LU  USLE_P  IURBAN  URB_LU     OVN
+   1     AGRL            7       1.00       0       0    0.14
+   2     PAST           36       1.00       0       0    0.35
+   3     FRSE           46       1.00       0       0    0.45 
+   4     FRSD           46       1.00       0       0    0.45
+   5     WETF           46       1.00       0       0    0.45
+   6     WATR            1       1.00       0       0    0.01
+   7     URLD           47       1.00       1       4    0.10

@@ -1,0 +1,8 @@
+fert.ops: Fertilizer operations - Little River Experimental Watershed
+NUMB   NAME      DB_NUM  AMT_KGH  SURFACE
+   1   Fert_01        1    115.7     0.05
+   2   Fert_02        2     18.8     0.05
+   3   Fert_03        1     92.1     0.05
+   4   Fert_04        2     12.3     0.05
+	
+	

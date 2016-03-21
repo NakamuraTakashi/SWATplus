@@ -1,0 +1,235 @@
+pesticide.pst: Pesticide parameters - LREW4
+            PEST_NAME   SOIL_KOC    FR_WASH HL_FOLIAGE    HL_SOIL    APP_EFF        PEST_SOL                  Description
+               245-tp    2600.00      0.400      5.000     20.000      0.750            2.50                 Silvex Amine
+               2plus2      20.00      0.950     10.000     21.000      0.750       660000.00                     Mecoprop
+               aatrex     171.00      0.450      5.000     60.000      0.750           33.00                     Atrazine
+                abate  100000.00      0.650      5.000     30.000      0.750            0.00                        Abate
+             acaraben    2000.00      0.050     10.000     20.000      0.750           13.00         Chlorobenzilate Salt
+             accelera      20.00      0.900      7.000      7.000      0.750       100000.00                    Endothall
+              acclaim    9490.00      0.200      5.000      9.000      0.750            0.80 Fenoxaprop-Ethyl Sodium Salt
+               alanap      20.00      0.950      7.000     14.000      0.750       231000.00                     Naptalam
+                 alar      10.00      0.950      4.000      7.000      0.750       100000.00                   Daminozide
+               aldrin     300.00      0.050      2.000     28.000      0.750            0.10                       Aldrin
+              aliette      20.00      0.950      0.100      0.100      0.750       120000.00             Fosetyl-Aluminum
+                 ally      35.00      0.800     30.000    120.000      0.750         9500.00     Metsulfuron-Methyl Salts
+               amiben      15.00      0.950      7.000     14.000      0.750       900000.00             Chloramben Amide
+             amid-thi     100.00      0.600      5.000     10.000      0.750          100.00                          NAA
+             amitrolt     100.00      0.950      5.000     14.000      0.750       360000.00                     Amitrole
+                 ammo  100000.00      0.400      5.000     30.000      0.750            0.00                 Cypermethrin
+                antor    1400.00      0.400     10.000     21.000      0.750          105.00              Diethatyl-Ethyl
+               a-rest     120.00      0.500     30.000    120.000      0.750          650.00               Ancymidol Acid
+              arsenal     100.00      0.900     30.000     90.000      0.750        11000.00                     Imazapyr
+             arsonate   10000.00      0.950     30.000    100.000      0.750      1000000.00                         MSMA
+                asana    5300.00      0.400      8.000     35.000      0.750            0.00                Esfenvalerate
+             assert_m      66.00      0.650     18.000     35.000      0.750         1370.00             Imazamethabenz-m
+             assert_p      35.00      0.650     18.000     35.000      0.750          875.00             Imazamethabenz-p
+               assure     510.00      0.200     15.000     60.000      0.750            0.30 Quizalofop-Ethyl Sodium Salt
+               asulox      40.00      0.950      3.000      7.000      0.750       550000.00                       Asulam
+               avenge   54500.00      0.950     30.000    100.000      0.750       817000.00                  Difenzoquat
+              azodrin       1.00      0.950      2.000     30.000      0.750      1000000.00                Monocrotophos
+                balan    9000.00      0.200     10.000     30.000      0.750            0.10                      Benefin
+                banol 1000000.00      0.950     15.000     30.000      0.750      1000000.00                  Propamocarb
+               banvel       2.00      0.650      9.000     14.000      0.750       400000.00                      Dicamba
+             basagran      34.00      0.600      2.000     20.000      0.750      2300000.00             Bentazon Ammonia
+                basta     100.00      0.950      4.000      7.000      0.750      1370000.00                  Glufosinate
+             bayleton     300.00      0.300      8.000     26.000      0.750           71.50                  Triadimefon
+               baytex    1500.00      0.650      2.000     34.000      0.750            4.20                     Fenthion
+             baythroi  100000.00      0.400      5.000     30.000      0.750            0.00                   Cyfluthrin
+              benlate    1900.00      0.250      6.000    240.000      0.750            2.00                      Benomyl
+               benzex   55000.00      0.050      3.000    600.000      0.750            0.10                          BHC
+              betamix    2400.00      0.700      5.000     30.000      0.750            4.70                 Phenmedipham
+              betanex    1500.00      0.700      5.000     30.000      0.750            8.00                  Desmedipham
+               bidrin      75.00      0.700     20.000     28.000      0.750      1000000.00                  Dicrotophos
+               bladex     190.00      0.600      5.000     14.000      0.750          170.00                    Cyanazine
+               bolero     900.00      0.700      7.000     21.000      0.750           28.00                  Thiobencarb
+              bolstar   12000.00      0.550      0.500    140.000      0.750            0.30              Sulprofos Ester
+             borderma    1000.00      0.500      8.000     25.000      0.750            5.00              MCPA (Dicloran)
+               botran    1000.00      0.500      4.000     10.000      0.750            7.00                         DCNA
+                bravo    1380.00      0.500      5.000     30.000      0.750            0.60    Chlorothalonil Octan. Est
+              buctril   10000.00      0.200      3.000      7.000      0.750            0.10             Bromoxynil Ester
+             butyrace     500.00      0.450      7.000      7.000      0.750            8.00                       2,4-DB
+              caparol     400.00      0.500     10.000     60.000      0.750           33.00                    Prometryn
+             carbamat     300.00      0.900      3.000     17.000      0.750          120.00                       Ferbam
+             carsoron     400.00      0.450      5.000     60.000      0.750           21.20        Dichlobenil Hydrochlo
+               carzol 1000000.00      0.950     30.000    100.000      0.750       500000.00                  Formetanate
+               cerone  100000.00      0.950      5.000     10.000      0.750      1239000.00               Ethephon (IPC)
+             chem-hoe     200.00      0.500      2.000     10.000      0.750          250.00                      Propham
+             chlordan  100000.00      0.050      2.500    100.000      0.750            0.10              Chlordane Amine
+              chopper     100.00      0.800     30.000     90.000      0.750       500000.00                     Imazapyr
+              classic     110.00      0.900     15.000     40.000      0.750         1200.00            Chlorimuron-ethyl
+                cobra  100000.00      0.200      2.000      3.000      0.750            0.10                     Lactofen
+               comite    4000.00      0.200      5.000     56.000      0.750            0.50                   Propargite
+              command     300.00      0.800      3.000     24.000      0.750         1000.00                    Clomazone
+              cotoran     100.00      0.500     30.000     85.000      0.750          110.00                  Fluometuron
+              counter     500.00      0.600      2.500      5.000      0.750            5.00               Terbufos Amine
+             crossbow      20.00      0.950     15.000     46.000      0.750      2100000.00                    Triclopyr
+             curacron    2000.00      0.900      3.000      8.000      0.750           28.00                   Profenofos
+                cygon      20.00      0.950      3.000      7.000      0.750        39800.00           Dimethoate Acetate
+               cyprex  100000.00      0.500     10.000     20.000      0.750          700.00                       Dodine
+              cythion    1800.00      0.900      1.000      1.000      0.750          130.00               Malathion Acid
+             dacamine      20.00      0.450      5.000     10.000      0.750          890.00                        2,4-D
+              dacthal    5000.00      0.300     10.000    100.000      0.750            0.50             DCPA Sodium Salt
+              dalapon       1.00      0.950     37.000     30.000      0.750       900000.00                      Dalapon
+              dasanit   10000.00      0.900      4.000     24.000      0.750            0.00                Fensulfothion
+                  ddt  240000.00      0.050     10.000    120.000      0.750            0.10                    DDT Amine
+              dedweed      20.00      0.950      7.000     25.000      0.750       866000.00                         MCPA
+                  def    5000.00      0.250      7.000     30.000      0.750            2.30                Tribufos Acid
+             dessican   10000.00      0.950  10000.000  10000.000      0.750        17000.00                      Arsenic
+             devrinol     400.00      0.600     15.000     70.000      0.750           74.00                  Napropamide
+             di-systo     600.00      0.500      3.000     30.000      0.750           25.00                   Disulfoton
+               dibrom     180.00      0.900      5.000      1.000      0.750         2000.00                        Naled
+             dieldrin   50000.00      0.050      5.000   1400.000      0.750            0.10                     Dieldrin
+              dimilin   10000.00      0.050     27.000     10.000      0.750            0.10         Diflubenzuron Phenol
+              dinitro     500.00      0.600      3.000     20.000      0.750           50.00            Dinoseb Dibromide
+               diquat 1000000.00      0.950     30.000   1000.000      0.750       718000.00                       Diquat
+              dithane    2000.00      0.250     10.000     70.000      0.750            6.00                     Mancozeb
+               dowpon       4.00      0.950     37.000     30.000      0.750         1000.00                      Dalapon
+                dropp     110.00      0.400      3.000     10.000      0.750           20.00           Thidiazuron Acid N
+                 dsma  100000.00      0.950     30.000   1000.000      0.750      1400000.00      Methanearsonic Hydroxid
+               du-ter   23000.00      0.400     18.000     75.000      0.750            1.00                 Triphenyltin
+                 dual     200.00      0.600      5.000     90.000      0.750          530.00                  Metolachlor
+             dyfonate     870.00      0.600      2.500     40.000      0.750           16.90                      Fonofos
+                dylox      10.00      0.950      3.000     10.000      0.750       120000.00                  Trichlorfon
+                dymid     210.00      0.800      5.000     30.000      0.750          260.00                   Diphenamid
+               dyrene    3000.00      0.500      5.000      1.000      0.750            8.00        Anilazine Sodium Salt
+              elgetol      20.00      0.950      8.000     20.000      0.750       100000.00                         DNOC
+                  epn   13000.00      0.600      5.000      5.000      0.750            0.50                          EPN
+             eradican     200.00      0.750      3.000      6.000      0.750          344.00                         EPTC
+              ethanox   10000.00      0.650      7.000    150.000      0.750            1.10                       Ethion
+                 evik     300.00      0.650      5.000     60.000      0.750          185.00                      Ametryn
+               evital     600.00      0.500     15.000     90.000      0.750           28.00                  Norflurazon
+               far-go    2400.00      0.400     15.000     82.000      0.750            4.00                    Triallate
+             fenatrol      20.00      0.950     30.000    180.000      0.750       500000.00                        Fenac
+              fenitox    2000.00      0.900      3.000      8.000      0.750           30.00     Fenitrothion Sodium Salt
+             fruitone      20.00      0.950      3.000     10.000      0.750       200000.00                3-CPA Hydrocl
+               fundal  100000.00      0.900      1.000     60.000      0.750       500000.00                Chlordimeform
+             funginex     540.00      0.800      5.000     21.000      0.750           30.00                    Triforine
+              furadan      22.00      0.550      2.000     50.000      0.750          351.00                   Carbofuran
+             fusilade    5700.00      0.400      4.000     15.000      0.750            2.00            Fluazifop-P-Butyl
+                glean      40.00      0.750     30.000    160.000      0.750         7000.00                Chlorsulfuron
+                 goal  100000.00      0.400      8.000     35.000      0.750            0.10                  Oxyfluorfen
+              guthion    1000.00      0.650      2.000     10.000      0.750           29.00              Azinphos-Methyl
+              harmony      45.00      0.800      3.000     12.000      0.750         2400.00        Thifensulfuron-Methyl
+              harvade      10.00      0.800      3.000     10.000      0.750         3000.00                   Dimethipin
+               hoelon   16000.00      0.450      8.000     37.000      0.750            0.80              Diclofop-Methyl
+                hyvar      32.00      0.750     20.000     60.000      0.750          700.00                     Bromacil
+               imidan     820.00      0.900      3.000     19.000      0.750           20.00                      Phosmet
+               isotox    1100.00      0.050      2.500    400.000      0.750            7.30                      Lindane
+               karate  180000.00      0.400      5.000     30.000      0.750            0.00           Lambda-Cyhalothrin
+             karathan     550.00      0.300      8.000     20.000      0.750            4.00                      Dinocap
+               karmex     480.00      0.450     30.000     90.000      0.750           42.00                       Diuron
+             kelthane  180000.00      0.050      4.000     60.000      0.750            1.00                      Dicofol
+                 kerb     200.00      0.300     20.000     60.000      0.750           15.00        Pronamide Ammon. Salt
+              krenite     150.00      0.950      4.000      8.000      0.750      1790000.00                     Fosamine
+              lannate      72.00      0.550      0.500     30.000      0.750        58000.00                     Methomyl
+             larvadex     200.00      0.950     30.000    150.000      0.750       136000.00                   Cyromazine
+               larvin     350.00      0.700      4.000      7.000      0.750           19.10                   Thiodicarb
+                lasso     170.00      0.400      3.000     15.000      0.750          240.00                     Alachlor
+                limit    1000.00      0.700      8.000     20.000      0.750           10.00                   Amidochlor
+              lontrel       6.00      0.950      2.000     30.000      0.750       300000.00                   Clopyralid
+                lorox     400.00      0.600     15.000     60.000      0.750           75.00                      Linuron
+              lorsban    6070.00      0.650      3.300     30.000      0.750            0.40                  Clorpyrifos
+              manzate    1000.00      0.650      3.000     12.000      0.750            6.00                        Maneb
+              marlate   80000.00      0.050      6.000    120.000      0.750            0.10                 Methoxychlor
+              matacil     100.00      0.900      4.000      6.000      0.750          915.00                    Aminocarb
+               mavrik 1000000.00      0.400      7.000     30.000      0.750            0.00                  Fluvalinate
+             metasyst      10.00      0.950      3.000     10.000      0.750      1000000.00            Oxydemeton-Methyl
+             milogard     154.00      0.450      5.000    135.000      0.750            8.60                    Propazine
+                miral     100.00      0.650      5.000     34.000      0.750           69.00                     Isazofos
+                mitac    1000.00      0.450      1.000      2.000      0.750            1.00                      Amitraz
+               modown   10000.00      0.400      3.000      7.000      0.750            0.40                      Bifenox
+              monitor       5.00      0.950      4.000      6.000      0.750      1000000.00                Methamidophos
+             morestan    2300.00      0.500     10.000     30.000      0.750            1.00                Oxythioquinox
+              nemacur     240.00      0.700      5.000      5.000      0.750          400.00           Fenamiphos Sulfone
+          nemacurs_ne       4.00      0.700     18.000     18.000      0.750          400.00         Fenamiphos Sulfoxide
+         nemacurs_xid       4.00      0.700     42.000     42.000      0.750          400.00                   Fenamiphos
+               norton     340.00      0.650     10.000     30.000      0.750           50.00                 Ethofumesate
+               octave     500.00      0.500     30.000    120.000      0.750           34.00                   Prochloraz
+              oftanol     600.00      0.650     30.000    150.000      0.750           24.00                   Isofenphos
+              orthene       2.00      0.700      2.500      3.000      0.750       818000.00                     Acephate
+             orthocid     200.00      0.650      9.000      2.500      0.750            5.10                       Captan
+                 oust      78.00      0.650     10.000     20.000      0.750           70.00          Sulfometuron-Methyl
+              pay-off  100000.00      0.400      5.000     21.000      0.750            0.10      Flucythrinate Parathion
+             penncap-    5100.00      0.900      3.000      5.000      0.750           60.00                       Methyl
+             phenatox  100000.00      0.050      2.000      9.000      0.750            3.00                    Toxaphene
+             phosdrin      44.00      0.950      0.600      3.000      0.750       600000.00            Mevinphos (Ethyl)
+              phoskil    5000.00      0.700      4.000     14.000      0.750           24.00                    Parathion
+               pipron    5000.00      0.600     10.000     30.000      0.750           20.00        Piperalin Chlor. Salt
+                  pix 1000000.00      0.950     30.000   1000.000      0.750      1000000.00                     Mepiquat
+             plantvax      95.00      0.700     10.000     20.000      0.750         1000.00                  Oxycarboxin
+                poast     100.00      0.700      3.000      5.000      0.750         4390.00                   Sethoxydim
+              polyram  500000.00      0.400      7.000     20.000      0.750            0.10                      Metiram
+               pounce  100000.00      0.300      8.000     30.000      0.750            0.00                   Permethrin
+             pramitol     150.00      0.750     30.000    500.000      0.750          720.00                     Prometon
+               prefar    1000.00      0.400     30.000    120.000      0.750            5.60                    Bensulide
+              prelude 1000000.00      0.600     30.000   1000.000      0.750       620000.00                     Paraquat
+                prime   10000.00      0.400      7.000     20.000      0.750            0.10                  Flumetralin
+              princep     130.00      0.400      5.000     60.000      0.750            6.20                     Simazine
+                probe    3000.00      0.400      5.000     14.000      0.750            1.50                    Methazole
+                prowl    5000.00      0.400     30.000     90.000      0.750            0.30        Pendimethalin 263,499
+              pursuit      10.00      0.900     20.000     90.000      0.750       200000.00                           AC
+               pydrin    5300.00      0.250     10.000     35.000      0.750            0.00                  Fenvalerate
+              pyramin     120.00      0.850      5.000     21.000      0.750          400.00                      Pyrazon
+               ramrod      80.00      0.400      3.000      6.000      0.750          613.00               Propaclor Salt
+               reflex      60.00      0.950     30.000    100.000      0.750       700000.00       Fomesafen Sodium/amine
+               rescue      20.00      0.450      9.000     10.000      0.750       709000.00                       2,4-DB
+              ridomil      50.00      0.700     30.000     70.000      0.750         8400.00                    Metalaxyl
+              ro-neet     430.00      0.500      2.000     30.000      0.750           95.00                     Cycloate
+              ronstar    3200.00      0.500     20.000     60.000      0.750            0.70              Oxadiazon Amine
+              roundup   24000.00      0.600      2.500     47.000      0.750       900000.00                   Glyphosate
+               rovral     700.00      0.400      5.000     14.000      0.750           13.90          Iprodione Hydrazide
+             royalslo      20.00      0.950     10.000     30.000      0.750       400000.00                       Maleic
+              rubigan     600.00      0.400     30.000    360.000      0.750           14.00                    Fenarimol
+               sancap     900.00      0.400      5.000     30.000      0.750           16.00                  Hexythiazox
+                savey    6200.00      0.400      5.000     30.000      0.750            0.50               Savey Ammonium
+              scepter      20.00      0.950     20.000     60.000      0.750       160000.00                    Imazaquin
+               sencor      60.00      0.800      5.000     40.000      0.750         1220.00                   Metribuzin
+                sevin     300.00      0.550      7.000     10.000      0.750          120.00                     Carbaryl
+               sinbar      55.00      0.700     30.000    120.000      0.750          710.00                     Terbacil
+             slug-get     300.00      0.700     10.000     30.000      0.750           24.00                   Methiocarb
+              sonalan    4000.00      0.400      4.000     60.000      0.750            0.30                Ethalfluralin
+             spectrac    1000.00      0.900      4.000     40.000      0.750           60.00                     Diazinon
+                spike      80.00      0.900     30.000    360.000      0.750         2500.00                  Tebuthiuron
+             sproutni     400.00      0.900      8.000     30.000      0.750           89.00                 Chlorpropham
+                 stam     149.00      0.700      1.000      1.000      0.750          200.00                     Propanil
+             supracid     400.00      0.900      3.000      7.000      0.750          220.00                 Methidathion
+              surflan     600.00      0.400      5.000     20.000      0.750            2.50                     Oryzalin
+               1sutan     400.00      0.300      1.000     13.000      0.750           44.00                     Butylate
+                 swat       7.00      0.950      5.000     17.000      0.750      1000000.00                 Phosphamidon
+               tackle     113.00      0.950      5.000     14.000      0.750       250000.00                  Acifluorfen
+              talstar  240000.00      0.400      7.000     26.000      0.750            0.10                   Bifenthrin
+               tandem    5600.00      0.400      8.000     28.000      0.750            1.80                   Tridiphane
+               tanone     250.00      0.650      2.000     40.000      0.750          200.00                   Phenthoate
+               tattoo     570.00      0.850      3.000      5.000      0.750           40.00                   Bendiocarb
+                  tbz    2500.00      0.600     30.000    403.000      0.750           50.00                Thiabendazole
+                temik      40.00      0.700      7.000      7.000      0.750         6000.00             Aldicarb Sulfone
+             temiksul      10.00      0.700     20.000     20.000      0.750         6000.00           Aldicarb Sulfoxide
+           temiksulde       3.00      0.700     30.000     30.000      0.750         6000.00                     Aldicarb
+              tenoran    3000.00      0.400     15.000     60.000      0.750            2.50                  Chloroxuron
+             terbutre    2000.00      0.500      5.000     42.000      0.750           22.00                    Terbutryn
+             terrachl    5000.00      0.400      4.000     21.000      0.750            0.40                         PCNB
+             terraneb    1650.00      0.500     30.000    130.000      0.750            8.00                    Chloroneb
+             terrazol    1000.00      0.600      3.000     20.000      0.750           50.00                  Etridiazole
+               thimet    1000.00      0.600      2.000     60.000      0.750           22.00                      Phorate
+              thiodan   12400.00      0.050      3.000     50.000      0.750            0.30                   Endosulfan
+               thiram     670.00      0.500      8.000     15.000      0.750           30.00           Thiram Sodium Salt
+             thistrol      20.00      0.950      7.000     14.000      0.750       200000.00                         MCPB
+               tillam     430.00      0.700      4.000     14.000      0.750          100.00                     Pebulate
+                 tilt    1000.00      0.700     30.000    110.000      0.750          110.00                Propiconazole
+               tolban    2240.00      0.350      1.000    140.000      0.750            0.10                  Profluralin
+               topsin    1830.00      0.400      5.000     10.000      0.750            3.50           Thiophanate-Methyl
+               tordon      16.00      0.600      8.000     90.000      0.750       200000.00                     Picloram
+             tralomet  100000.00      0.400      1.000     27.000      0.750            0.00                 Tralomethrin
+              treflan    8000.00      0.400      3.000     60.000      0.750            0.30                  Trifluralin
+             tre-hold     300.00      0.400      5.000     10.000      0.750          105.00              NAA Ethyl Ester
+             tupersan     420.00      0.700     30.000     90.000      0.750           18.00                      Siduron
+              turflon     780.00      0.700     15.000     46.000      0.750           23.00              Triclopyr Ester
+               velpar      54.00      0.900     30.000     90.000      0.750         3300.00                   Hexazinone
+               vendex    2300.00      0.200     30.000     90.000      0.750            0.00             Fenbutatin Oxide
+               vernam     260.00      0.800      2.000     12.000      0.750          108.00                    Vernolate
+             volckoil    1000.00      0.500      2.000     10.000      0.750          100.00                Petroleum oil
+               vydate      25.00      0.950      4.000      4.000      0.750       282000.00                       Oxamyl
+               weedar      20.00      0.450      9.000     10.000      0.750       796000.00                  2,4-D amine
+             weed-b-g      80.00      0.450     10.000     24.000      0.750       500000.00                2,4,5-T Amine
+               wedone    1000.00      0.450      9.000     10.000      0.750           50.00            Dichlorprop Ester
+               zolone    1800.00      0.650      8.000     21.000      0.750            3.00                    Phosalone

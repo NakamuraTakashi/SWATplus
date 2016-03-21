@@ -1,0 +1,8 @@
+calibration.cal file
+NAME       NUM  NAME     DAY YEAR COND 	NAME  		CHG_TYPE  COND	CHG_VALUE  ABSMIN  ABSMAX  NUM_TOT 
+parameters   3	autocal   0   0   null 
+					cn2		abschg	  null   -3        25.0    98.0     2     1   2
+					esco		absval    null   .8         0.0     1.0     2     1   2
+					slope		pctchg    null   20.        0.0    10.0     2     1   2
+
+ 

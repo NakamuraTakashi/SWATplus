@@ -1,0 +1,6 @@
+calibration parameter updates
+ 3
+NAME   CHG_TYPE   COND  VAL  NUM_TOT      
+cn2     abschg    null   -3.    2     1    -2
+awc     abschg    null   .03    2     1    -2
+slope   pctchg    null   10.    1     2

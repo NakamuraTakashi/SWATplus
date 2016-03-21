@@ -1,0 +1,28 @@
+ FILES_OUT - OUTPUT FILES WRITTEN
+ HRU     waterbal.hru
+ HRU     waterbal_aa.hru
+ HRU     nutbal_aa.hru
+ HRU     losses_aa.hru
+ HRU     plantwx.hru
+ HRU     plantwx_aa.hru
+ SUBBASIN     waterbal.sub
+ SUBBASIN     waterbal_aa.sub
+ SUBBASIN     nutbal_aa.sub
+ SUBBASIN     losses_aa.sub
+ SUBBASIN     plantwx.sub
+ SUBBASIN     plantwx_aa.sub
+ BASIN     waterbal.bsn
+ BASIN     waterbal_aa.bsn
+ BASIN     nutbal_aa.bsn
+ BASIN     losses_aa.bsn
+ BASIN     plantwx.bsn
+ BASIN     plantwx_aa.bsn
+ CHANNEL     channel.out
+ CHANNEL     channel_aa.out
+ SWAT-DEG CHANNEL     sd_channel.out
+ AQUIFER     aquifer.out
+ AQUIFER     aquifer_aa.out
+ CROP     crop_yld_aa.out
+ HYDOUT     hyd-out.out
+ HYDIN     hyd-in.out
+ DEPO     deposition.out
