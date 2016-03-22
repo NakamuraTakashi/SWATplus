@@ -53,3 +53,11 @@ cntable.lum: Typical curve number values - LREW Subbasin March 2016
           51                      Gravel_streets_and_roads_(including_right-of-way)                           ----      ----     76.000     85.000     89.000     91.000
           52                        Dirt_streets_and_roads_(including_right-of-way)                           ----      ----     72.000     82.000     87.000     89.000
           53                          Close-seeded_or_broadcast_legumes_or_rotation                   Straight_row      Poor     66.000     77.000     85.000     89.000
+          54                                                            AGRL(5)+10%                           ----      Good     74.000	    86.000	   94.000	  98.000
+          55                                                            AGRL(5)-10%                           ----      Good     60.000     70.000     77.000     80.000
+          56                                                           PAST(36)+10%                           ----      Good     43.000     67.000     81.000     88.000
+	      57                                                           PAST(36)-10%                           ----      Good     35.000     55.000     67.000     72.000
+	      58                                                 FRSE,FRSD,WETF(46)+10%                           ----      Good     33.000     61.000     77.000     85.000
+	      59                                                 FRSE,FRSD,WETF(46)-10%                           ----      Good     27.000     50.000     63.000     69.000
+	      60                                                           URLD(47)+10%                           ----      Good     43.000     67.000     81.000     88.000
+	      61                                                           URLD(47)-10%                           ----      Good     35.000     55.000     67.000     72.000

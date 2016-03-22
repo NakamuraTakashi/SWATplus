@@ -11,3 +11,4 @@ harv.ops: Harvest operations - LREW Subbasin March 2016
   hay_cut_high     biomass      0.800      1.000     3000.000
    hay_cut_low     biomass      0.800      1.000     1000.000
       potatoes       tuber      1.100      0.950        0.000
+       peanuts       tuber      1.100      0.950        0.000

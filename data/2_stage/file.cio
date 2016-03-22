@@ -8,8 +8,8 @@ SUBBASIN          define.sub        element.sub        subbasin.sub        subba
 HRU               hru-data.hru      hru-lte.hru
 DR                delratio.del
 AQUIFER           aquifer.aqu
-HERD              null              null               null                null
-WATER_RIGHTS      null              null               null                null
+HERD              null              null               null
+WATER_RIGHTS      null              null               null
 LINK              chan-surf.lin     chan-aqu.lin
 BASIN             codes.bsn         parameters.bsn
 HYDROLOGY         hydrology.hyd     topography.hru     topography.sub      field.fld
