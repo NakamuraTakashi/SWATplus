@@ -1,3 +1,0 @@
-autofert.ops: Auto-fertilization operations - LREW Subbasin March 2016
-  AFERT_OP_NAME   FERT_NAME   TRIG_TYPE   FERT_AMT  SURF_FRAC    NS_TRIG  PLANT_TRIG    ANN_MAX   FERT_EFF
-        example      elem-n           0      0.000      0.000      0.950           1     22.500      0.000

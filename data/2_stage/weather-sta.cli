@@ -1,4 +1,4 @@
 weather-sta.cli
-NUMB     NAME          WGN  PCPSIM  TMPSIM  RHSIM   SLRSIM  WNDSIM  PGAGE        TGAGE         SGAGE   HGAGE   WGAGE   WNDIR ATMODEP
-1       wea1        wgn001     meas    meas    sim      sim     sim  mentone.pcp  mentone.tmp    null    null    null    null    null
-2       wea2        wgn001     meas    meas    sim      sim     sim  warsaw.pcp   warsaw.tmp     null    null    null    null    null
+NUMB     NAME          WGN        PGAGE        TGAGE       SGAGE   HGAGE   WGAGE   WNDIR  ATMODEP
+1       wea1        wgn001  mentone.pcp   mentone.tmp        sim     sim     sim    null     null
+2       wea2        wgn001   warsaw.pcp    warsaw.tmp        sim     sim     sim    null     null
