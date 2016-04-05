@@ -1,3 +1,3 @@
 print.prt: Output print settings - Little River Experimental Watershed
-NAME             NYSKIP  WB_HRU  NB_HRU  LS_HRU  PW_HRU  WB_SD  NB_SD  LS_SD  PW_SD  WB_SUB  NB_SUB  LS_SUB  PW_SUB  WB_BSN  NB_BSN  LS_BSN  PW_BSN   CHAN    AQU    RES   HYD    HYDCON   SOUT   MOUT   CSVOUT  
-LREW                  0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0      1      1      1     1         1      1      1        0
+NAME             NYSKIP  JD_START  JD_END  YR_START   YR_END     WB_HRU  NB_HRU  LS_HRU  PW_HRU  WB_SD  NB_SD  LS_SD  PW_SD  WB_SUB  NB_SUB  LS_SUB  PW_SUB  WB_BSN  NB_BSN  LS_BSN  PW_BSN   CHAN    AQU    RES   HYD    HYDCON   SOUT   MOUT   CSVOUT  
+LREW                  0         0       0         0        0          0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0      1      1      1     1         1      1      1        0
