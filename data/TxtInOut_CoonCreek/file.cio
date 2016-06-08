@@ -1,0 +1,27 @@
+file.cio: Filenames (input/output) - SB_LS1
+SIMULATION        time.sim          print.prt         object.prt        object.cnt        
+CLIMATE           weather-sta.cli   weather-wgn.cli   wind-dir.cli      pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli           
+CONNECT           hru.con           hru-lte.con       subbasin.con      null              aquifer.con       null              channel.con       reservoir.con     recall.con        exco.con          delratio.con      outlet.con        channel-lte.con       
+CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     channel-lte.cha    
+RESERVOIR         initial.res       reservoir.res     hydrology.res     nutrients.res     pesticide.res     sediment.res      weir.res          
+SUBBASIN          define.sub        element.sub       subbasin.sub      subbasin.del      
+HRU               hru-data.hru      hru-lte.hru       
+DR                delratio.del      
+AQUIFER           aquifer.aqu       
+HERD              animal.hrd        herd.hrd          ranch.hrd         
+WATER_RIGHTS      define.wro        element.wro       water_rights.wro  
+LINK              chan-surf.lin     chan-aqu.lin      
+BASIN             codes.bsn         parameters.bsn    
+HYDROLOGY         hydrology.hyd     topography.hru    topography.sub    field.fld         
+EXCO              exco.exc          
+BACTERIA          initial.bac       bacteria.bac      
+STRUCTURAL        septic.str        bmpuser.str       contour.str       filterstrip.str   fire.str          grassedww.str     plantparms.str    residue.str       stripcrop.str     terrace.str       tiledrain.str     initial.str       
+PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          atmo_mon.dat      
+OPS               autofert.ops      autoirr.ops       contfert.ops      contpest.ops      fert.ops          graze.ops         harv.ops          irr.ops           pest.ops          sweep.ops         
+SCH               management.sch    
+LUM               cntable.lum       landuse.lum       
+CHG               cal_parms.upd     calibration.upd   schedule.upd      
+INIT              initial.pst       initial.plt       
+SOILS             soils.sol         nutrients.sol     
+DECISION_TABLE    d_table.dtl        
+CONSTITUENTS      constituents.cs   pest.cs           path.cs           hmet.cs           salt.cs           

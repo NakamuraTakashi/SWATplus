@@ -1,0 +1,8 @@
+ls_parms.cal  
+ 5
+NAME           CHG_TYP		NEG	POS
+cn2		abschg		-4.	 4.
+esco		absval		0.	 1.
+awc		abschg		-.04     .04
+tconc		pctchg		-30.	 30.
+cvm		pctchg		-50.     50.

@@ -1,9 +1,9 @@
 landuse.lum: General land use properties - LREW4
    LULC_NAME   PLANT_COV    MGT_NAME         CN2     USLE_P    URB_NAME    URB_FLAG    OV_MANN   TILE_NAME    SEP_NAME    VFS_NAME   GRWW_NAME    TRC_NAME   CNTR_NAME     SC_NAME    BMP_NAME
-  landuse001     pcom001      mgt001           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  landuse002     pcom002      mgt002           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  landuse003     pcom003      mgt003           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  landuse004     pcom004      mgt004           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  landuse005     pcom005      mgt005           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  landuse006     pcom006      mgt006           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  landuse007     pcom007      mgt007           1      1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse001     pcom001      mgt001  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse002     pcom002      mgt002  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse003     pcom003      mgt003  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse004     pcom004      mgt004  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse005     pcom005      mgt005  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse006     pcom006      mgt006  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  landuse007     pcom007      mgt007  rc_strowres_p   1.000           0           0      0.100        null        null        null        null        null        null        null        null

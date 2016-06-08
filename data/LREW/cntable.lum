@@ -1,63 +1,54 @@
-cntable.lum: Typical curve number values - LREW Subbasin March 2016
-       CN_ID                                                                LANDUSE                      TREATMENT CONDITION       CN_A       CN_B       CN_C       CN_D
-           1                                                                 Fallow                      Bare_soil      ----     77.000     86.000     91.000     94.000
-           2                                                                 Fallow             Crop_residue_cover      Poor     76.000     85.000     90.000     93.000
-           3                                                                 Fallow             Crop_residue_cover      Good     74.000     83.000     88.000     90.000
-           4                                                              Row_crops                   Straight_row      Poor     72.000     81.000     88.000     91.000
-           5                                                              Row_crops                   Straight_row      Good     67.000     78.000     85.000     89.000
-           6                                                              Row_crops         Straight_row_w_residue      Poor     71.000     80.000     87.000     90.000
-           7                                                              Row_crops         Straight_row_w_residue      Good     64.000     75.000     82.000     85.000
-           8                                                              Row_crops                      Contoured      Poor     70.000     79.000     84.000     88.000
-           9                                                              Row_crops                      Contoured      Good     65.000     75.000     82.000     86.000
-          10                                                              Row_crops            Contoured_w_residue      Poor     69.000     78.000     83.000     87.000
-          11                                                              Row_crops            Contoured_w_residue      Good     64.000     74.000     81.000     85.000
-          12                                                              Row_crops           Contoured_&_terraced      Poor     66.000     74.000     80.000     82.000
-          13                                                              Row_crops           Contoured_&_terraced      Good     62.000     71.000     78.000     81.000
-          14                                                              Row_crops Contoured_&_terraced_w_residue      Poor     65.000     73.000     79.000     81.000
-          15                                                              Row_crops Contoured_&_terraced_w_residue      Good     61.000     70.000     77.000     80.000
-          16                                                           Small_grains                   Straight_row      Poor     65.000     76.000     84.000     88.000
-          17                                                           Small_grains                   Straight_row      Good     63.000     75.000     83.000     87.000
-          18                                                           Small_grains         Straight_row_w_residue      Poor     64.000     75.000     83.000     86.000
-          19                                                           Small_grains         Straight_row_w_residue      Good     60.000     72.000     80.000     84.000
-          20                                                           Small_grains                      Contoured      Poor     63.000     74.000     82.000     85.000
-          21                                                           Small_grains                      Contoured      Good     61.000     73.000     81.000     84.000
-          22                                                           Small_grains            Contoured_w_residue      Poor     62.000     73.000     81.000     84.000
-          23                                                           Small_grains            Contoured_w_residue      Good     60.000     72.000     80.000     83.000
-          24                                                           Small_grains           Contoured_&_terraced      Poor     61.000     72.000     79.000     82.000
-          25                                                           Small_grains           Contoured_&_terraced      Good     59.000     70.000     78.000     81.000
-          26                                                           Small_grains Contoured_&_terraced_w_residue      Poor     60.000     71.000     78.000     81.000
-          27                                                           Small_grains Contoured_&_terraced_w_residue      Good     58.000     69.000     77.000     80.000
-          28                          Close-seeded_or_broadcast_legumes_or_rotation                   Straight_row      Poor     66.000     77.000     85.000     89.000
-          29                          Close-seeded_or_broadcast_legumes_or_rotation                   Straight_row      Good     58.000     72.000     81.000     85.000
-          30                          Close-seeded_or_broadcast_legumes_or_rotation                      Contoured      Poor     64.000     75.000     83.000     85.000
-          31                          Close-seeded_or_broadcast_legumes_or_rotation                      Contoured      Good     55.000     69.000     78.000     83.000
-          32                          Close-seeded_or_broadcast_legumes_or_rotation           Contoured_&_terraced      Poor     63.000     73.000     80.000     83.000
-          33                          Close-seeded_or_broadcast_legumes_or_rotation           Contoured_&_terraced      Good     51.000     67.000     76.000     80.000
-          34               Pasture_grassland_or_range-continuous_forage_for_grazing                           ----      Poor     68.000     79.000     86.000     89.000
-          35               Pasture_grassland_or_range-continuous_forage_for_grazing                           ----      Fair     49.000     69.000     79.000     84.000
-          36               Pasture_grassland_or_range-continuous_forage_for_grazing                           ----      Good     39.000     61.000     74.000     80.000
-          37 Meadow-continuous_grass_protected_from_grazing_generally_mowed_for_hay                           ----      ----     30.000     58.000     71.000     78.000
-          38            Brush-brush-weed-grass_mixture_with_brush_the_major_element                           ----      Poor     48.000     67.000     77.000     83.000
-          39            Brush-brush-weed-grass_mixture_with_brush_the_major_element                           ----      Fair     35.000     56.000     70.000     77.000
-          40            Brush-brush-weed-grass_mixture_with_brush_the_major_element                           ----      Good     30.000     48.000     65.000     73.000
-          41                         Woods-grass_combination_(orchard_or_tree_farm)                           ----      Poor     57.000     73.000     82.000     86.000
-          42                         Woods-grass_combination_(orchard_or_tree_farm)                           ----      Fair     43.000     65.000     76.000     82.000
-          43                         Woods-grass_combination_(orchard_or_tree_farm)                           ----      Good     32.000     58.000     72.000     79.000
-          44                                                                  Woods                           ----      Poor     45.000     66.000     77.000     83.000
-          45                                                                  Woods                           ----      Fair     36.000     60.000     73.000     79.000
-          46                                                                  Woods                           ----      Good     30.000     55.000     70.000     77.000
-          47              Farmsteads-buildings_lanes_driveways_and_surrounding_lots                           ----      ----     59.000     74.000     82.000     86.000
-          48                  Open_spaces_(lawns_parks_golfcourses_cemeteries_etc.)                           ----      Poor     68.000     79.000     86.000     89.000
-          49             Paved_parking_lots_roofs_driveways_etc_(excl_right-of-way)                           ----      ----     98.000     98.000     98.000     98.000
-          50             Paved_streets_and_roads;_open_ditches_(incl._right-of-way)                           ----      ----     83.000     89.000     92.000     93.000
-          51                      Gravel_streets_and_roads_(including_right-of-way)                           ----      ----     76.000     85.000     89.000     91.000
-          52                        Dirt_streets_and_roads_(including_right-of-way)                           ----      ----     72.000     82.000     87.000     89.000
-          53                          Close-seeded_or_broadcast_legumes_or_rotation                   Straight_row      Poor     66.000     77.000     85.000     89.000
-          54                                                            AGRL(5)+10%                           ----      Good     74.000	    86.000	   94.000	  98.000
-          55                                                            AGRL(5)-10%                           ----      Good     60.000     70.000     77.000     80.000
-          56                                                           PAST(36)+10%                           ----      Good     43.000     67.000     81.000     88.000
-	      57                                                           PAST(36)-10%                           ----      Good     35.000     55.000     67.000     72.000
-	      58                                                 FRSE,FRSD,WETF(46)+10%                           ----      Good     33.000     61.000     77.000     85.000
-	      59                                                 FRSE,FRSD,WETF(46)-10%                           ----      Good     27.000     50.000     63.000     69.000
-	      60                                                           URLD(47)+10%                           ----      Good     43.000     67.000     81.000     88.000
-	      61                                                           URLD(47)-10%                           ----      Good     35.000     55.000     67.000     72.000
+cntable.lum
+LANDUSE           CN_A        CN_B        CN_C        CN_D        LANDUSE_DESCRIPTION                                              TREATMENT                        CONDITION
+fal_bare          77          86          91          94          Fallow                                                           Bare_soil                        ----
+fal_res_p         76          85          90          93          Fallow                                                           Crop_residue_cover               Poor
+fal_res_g         74          83          88          90          Fallow                                                           Crop_residue_cover               Good
+rc_strow_p        72          81          88          91          Row_crops                                                        Straight_row                     Poor
+rc_strow_g        67          78          85          89          Row_crops                                                        Straight_row                     Good
+rc_strowres_p     71          80          87          90          Row_crops                                                        Straight_row_w_residue           Poor
+rc_strowres_g     64          75          82          85          Row_crops                                                        Straight_row_w_residue           Good
+rc_cont_p         70          79          84          88          Row_crops                                                        Contoured                        Poor
+rc_cont_g         65          75          82          86          Row_crops                                                        Contoured                        Good
+rc_contres_p      69          78          83          87          Row_crops                                                        Contoured_w_residue              Poor
+rc_contres_g      64          74          81          85          Row_crops                                                        Contoured_w_residue              Good
+rc_contter_p      66          74          80          82          Row_crops                                                        Contoured_&_terraced             Poor
+rc_contter_g      62          71          78          81          Row_crops                                                        Contoured_&_terraced             Good
+rc_conterres_p    65          73          79          81          Row_crops                                                        Contoured_&_terraced_w_residue   Poor
+rc_conterres_g    61          70          77          80          Row_crops                                                        Contoured_&_terraced_w_residue   Good
+sg_strow_p        65          76          84          88          Small_grains                                                     Straight_row                     Poor
+sg_strow_g        63          75          83          87          Small_grains                                                     Straight_row                     Good
+sg_strowres_p     64          75          83          86          Small_grains                                                     Straight_row_w_residue           Poor
+sg_strowres_g     60          72          80          84          Small_grains                                                     Straight_row_w_residue           Good
+sg_cont_p         63          74          82          85          Small_grains                                                     Contoured                        Poor
+sg_cont_g         61          73          81          84          Small_grains                                                     Contoured                        Good
+sg_contres_p      62          73          81          84          Small_grains                                                     Contoured_w_residue              Poor
+sg_contres_g      60          72          80          83          Small_grains                                                     Contoured_w_residue              Good
+sg_contter_p      61          72          79          82          Small_grains                                                     Contoured_&_terraced             Poor
+sg_contter_g      59          70          78          81          Small_grains                                                     Contoured_&_terraced             Good
+sg_conterres_p    60          71          78          81          Small_grains                                                     Contoured_&_terraced_w_residue   Poor
+sg_conterres_g    58          69          77          80          Small_grains                                                     Contoured_&_terraced_w_residue   Good
+legr_strow_p      66          77          85          89          Close-seeded_or_broadcast_legumes_or_rotation                    Straight_row                     Poor
+legr_strow_g      58          72          81          85          Close-seeded_or_broadcast_legumes_or_rotation                    Straight_row                     Good
+legr_cont_p       64          75          83          85          Close-seeded_or_broadcast_legumes_or_rotation                    Contoured                        Poor
+legr_cont_g       55          69          78          83          Close-seeded_or_broadcast_legumes_or_rotation                    Contoured                        Good
+legr_contter_p    63          73          80          83          Close-seeded_or_broadcast_legumes_or_rotation                    Contoured_&_terraced             Poor
+legr_contter_g    51          67          76          80          Close-seeded_or_broadcast_legumes_or_rotation                    Contoured_&_terraced             Good
+pastg_p           68          79          86          89          Pasture_grassland_or_range-continuous_forage_for_grazing         ----                             Poor
+pastg_f           49          69          79          84          Pasture_grassland_or_range-continuous_forage_for_grazing         ----                             Fair
+pastg_g           39          61          74          80          Pasture_grassland_or_range-continuous_forage_for_grazing         ----                             Good
+pasth             30          58          71          78          Meadow-continuous_grass_protected_from_grazing_mowed_for_hay     ----                             ----
+brush_p           48          67          77          83          Brush-brush-weed-grass_mixture_with_brush_the_major_element      ----                             Poor
+brush_f           35          56          70          77          Brush-brush-weed-grass_mixture_with_brush_the_major_element      ----                             Fair
+brush_g           30          48          65          73          Brush-brush-weed-grass_mixture_with_brush_the_major_element      ----                             Good
+woodgr_p          57          73          82          86          Woods-grass_combination_(orchard_or_tree_farm)                   ----                             Poor
+woodgr_f          43          65          76          82          Woods-grass_combination_(orchard_or_tree_farm)                   ----                             Fair
+woodgr_g          32          58          72          79          Woods-grass_combination_(orchard_or_tree_farm)                   ----                             Good
+wood_p            45          66          77          83          Woods                                                            ----                             Poor
+wood_f            36          60          73          79          Woods                                                            ----                             Fair
+wood_g            30          55          70          77          Woods                                                            ----                             Good
+farm              59          74          82          86          Farmsteads-buildings_lanes_driveways_and_surrounding_lots        ----                             ----
+open_p            68          79          86          89          Open_spaces_(lawns_parks_golfcourses_cemeteries_etc.)            ----                             Poor
+urban             98          98          98          98          Paved_parking_lots_roofs_driveways_etc_(excl_right-of-way)       ----                             ----
+paveroad          83          89          92          93          Paved_streets_and_roads;_open_ditches_(incl._right-of-way)       ----                             ----
+gravroad          76          85          89          91          Gravel_streets_and_roads_(including_right-of-way)                ----                             ----
+dirtroad          72          82          87          89          Dirt_streets_and_roads_(including_right-of-way)                  ----                             ----
