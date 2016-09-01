@@ -18,9 +18,9 @@ BACTERIA      null  null
 STRUCTURAL    null  null  null  null  null  null  null  null  null  null  null  null  
 PARM_DB       plants.plt  fertilizer.frt  tillage.til  pesticide.pst  urban.urb  septic.sep  null  null  
 OPS           null  null  null  null  null  null  null  null  null  null  
-SCH           null  
+SCH           null  null  
 LUM           null  null  
-CHG           null  null  
+CHG           null  null  null  null  null  null  null  null  
 INIT          null  null  
 SOILS         null  null  
 DECISION      null  

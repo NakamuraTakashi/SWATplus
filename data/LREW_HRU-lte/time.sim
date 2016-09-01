@@ -1,3 +1,3 @@
 time.sim: Simulation period and time step - LREW_HRU-lte
         NBYR         YRC        IDAF     IDAL_IN        STEP
-          25        1988           1           0           0
+           5        1988           1           0           0
