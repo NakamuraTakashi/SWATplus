@@ -14,4 +14,4 @@ landuse.lum: General land use properties - SB_LS1
   past_conprac    pcom002      p-p-p-c-o   legr_contter_g  1.000           0           0      0.100        null        null        null        null        null        null        null        null
   forest_graze    pcom001      frsd_gr     woodgr_p        1.000           0           0      0.100        null        null        null        null        null        null        null        null
   forest_congraze pcom001      frsd_congr  woodgr_g        1.000           0           0      0.100        null        null        null        null        null        null        null        null
-  farmstead	      pcom001      frsd_congr  farm            1.000           0           0      0.100        null        null        null        null        null        null        null        null
+  farmstead	  pcom001      frsd_congr  farm            1.000           0           0      0.100        null        null        null        null        null        null        null        null

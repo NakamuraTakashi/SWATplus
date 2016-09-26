@@ -1,0 +1,13 @@
+chan_orders.cal
+   1
+NAME      NORD  NPSU ELEM_CNT
+region_1   8     0
+  ORDER         CHW_MM	CHD_MM	FPD_MM
+  gully  	100.    100. 	0.00
+  tributary     25.     10.     0.00
+  main_upper	10.     10.     0.00
+  main_lower    5.      5.      0.00
+  gully_c	0.0  	0.      0.00
+  tributary_c   1.0     1.      0.00
+  main_upper_c  1.0     1.      0.00
+  main_lower_c  0.5     0.      0.00

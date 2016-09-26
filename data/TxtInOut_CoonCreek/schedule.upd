@@ -1,5 +1,6 @@
 schedule.upd file
-  2 
-TYPE        NUM  NAME     	DAY YEAR 	COND 		NAME  		CHG_TYPE  COND	   CHG_VALUE  NUM_TOT 
-land_use     1  no_practice  	 0   0  	1800's_landuse	  
-land_use     1  cons_practice  	 0   0  	1930's_consprac	  
+ 3
+TYPE         NAME     		DAY YEAR 	NAME  			NUM_TOT 
+land_use     landuse001       	1  1900		corn_noprac	  	  0
+land_use     landuse002       	1  1930		corn_conprac	  	  0
+terrace      broad_based      	1  1940		null  			  2	1	3

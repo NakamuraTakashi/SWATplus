@@ -1,5 +1,5 @@
 d_table.dtl - Little River Watershed
- 11
+ 13
 
  NAME   	CONDS	ALTS	ACTS
 autoirr_str.8	  1	 1	 1
@@ -11,7 +11,7 @@ irrigate	drip_high	file	  0		drip			 	  y
  NAME   	CONDS	ALTS	ACTS
 sw_deficit75	  1	 1	 1
  VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1
-soil_water 	hru	  	 0	fcap_mm	  -	  	 75.		 <
+soil_water 	hru	  	 0	fcap_mm	  	  -	  	 75.		 <
  ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
 irrigate	sprinkler_high	rate	 0		sprinkler_high		 	 y
 
@@ -64,7 +64,7 @@ corps_med_res	  5	 5	 5
  release	non_flood<1.3	rate	  .1		null				 n       y       n       n       n
  release	non_flood>1.3	rate	  5.		null				 n       n       y       n       n
  release	flood		rate	 10.		null				 n       n       n       y       n
- release	over_emergency	days	 15.		null				 n       n       n       n   y
+ release	over_emergency	days	 15.		null				 n       n       n       n       y
  
  NAME   	CONDS	ALTS	ACTS
 rice_paddy_.5	  3	 3	 3
@@ -120,22 +120,36 @@ wetland_iowa	   1       2	   2
  lu_change	forest_graze	null	  0		forest_consgraze		 n       n       n       y       n	 n	 n	 y
 
  NAME   	CONDS	ALTS	ACTS
-1930's_consprac	  7	 8	 4
- VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT	ALT2	ALT3	ALT4	ALT5	ALT6	ALT7	ALT8
- year_cal	null	  	 0	null		  -	  	  1935		 >	 >	>	 >	 >	 -	 -	 -	 -
- year_cal	null	  	 0	null		  -	  	  1975		 <	 <	<	 <	 <	 =	 =	 =	 =
- prob		null	  	 0	null		  -	  	  .025		 <	 <	<	 <	 <	 -	 -	 -	 -
- slope		null	  	 0	null		  -	  	  .04		 <	 >	<	 <	 <	 -	 -	 -	 -
- slope		null	  	 0	null		  -	  	  .0075		 <	 -	<	 <	 <	 -	 -	 -	 -
- land_use	hru	  	 0	corn_noprac	  =	  	  0.		 =	 =	-	 -	 -	 =	 -	 -	 -
- land_use	hru	  	 0	oats_noprac	  =	  	  0.		 -	 -	=	 -	 -	 -	 =	 -	 - 
- land_use	hru	  	 0	past_noprac	  =	  	  0.		 -	 -	-	 =	 -	 -	 -	 =	 -
- land_use	hru	  	 0	forest_graze	  =	  	  0.		 -	 -	-	 -	 =	 -	 -	 -	 =
+1800's_channel	  7	 8	 4
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2	ALT3	ALT4	ALT5	ALT6	ALT7	ALT8
+ year_cal	null	  	 0	null		  -	  	  1870		 >	 >	 >	 >	 -	 -	 -	 -
+ year_cal	null	  	 0	null		  -	  	  1900		 <	 <	 <	 <	 =	 =	 =	 =
+ prob		null	  	 0	null		  -	  	  .02		 <	 <	 <	 <	 -	 -	 -	 -
+ ch_use		hru	  	 0	gully	 	  -	  	  0.		 =	 -	 -	 -	 =	 -	 -	 -
+ ch_use		hru	  	 0	tributary	  -	  	  0.		 -	 =	 -	 -	 -	 =	 - 	 -
+ ch_use		hru	  	 0	main_upper	  -	  	  0.		 -	 -	 =	 -	 -	 -	 =	 -
+ ch_use		hru	  	 0	main_lower	  -	  	  0.		 -	 -	 -	 =	 -	 -	 -	 =
  ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
- lu_change	corn_noprac	null	  0		corn_consprac			 y       n  	n       n       n       y	 n	 n	 n
- lu_change	corn_noprac	null	  0		corn_consprac			 y       n  	n       n       n       y	 n	 n	 n
- lu_change	oats_noprac	null	  0		oats_consprac			 n       	y       n       n       n	 y	 n	 n
- lu_change	past_noprac	null	  0		past_consprac			 n       	n       y       n       n	 n	 y	 n
- lu_change	forest_graze	null	  0		forest_consgraze		 n       	n       n       y       n	 n	 n	 y
+ ch_change	gully_c		null	  0		gully_c				 y       n       n       n       n	 y	 n	 n
+ ch_change	tributary_c   	null	  0		tributary_c   			 n       y       n       n       n	 n	 n	 n
+ ch_change	main_upper_c  	null	  0		main_upper_c  			 n       n       y       n       n	 n	 y	 n
+ ch_change	main_lower_c  	null	  0		main_lower_c  			 n       n       n       y       n	 n	 n	 n
+
+ NAME   	CONDS	ALTS	ACTS
+1930's_channel	  7	 8	 4
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2	ALT3	ALT4	ALT5	ALT6	ALT7	ALT8
+ year_cal	null	  	 0	null		  -	  	  1870		 >	 >	 >	 >	 -	 -	 -	 -
+ year_cal	null	  	 0	null		  -	  	  1900		 <	 <	 <	 <	 =	 =	 =	 =
+ prob		null	  	 0	null		  -	  	  .02		 <	 <	 <	 <	 -	 -	 -	 -
+ ch_use		hru	  	 0	gully_c	 	  -	  	  0.		 =	 -	 -	 -	 =	 -	 -	 -
+ ch_use		hru	  	 0	tributary_c	  -	  	  0.		 -	 =	 -	 -	 -	 =	 - 	 -
+ ch_use		hru	  	 0	main_upper_c	  -	  	  0.		 -	 -	 =	 -	 -	 -	 =	 -
+ ch_use		hru	  	 0	main_lower_c	  -	  	  0.		 -	 -	 -	 =	 -	 -	 -	 =
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+ ch_change	gully		null	  0		gully				 y       n       n       n       n	 y	 n	 n
+ ch_change	tributary   	null	  0		tributary   			 n       y       n       n       n	 n	 n	 n
+ ch_change	main_upper  	null	  0		main_upper  			 n       n       y       n       n	 n	 y	 n
+ ch_change	main_lower  	null	  0		main_lower  			 n       n       n       y       n	 n	 n	 n
+
 
  
