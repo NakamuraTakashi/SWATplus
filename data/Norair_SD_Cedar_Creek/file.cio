@@ -23,5 +23,5 @@ LUM               cntable.lum       landuse.lum
 CHG               null   null   null   null   null   null   null   null
 INIT              null       initial.plt
 SOILS             soils.sol         nutrients.sol
-DECISION_TABLE    null
+DECISION_TABLE    d_table.dtl
 CONSTITUENTS      null   null   null   null   null  

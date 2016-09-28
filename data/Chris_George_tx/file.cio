@@ -23,5 +23,5 @@ LUM           null  null
 CHG           null  null  null  null  null  null  null  null  
 INIT          null  null  
 SOILS         null  null  
-DECISION      null  
+DECISION      d_table.dtl  
 CONSTITUENTS  null  null  null  null  null  
