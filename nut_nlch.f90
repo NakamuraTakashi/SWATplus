@@ -65,7 +65,7 @@
           sro = 0.
         end if
         vv = soil(j)%ly(jj)%prk + sro + soil(j)%ly(jj)%flat + 1.e-10
-        if (ldrain(j) == jj) vv = vv + qtile
+        if (hru(j)%lumv%ldrain == jj) vv = vv + qtile
         ww = -vv / ((1. - soil(j)%anion_excl) * soil(j)%phys(jj)%ul)
         vno3 = soil(j)%nut(jj)%no3 * (1. - Exp(ww))
         co = Max(vno3 / vv, 0.)
@@ -79,7 +79,7 @@
         endif
         !Daniel 1/2012    
         !! calculate nitrate in tile flow 
-        if (ldrain(j) == jj) then
+        if (hru(j)%lumv%ldrain == jj) then
            ! tileno3(j) = bsn_prm%nperco * co * qtile     !Daniel 1/2012
            tileno3(j) = co * qtile     !Daniel 1/2012
           tileno3(j) = Min(tileno3(j), soil(j)%nut(jj)%no3)

@@ -78,7 +78,7 @@
       !! mineralization can occur only if temp above 0 deg
       if (soil(j)%phys(1)%tmp > 0.) then
       !! compute residue decomp and mineralization of fresh organic n and p of flat residue
-        do ipl = 1, npl(j)        !! we need to decompose each plant
+        do ipl = 1, pcom(j)%npl        !! we need to decompose each plant
           rmn1 = 0.
           rmp = 0.
           r4 = .58 * hru(j)%rsd_flt(ipl)%mass
@@ -117,7 +117,7 @@
           csf = Sqrt(xx)
           ca = Min(cnrf, cprf, 1.)
           !! compute residue decomp and mineralization for each plant
-          if (npl(j) > 0) then
+          if (pcom(j)%npl > 0) then
             idp = pcom(j)%plcur(ipl)%idplt
             decr = pldb(idp)%rsdco_pl * ca * csf
           else
@@ -230,9 +230,9 @@
             
             !! compute residue decomp and mineralization for each plant
             decr = .05
-            !do ipl = 1, npl(j)        !! we need to decomp each plant**
+            !do ipl = 1, pcom(j)%npl        !! we need to decomp each plant**
               
-            if (npl(j) > 0) then
+            if (pcom(j)%npl > 0) then
               decr = rsdco_plcom(j) * ca * csf
             else
               decr = 0.05

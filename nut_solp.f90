@@ -69,7 +69,7 @@
 	   vap = Min(vap, .2 * soil(j)%nut(ii)%solp)
 	   soil(j)%nut(ii)%solp = soil(j)%nut(ii)%solp - vap
 	   soil(j)%nut(ii+1)%solp = soil(j)%nut(ii+1)%solp + vap
-           if (ii == ldrain(j)) then
+           if (ii == hru(j)%lumv%ldrain) then
              vap = soil(j)%nut(ii)%solp * qtile /                        &
               (soil(j)%phys(ii)%conv_wt / 1000. * bsn_prm%pperco + .1)  !dont merge
              soil(j)%nut(ii)%solp = soil(j)%nut(ii)%solp - vap
