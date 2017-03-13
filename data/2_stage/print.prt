@@ -1,3 +1,20 @@
-print.prt: Output print settings - Little River Experimental Watershed
-NYSKIP  JD_START  JD_END  YR_START   YR_END  INTERVAL   WB_HRU  NB_HRU  LS_HRU  PW_HRU  WB_SD  NB_SD  LS_SD  PW_SD  WB_SUB  NB_SUB  LS_SUB  PW_SUB  WB_BSN  NB_BSN  LS_BSN  PW_BSN   CHAN    AQU    RES   HYD    HYDCON   SOUT   MOUT   CSVOUT   FDCOUT 
-     0         0       0         0        0         0        0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0      0      0      0     0         0      0      0        0        0
+print.prt: Output print settings
+NYSKIP    JD_START      JD_END    YR_START     YR_END    INTERVAL 
+     0           0           0           0          0           1
+AA_NUMINT
+     0
+OBJECTS     WATBAL      NUTBAL      LOSSES    PL/WEAT         AQU       RES     CHAN    PTSRC      
+basin        avann        year         day        mon        null      null     null     null
+region        null        null        null       null        null      null     null     null    
+subbasin      year       avann       avann      avann
+hru           year         mon         mon      avann
+hru-lte       null        null        null       null
+chan          null
+aqu           null
+res           null
+hyd           null
+HYDCON        null
+SOLOUT        null
+MGTOUT        null      
+CSVOUT          no     
+FDCOUT          no

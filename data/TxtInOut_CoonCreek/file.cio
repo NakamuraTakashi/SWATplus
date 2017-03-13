@@ -1,27 +1,28 @@
-file.cio: Filenames (input/output) - SB_LS1
+file.cio: Filenames (input/output) - Coon Creek
 SIMULATION        time.sim          print.prt         object.prt        object.cnt        
-CLIMATE           weather-sta.cli   weather-wgn.cli   wind-dir.cli      pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli           
-CONNECT           hru.con           hru-lte.con       subbasin.con      null              aquifer.con       null              channel.con       reservoir.con     recall.con        exco.con          delratio.con      outlet.con        channel-lte.con       
+CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null           
+CONNECT           hru.con           null              subbasin.con      null              aquifer.con       null     channel.con     null     null     null     null     null        chandeg.con       
 CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     channel-lte.cha    
-RESERVOIR         initial.res       reservoir.res     hydrology.res     nutrients.res     pesticide.res     sediment.res      weir.res          
-SUBBASIN          define.sub        element.sub       subbasin.sub      subbasin.del      
-HRU               hru-data.hru      hru-lte.hru       
-DR                delratio.del      
+RESERVOIR         null     null     null     null     null     null     null          
+SUBBASIN          define.sub        element.sub       subbasin.sub      null      
+HRU               hru-data.hru      null       
+DR                null      
 AQUIFER           aquifer.aqu       
-HERD              animal.hrd        herd.hrd          ranch.hrd         
-WATER_RIGHTS      define.wro        element.wro       water_rights.wro  
+HERD              null     null     null         
+WATER_RIGHTS      null     null     null 
 LINK              chan-surf.lin     chan-aqu.lin      
 BASIN             codes.bsn         parameters.bsn    
 HYDROLOGY         hydrology.hyd     topography.hru    topography.sub    field.fld         
-EXCO              exco.exc          
-BACTERIA          initial.bac       bacteria.bac      
-STRUCTURAL        septic.str        bmpuser.str       contour.str       filterstrip.str   fire.str          grassedww.str     plantparms.str    residue.str       stripcrop.str     terrace.str       tiledrain.str     initial.str       
-PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          atmo_mon.dat      
+EXCO              null          
+BACTERIA          null     null      
+STRUCTURAL        septic.str        null     null     null     null     null     null     null     null     terrace.str       null     null       
+PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          null      
 OPS               autofert.ops      autoirr.ops       contfert.ops      contpest.ops      fert.ops          graze.ops         harv.ops          irr.ops           pest.ops          sweep.ops         
-SCH               management.sch    structural.sch
+SCH               management.sch    null
 LUM               cntable.lum       landuse.lum       
-UPDATE            codes.cal         cal_parms.cal      calibration.cal     ls_parms.cal     ls_regions.cal     ls_regions_lte.cal   ch_orders.cal   chan_parms.cal
-INIT              initial.pst       initial.plt       
+UPDATE            codes.cal         null     null     ls_parms.cal     ls_regions.cal     ch_orders.cal   ch_parms.cal
+INIT              null              initial.plt       
 SOILS             soils.sol         nutrients.sol     
 DECISION_TABLE    d_table.dtl        
-CONSTITUENTS      constituents.cs   pest.cs           path.cs           hmet.cs           salt.cs           
+CONSTITUENTS      null     null     null     null     null 
+REGIONS           ls_catunit.ele    ls_catunit.def    null     null     null     null     null     aqu_catunit.ele     null     null    null     null     null     null     null     null                        

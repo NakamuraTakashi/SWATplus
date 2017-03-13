@@ -1,0 +1,3 @@
+weather-sta.cli
+NUMB     NAME          WGN       PGAGE       TGAGE   SGAGE   HGAGE   WGAGE   WNDIR ATMODEP
+1       BcGully      wgn001  BcGully.pcp  BcGully.tmp     sim     sim     sim    null    null

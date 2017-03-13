@@ -1,0 +1,20 @@
+print.prt: Output print settings
+NYSKIP    JD_START      JD_END    YR_START     YR_END     INTERVAL
+     0           1         366        1988       2012            1
+AA_NUMINT
+  3    1900   1940   1975
+OBJECTS      WATBAL      NUTBAL      LOSSES    PL/WEAT        AQU       RES     CHAN    PTSRC      
+basin          year       avann       avann       year      avann     avann    avann     null
+region         null        null        null       null       null      null     null     null    
+subbasin       avann       avann       avann      avann       
+hru            avann       avann       avann      avann       
+hru-lte        null        null        null       null
+chan          avann
+aqu           avann
+res           avann
+hyd            null
+HYDCON         null
+SOLOUT         null
+MGTOUT         null      
+CSVOUT           no      
+FDCOUT           no

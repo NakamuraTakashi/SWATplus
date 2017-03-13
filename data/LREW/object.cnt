@@ -1,6 +1,3 @@
 object.cnt: Spatial object counts - LREW Subbasin March 2016
         OBJS         HRU     HRU_LTE         SUB     MODFLOW         AQU        CHAN         RES      RECALL        EXCO          DR       CANAL        PUMP      OUTLET     CHANDEG       AQU2D        HERD         WRO
-        7052        6315           0         245           0         245         245           2           0           0           0           0           0           0           0           0           0           0
-
-
-         1            1         0             0           0           0           0           0           0           0           0           0           0           0           0           0           0           0
+        7050        6315           0         245           0         245         245           0           0           0           0           0           0           0           0           0           0           0

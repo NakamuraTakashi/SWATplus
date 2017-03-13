@@ -1,0 +1,28 @@
+file.cio (control input/output) - Small gull (Texas)
+SIMULATION        time.sim          print.prt         null              object.cnt
+CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null
+CONNECT           null              hru-lte.con       null     null     null     null     null     null     null     null     null     null      chandeg.con
+CHANNEL           null     null     null     null     null     null     channel-lte.cha
+RESERVOIR         null     null     null     null     null     null     null
+ROUTING_UNIT      null     null     null     null
+HRU               null              hru-lte.hru
+DR                null
+AQUIFER           null
+HERD              null              null               null
+WATER_RIGHTS      null              null               null
+LINK              null     null
+BASIN             codes.bsn         parameters.bsn  
+HYDROLOGY         null     null     null     null     null 
+EXCO              null
+BACTERIA          null     null
+STRUCTURAL        null     null     null     null     null     null     null     null     null     null     null     null     
+PARM_DB           plants.plt        null     null     null     null     null     null     null
+OPS               null     null     null     null     null     null     null     null     null     null
+SCH               null     null
+LUM               null     null
+UPDATE            null     null     null     null     null     null     null
+INIT              null     null
+SOILS             null     null
+DECISION_TABLE    d_table.dtl
+CONSTITUENTS      null     null     null     null     null 
+REGIONS           null     null     null     null     null     null     null     null     null     null     null     null     null     null     null     null

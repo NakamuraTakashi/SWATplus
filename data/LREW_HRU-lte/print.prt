@@ -1,3 +1,20 @@
 print.prt: Output print settings - LREW_HRU-lte
-      NYSKIP      JD_START  JD_END  YR_START  YR_END  INTERVAL   WB_HRU      NB_HRU      LS_HRU      PW_HRU       WB_SD       NB_SD       LS_SD       PW_SD      WB_SUB      NB_SUB      LS_SUB      PW_SUB      WB_BSN      NB_BSN      LS_BSN      PW_BSN        CHAN         AQU         RES         HYD      HYDCON      SOLOUT      MGTOUT      CVSOUT   FDCOUT
-           0             0       0         0       0         0        2           0           0           2           0           0           0           0           2           0           0           2           2           0           0           2           2           2           0           0           0           0           0           0        0
+NYSKIP    JD_START      JD_END    YR_START     YR_END    INTERVAL 
+     0           0           0           0          0           1
+AA_NUMINT
+     0
+OBJECTS     WATBAL      NUTBAL      LOSSES    PL/WEAT         AQU       RES     CHAN     PTSRC      
+basin          mon       avann       avann        mon        null      null     null      null
+region        null        null        null       null        null      null     null      null    
+subbasin       mon       avann       avann        mon
+hru            mon       avann       avann        mon
+hru-lte      avann       avann       avann      avann
+chan           mon
+aqu            mon
+res           null
+hyd           null
+HYDCON        null
+SOLOUT        null
+MGTOUT        null      
+CSVOUT          no      
+FDCOUT          no

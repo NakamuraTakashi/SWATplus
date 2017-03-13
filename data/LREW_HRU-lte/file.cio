@@ -1,27 +1,28 @@
 file.cio: Filenames (input/output) - LREW_HRU-lte
 SIMULATION        time.sim          print.prt         object.prt        object.cnt        
-CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null   null   null           
-CONNECT           null              hru-lte.con       subbasin.con      null              aquifer.con       null              channel.con       null   null   null   null   null   null       
-CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     null    
-RESERVOIR         null   null   null   null   null   null   null         
-SUBBASIN          define.sub        element.sub       subbasin.sub      null      
+CLIMATE           weather-sta.cli   weather-wgn.cli   wind-dir.cli      pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli           
+CONNECT           null              hru-lte.con       subbasin.con      null              aquifer.con       null              channel.con       null     null     null     null     null     null       
+CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     channel-ez.cha    
+RESERVOIR         null     null     null     null     null     null     null          
+SUBBASIN          define.sub        element.sub        subbasin.sub          null      
 HRU               null              hru-lte.hru       
 DR                null      
 AQUIFER           aquifer.aqu       
-HERD              null   null   null         
-WATER_RIGHTS      null   null   null  
-LINK              null   null         
+HERD              null     null     null         
+WATER_RIGHTS      null     null     null   
+LINK              null     null      
 BASIN             codes.bsn         parameters.bsn    
-HYDROLOGY         null   null       topography.sub    field.fld         
+HYDROLOGY         null     null     topography.sub    field.fld         
 EXCO              null          
-BACTERIA          null   null      
-STRUCTURAL        null   null   null   null   null   null   null   null   null   null   null   null       
-PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        null   null      
-OPS               null   null   null   null   null   null   null   null   null   null         
-SCH               null   null     
-LUM               null   null         
-CHG               null   null   null   null   null   null   null   null      
-INIT              null   null         
-SOILS             null   null      
-DECISION_TABLE    d_table.dtl         
-CONSTITUENTS      null   null   null   null   null           
+BACTERIA          null              bacteria.bac      
+STRUCTURAL        septic.str        bmpuser.str       contour.str       filterstrip.str   fire.str          grassedww.str     plantparms.str    residue.str       stripcrop.str     terrace.str       tiledrain.str     initial.str       
+PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          atmo_mon.dat      
+OPS               autofert.ops      autoirr.ops       contfert.ops      contpest.ops      fert.ops          graze.ops         harv.ops          irr.ops           pest.ops          sweep.ops         
+SCH               null     null    
+LUM               null     null       
+UPDATE            null     null     null     null     null     null     null     null      
+INIT              null     null      
+SOILS             null     null     
+DECISION_TABLE    d_table.dtl     
+CONSTITUENTS      null    null    null    null    null           
+REGIONS           null    null    null    null    null    null    null    null    null    null    null    null    null    null    null    null

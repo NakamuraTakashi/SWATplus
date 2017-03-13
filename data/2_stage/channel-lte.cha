@@ -1,5 +1,5 @@
 channel-lte.cha
-NUMB          NAME   ORDER   ROUTE_DB    CHW     CHD     CHS     CHL     CHN     CHK  CHEROD     COV   CHWDR   CHSEQ     D50   CLAY    BD    CHSS BEDLDCOEF    TC    HC_KH    HC_HGT   HC_INI
-1       1st_stage        0        1      1.0    0.50   0.005     0.6    0.10       1    0.01   0.005       6   0.001      12   30.0   1.5     0.5      0.50   120.     0.2        0.0     0.0
-2       Gully_hru2       0        1      5.5    0.71   0.007       8    0.05       1    0.01   0.005       6   0.001      12   30.0   1.5     0.5      0.50   120.     0.2        0.4     0.0
-3       First_Ord1       0        1      6.5    0.71   0.007       8    0.05       1    0.01   0.005       6   0.001      12   30.0   1.5     0.5      0.50   120.    0.05        0.5     0.0
+NUMB          NAME   RTE_DB   CHW     CHD     CHS     CHL     CHN     CHK  CHEROD   CHCOV   CHWDR   CHSEQ     D50   CLAY    BD    CHSS     BEDLD    TC    HC_KH    HC_HGT   HC_INI
+1       1st_stage      1      1.0    0.50   0.005     0.6    0.10       1    0.01   0.005       6   0.001      12   30.0   1.5     0.5      0.50   120.     0.2        0.0     0.0
+2       Gully_hru2     1      5.5    0.71   0.007       8    0.05       1    0.01   0.005       6   0.001      12   30.0   1.5     0.5      0.50   120.     0.2        0.4     0.0
+3       First_Ord1     1      6.5    0.71   0.007       8    0.05       1    0.01   0.005       6   0.001      12   30.0   1.5     0.5      0.50   120.    0.05        0.5     0.0

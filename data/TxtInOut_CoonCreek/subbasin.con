@@ -1,168 +1,168 @@
 subbasin.con
-     UB_NUMB   SUB_NAME      REGION     LATITUDE   LONGITUDE    SUB_AREA         SUB    WST_NAME  CONST_TYPE    OVERFLOW        RULE     OUT_TOT   OBJ_TYP1      OBJ_ID1 HYDRO_TYP1        FRAC1   OBJ_TYP2      OBJ_ID2  HYDRO_TYP2       FRAC2
-           1       sub1        null       43.787     -90.908       37.53           1           1           0           0           0           2        cha            1        tot            1        aqu            1        rhg            1
-           2       sub2        null       43.787     -90.908      702.36           2           1           0           0           0           2        cha            1        tot        0.842        sub            1        tot        0.158
-           3       sub3        null       43.773     -90.887       65.61           3           1           0           0           0           2        cha            2        tot            1        aqu            3        rhg            1
-           4       sub4        null       43.773     -90.887     1109.34           4           1           0           0           0           2        cha            2        tot        0.854        sub            3        tot        0.146
-           5       sub5        null       43.756     -90.835        8.91           5           1           0           0           0           2        cha            3        tot            1        aqu            5        rhg            1
-           6       sub6        null       43.756     -90.835       440.1           6           1           0           0           0           2        cha            3        tot        0.976        sub            5        tot        0.024
-           7       sub7        null       43.714     -91.054        81.9           7           1           0           0           0           2        cha            4        tot            1        aqu            7        rhg            1
-           8       sub8        null       43.714     -91.054      672.75           8           1           0           0           0           2        cha            4        tot        0.775        sub            7        tot        0.225
-           9       sub9        null       43.708     -91.087       16.74           9           1           0           0           0           2        cha            5        tot            1        aqu            9        rhg            1
-          10      sub10        null       43.708     -91.087      329.85          10           1           0           0           0           2        cha            5        tot        0.905        sub            9        tot        0.095
-          11      sub11        null       43.682     -91.177       68.31          11           1           0           0           0           2        cha            6        tot            1        aqu           11        rhg            1
-          12      sub12        null       43.682     -91.177      523.08          12           1           0           0           0           2        cha            6        tot        0.694        sub           11        tot        0.306
-          13      sub13        null       43.645     -91.011       32.13          13           1           0           0           0           2        cha            7        tot            1        aqu           13        rhg            1
-          14      sub14        null       43.645     -91.011      721.08          14           1           0           0           0           2        cha            7        tot        0.892        sub           13        tot        0.108
-          15      sub15        null       43.629     -91.122       33.57          15           1           0           0           0           2        cha            8        tot            1        aqu           15        rhg            1
-          16      sub16        null       43.629     -91.122      547.02          16           1           0           0           0           2        cha            8        tot        0.818        sub           15        tot        0.182
-          17      sub17        null       43.784     -90.939       49.59          17           1           0           0           0           2        cha            9        tot            1        aqu           17        rhg            1
-          18      sub18        null       43.784     -90.939      519.12          18           1           0           0           0           2        cha            9        tot        0.679        sub           17        tot        0.321
-          19      sub19        null       43.762     -90.974       28.08          19           1           0           0           0           2        cha           10        tot            1        aqu           19        rhg            1
-          20      sub20        null       43.762     -90.974      378.36          20           1           0           0           0           2        cha           10        tot          0.8        sub           19        tot          0.2
-          21      sub21        null       43.757     -90.862        5.85          21           1           0           0           0           2        cha           11        tot            1        aqu           21        rhg            1
-          22      sub22        null       43.757     -90.862       382.5          22           1           0           0           0           2        cha           11        tot         0.99        sub           21        tot         0.01
-          23      sub23        null       43.722     -91.019       27.63          23           1           0           0           0           2        cha           12        tot            1        aqu           23        rhg            1
-          24      sub24        null       43.722     -91.019      533.43          24           1           0           0           0           2        cha           12        tot        0.965        sub           23        tot        0.035
-          25      sub25        null       43.695     -90.918       11.88          25           1           0           0           0           2        cha           13        tot            1        aqu           25        rhg            1
-          26      sub26        null       43.695     -90.918      283.95          26           1           0           0           0           2        cha           13        tot        0.914        sub           25        tot        0.086
-          27      sub27        null        43.69     -91.118       24.03          27           1           0           0           0           2        cha           14        tot            1        aqu           27        rhg            1
-          28      sub28        null        43.69     -91.118      298.53          28           1           0           0           0           2        cha           14        tot        0.857        sub           27        tot        0.143
-          29      sub29        null       43.647     -91.048       52.11          29           1           0           0           0           2        cha           15        tot            1        aqu           29        rhg            1
-          30      sub30        null       43.647     -91.048       491.4          30           1           0           0           0           2        cha           15        tot        0.769        sub           29        tot        0.231
-          31      sub31        null       43.631     -91.162       60.57          31           1           0           0           0           2        cha           16        tot            1        aqu           31        rhg            1
-          32      sub32        null       43.631     -91.162      673.65          32           1           0           0           0           2        cha           16        tot        0.825        sub           31        tot        0.175
-          33      sub33        null       43.762     -90.927       64.08          33           1           0           0           0           2        cha           17        tot            1        aqu           33        rhg            1
-          34      sub34        null       43.762     -90.927      341.46          34           1           0           0           0           2        cha           17        tot        0.722        sub           33        tot        0.278
-          35      sub35        null       43.745     -90.912       69.93          35           1           0           0           0           2        cha           18        tot            1        aqu           35        rhg            1
-          36      sub36        null       43.745     -90.912      792.72          36           1           0           0           0           2        cha           18        tot        0.823        sub           35        tot        0.177
-          37      sub37        null       43.704     -90.836       20.97          37           1           0           0           0           2        cha           19        tot            1        aqu           37        rhg            1
-          38      sub38        null       43.704     -90.836      636.12          38           1           0           0           0           2        cha           19        tot        0.877        sub           37        tot        0.123
-          39      sub39        null       43.701     -91.073       25.92          39           1           0           0           0           2        cha           20        tot            1        aqu           39        rhg            1
-          40      sub40        null       43.701     -91.073      373.32          40           1           0           0           0           2        cha           20        tot        0.799        sub           39        tot        0.201
-          41      sub41        null       43.666     -90.905         4.5          41           1           0           0           0           2        cha           21        tot            1        aqu           41        rhg            1
-          42      sub42        null       43.666     -90.905      291.24          42           1           0           0           0           2        cha           21        tot        0.902        sub           41        tot        0.098
-          43      sub43        null        43.64       -91.1       27.18          43           1           0           0           0           2        cha           22        tot            1        aqu           43        rhg            1
-          44      sub44        null        43.64       -91.1      385.74          44           1           0           0           0           2        cha           22        tot        0.851        sub           43        tot        0.149
-          45      sub45        null       43.766     -90.953       75.24          45           1           0           0           0           2        cha           23        tot            1        aqu           45        rhg            1
-          46      sub46        null       43.766     -90.953      802.53          46           1           0           0           0           2        cha           23        tot        0.971        sub           45        tot        0.029
-          47      sub47        null       43.743     -90.825       13.32          47           1           0           0           0           2        cha           24        tot            1        aqu           47        rhg            1
-          48      sub48        null       43.743     -90.825      383.58          48           1           0           0           0           2        cha           24        tot         0.89        sub           47        tot         0.11
-          49      sub49        null       43.717     -90.915       84.24          49           1           0           0           0           2        cha           25        tot            1        aqu           49        rhg            1
-          50      sub50        null       43.717     -90.915       480.6          50           1           0           0           0           2        cha           25        tot         0.91        sub           49        tot         0.09
-          51      sub51        null       43.679     -90.847       24.57          51           1           0           0           0           2        cha           26        tot            1        aqu           51        rhg            1
-          52      sub52        null       43.679     -90.847      605.79          52           1           0           0           0           2        cha           26        tot        0.974        sub           51        tot        0.026
-          53      sub53        null       43.683     -91.146       32.67          53           1           0           0           0           2        cha           27        tot            1        aqu           53        rhg            1
-          54      sub54        null       43.683     -91.146      447.84          54           1           0           0           0           2        cha           27        tot        0.795        sub           53        tot        0.205
-          55      sub55        null       43.629     -91.078        6.84          55           1           0           0           0           2        cha           28        tot            1        aqu           55        rhg            1
-          56      sub56        null       43.629     -91.078      260.37          56           1           0           0           0           2        cha           28        tot        0.879        sub           55        tot        0.121
-          57      sub57        null       43.741     -90.995       62.91          57           1           0           0           0           2        cha           29        tot            1        aqu           57        rhg            1
-          58      sub58        null       43.741     -90.995      695.34          58           1           0           0           0           2        cha           29        tot         0.85        sub           57        tot         0.15
-          59      sub59        null       43.722     -90.947      185.76          59           1           0           0           0           2        cha           30        tot            1        aqu           59        rhg            1
-          60      sub60        null       43.722     -90.947      830.79          60           1           0           0           0           2        cha           30        tot        0.832        sub           59        tot        0.168
-          61      sub61        null         43.7     -91.107       27.36          61           1           0           0           0           2        cha           31        tot            1        aqu           61        rhg            1
-          62      sub62        null         43.7     -91.107      339.57          62           1           0           0           0           2        cha           31        tot        0.861        sub           61        tot        0.139
-          63      sub63        null       43.673     -91.016       72.27          63           1           0           0           0           2        cha           32        tot            1        aqu           63        rhg            1
-          64      sub64        null       43.673     -91.016      580.95          64           1           0           0           0           2        cha           32        tot         0.79        sub           63        tot         0.21
-          65      sub65        null       43.641     -91.186       67.14          65           1           0           0           0           2        cha           33        tot            1        aqu           65        rhg            1
-          66      sub66        null       43.641     -91.186      469.62          66           1           0           0           0           2        cha           33        tot        0.721        sub           65        tot        0.279
-          67      sub67        null       43.727     -90.867       15.12          67           1           0           0           0           2        cha           34        tot            1        aqu           67        rhg            1
-          68      sub68        null       43.727     -90.867       332.1          68           1           0           0           0           2        cha           34        tot            1        sub           67        tot            0
-          69      sub69        null       43.718      -90.98        50.4          69           1           0           0           0           2        cha           35        tot            1        aqu           69        rhg            1
-          70      sub70        null       43.718      -90.98       42.39          70           1           0           0           0           2        cha           35        tot         0.25        sub           69        tot         0.75
-          71      sub71        null        43.69     -90.897        3.06          71           1           0           0           0           2        cha           36        tot            1        aqu           71        rhg            1
-          72      sub72        null        43.69     -90.897      288.99          72           1           0           0           0           2        cha           36        tot        0.923        sub           71        tot        0.077
-          73      sub73        null       43.681     -91.194       19.71          73           1           0           0           0           2        cha           37        tot            1        aqu           73        rhg            1
-          74      sub74        null       43.681     -91.194      283.14          74           1           0           0           0           2        cha           37        tot        0.853        sub           73        tot        0.147
-          75      sub75        null       43.631     -91.058       25.47          75           1           0           0           0           2        cha           38        tot            1        aqu           75        rhg            1
-          76      sub76        null       43.631     -91.058      532.89          76           1           0           0           0           2        cha           38        tot        0.819        sub           75        tot        0.181
-          77      sub77        null       43.731     -90.815       20.16          77           1           0           0           0           2        cha           39        tot            1        aqu           77        rhg            1
-          78      sub78        null       43.731     -90.815       511.2          78           1           0           0           0           2        cha           39        tot        0.807        sub           77        tot        0.193
-          79      sub79        null       43.721     -90.999       91.26          79           1           0           0           0           2        cha           40        tot            1        aqu           79        rhg            1
-          80      sub80        null       43.721     -90.999       202.5          80           1           0           0           0           2        cha           40        tot        0.705        sub           79        tot        0.295
-          81      sub81        null       43.678     -90.868       21.51          81           1           0           0           0           2        cha           41        tot            1        aqu           81        rhg            1
-          82      sub82        null       43.678     -90.868      423.54          82           1           0           0           0           2        cha           41        tot        0.777        sub           81        tot        0.223
-          83      sub83        null       43.661     -91.002       30.69          83           1           0           0           0           2        cha           42        tot            1        aqu           83        rhg            1
-          84      sub84        null       43.661     -91.002      427.86          84           1           0           0           0           2        cha           42        tot        0.829        sub           83        tot        0.171
-          85      sub85        null       43.627     -91.144       13.68          85           1           0           0           0           2        cha           43        tot            1        aqu           85        rhg            1
-          86      sub86        null       43.627     -91.144      260.73          86           1           0           0           0           2        cha           43        tot        0.832        sub           85        tot        0.168
-          87      sub87        null       43.722     -90.837        6.57          87           1           0           0           0           2        cha           44        tot            1        aqu           87        rhg            1
-          88      sub88        null       43.722     -90.837      263.61          88           1           0           0           0           2        cha           44        tot        0.832        sub           87        tot        0.168
-          89      sub89        null       43.706     -90.997       34.02          89           1           0           0           0           2        cha           45        tot            1        aqu           89        rhg            1
-          90      sub90        null       43.706     -90.997       52.83          90           1           0           0           0           2        cha           45        tot         0.54        sub           89        tot         0.46
-          91      sub91        null       43.676     -90.891        4.05          91           1           0           0           0           2        cha           46        tot            1        aqu           91        rhg            1
-          92      sub92        null       43.676     -90.891       271.8          92           1           0           0           0           2        cha           46        tot        0.963        sub           91        tot        0.037
-          93      sub93        null       43.672     -91.162       18.63          93           1           0           0           0           2        cha           47        tot            1        aqu           93        rhg            1
-          94      sub94        null       43.672     -91.162      275.31          94           1           0           0           0           2        cha           47        tot         0.75        sub           93        tot         0.25
-          95      sub95        null       43.648     -91.074       54.45          95           1           0           0           0           2        cha           48        tot            1        aqu           95        rhg            1
-          96      sub96        null       43.648     -91.074      241.74          96           1           0           0           0           2        cha           48        tot         0.56        sub           95        tot         0.44
-          97      sub97        null       43.746     -90.854       16.83          97           1           0           0           0           2        cha           49        tot            1        aqu           97        rhg            1
-          98      sub98        null       43.746     -90.854       72.27          98           1           0           0           0           2        cha           49        tot        0.274        sub           97        tot        0.726
-          99      sub99        null       43.687     -90.981       78.84          99           1           0           0           0           2        cha           50        tot            1        aqu           99        rhg            1
-         100     sub100        null       43.687     -90.981      869.67         100           1           0           0           0           2        cha           50        tot        0.821        sub           99        tot        0.179
-         101     sub101        null       43.673     -91.204       32.67         101           1           0           0           0           2        cha           51        tot            1        aqu          101        rhg            1
-         102     sub102        null       43.673     -91.204       98.64         102           1           0           0           0           2        cha           51        tot        0.764        sub          101        tot        0.236
-         103     sub103        null       43.646      -91.14       58.59         103           1           0           0           0           2        cha           52        tot            1        aqu          103        rhg            1
-         104     sub104        null       43.646      -91.14      264.51         104           1           0           0           0           2        cha           52        tot        0.556        sub          103        tot        0.444
-         105     sub105        null       43.735     -90.853       46.53         105           1           0           0           0           2        cha           53        tot            1        aqu          105        rhg            1
-         106     sub106        null       43.735     -90.853         297         106           1           0           0           0           2        cha           53        tot        0.555        sub          105        tot        0.445
-         107     sub107        null       43.673     -90.939       16.56         107           1           0           0           0           2        cha           54        tot            1        aqu          107        rhg            1
-         108     sub108        null       43.673     -90.939      405.99         108           1           0           0           0           2        cha           54        tot        0.841        sub          107        tot        0.159
-         109     sub109        null       43.681     -91.103       10.62         109           1           0           0           0           2        cha           55        tot            1        aqu          109        rhg            1
-         110     sub110        null       43.681     -91.103       12.51         110           1           0           0           0           2        cha           55        tot        0.146        sub          109        tot        0.854
-         111     sub111        null       43.664       -91.1       98.01         111           1           0           0           0           2        cha           56        tot            1        aqu          111        rhg            1
-         112     sub112        null       43.664       -91.1      133.38         112           1           0           0           0           2        cha           56        tot        0.688        sub          111        tot        0.312
-         113     sub113        null       43.744     -90.868       20.52         113           1           0           0           0           2        cha           57        tot            1        aqu          113        rhg            1
-         114     sub114        null       43.744     -90.868       69.66         114           1           0           0           0           2        cha           57        tot         0.37        sub          113        tot         0.63
-         115     sub115        null       43.677     -90.908        9.18         115           1           0           0           0           2        cha           58        tot            1        aqu          115        rhg            1
-         116     sub116        null       43.677     -90.908       75.15         116           1           0           0           0           2        cha           58        tot         0.54        sub          115        tot         0.46
-         117     sub117        null       43.677     -90.921       39.33         117           1           0           0           0           2        cha           59        tot            1        aqu          117        rhg            1
-         118     sub118        null       43.677     -90.921      276.84         118           1           0           0           0           2        cha           59        tot        0.672        sub          117        tot        0.328
-         119     sub119        null       43.654     -91.159       65.25         119           1           0           0           0           2        cha           60        tot            1        aqu          119        rhg            1
-         120     sub120        null       43.654     -91.159        97.2         120           1           0           0           0           2        cha           60        tot        0.541        sub          119        tot        0.459
-         121     sub121        null       43.749      -90.88       18.36         121           1           0           0           0           2        cha           61        tot            1        aqu          121        rhg            1
-         122     sub122        null       43.749      -90.88      201.42         122           1           0           0           0           2        cha           61        tot        0.984        sub          121        tot        0.016
-         123     sub123        null       43.688     -91.092       33.48         123           1           0           0           0           2        cha           62        tot            1        aqu          123        rhg            1
-         124     sub124        null       43.688     -91.092      124.74         124           1           0           0           0           2        cha           62        tot        0.461        sub          123        tot        0.539
-         125     sub125        null       43.677     -91.093       78.84         125           1           0           0           0           2        cha           63        tot            1        aqu          125        rhg            1
-         126     sub126        null       43.677     -91.093      382.77         126           1           0           0           0           2        cha           63        tot        0.841        sub          125        tot        0.159
-         127     sub127        null       43.659     -91.177      124.38         127           1           0           0           0           2        cha           64        tot            1        aqu          127        rhg            1
-         128     sub128        null       43.659     -91.177      193.32         128           1           0           0           0           2        cha           64        tot        0.516        sub          127        tot        0.484
-         129     sub129        null       43.733     -90.893       90.72         129           1           0           0           0           2        cha           65        tot            1        aqu          129        rhg            1
-         130     sub130        null       43.733     -90.893      351.81         130           1           0           0           0           2        cha           65        tot        0.661        sub          129        tot        0.339
-         131     sub131        null       43.691     -90.856        3.96         131           1           0           0           0           2        cha           66        tot            1        aqu          131        rhg            1
-         132     sub132        null       43.691     -90.856        4.95         132           1           0           0           0           2        cha           66        tot        0.258        sub          131        tot        0.742
-         133     sub133        null       43.661     -91.042       96.93         133           1           0           0           0           2        cha           67        tot            1        aqu          133        rhg            1
-         134     sub134        null       43.661     -91.042      329.04         134           1           0           0           0           2        cha           67        tot        0.529        sub          133        tot        0.471
-         135     sub135        null       43.659     -91.197       61.65         135           1           0           0           0           2        cha           68        tot            1        aqu          135        rhg            1
-         136     sub136        null       43.659     -91.197       41.85         136           1           0           0           0           2        cha           68        tot        0.191        sub          135        tot        0.809
-         137     sub137        null        43.74     -90.967      136.71         137           1           0           0           0           2        cha           69        tot            1        aqu          137        rhg            1
-         138     sub138        null        43.74     -90.967      583.83         138           1           0           0           0           2        cha           69        tot        0.732        sub          137        tot        0.268
-         139     sub139        null       43.707     -90.877      160.38         139           1           0           0           0           2        cha           70        tot            1        aqu          139        rhg            1
-         140     sub140        null       43.707     -90.877     1222.92         140           1           0           0           0           2        cha           70        tot        0.844        sub          139        tot        0.156
-         141     sub141        null       43.681     -91.059      123.75         141           1           0           0           0           2        cha           71        tot            1        aqu          141        rhg            1
-         142     sub142        null       43.681     -91.059      544.41         142           1           0           0           0           2        cha           71        tot        0.889        sub          141        tot        0.111
-         143     sub143        null        43.65     -91.209      170.28         143           1           0           0           0           2        cha           72        tot            1        aqu          143        rhg            1
-         144     sub144        null        43.65     -91.209      425.07         144           1           0           0           0           2        cha           72        tot          0.8        sub          143        tot          0.2
-         145     sub145        null       43.688     -90.938       28.08         145           1           0           0           0           2        cha           73        tot            1        aqu          145        rhg            1
-         146     sub146        null       43.688     -90.938      108.36         146           1           0           0           0           2        cha           73        tot        0.524        sub          145        tot        0.476
-         147     sub147        null       43.669     -91.073       39.51         147           1           0           0           0           2        cha           74        tot            1        aqu          147        rhg            1
-         148     sub148        null       43.669     -91.073       63.18         148           1           0           0           0           2        cha           74        tot         0.61        sub          147        tot         0.39
-         149     sub149        null         43.7     -90.958      206.37         149           1           0           0           0           2        cha           75        tot            1        aqu          149        rhg            1
-         150     sub150        null         43.7     -90.958      890.91         150           1           0           0           0           2        cha           75        tot        0.748        sub          149        tot        0.252
-         151     sub151        null        43.66     -91.074       12.96         151           1           0           0           0           2        cha           76        tot            1        aqu          151        rhg            1
-         152     sub152        null        43.66     -91.074           9         152           1           0           0           0           2        cha           76        tot        0.324        sub          151        tot        0.676
-         153     sub153        null       43.705      -91.01       63.09         153           1           0           0           0           2        cha           77        tot            1        aqu          153        rhg            1
-         154     sub154        null       43.705      -91.01       27.63         154           1           0           0           0           2        cha           77        tot        0.176        sub          153        tot        0.824
-         155     sub155        null       43.652     -91.086      112.86         155           1           0           0           0           2        cha           78        tot            1        aqu          155        rhg            1
-         156     sub156        null       43.652     -91.086      319.14         156           1           0           0           0           2        cha           78        tot        0.812        sub          155        tot        0.188
-         157     sub157        null       43.701     -91.022      192.78         157           1           0           0           0           2        cha           79        tot            1        aqu          157        rhg            1
-         158     sub158        null       43.701     -91.022       658.8         158           1           0           0           0           2        cha           79        tot        0.889        sub          157        tot        0.111
-         159     sub159        null       43.662     -91.125      198.81         159           1           0           0           0           2        cha           80        tot            1        aqu          159        rhg            1
-         160     sub160        null       43.662     -91.125      852.12         160           1           0           0           0           2        cha           80        tot        0.793        sub          159        tot        0.207
-         161     sub161        null       43.687     -91.036      116.19         161           1           0           0           0           2        cha           81        tot            1        aqu          161        rhg            1
-         162     sub162        null       43.687     -91.036      290.07         162           1           0           0           0           2        cha           81        tot        0.765        sub          161        tot        0.235
-         163     sub163        null       43.663      -91.15       14.31         163           1           0           0           0           2        cha           82        tot            1        aqu          163        rhg            1
-         164     sub164        null       43.663      -91.15       10.17         164           1           0           0           0           2        cha           82        tot            0        sub          163        tot            1
-         165     sub165        null       43.659     -91.149       25.38         165           1           0           0           0           2        cha           83        tot            1        aqu          165        rhg            1
-         166     sub166        null       43.659     -91.149       18.99         166           1           0           0           0           2        cha           83        tot        0.253        sub          165        tot        0.747
+SUB_NUM SUB_NAMELATITUDELONGITUDSUB_AREAWST     _NAMECONST_TYOVERFLOWRULOUT     _TOT O   BJ_TYP 1OBJ_ID1 YDRO_T YFRAC1  OBJ_TYP2OBJ_ID2  YDRO_T YFRAC2
+1       sub1      43.787 -90.908   37.53       1       1       0       0       0       2    sdc        1    tot        1    aqu        1    rhg        1
+2       sub2      43.787 -90.908  702.36       2       1       0       0       0       2    sdc        1    tot    0.842    sub        1    tot    0.158
+3       sub3      43.773 -90.887   65.61       3       1       0       0       0       2    sdc        2    tot        1    aqu        3    rhg        1
+4       sub4      43.773 -90.887 1109.34       4       1       0       0       0       2    sdc        2    tot    0.854    sub        3    tot    0.146
+5       sub5      43.756 -90.835    8.91       5       1       0       0       0       2    sdc        3    tot        1    aqu        5    rhg        1
+6       sub6      43.756 -90.835   440.1       6       1       0       0       0       2    sdc        3    tot    0.976    sub        5    tot    0.024
+7       sub7      43.714 -91.054    81.9       7       1       0       0       0       2    sdc        4    tot        1    aqu        7    rhg        1
+8       sub8      43.714 -91.054  672.75       8       1       0       0       0       2    sdc        4    tot    0.775    sub        7    tot    0.225
+9       sub9      43.708 -91.087   16.74       9       1       0       0       0       2    sdc        5    tot        1    aqu        9    rhg        1
+10      sub10     43.708 -91.087  329.85      10       1       0       0       0       2    sdc        5    tot    0.905    sub        9    tot    0.095
+11      sub11     43.682 -91.177   68.31      11       1       0       0       0       2    sdc        6    tot        1    aqu       11    rhg        1
+12      sub12     43.682 -91.177  523.08      12       1       0       0       0       2    sdc        6    tot    0.694    sub       11    tot    0.306
+13      sub13     43.645 -91.011   32.13      13       1       0       0       0       2    sdc        7    tot        1    aqu       13    rhg        1
+14      sub14     43.645 -91.011  721.08      14       1       0       0       0       2    sdc        7    tot    0.892    sub       13    tot    0.108
+15      sub15     43.629 -91.122   33.57      15       1       0       0       0       2    sdc        8    tot        1    aqu       15    rhg        1
+16      sub16     43.629 -91.122  547.02      16       1       0       0       0       2    sdc        8    tot    0.818    sub       15    tot    0.182
+17      sub17     43.784 -90.939   49.59      17       1       0       0       0       2    sdc        9    tot        1    aqu       17    rhg        1
+18      sub18     43.784 -90.939  519.12      18       1       0       0       0       2    sdc        9    tot    0.679    sub       17    tot    0.321
+19      sub19     43.762 -90.974   28.08      19       1       0       0       0       2    sdc       10    tot        1    aqu       19    rhg        1
+20      sub20     43.762 -90.974  378.36      20       1       0       0       0       2    sdc       10    tot      0.8    sub       19    tot      0.2
+21      sub21     43.757 -90.862    5.85      21       1       0       0       0       2    sdc       11    tot        1    aqu       21    rhg        1
+22      sub22     43.757 -90.862   382.5      22       1       0       0       0       2    sdc       11    tot     0.99    sub       21    tot     0.01
+23      sub23     43.722 -91.019   27.63      23       1       0       0       0       2    sdc       12    tot        1    aqu       23    rhg        1
+24      sub24     43.722 -91.019  533.43      24       1       0       0       0       2    sdc       12    tot    0.965    sub       23    tot    0.035
+25      sub25     43.695 -90.918   11.88      25       1       0       0       0       2    sdc       13    tot        1    aqu       25    rhg        1
+26      sub26     43.695 -90.918  283.95      26       1       0       0       0       2    sdc       13    tot    0.914    sub       25    tot    0.086
+27      sub27      43.69 -91.118   24.03      27       1       0       0       0       2    sdc       14    tot        1    aqu       27    rhg        1
+28      sub28      43.69 -91.118  298.53      28       1       0       0       0       2    sdc       14    tot    0.857    sub       27    tot    0.143
+29      sub29     43.647 -91.048   52.11      29       1       0       0       0       2    sdc       15    tot        1    aqu       29    rhg        1
+30      sub30     43.647 -91.048   491.4      30       1       0       0       0       2    sdc       15    tot    0.769    sub       29    tot    0.231
+31      sub31     43.631 -91.162   60.57      31       1       0       0       0       2    sdc       16    tot        1    aqu       31    rhg        1
+32      sub32     43.631 -91.162  673.65      32       1       0       0       0       2    sdc       16    tot    0.825    sub       31    tot    0.175
+33      sub33     43.762 -90.927   64.08      33       1       0       0       0       2    sdc       17    tot        1    aqu       33    rhg        1
+34      sub34     43.762 -90.927  341.46      34       1       0       0       0       2    sdc       17    tot    0.722    sub       33    tot    0.278
+35      sub35     43.745 -90.912   69.93      35       1       0       0       0       2    sdc       18    tot        1    aqu       35    rhg        1
+36      sub36     43.745 -90.912  792.72      36       1       0       0       0       2    sdc       18    tot    0.823    sub       35    tot    0.177
+37      sub37     43.704 -90.836   20.97      37       1       0       0       0       2    sdc       19    tot        1    aqu       37    rhg        1
+38      sub38     43.704 -90.836  636.12      38       1       0       0       0       2    sdc       19    tot    0.877    sub       37    tot    0.123
+39      sub39     43.701 -91.073   25.92      39       1       0       0       0       2    sdc       20    tot        1    aqu       39    rhg        1
+40      sub40     43.701 -91.073  373.32      40       1       0       0       0       2    sdc       20    tot    0.799    sub       39    tot    0.201
+41      sub41     43.666 -90.905     4.5      41       1       0       0       0       2    sdc       21    tot        1    aqu       41    rhg        1
+42      sub42     43.666 -90.905  291.24      42       1       0       0       0       2    sdc       21    tot    0.902    sub       41    tot    0.098
+43      sub43      43.64   -91.1   27.18      43       1       0       0       0       2    sdc       22    tot        1    aqu       43    rhg        1
+44      sub44      43.64   -91.1  385.74      44       1       0       0       0       2    sdc       22    tot    0.851    sub       43    tot    0.149
+45      sub45     43.766 -90.953   75.24      45       1       0       0       0       2    sdc       23    tot        1    aqu       45    rhg        1
+46      sub46     43.766 -90.953  802.53      46       1       0       0       0       2    sdc       23    tot    0.971    sub       45    tot    0.029
+47      sub47     43.743 -90.825   13.32      47       1       0       0       0       2    sdc       24    tot        1    aqu       47    rhg        1
+48      sub48     43.743 -90.825  383.58      48       1       0       0       0       2    sdc       24    tot     0.89    sub       47    tot     0.11
+49      sub49     43.717 -90.915   84.24      49       1       0       0       0       2    sdc       25    tot        1    aqu       49    rhg        1
+50      sub50     43.717 -90.915   480.6      50       1       0       0       0       2    sdc       25    tot     0.91    sub       49    tot     0.09
+51      sub51     43.679 -90.847   24.57      51       1       0       0       0       2    sdc       26    tot        1    aqu       51    rhg        1
+52      sub52     43.679 -90.847  605.79      52       1       0       0       0       2    sdc       26    tot    0.974    sub       51    tot    0.026
+53      sub53     43.683 -91.146   32.67      53       1       0       0       0       2    sdc       27    tot        1    aqu       53    rhg        1
+54      sub54     43.683 -91.146  447.84      54       1       0       0       0       2    sdc       27    tot    0.795    sub       53    tot    0.205
+55      sub55     43.629 -91.078    6.84      55       1       0       0       0       2    sdc       28    tot        1    aqu       55    rhg        1
+56      sub56     43.629 -91.078  260.37      56       1       0       0       0       2    sdc       28    tot    0.879    sub       55    tot    0.121
+57      sub57     43.741 -90.995   62.91      57       1       0       0       0       2    sdc       29    tot        1    aqu       57    rhg        1
+58      sub58     43.741 -90.995  695.34      58       1       0       0       0       2    sdc       29    tot     0.85    sub       57    tot     0.15
+59      sub59     43.722 -90.947  185.76      59       1       0       0       0       2    sdc       30    tot        1    aqu       59    rhg        1
+60      sub60     43.722 -90.947  830.79      60       1       0       0       0       2    sdc       30    tot    0.832    sub       59    tot    0.168
+61      sub61       43.7 -91.107   27.36      61       1       0       0       0       2    sdc       31    tot        1    aqu       61    rhg        1
+62      sub62       43.7 -91.107  339.57      62       1       0       0       0       2    sdc       31    tot    0.861    sub       61    tot    0.139
+63      sub63     43.673 -91.016   72.27      63       1       0       0       0       2    sdc       32    tot        1    aqu       63    rhg        1
+64      sub64     43.673 -91.016  580.95      64       1       0       0       0       2    sdc       32    tot     0.79    sub       63    tot     0.21
+65      sub65     43.641 -91.186   67.14      65       1       0       0       0       2    sdc       33    tot        1    aqu       65    rhg        1
+66      sub66     43.641 -91.186  469.62      66       1       0       0       0       2    sdc       33    tot    0.721    sub       65    tot    0.279
+67      sub67     43.727 -90.867   15.12      67       1       0       0       0       2    sdc       34    tot        1    aqu       67    rhg        1
+68      sub68     43.727 -90.867   332.1      68       1       0       0       0       2    sdc       34    tot        1    sub       67    tot        0
+69      sub69     43.718  -90.98    50.4      69       1       0       0       0       2    sdc       35    tot        1    aqu       69    rhg        1
+70      sub70     43.718  -90.98   42.39      70       1       0       0       0       2    sdc       35    tot     0.25    sub       69    tot     0.75
+71      sub71      43.69 -90.897    3.06      71       1       0       0       0       2    sdc       36    tot        1    aqu       71    rhg        1
+72      sub72      43.69 -90.897  288.99      72       1       0       0       0       2    sdc       36    tot    0.923    sub       71    tot    0.077
+73      sub73     43.681 -91.194   19.71      73       1       0       0       0       2    sdc       37    tot        1    aqu       73    rhg        1
+74      sub74     43.681 -91.194  283.14      74       1       0       0       0       2    sdc       37    tot    0.853    sub       73    tot    0.147
+75      sub75     43.631 -91.058   25.47      75       1       0       0       0       2    sdc       38    tot        1    aqu       75    rhg        1
+76      sub76     43.631 -91.058  532.89      76       1       0       0       0       2    sdc       38    tot    0.819    sub       75    tot    0.181
+77      sub77     43.731 -90.815   20.16      77       1       0       0       0       2    sdc       39    tot        1    aqu       77    rhg        1
+78      sub78     43.731 -90.815   511.2      78       1       0       0       0       2    sdc       39    tot    0.807    sub       77    tot    0.193
+79      sub79     43.721 -90.999   91.26      79       1       0       0       0       2    sdc       40    tot        1    aqu       79    rhg        1
+80      sub80     43.721 -90.999   202.5      80       1       0       0       0       2    sdc       40    tot    0.705    sub       79    tot    0.295
+81      sub81     43.678 -90.868   21.51      81       1       0       0       0       2    sdc       41    tot        1    aqu       81    rhg        1
+82      sub82     43.678 -90.868  423.54      82       1       0       0       0       2    sdc       41    tot    0.777    sub       81    tot    0.223
+83      sub83     43.661 -91.002   30.69      83       1       0       0       0       2    sdc       42    tot        1    aqu       83    rhg        1
+84      sub84     43.661 -91.002  427.86      84       1       0       0       0       2    sdc       42    tot    0.829    sub       83    tot    0.171
+85      sub85     43.627 -91.144   13.68      85       1       0       0       0       2    sdc       43    tot        1    aqu       85    rhg        1
+86      sub86     43.627 -91.144  260.73      86       1       0       0       0       2    sdc       43    tot    0.832    sub       85    tot    0.168
+87      sub87     43.722 -90.837    6.57      87       1       0       0       0       2    sdc       44    tot        1    aqu       87    rhg        1
+88      sub88     43.722 -90.837  263.61      88       1       0       0       0       2    sdc       44    tot    0.832    sub       87    tot    0.168
+89      sub89     43.706 -90.997   34.02      89       1       0       0       0       2    sdc       45    tot        1    aqu       89    rhg        1
+90      sub90     43.706 -90.997   52.83      90       1       0       0       0       2    sdc       45    tot     0.54    sub       89    tot     0.46
+91      sub91     43.676 -90.891    4.05      91       1       0       0       0       2    sdc       46    tot        1    aqu       91    rhg        1
+92      sub92     43.676 -90.891   271.8      92       1       0       0       0       2    sdc       46    tot    0.963    sub       91    tot    0.037
+93      sub93     43.672 -91.162   18.63      93       1       0       0       0       2    sdc       47    tot        1    aqu       93    rhg        1
+94      sub94     43.672 -91.162  275.31      94       1       0       0       0       2    sdc       47    tot     0.75    sub       93    tot     0.25
+95      sub95     43.648 -91.074   54.45      95       1       0       0       0       2    sdc       48    tot        1    aqu       95    rhg        1
+96      sub96     43.648 -91.074  241.74      96       1       0       0       0       2    sdc       48    tot     0.56    sub       95    tot     0.44
+97      sub97     43.746 -90.854   16.83      97       1       0       0       0       2    sdc       49    tot        1    aqu       97    rhg        1
+98      sub98     43.746 -90.854   72.27      98       1       0       0       0       2    sdc       49    tot    0.274    sub       97    tot    0.726
+99      sub99     43.687 -90.981   78.84      99       1       0       0       0       2    sdc       50    tot        1    aqu       99    rhg        1
+100     sub100    43.687 -90.981  869.67     100       1       0       0       0       2    sdc       50    tot    0.821    sub       99    tot    0.179
+101     sub101    43.673 -91.204   32.67     101       1       0       0       0       2    sdc       51    tot        1    aqu      101    rhg        1
+102     sub102    43.673 -91.204   98.64     102       1       0       0       0       2    sdc       51    tot    0.764    sub      101    tot    0.236
+103     sub103    43.646  -91.14   58.59     103       1       0       0       0       2    sdc       52    tot        1    aqu      103    rhg        1
+104     sub104    43.646  -91.14  264.51     104       1       0       0       0       2    sdc       52    tot    0.556    sub      103    tot    0.444
+105     sub105    43.735 -90.853   46.53     105       1       0       0       0       2    sdc       53    tot        1    aqu      105    rhg        1
+106     sub106    43.735 -90.853     297     106       1       0       0       0       2    sdc       53    tot    0.555    sub      105    tot    0.445
+107     sub107    43.673 -90.939   16.56     107       1       0       0       0       2    sdc       54    tot        1    aqu      107    rhg        1
+108     sub108    43.673 -90.939  405.99     108       1       0       0       0       2    sdc       54    tot    0.841    sub      107    tot    0.159
+109     sub109    43.681 -91.103   10.62     109       1       0       0       0       2    sdc       55    tot        1    aqu      109    rhg        1
+110     sub110    43.681 -91.103   12.51     110       1       0       0       0       2    sdc       55    tot    0.146    sub      109    tot    0.854
+111     sub111    43.664   -91.1   98.01     111       1       0       0       0       2    sdc       56    tot        1    aqu      111    rhg        1
+112     sub112    43.664   -91.1  133.38     112       1       0       0       0       2    sdc       56    tot    0.688    sub      111    tot    0.312
+113     sub113    43.744 -90.868   20.52     113       1       0       0       0       2    sdc       57    tot        1    aqu      113    rhg        1
+114     sub114    43.744 -90.868   69.66     114       1       0       0       0       2    sdc       57    tot     0.37    sub      113    tot     0.63
+115     sub115    43.677 -90.908    9.18     115       1       0       0       0       2    sdc       58    tot        1    aqu      115    rhg        1
+116     sub116    43.677 -90.908   75.15     116       1       0       0       0       2    sdc       58    tot     0.54    sub      115    tot     0.46
+117     sub117    43.677 -90.921   39.33     117       1       0       0       0       2    sdc       59    tot        1    aqu      117    rhg        1
+118     sub118    43.677 -90.921  276.84     118       1       0       0       0       2    sdc       59    tot    0.672    sub      117    tot    0.328
+119     sub119    43.654 -91.159   65.25     119       1       0       0       0       2    sdc       60    tot        1    aqu      119    rhg        1
+120     sub120    43.654 -91.159    97.2     120       1       0       0       0       2    sdc       60    tot    0.541    sub      119    tot    0.459
+121     sub121    43.749  -90.88   18.36     121       1       0       0       0       2    sdc       61    tot        1    aqu      121    rhg        1
+122     sub122    43.749  -90.88  201.42     122       1       0       0       0       2    sdc       61    tot    0.984    sub      121    tot    0.016
+123     sub123    43.688 -91.092   33.48     123       1       0       0       0       2    sdc       62    tot        1    aqu      123    rhg        1
+124     sub124    43.688 -91.092  124.74     124       1       0       0       0       2    sdc       62    tot    0.461    sub      123    tot    0.539
+125     sub125    43.677 -91.093   78.84     125       1       0       0       0       2    sdc       63    tot        1    aqu      125    rhg        1
+126     sub126    43.677 -91.093  382.77     126       1       0       0       0       2    sdc       63    tot    0.841    sub      125    tot    0.159
+127     sub127    43.659 -91.177  124.38     127       1       0       0       0       2    sdc       64    tot        1    aqu      127    rhg        1
+128     sub128    43.659 -91.177  193.32     128       1       0       0       0       2    sdc       64    tot    0.516    sub      127    tot    0.484
+129     sub129    43.733 -90.893   90.72     129       1       0       0       0       2    sdc       65    tot        1    aqu      129    rhg        1
+130     sub130    43.733 -90.893  351.81     130       1       0       0       0       2    sdc       65    tot    0.661    sub      129    tot    0.339
+131     sub131    43.691 -90.856    3.96     131       1       0       0       0       2    sdc       66    tot        1    aqu      131    rhg        1
+132     sub132    43.691 -90.856    4.95     132       1       0       0       0       2    sdc       66    tot    0.258    sub      131    tot    0.742
+133     sub133    43.661 -91.042   96.93     133       1       0       0       0       2    sdc       67    tot        1    aqu      133    rhg        1
+134     sub134    43.661 -91.042  329.04     134       1       0       0       0       2    sdc       67    tot    0.529    sub      133    tot    0.471
+135     sub135    43.659 -91.197   61.65     135       1       0       0       0       2    sdc       68    tot        1    aqu      135    rhg        1
+136     sub136    43.659 -91.197   41.85     136       1       0       0       0       2    sdc       68    tot    0.191    sub      135    tot    0.809
+137     sub137     43.74 -90.967  136.71     137       1       0       0       0       2    sdc       69    tot        1    aqu      137    rhg        1
+138     sub138     43.74 -90.967  583.83     138       1       0       0       0       2    sdc       69    tot    0.732    sub      137    tot    0.268
+139     sub139    43.707 -90.877  160.38     139       1       0       0       0       2    sdc       70    tot        1    aqu      139    rhg        1
+140     sub140    43.707 -90.877 1222.92     140       1       0       0       0       2    sdc       70    tot    0.844    sub      139    tot    0.156
+141     sub141    43.681 -91.059  123.75     141       1       0       0       0       2    sdc       71    tot        1    aqu      141    rhg        1
+142     sub142    43.681 -91.059  544.41     142       1       0       0       0       2    sdc       71    tot    0.889    sub      141    tot    0.111
+143     sub143     43.65 -91.209  170.28     143       1       0       0       0       2    sdc       72    tot        1    aqu      143    rhg        1
+144     sub144     43.65 -91.209  425.07     144       1       0       0       0       2    sdc       72    tot      0.8    sub      143    tot      0.2
+145     sub145    43.688 -90.938   28.08     145       1       0       0       0       2    sdc       73    tot        1    aqu      145    rhg        1
+146     sub146    43.688 -90.938  108.36     146       1       0       0       0       2    sdc       73    tot    0.524    sub      145    tot    0.476
+147     sub147    43.669 -91.073   39.51     147       1       0       0       0       2    sdc       74    tot        1    aqu      147    rhg        1
+148     sub148    43.669 -91.073   63.18     148       1       0       0       0       2    sdc       74    tot     0.61    sub      147    tot     0.39
+149     sub149      43.7 -90.958  206.37     149       1       0       0       0       2    sdc       75    tot        1    aqu      149    rhg        1
+150     sub150      43.7 -90.958  890.91     150       1       0       0       0       2    sdc       75    tot    0.748    sub      149    tot    0.252
+151     sub151     43.66 -91.074   12.96     151       1       0       0       0       2    sdc       76    tot        1    aqu      151    rhg        1
+152     sub152     43.66 -91.074       9     152       1       0       0       0       2    sdc       76    tot    0.324    sub      151    tot    0.676
+153     sub153    43.705  -91.01   63.09     153       1       0       0       0       2    sdc       77    tot        1    aqu      153    rhg        1
+154     sub154    43.705  -91.01   27.63     154       1       0       0       0       2    sdc       77    tot    0.176    sub      153    tot    0.824
+155     sub155    43.652 -91.086  112.86     155       1       0       0       0       2    sdc       78    tot        1    aqu      155    rhg        1
+156     sub156    43.652 -91.086  319.14     156       1       0       0       0       2    sdc       78    tot    0.812    sub      155    tot    0.188
+157     sub157    43.701 -91.022  192.78     157       1       0       0       0       2    sdc       79    tot        1    aqu      157    rhg        1
+158     sub158    43.701 -91.022   658.8     158       1       0       0       0       2    sdc       79    tot    0.889    sub      157    tot    0.111
+159     sub159    43.662 -91.125  198.81     159       1       0       0       0       2    sdc       80    tot        1    aqu      159    rhg        1
+160     sub160    43.662 -91.125  852.12     160       1       0       0       0       2    sdc       80    tot    0.793    sub      159    tot    0.207
+161     sub161    43.687 -91.036  116.19     161       1       0       0       0       2    sdc       81    tot        1    aqu      161    rhg        1
+162     sub162    43.687 -91.036  290.07     162       1       0       0       0       2    sdc       81    tot    0.765    sub      161    tot    0.235
+163     sub163    43.663  -91.15   14.31     163       1       0       0       0       2    sdc       82    tot        1    aqu      163    rhg        1
+164     sub164    43.663  -91.15   10.17     164       1       0       0       0       2    sdc       82    tot        0    sub      163    tot        1
+165     sub165    43.659 -91.149   25.38     165       1       0       0       0       2    sdc       83    tot        1    aqu      165    rhg        1
+166     sub166    43.659 -91.149   18.99     166       1       0       0       0       2    sdc       83    tot    0.253    sub      165    tot    0.747

@@ -1,6 +1,6 @@
 hru-data.hru: HRU properties - landuse split
     HRU_NUMB    HRU_NAME     HRUTOPO       HYDRO        SOIL      LU_MGT  SOILNUT_INIT   SURF_STOR        SNOW       FIELD
-           1        hru1        top1        hyd1     soil003   lrew_ag04    soilnut001     wetland     snow001        null
+           1        hru1        top1        hyd1     soil003   lrew_ag04    soilnut001        null     snow001        null
            2        hru2        top2        hyd2     soil004   lrew_ag04    soilnut001        null     snow001        null
            3        hru3        top3        hyd3     soil005   lrew_ag03    soilnut001        null     snow001        null
            4        hru4        top4        hyd4     soil006   lrew_ag01    soilnut001        null     snow001        null

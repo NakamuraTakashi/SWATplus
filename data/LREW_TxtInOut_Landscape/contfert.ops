@@ -1,0 +1,3 @@
+contfert.ops: Continuous fertilizer operations - Water_LS2_Take2
+  CFERT_OP_NAME   FERT_NAME  CFERT_DAYS  CFERT_FREQ   APP_RATE
+        example      elem-n           0           0      0.000

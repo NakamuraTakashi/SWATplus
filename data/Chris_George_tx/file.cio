@@ -1,4 +1,4 @@
-file.cio: control input/output - (SWAT-DEG)
+file.cio: control input/output - Texas (SWAT-LTE)
 SIMULATION    time.sim  print.prt  null  object.cnt  
 CLIMATE       weather-sta.cli  weather-wgn.cli  null  null  null  null  null  null  
 CONNECT       null  hru-lte.con  subbasin.con  null  null  null  null  null  null  null  null  null  null  
@@ -20,8 +20,10 @@ PARM_DB       plants.plt  fertilizer.frt  tillage.til  pesticide.pst  urban.urb 
 OPS           null  null  null  null  null  null  null  null  null  null  
 SCH           null  null  
 LUM           null  null  
-CHG           null  null  null  null  null  null  null  null  
+UPDATE        null  null  null  null  null  null  null  
 INIT          null  null  
 SOILS         null  null  
 DECISION      d_table.dtl  
-CONSTITUENTS  null  null  null  null  null  
+CONSTITUENTS  null  null  null  null  null
+REGIONS       null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  null
+  

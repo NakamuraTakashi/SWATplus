@@ -1,18 +1,34 @@
 d_table.dtl - Little River Watershed
- 2
+ 4
 
  NAME   	CONDS	ALTS	ACTS
 pl_growth_init	  2	 2	 1
  VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2
 phu_base0 	null	  	 0	null		  -	  	 0.15		 >	 <
-phu_base0 	null	  	 0	null		  -	  	 0.25		 <	 -
+phu_base0 	null	  	 0	null		  -	  	 0.2		 <	 -
  ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
-grow_init	start_growth	file	  0		corn			 	 y	 n
+grow_init	start_growth	file	  0		null				y	 n
+
+ NAME   	CONDS	ALTS	ACTS
+pl_growth_end	  2	 3	 1
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2	ALT3
+phu_base0 	null	  	 0	null		  -	  	 0.5		 >	 <	-
+jday	 	null	  	 0	null		  -	  	 330		 -	 -	=
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+grow_end	end_growth	file	  0		null			 	 y	 n	y
+
+ NAME   	CONDS	ALTS	ACTS
+pl_growth_init	  2	 3	 1
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2
+phu_base0 	null	  	 0	null		  -	  	 0.75		 >	 <	-
+jday	 	null	  	 0	null		  -	  	 330		 -	 -	=
+ ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
+grow_init	start_growth	file	  0		wwht			 	 y	 n	y
 
  NAME   	CONDS	ALTS	ACTS
 pl_growth_end	  2	 2	 1
- VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1
-phu_base0 	null	  	 0	null		  -	  	 0.9		 >	 <
-phu_base0 	null	  	 0	null		  -	  	 0.8		 <	 -
+ VAR		OBJ		OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	ALT1	ALT2
+phu_base0 	null	  	 0	null		  -	  	 0.2		 >	 <
+phu_base0 	null	  	 0	null		  -	  	 0.25		 <	 -
  ACT_TYP	NAME		OPTION	CONST		FILE_POINTER			OUTCOME
-grow_end	end growth	file	  0		grain			 	 y	 n
+grow_end	end_growth	file	  0		grain				y	n
