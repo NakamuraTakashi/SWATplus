@@ -1,4 +1,4 @@
 hru-data.hru: HRU properties - Little River Experimental Watershed																
-NUMB	NAME	     	TOPO	         HYD	SOIL	LAND_USE_MGT   SOIL_NUTR_INIT	SURF_STOR	 SNOW    FIELD    SCHED_UPD
-1  hru0010104       hru00101	  hru0010104  lrew04     forestmixed           lrew04	     null     snow001     null         null 
-2  hru0010104       hru00101	  hru0010104  lrew04     agriculture           lrew04	     null     snow001     null         null
+NUMB	NAME	     	TOPO	         HYD	SOIL	LAND_USE_MGT   SOIL_NUTR_INIT	SURF_STOR	     SNOW    FIELD    SCHED_UPD
+1  hru0010104       hru00101	  hru0010104  IN025     agriculture           IN025	     null     snow001     null         null 
+2  hru0010104       hru00101	  hru0010104  IN025     agriculture           IN025	     null     snow001     null         null

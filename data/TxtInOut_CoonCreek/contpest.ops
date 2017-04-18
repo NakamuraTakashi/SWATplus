@@ -1,3 +1,0 @@
-contpest.ops: Continuous pesticide operations - SB_LS1
-  CPEST_OP_NAME   PEST_NAME  CPEST_DAYS  CPEST_FREQ   PEST_AMT
-           null        null           0           0      0.000

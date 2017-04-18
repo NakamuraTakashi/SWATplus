@@ -1,168 +1,151 @@
-management.sch: Management schedules - LREW Subbasin March 2016
-    MGT_NAME    NUMB_OPS   NUMB_AUTO OP_TYPE       MONTH         DAY     HU_SCH COND OP_DATA1 OP_DATA2 OP_OVERRIDE
-   lrew_past           4           0
-                                        plnt           3           1      0.000 null     agrl     null       0.000
-                                        harv          11           1      0.000 null    grain     agrl       0.000
-                                        kill          11           1      0.000 null     agrl     null       0.000
-                                        skip           0           0      0.000 null     null     null       0.000
-   lrew_frse           4           0
-                                        plnt           3           1      0.000 null     agrl     null       0.000
-                                        harv          11           1      0.000 null    grain     agrl       0.000
-                                        kill          11           1      0.000 null     agrl     null       0.000
-                                        skip           0           0      0.000 null     null     null       0.000
-   lrew_frsd           4           0
-                                        plnt           3           1      0.000 null     agrl     null       0.000
-                                        harv          11           1      0.000 null    grain     agrl       0.000
-                                        kill          11           1      0.000 null     agrl     null       0.000
-                                        skip           0           0      0.000 null     null     null       0.000
-   lrew_wetf           4           0
-                                        plnt           3           1      0.000 null     agrl     null       0.000
-                                        harv          11           1      0.000 null    grain     agrl       0.000
-                                        kill          11           1      0.000 null     agrl     null       0.000
-                                        skip           0           0      0.000 null     null     null       0.000
-   lrew_watr           4           0
-                                        plnt           3           1      0.000 null     agrl     null       0.000
-                                        harv          11           1      0.000 null    grain     agrl       0.000
-                                        kill          11           1      0.000 null     agrl     null       0.000
-                                        skip           0           0      0.000 null     null     null       0.000
-   lrew_urld           4           0
-                                        plnt           3           1      0.000 null     agrl     null       0.000
-                                        harv          11           1      0.000 null    grain     agrl       0.000
-                                        kill          11           1      0.000 null     agrl     null       0.000
-                                        skip           0           0      0.000 null     null     null       0.000
-   lrew_ag01          33           0
-                                        till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     pnut     null       0.000  
-			                            harv          10           1      0.000 null  peanuts     pnut       0.000  
-			                            kill          10           1      0.000 null     pnut     null       0.000  
-			                            till           3           1      0.000 null riprsubs     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null  fldcult     null       0.000  
-			                            plnt           4           2      0.000 null     corn     null       0.000  
-			                            fert           4           3      0.000 null   elem-n     null       0.000  
-			                            fert           4           3      0.000 null   elem-p     null       0.000  
-			                            harv           9           1      0.000 null    grain     corn       0.000  
-			                            kill           9           1      0.000 null     corn     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-			                            skip           0           0      0.000 null     null     null       0.000  
-   lrew_ag02          33           0
-			                            till           3           1      0.000 null riprsubs     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null  fldcult     null       0.000  
-			                            plnt           4           2      0.000 null     corn     null       0.000  
-			                            fert           4           3      0.000 null   elem-n     null       0.000  
-			                            fert           4           3      0.000 null   elem-p     null       0.000  
-			                            harv           9           1      0.000 null    grain     corn       0.000  
-			                            kill           9           1      0.000 null     corn     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-										till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     pnut     null       0.000  
-			                            harv          10           1      0.000 null  peanuts     pnut       0.000  
-			                            kill          10           1      0.000 null     pnut     null       0.000  
-			                            skip           0           0      0.000 null     null     null       0.000  
-   lrew_ag03          33           0
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-										till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     pnut     null       0.000  
-			                            harv          10           1      0.000 null  peanuts     pnut       0.000  
-			                            kill          10           1      0.000 null     pnut     null       0.000  
-			                            till           3           1      0.000 null riprsubs     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null  fldcult     null       0.000  
-			                            plnt           4           2      0.000 null     corn     null       0.000  
-			                            fert           4           3      0.000 null   elem-n     null       0.000  
-			                            fert           4           3      0.000 null   elem-p     null       0.000  
-			                            harv           9           1      0.000 null    grain     corn       0.000  
-			                            kill           9           1      0.000 null     corn     null       0.000  
-			                            skip           0           0      0.000 null     null     null       0.000  
-   lrew_ag04          33           0
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-										till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     pnut     null       0.000  
-			                            harv          10           1      0.000 null  peanuts     pnut       0.000  
-			                            kill          10           1      0.000 null     pnut     null       0.000  
-			                            till           3           1      0.000 null riprsubs     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null  fldcult     null       0.000  
-			                            plnt           4           2      0.000 null     corn     null       0.000  
-			                            fert           4           3      0.000 null   elem-n     null       0.000  
-			                            fert           4           3      0.000 null   elem-p     null       0.000  
-			                            harv           9           1      0.000 null    grain     corn       0.000  
-			                            kill           9           1      0.000 null     corn     null       0.000  
-			                            till           3          15      0.000 null riprsubs     null       0.000  
-			                            till           4           1      0.000 null riprsubs     null       0.000  
-			                            till           4          15      0.000 null riprsubs     null       0.000  
-			                            till           5           1      0.000 null  fldcult     null       0.000  
-			                            plnt           5           2      0.000 null     cots     null       0.000  
-			                            fert           5           3      0.000 null  anh-nh3     null       0.000  
-			                            fert           5           3      0.000 null     urea     null       0.000  
-			                            harv          11           1      0.000 null    grain     cots       0.000  
-			                            kill          11           1      0.000 null     cots     null       0.000  
-			                            skip           0           0      0.000 null     null     null       0.000  
+management.sch: Management schedules - LREW Sub Water
+    MGT_NAME    NUMB_OPS   NUMB_AUTO OP_TYPE   TRIG_TYPE         DAY     HU_SCH OP_DATA1 	OP_DATA2 OP_OVERRIDE
+      c-sb-af-at-ai	0           4	plant_harv_c-sb		spring_fert	minimum_till	autoirr_str.8	      
+      mgt001          33           0                                                      
+                    till           4           1      0.000 riprsubs    	null       	0.000
+                    till           4          15      0.000 riprsubs     	null       	0.000
+                    till           5           1      0.000 fldcult     	null       	0.000
+                    plnt           5           2      0.000 pnut     	    null	  	0.000
+					harv          10           1      0.000 pnut  		    peanuts      0.000
+					kill          10           1      0.000 pnut     	    null       	0.000
+					till           3           1      0.000 riprsubs     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 fldcult     	null       	0.000
+					plnt           4           2      0.000 corn     	null       	0.000
+					fert           4           3      0.000 elem-n  	broadcast   	150.000
+					fert           4           3      0.000 elem-p  	broadcast    	20.000
+					harv           9           1      0.000 corn    	grain       	0.000
+					kill           9           1      0.000 corn     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           5           3      0.000 anh-nh3   	inject     	160.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots  		cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					pest           5           1      0.000 aatrex     	foliar    	0.000
+					plnt           5           2      0.000 cots		null       	0.000
+					fert           5           3      0.000 anh-nh3   	inject     	160.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots  		cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+					skip           0           0      0.000 null     	null       	0.000
+      mgt002           3           0                                                   	
+                                        plnt           3           1      0.000 past     	null       	0.000
+                                        harv          11           1      0.000 past		hay_cut_low     0.000
+                                        skip           0           0      0.000 null     	null       	0.000
+      mgt003           0           0
+      mgt004           0           0
+      mgt005           0           0
+      mgt006           0           0
+      mgt007           3           0
+                                        plnt           3           1      0.000 berm     	null       	0.000
+                                        harv          11           1      0.000 berm		grass_bag     	0.000
+                                        skip           0           0      0.000 null     	null       	0.000
+      mgt008          33           0                                                      
+					till           3           1      0.000 riprsubs     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 fldcult     	null       	0.000
+					plnt           4           2      0.000 corn     	null       	0.000
+					fert           4           3      0.000 elem-n  	broadcast   	150.000
+					fert           4           3      0.000 elem-p  	broadcast    	20.000
+					harv           9           1      0.000 corn		grain       	0.000
+					kill           9           1      0.000 corn     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           4           3      0.000 elem-n  	broadcast   	150.000
+					fert           4           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots     	cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           5           3      0.000 elem-n  	broadcast   	150.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots     	cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+                                        till           4           1      0.000 riprsubs     	null       	0.000
+                                        till           4          15      0.000 riprsubs     	null       	0.000
+                                        till           5           1      0.000 fldcult     	null       	0.000
+                                        plnt           5           2      0.000 pnut     	null       	0.000
+					harv          10           1      0.000 pnut     	peanuts     	0.000
+					kill          10           1      0.000 pnut     	null       	0.000
+					skip           0           0      0.000 null     	null       	0.000
+      mgt009          33           0                                                      
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           5           3      0.000 elem-n  	broadcast   	150.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots     	cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           5           3      0.000 elem-n  	broadcast   	150.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots     	cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+                                        till           4           1      0.000 riprsubs     	null       	0.000
+                                        till           4          15      0.000 riprsubs     	null       	0.000
+                                        till           5           1      0.000 fldcult     	null       	0.000
+                                        plnt           5           2      0.000 pnut     	null       	0.000
+					harv          10           1      0.000 pnut     	peanuts     	0.000
+					kill          10           1      0.000 pnut     	null       	0.000
+					till           3           1      0.000 riprsubs     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 fldcult     	null       	0.000
+					plnt           4           2      0.000 corn     	null       	0.000
+					fert           4           3      0.000 elem-n  	broadcast   	150.000
+					fert           4           3      0.000 elem-p  	broadcast    	20.000
+					harv           9           1      0.000 corn     	grain     	.000
+					kill           9           1      0.000 corn     	null       	0.000
+					skip           0           0      0.000 null     	null       	0.000
+      mgt010          33           0                                                      
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           5           3      0.000 elem-n  	broadcast   	150.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots     	cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+                                        till           4           1      0.000 riprsubs     	null       	0.000
+                                        till           4          15      0.000 riprsubs     	null       	0.000
+                                        till           5           1      0.000 fldcult     	null       	0.000
+                                        plnt           5           2      0.000 pnut     	null       	0.000
+					harv          10           1      0.000 pnut     	peanuts     	0.000
+					kill          10           1      0.000 pnut     	null       	0.000
+					till           3           1      0.000 riprsubs     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 fldcult     	null       	0.000
+					plnt           4           2      0.000 corn     	null       	0.000
+					fert           4           3      0.000 elem-n  	broadcast   	150.000
+					fert           4           3      0.000 elem-p  	broadcast    	20.000
+					harv           9           1      0.000 corn		grain     	0.000
+					kill           9           1      0.000 corn     	null       	0.000
+					till           3          15      0.000 riprsubs     	null       	0.000
+					till           4           1      0.000 riprsubs     	null       	0.000
+					till           4          15      0.000 riprsubs     	null       	0.000
+					till           5           1      0.000 fldcult     	null       	0.000
+					plnt           5           2      0.000 cots     	null       	0.000
+					fert           5           3      0.000 elem-n  	broadcast   	150.000
+					fert           5           3      0.000 elem-p  	broadcast    	20.000
+					harv          11           1      0.000 cots     	cotton_strip  	0.000
+					kill          11           1      0.000 cots     	null       	0.000
+					skip           0           0      0.000 null     	null       	0.000

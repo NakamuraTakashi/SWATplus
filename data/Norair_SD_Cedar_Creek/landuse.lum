@@ -1,7 +1,0 @@
-landuse.lum: General land use properties - Little River Experimental Watershed
-NAME           PLANT_COV   MGT_OPS      CN_LU     USLE_P  IURBAN  URB_LU     OVN    TILEDRAIN    SEPTIC    FSTRIP    GRASSWW    TERRACE    CONTOUR    STCROP    BMPUSER
-forestmixed         frst      null     wood_f       1.00       0       0    0.20          null     null      null       null       null       null      null       null    
-pasture             past      null      pasth       1.00       0       0    0.20          null     null      null       null       null       null      null       null
-agriculture         agrl      csoy  rc_strowres_p   1.00       0       0    0.05          null     null      null       null       null       null      null       null
-water               null      null      pasth       1.00       0       0    0.20          null     null      null       null       null       null      null       null
-urban               utrn      null      urban       1.00       1       4    0.20          null     null      null       null       null       null      null       null

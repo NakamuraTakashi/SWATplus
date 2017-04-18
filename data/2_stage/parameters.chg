@@ -1,4 +1,0 @@
-parameters.chg: Parameters to change for calibration
- 1
-NAME  CHG_TYPE  CHG_VALUE  ABSMIN     ABSMAX     NUM_TOT
-cn2	abschg	      -3     25.0       98.0           2     1   2

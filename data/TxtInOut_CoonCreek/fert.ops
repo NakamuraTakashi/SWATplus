@@ -1,4 +1,0 @@
-fert.ops: Fertilizer operations - SB_LS1
-  FERT_OP_NAME   FERT_NAME   FERT_AMT  SURF_FRAC
-   man_dairy      dairy_fr   2000.000    1.000
-   urea           urea        100.000    1.000

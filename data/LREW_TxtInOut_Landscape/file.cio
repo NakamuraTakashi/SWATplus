@@ -4,7 +4,7 @@ CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli 
 CONNECT           hru.con           null              subbasin.con      null              aquifer.con       null              channel.con       reservoir.con     null     null     null     null     null   
 CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     null   
 RESERVOIR         initial.res       reservoir.res     hydrology.res     nutrients.res     pesticide.res     sediment.res      weir.res          
-SUBBASIN          define.sub        element.sub       subbasin.sub      null     
+SUBBASIN          rout_unit.def     rout_unit.ele     rout_unit.ru      null     
 HRU               hru-data.hru      null       
 DR                null      
 AQUIFER           aquifer.aqu       
@@ -12,17 +12,16 @@ HERD              null     null     null
 WATER_RIGHTS      null     null     null 
 LINK              null     null         
 BASIN             codes.bsn         parameters.bsn    
-HYDROLOGY         hydrology.hyd     topography.hru    topography.sub    field.fld         
+HYDROLOGY         hydrology.hyd     topography.hyd    field.fld         
 EXCO              null        
 BACTERIA          null              bacteria.bac      
-STRUCTURAL        null     null     null     null     null     null     null     null     null     null     null     null     
+STRUCTURAL        null     null     null     null     null     
 PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          atmo_mon.dat      
-OPS               autofert.ops      autoirr.ops       contfert.ops      contpest.ops      fert.ops          graze.ops         harv.ops          irr.ops           pest.ops          sweep.ops         
-SCH               management.sch    null  
-LUM               cntable.lum       landuse.lum       
+OPS               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops         
+SCH               landuse.lum       management.sch    cntable.lum       cons_prac.lum       
 UPDATE            null     null     null     null    null    null    null     
 INIT              null              initial.plt       
 SOILS             soils.sol         nutrients.sol     
 DECISION_TABLE    d_table.dtl        
 CONSTITUENTS      null     null     null     null     null
-REGIONS           ls_catunit.ele    ls_catunit.def    null     null     ch_catunit.ele    null     null     aqu_catunit.ele   null     null     res_catunit.ele     null     null     null     null     null
+REGIONS           ls_unit.ele       ls_unit.def       null     null     null    null     null     aqu_unit.ele   null     null     res_catunit.ele     null     null     null     null     null
