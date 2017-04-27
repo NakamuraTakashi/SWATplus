@@ -1,4 +1,4 @@
-subbasin.con
+rout_unit.con
     NUMB   NAME   SUB_AREA       LAT      LONG      ELEV      SUB     WST   CONST_TYPE OVERFLOW RULESET OUT     _TOT OBJ_TYP1 OBJ_ID1 HYRO_TYP    FRAC1 OBJ_TYP2 OBJ_ID2 HYDRO_TYP  FRAC2
        1   sub1     493.38    31.734    -83.72   127.805       1       1       0       0       0       2    cha        1    tot        1    aqu        1    rhg        1
        2   sub2     102.06     31.72   -83.696   127.531       2       1       0       0       0       2    cha        2    tot        1    aqu        2    rhg        1

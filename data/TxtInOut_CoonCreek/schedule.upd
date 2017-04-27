@@ -1,6 +1,0 @@
-schedule.upd file
- 3
-TYPE         NAME     		DAY YEAR 	NAME  			NUM_TOT 
-land_use     landuse001       	1  1900		corn_noprac	  	  0
-land_use     landuse002       	1  1930		corn_conprac	  	  0
-terrace      broad_based      	1  1940		null  			  2	1	3

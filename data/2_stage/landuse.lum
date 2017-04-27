@@ -1,8 +1,7 @@
-landuse.lum: General land use properties - Little River Experimental Watershed
-NAME           PLANT_COV   MGT_OPS      CN_LU     USLE_P         IURBAN  URB_LU  OVN    TILEDRAIN    SEPTIC    FSTRIP    GRASSWW    BMPUSER
-forestmixed         frst      null     wood_f       up_down_slope    0     0      .05     null         null     null      null       null  
-pasture             past      null      pasth       up_down_slope    0     0      .05     null         null     null      null       null
-agriculture         agrl      csoy  rc_strowres_p   up_down_slope    0     0      .05     null         null     null      null       null
-water               null      null      pasth       up_down_slope    0     0      .05     null         null     null      null       null
-urban               utrn      null      urban       up_down_slope    1     4      .05     null         null     null      null       null
-fpbench             cana      cana     pasth       up_down_slope     0     0      .05     null         null     null      null       null
+landuse.lum: General land use properties
+name           plant_cov     mgt_ops     cn_lu          cons_prac       urb_lu         urb_ro                    ovn   tiledrain     septic    fstrip    grassww    bmpuser
+forestmixed         frst      null      wood_f      up_down_slope         null           null            fallow_nores     null         null     null      null       null  
+pasture             past      null      pasth       up_down_slope         null           null            fallow_nores     null         null     null      null       null
+agriculture         agrl      csoy  rc_strowres_p   up_down_slope         null           null            fallow_nores     null         null     null      null       null
+urban               utrn      null      urban       up_down_slope   residen_low_den   buildup_washoff    fallow_nores     null         null     null      null       null
+fpbench             cana      cana      pasth       up_down_slope         null           null            fallow_nores     null         null     null      null       null

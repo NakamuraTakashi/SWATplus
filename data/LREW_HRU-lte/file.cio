@@ -1,7 +1,7 @@
 file.cio: Filenames (input/output) - LREW_HRU-lte
 SIMULATION        time.sim          print.prt         object.prt        object.cnt        
 CLIMATE           weather-sta.cli   weather-wgn.cli   wind-dir.cli      pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli           
-CONNECT           null              hru-lte.con       subbasin.con      null              aquifer.con       null              channel.con       null     null     null     null     null     null       
+CONNECT           null              hru-lte.con       rout_unit.con     null              aquifer.con       null              channel.con       null     null     null     null     null     null       
 CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     null    
 RESERVOIR         null     null     null     null     null     null     null          
 SUBBASIN          rout_unit.def     rout_unit.ele     rout_unit.ru      null      
@@ -17,10 +17,9 @@ EXCO              null
 BACTERIA          null              bacteria.bac      
 STRUCTURAL        null     null     null     null     null       
 PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          atmo_mon.dat      
-OPS               null     null     null     null     null     null         
-SCH               null     null    
-LUM               null     null     null     null            
-UPDATE            null     null     null     null     null     null     null     
+OPS               null     null     null     null     null     null             
+LUM               null     null     null     null     null            
+CHG               null     null     null     null     null     null     null
 INIT              null     null      
 SOILS             null     null     
 DECISION_TABLE    d_table.dtl     

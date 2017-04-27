@@ -1,7 +1,7 @@
 file.cio (control input/output) - 2 Stage Ditch input data
 SIMULATION        time.sim          print.prt         object.prt       object.cnt
 CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli
-CONNECT           hru.con           null              subbasin.con      null     null     null     null     null     recall.con  null     null     outlet.con         chandeg.con
+CONNECT           hru.con           null              rout_unit.con     null     null     null     null     null     recall.con  null     null     outlet.con         chandeg.con
 CHANNEL           null              channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     channel-lte.cha
 RESERVOIR         null     null     null     null     null     null     null
 ROUTING_UNIT      rout_unit.def     rout_unit.ele     rout_unit.ru      null
@@ -18,9 +18,9 @@ BACTERIA          initial.bac       bacteria.bac
 STRUCTURAL        tiledrain.str     septic.str        filterstrip.str  grassedww.str    bmpuser.str 
 PARM_DB           plants.plt        fertilizer.frt    tillage.til      pesticide.pst    urban.urb        septic.sep         snow.sno        atmo_mon.dat
 OPS               harv.ops          null              irr.ops          chem_app.ops     null             null     
-LUM               landuse.lum       management.sch    cntable.lum      cons_prac.lum      
+LUM               landuse.lum       management.sch    cntable.lum      cons_practice.lum    ovn_table.lum    
 CHG               null     null     null     null     null     null     null
-INIT              initial.pst       initial.plt
+INIT              null              initial.plt
 SOILS             soils.sol         nutrients.sol
 DECISION_TABLE    d_table.dtl
 CONSTITUENTS      null     null     null     null     null 

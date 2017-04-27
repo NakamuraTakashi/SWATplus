@@ -1,7 +1,7 @@
 file.cio: Filenames (input/output) - LREW landscape
 SIMULATION        time.sim          print.prt         object.prt        object.cnt        
 CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli          
-CONNECT           hru.con           null              subbasin.con      null              aquifer.con       null              channel.con       reservoir.con     null     null     null     null     null   
+CONNECT           hru.con           null              rout_unit.con     null              aquifer.con       null              channel.con       reservoir.con     null     null     null     null     null   
 CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     null   
 RESERVOIR         initial.res       reservoir.res     hydrology.res     nutrients.res     pesticide.res     sediment.res      weir.res          
 SUBBASIN          rout_unit.def     rout_unit.ele     rout_unit.ru      null     
@@ -18,8 +18,8 @@ BACTERIA          null              bacteria.bac
 STRUCTURAL        null     null     null     null     null     
 PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          atmo_mon.dat      
 OPS               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops         
-SCH               landuse.lum       management.sch    cntable.lum       cons_prac.lum       
-UPDATE            null     null     null     null    null    null    null     
+LUM               landuse.lum       management.sch    cntable.lum       cons_practice.lum    ovn_table.lum        
+CHG               null     null     null     null    null    null    null     
 INIT              null              initial.plt       
 SOILS             soils.sol         nutrients.sol     
 DECISION_TABLE    d_table.dtl        
