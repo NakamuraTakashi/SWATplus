@@ -1,4 +1,4 @@
-lscatunit.ele
+ls_unit.ele
 NUMB       NAME   OBTYP  OBTYPNO    BSN_FRAC    SUB_FRAC    REG_FRAC
 1          hru1     hru        1 0.000261079      0.0817           0
 2          hru2     hru        2    1.67E-05      0.0052           0

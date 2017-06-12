@@ -1,11 +1,15 @@
 management.sch: Management schedules - LREW Sub Water
     MGT_NAME    NUMB_OPS   NUMB_AUTO OP_TYPE   TRIG_TYPE         DAY     HU_SCH OP_DATA1 	OP_DATA2 OP_OVERRIDE
-      c-sb-af-at-ai	0           4	plant_harv_c-sb		spring_fert	minimum_till	autoirr_str.8	      
+      c-sb-af-at-ai	   0           4	
+	                       plant_harv_c-sb	
+						   spring_fert	
+						   minimum_till	
+						   autoirr_str.8	      
       mgt001          33           0                                                      
-                                        till           4           1      0.000 riprsubs    	null       	0.000
-                                        till           4          15      0.000 riprsubs     	null       	0.000
-                                        till           5           1      0.000 fldcult     	null       	0.000
-                                        plnt           5           2      0.000 pnut     	null	  	0.000
+                    till           4           1      0.000 riprsubs    	null       	0.000
+                    till           4          15      0.000 riprsubs     	null       	0.000
+                    till           5           1      0.000 fldcult     	null       	0.000
+                    plnt           5           2      0.000 pnut     	null	  	0.000
 					harv          10           1      0.000 pnut  		peanuts       	0.000
 					kill          10           1      0.000 pnut     	null       	0.000
 					till           3           1      0.000 riprsubs     	null       	0.000

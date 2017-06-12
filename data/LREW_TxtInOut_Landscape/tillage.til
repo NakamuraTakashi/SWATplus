@@ -1,4 +1,4 @@
-tillage.til: Tillage parameters - Water_LS2_Take2
+tillage.til: Tillage parameters - LREW Subbasin March 2016
    TILL_NAME    MIX_EFF     MIX_DP      ROUGH   RIDGE_HT   RIDGE_SP                   Description
     fallplow      0.950    150.000     75.000      0.000      0.000   genericfallplowingoperation
     sprgplow      0.500    125.000     50.000      0.000      0.000 genericspringplowingoperation

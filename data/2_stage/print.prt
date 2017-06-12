@@ -4,9 +4,9 @@ NYSKIP    JD_START      JD_END    YR_START     YR_END     INTERVAL
 AA_NUMINT
      0
 CSV         DB        NETCDF
-   n          n             n
+   n         n             n
 SOIL        MGT        HYDCON         FDC	
-   n          n             n           n	 
+   n          n             y           n	 
 OBJECTS        DAILY       MONTHLY      YEARLY      AVANN      
 basin_wb           n             n           n          y
 basin_nb           n             n           y          n

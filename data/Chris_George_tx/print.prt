@@ -8,10 +8,10 @@ CSV         DB        NETCDF
 SOIL        MGT        HYDCON         FDC	
    n          n             n           n	 
 OBJECTS        DAILY       MONTHLY      YEARLY      AVANN      
-basin_wb           n             n           n          y
-basin_nb           n             n           n          y
-basin_ls           n             n           n          y
-basin_pw           n             n           n          y
+basin_wb           n             n           y          n
+basin_nb           n             n           y          n
+basin_ls           n             n           y          n
+basin_pw           n             n           y          n
 basin_aqu          n             n           n          n
 basin_res          n             n           n          n
 basin_cha          n             n           n          n
@@ -26,20 +26,20 @@ region_res         n             n           n          n
 region_cha         n             n           n          n
 region_sd_cha      n             n           n          n 
 region_psc         n             n           n          n
-lsunit_wb          n             y           n          n
-lsunit_nb          n             y           n          n
-lsunit_ls          n             y           n          n
-lsunit_pw          n             y           n          n
+lsunit_wb          n             n           n          n
+lsunit_nb          n             n           n          n
+lsunit_ls          n             n           n          n
+lsunit_pw          n             n           n          n
 hru_wb             n             n           n          n
 hru_nb             n             n           n          n
 hru_ls             n             n           n          n
 hru_pw             n             n           n          n
-hru-lte_wb         y             n           n          n
-hru-lte_nb         n             y           n          n
-hru-lte_ls         n             y           n          n
-hru-lte_pw         n             y           n          n
+hru-lte_wb         n             n           y          n
+hru-lte_nb         n             n           y          n
+hru-lte_ls         n             n           y          n
+hru-lte_pw         n             n           y          n
 channel            n             n           n          n
-channel_sd         n             n           n          y
+channel_sd         n             n           y          n
 aquifer            n             n           n          n
 reservoir          n             n           n          n
 recall	           n             n           n          n

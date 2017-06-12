@@ -1,9 +1,9 @@
 file.cio (control input/output) - Treynor, Iowa gully
 SIMULATION        time.sim          print.prt         null              object.cnt
-CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null
+CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null     null
 CONNECT           null              hru-lte.con       null     null     null     null     null     null     null     null     null     null      chandeg.con
 CHANNEL           null     null     null     null     null     null     channel-lte.cha
-RESERVOIR         null     null     null     null     null     null     null
+RESERVOIR         null     null     null     null     null     null     null     null     null
 ROUTING_UNIT      null     null     null     null
 HRU               null              hru-lte.hru
 DR                null
@@ -16,7 +16,7 @@ HYDROLOGY         null     null     null     null     null
 EXCO              null
 BACTERIA          null     null
 STRUCTURAL        null     null     null     null     null     
-PARM_DB           plants.plt        null     null     null     null     null     null     null
+PARM_DB           plants.plt        null     null     null     null     null     null
 OPS               null     null     null     null     null     null
 LUM               null     null     null     null     null
 CHG               null     null     null     null     null     null     null
@@ -25,3 +25,8 @@ SOILS             null     null
 DECISION_TABLE    d_table.dtl
 CONSTITUENTS      null     null     null     null     null 
 REGIONS           null     null     null     null     null     null     null     null     null     null     null     null     null     null     null     null
+PATH_PCP          null
+PATH_TMP          null
+PATH_SLR          null
+PATH_HMD          null
+PATH_WND          null

@@ -1,80 +1,80 @@
-tillage.til: Tillage parameters - General
-    NAME   TILLNM        EFFMIX  DEPTIL   RANRNS
-       1 FALLPLOW          0.95  150.00    75.00     1 GENERIC FALL PLOWING OPERATION
-       2 SPRGPLOW           0.5  125.00    50.00     2 GENERIC SPRING PLOWING OPERATION
-       3 CONSTILL          0.25  100.00    40.00     3 GENERIC CONSERVATION TILLAGE
-       4 ZEROTILL          0.05   25.00    10.00     4 GENERIC NO-TILL MIXING
-       5 DUCKFTC           0.55  100.00    15.00     5 DUCKFOOT CULTIVATOR
-       6 FLDCULT            0.3  100.00    20.00     6 FIELD CULTIVATOR
-       7 FUROWOUT          0.75   25.00    15.00     7 FURROW-OUT CULTIVATOR
-       8 MARKER            0.45  100.00    15.00     8 MARKER (CULTIVATOR)
-       9 ROLLCULT           0.5   25.00    15.00     9 ROLLING CULTIVATOR
-      10 ROWCULT           0.25   25.00    15.00   	10 ROW CULTIVATOR
-      11 DISCOVAT           0.5   25.00    15.00   	11 DISCOVATOR
-      12 LEVELER            0.5   25.00    15.00   	12 LEVELER
-      13 HARROW             0.2   25.00    10.00   	13 HARROW (TINES)
-      14 CULMULCH          0.25   25.00     5.00   	14 CULTI-MULCH ROLLER
-      15 CULPKPUL          0.35   40.00     5.00   	15 CULTI-PACKER PULVERIZER
-      16 LANDLEVL           0.5   75.00    15.00   	16 LAND PLANE-LEVELER
-      17 LANDALL            0.3  150.00    15.00   	17 LANDALL, DO-ALL
-      18 LASRPLAN           0.3  150.00    15.00   	18 LASER PLANER
-      19 LEVPLDIS          0.75   25.00    50.00   	19 LEVEE-PLOW-DISC
-      20 FLOAT              0.1   60.00    10.00   	20 FLOAT
-      21 FLDCDSCR           0.1   60.00    20.00   	21 FIELD COND (SCRATCHER)
-      22 LISTRMID          0.15   40.00    25.00   	22 LISTER (MIDDLE-BUSTER)
-      23 ROLLGROV          0.25   60.00     0.00   	23 ROLLER GROOVER
-      24 ROLPKRAT          0.05   40.00     0.00   	24 ROLLER PACKER ATTACHMENT
-      25 ROLPKRFT          0.35   40.00     0.00   	25 ROLLER PACKER FLAT ROLLER
-      26 SANDFIGT           0.7  100.00    10.00   	26 SAND-FIGHTER
-      27 SEEDROLL           0.7  100.00     0.00   	27 SEEDBED ROLLER
-      28 CRUSTBST           0.1   60.00    10.00   	28 CRUST BUSTER
-      29 ROLLHRRW           0.4   60.00     5.00   	29 ROLLER HARROW
-      30 TRIPLEK            0.4  100.00    25.00   	30 TRIPLE K
-      31 FINHARRW          0.55  100.00     5.00   	31 FINISHING HARROW
-      32 FLEXHARW           0.2   25.00    13.00   	32 FLEX-TINE HARROW CL
-      33 SPIKETTH           0.4   75.00    10.00   	33 POWERED SPIKE TOOTH HARROW
-      34 SPIKTOTH          0.25   25.00    13.00   	34 SPIKE TOOTH HARROW
-      35 SPRGTOTH          0.35   25.00    13.00   	35 SPRINGTOOTH HARROW
-      36 SOILFINS          0.55   75.00     5.00   	36 SOIL FINISHER
-      37 ROTHOE             0.1    5.00    13.00   	37 ROTARY HOE
-      38 ROTERRA            0.8    5.00    10.00   	38 ROTERRA
-      39 ROTOTILL           0.8    5.00    13.00   	39 ROTO-TILLER
-      40 ROTBEDDR           0.8  100.00    40.00   	40 ROTOVATOR-BEDDER
-      41 ROWBUCK            0.7  100.00    35.00   	41 ROWBUCK
-      42 RIPPER            0.25  350.00    15.00   	42 RIPPER
-      43 MIDBST1R           0.7  100.00    35.00   	43 MIDDLE BUSTER
-      44 RODWEEDR           0.3   25.00    10.00   	44 ROD WEEDER
-      45 RUBWHWPL          0.35    5.00     5.00   	45 RUBBER-WHEEL WEED PULLER
-      46 MULTIWDR           0.3   25.00    10.00   	46 MULTI-WEEDER
-      47 MLDBOARD          0.95  150.00    30.00   	47 MOLDBOARD PLOW
-      48 CHISPLOW           0.3  150.00    20.00   	48 CHISEL PLOW
-      49 CCHPLOW            0.5  150.00    20.00   	49 COULTER-CHISEL PLOW
-      50 DISKPLOW          0.85  100.00    50.00   	50 DISK PLOW
-      51 STUBMLCH          0.15   75.00    20.00   	51 STUBBLE-MULCH PLOW
-      52 SUBCHPLW          0.45  350.00    15.00   	52 SUBSOIL CHISEL PLOW
-      53 ROWCOND            0.5   25.00    10.00   	53 ROW CONDITIONER
-      54 HIPPER             0.5  100.00    30.00   	54 HIPPER
-      55 RICEROLL           0.1   50.00     0.00   	55 RICE ROLLER
-      56 PARAPLOW          0.15  350.00    25.00   	56 PARAPLOW
-      57 SBEDHIPR           0.7  350.00    40.00   	57 SUBSOILER-BEDDER HIP-RIP
-      58 RIPRSUBS          0.25  350.00    15.00   	58 DEEP RIPPER- SUBSOILER
-      59 VRIPPER           0.25  350.00    25.00   	59 V-RIPPER
-      60 BEDROLLR          0.25   50.00     5.00   	60 BED ROLLER
-      61 BEDDERD           0.55  150.00    35.00   	61 BEDDER (DISK)
-      62 BEDDHIPR          0.65  150.00    35.00   	62 BEDDER DISK-HIPPER
-      63 BEDDKROW          0.85  100.00    40.00   	63 BEDDER DISK-ROW
-      64 BEDDERS           0.55  150.00    30.00   	64 BEDDER SHAPER
-      65 DSKBRMKR          0.55  150.00    20.00   	65 DISK BORDER MAKER
-      66 DKCHMTIL          0.55  150.00    25.00   	66 DISK CHISEL (MULCH TILLER)
-      67 OFFSETHV           0.7  100.00    50.00   	67 OFFSET DIS/HEAVDUTY
-      68 OFFSETLT          0.55  100.00    40.00   	68 OFFSET DIS/LGHTDUTY
-      69 ONE-WAYT           0.6  100.00    50.00   	69 ONE-WAY (DISK TILLER)
-      70 TANDEMPL          0.55   75.00    30.00   	70 TANDEM DISK PLW
-      71 TANDEMRG           0.6   75.00    20.00   	71 TANDEM DISK REG
-      72 SINGLDIS          0.45  100.00    30.00   	72 SINGLE DISK
-      73 PWRMULCH           0.7   50.00    15.00   	73 POWER MULCHER
-      74 BLADE10           0.25   75.00    13.00   	74 BLADE 10 FT
-      75 FURWDIKE           0.7  100.00    13.00   	75 FURROW DIKER
-      76 BEETCULT          0.25   25.00    15.00   	76 BEET CULTIVATOR
-      77 CLTIWEED           0.3  100.00    15.00   	77 CULTIWEEDER
-      78 PACKER            0.35   40.00     0.00   	78 PACKER
+tillage.til: Tillage parameters - LREW Subbasin March 2016
+   TILL_NAME    MIX_EFF     MIX_DP      ROUGH   RIDGE_HT   RIDGE_SP                   Description
+    fallplow      0.950    150.000     75.000      0.000      0.000   genericfallplowingoperation
+    sprgplow      0.500    125.000     50.000      0.000      0.000 genericspringplowingoperation
+    constill      0.250    100.000     40.000      0.000      0.000    genericconservationtillage
+    zerotill      0.050     25.000     10.000      0.000      0.000          genericno-tillmixing
+     duckftc      0.550    100.000     15.000      0.000      0.000            duckfootcultivator
+     fldcult      0.300    100.000     20.000      0.000      0.000               fieldcultivator
+    furowout      0.750     25.000     15.000      0.000      0.000          furrow-outcultivator
+      marker      0.450    100.000     15.000      0.000      0.000            marker(cultivator)
+    rollcult      0.500     25.000     15.000      0.000      0.000             rollingcultivator
+     rowcult      0.250     25.000     15.000      0.000      0.000                 rowcultivator
+    discovat      0.500     25.000     15.000      0.000      0.000                    discovator
+     leveler      0.500     25.000     15.000      0.000      0.000                       leveler
+      harrow      0.200     25.000     10.000      0.000      0.000                 harrow(tines)
+    culmulch      0.250     25.000      5.000      0.000      0.000             culti-mulchroller
+    culpkpul      0.350     40.000      5.000      0.000      0.000        culti-packerpulverizer
+    landlevl      0.500     75.000     15.000      0.000      0.000             landplane-leveler
+     landall      0.300    150.000     15.000      0.000      0.000                 landalldo-all
+    lasrplan      0.300    150.000     15.000      0.000      0.000                   laserplaner
+    levpldis      0.750     25.000     50.000      0.000      0.000               levee-plow-disc
+       float      0.100     60.000     10.000      0.000      0.000                         float
+    fldcdscr      0.100     60.000     20.000      0.000      0.000          fieldcond(scratcher)
+    listrmid      0.150     40.000     25.000      0.000      0.000         lister(middle-buster)
+    rollgrov      0.250     60.000      0.000      0.000      0.000                 rollergroover
+    rolpkrat      0.050     40.000      0.000      0.000      0.000        rollerpackerattachment
+    rolpkrft      0.350     40.000      0.000      0.000      0.000        rollerpackerflatroller
+    sandfigt      0.700    100.000     10.000      0.000      0.000                  sand-fighter
+    seedroll      0.700    100.000      0.000      0.000      0.000                 seedbedroller
+    crustbst      0.100     60.000     10.000      0.000      0.000                   crustbuster
+    rollhrrw      0.400     60.000      5.000      0.000      0.000                  rollerharrow
+     triplek      0.400    100.000     25.000      0.000      0.000                       triplek
+    finharrw      0.550    100.000      5.000      0.000      0.000               finishingharrow
+    flexharw      0.200     25.000     13.000      0.000      0.000             flex-tineharrowcl
+    spiketth      0.400     75.000     10.000      0.000      0.000       poweredspiketoothharrow
+    spiktoth      0.250     25.000     13.000      0.000      0.000              spiketoothharrow
+    sprgtoth      0.350     25.000     13.000      0.000      0.000             springtoothharrow
+    soilfins      0.550     75.000      5.000      0.000      0.000                  soilfinisher
+      rothoe      0.100      5.000     13.000      0.000      0.000                     rotaryhoe
+     roterra      0.800      5.000     10.000      0.000      0.000                       roterra
+    rototill      0.800      5.000     13.000      0.000      0.000                   roto-tiller
+    rotbeddr      0.800    100.000     40.000      0.000      0.000              rotovator-bedder
+     rowbuck      0.700    100.000     35.000      0.000      0.000                       rowbuck
+      ripper      0.250    350.000     15.000      0.000      0.000                        ripper
+    midbst1r      0.700    100.000     35.000      0.000      0.000                  middlebuster
+    rodweedr      0.300     25.000     10.000      0.000      0.000                     rodweeder
+    rubwhwpl      0.350      5.000      5.000      0.000      0.000        rubber-wheelweedpuller
+    multiwdr      0.300     25.000     10.000      0.000      0.000                  multi-weeder
+    mldboard      0.950    150.000     30.000      0.000      0.000                 moldboardplow
+    chisplow      0.300    150.000     20.000      0.000      0.000                    chiselplow
+     cchplow      0.500    150.000     20.000      0.000      0.000            coulter-chiselplow
+    diskplow      0.850    100.000     50.000      0.000      0.000                      diskplow
+    stubmlch      0.150     75.000     20.000      0.000      0.000             stubble-mulchplow
+    subchplw      0.450    350.000     15.000      0.000      0.000             subsoilchiselplow
+     rowcond      0.500     25.000     10.000      0.000      0.000                rowconditioner
+      hipper      0.500    100.000     30.000      0.000      0.000                        hipper
+    riceroll      0.100     50.000      0.000      0.000      0.000                    riceroller
+    paraplow      0.150    350.000     25.000      0.000      0.000                      paraplow
+    sbedhipr      0.700    350.000     40.000      0.000      0.000       subsoiler-bedderhip-rip
+    riprsubs      0.250    350.000     15.000      0.000      0.000          deepripper-subsoiler
+     vripper      0.250    350.000     25.000      0.000      0.000                      v-ripper
+    bedrollr      0.250     50.000      5.000      0.000      0.000                     bedroller
+     bedderd      0.550    150.000     35.000      0.000      0.000                  bedder(disk)
+    beddhipr      0.650    150.000     35.000      0.000      0.000             bedderdisk-hipper
+    beddkrow      0.850    100.000     40.000      0.000      0.000                bedderdisk-row
+     bedders      0.550    150.000     30.000      0.000      0.000                  beddershaper
+    dskbrmkr      0.550    150.000     20.000      0.000      0.000               diskbordermaker
+    dkchmtil      0.550    150.000     25.000      0.000      0.000       diskchisel(mulchtiller)
+    offsethv      0.700    100.000     50.000      0.000      0.000            offsetdis/heavduty
+    offsetlt      0.550    100.000     40.000      0.000      0.000            offsetdis/lghtduty
+    one-wayt      0.600    100.000     50.000      0.000      0.000           one-way(disktiller)
+    tandempl      0.550     75.000     30.000      0.000      0.000                 tandemdiskplw
+    tandemrg      0.600     75.000     20.000      0.000      0.000                 tandemdiskreg
+    singldis      0.450    100.000     30.000      0.000      0.000                    singledisk
+    pwrmulch      0.700     50.000     15.000      0.000      0.000                  powermulcher
+     blade10      0.250     75.000     13.000      0.000      0.000                     blade10ft
+    furwdike      0.700    100.000     13.000      0.000      0.000                   furrowdiker
+    beetcult      0.250     25.000     15.000      0.000      0.000                beetcultivator
+    cltiweed      0.300    100.000     15.000      0.000      0.000                   cultiweeder
+      packer      0.350     40.000      0.000      0.000      0.000                        packer

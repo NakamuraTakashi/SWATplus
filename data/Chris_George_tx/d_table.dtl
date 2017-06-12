@@ -32,6 +32,7 @@ phu_base0 	hlt	  0	null		  -	  	 0.2		>	 <
 phu_base0 	hlt	  0	null		  -	  	 0.25		<	 -
  ACT_TYP			NAME		TYPE	CONST	APPLICATION	OUTCOME
 grow_end	hlt	  0	end_growth	grain	  0	null		y	 n
+
  NAME   	CONDS	ALTS	ACTS
 autoirr_str.8	  1	 1	 1
  VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP	LIM_CONST			ALT1
@@ -76,7 +77,6 @@ phu_plant 	hru	  0	phu_mat		  -	  1.15		 		-       -	>
 plant		hru	  0	plant_corn	corn	  0	null			y	 n	n
 plant		hru	  0	plant_soyb	soyb	  0	null			n	 y	n
 harvest_kill	hru	  0	grain_harv	all	  0	grain			n	 n	y
-
 
  NAME   	CONDS	ALTS	ACTS
 plant_c-sb	  4	 2	 2

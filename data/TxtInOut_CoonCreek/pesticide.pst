@@ -1,4 +1,4 @@
-pesticide.pst: Pesticide parameters - SB_LS1
+pesticide.pst: Pesticide parameters - Water_LS2_Take2
          PEST_NAME   SOIL_KOC    FR_WASH HL_FOLIAGE    HL_SOIL    APP_EFF   PEST_SOL                  Description
             245-tp    2600.00       0.40       5.00      20.00       0.75       2.50                 Silvex Amine
             2plus2      20.00       0.95      10.00      21.00       0.75  660000.00                     Mecoprop

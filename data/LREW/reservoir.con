@@ -1,4 +1,0 @@
-reservoir.con
-    CHA_NUMB    CHA_NAME      AREA       LAT       LONG     ELEV         RES    WST_NAME  CONST_TYPE   OVERFLOW        RULE     OUT_TOT    OBJ_TYP1     OBJ_ID1  HYDRO_TYP1      FRAC1
-           1        res1   135.090    31.734    -83.720        0           1           1           0      0.000           0           1         cha          48         tot      1.000
-           2        res2    54.036    31.720    -83.696        0           2           1           0      0.000           0           1         cha           1         tot      1.000

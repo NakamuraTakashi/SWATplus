@@ -1,17 +1,17 @@
 print.prt: Output print settings
 NYSKIP    JD_START      JD_END    YR_START     YR_END     INTERVAL
-     0           0           0           0          0            1
+     5           0           0           0          0            1
 AA_NUMINT
      0
 CSV         DB        NETCDF
-   n          n             n
+   n         n             n
 SOIL        MGT        HYDCON         FDC	
    n          n             n           n	 
 OBJECTS        DAILY       MONTHLY      YEARLY      AVANN      
-basin_wb           n             n           n          y
+basin_wb           n             n           y          n
 basin_nb           n             n           y          n
-basin_ls           y             n           n          n
-basin_pw           n             y           n          n
+basin_ls           n             n           y          n
+basin_pw           n             n           y          n
 basin_aqu          n             n           n          n
 basin_res          n             n           n          n
 basin_cha          n             n           n          n
@@ -27,13 +27,13 @@ region_cha         n             n           n          n
 region_sd_cha      n             n           n          n 
 region_psc         n             n           n          n
 lsunit_wb          n             n           y          n
-lsunit_nb          n             n           n          y
+lsunit_nb          n             n           y          n
 lsunit_ls          n             n           y          n
-lsunit_pw          n             n           n          y
+lsunit_pw          n             n           y          n
 hru_wb             n             n           y          n
-hru_nb             n             y           n          n
-hru_ls             n             y           n          n
-hru_pw             n             n           n          y
+hru_nb             n             n           y          n
+hru_ls             n             n           y          n
+hru_pw             n             n           y          n
 hru-lte_wb         n             n           n          n
 hru-lte_nb         n             n           n          n
 hru-lte_ls         n             n           n          n
@@ -41,7 +41,7 @@ hru-lte_pw         n             n           n          n
 channel            n             n           y          n
 channel_sd         n             n           n          n
 aquifer            n             n           y          n
-reservoir          n             n           n          n
+reservoir          y             n           y          n
 recall	           n             n           n          n
 hyd                n             n           n          n
           

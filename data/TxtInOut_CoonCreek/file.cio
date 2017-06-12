@@ -1,9 +1,9 @@
 file.cio: Filenames (input/output) - Coon Creek
 SIMULATION        time.sim          print.prt         object.prt        object.cnt        
-CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null           
+CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null     null           
 CONNECT           hru.con           null              rout_unit.con     null              aquifer.con       null     channel.con     null     null     null     null     null        chandeg.con       
 CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     channel-lte.cha    
-RESERVOIR         null     null     null     null     null     null     null          
+RESERVOIR         null     null     null     null     null     null     null     null     null          
 SUBBASIN          rout_unit.def     rout_unit.ele     rout_unit.ru      null     
 HRU               hru-data.hru      null       
 DR                null      
@@ -16,7 +16,7 @@ HYDROLOGY         hydrology.hyd     topography.hyd    field.fld
 EXCO              null          
 BACTERIA          null     null      
 STRUCTURAL        null              septic.str        null     null     null       
-PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno          null      
+PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno      
 OPS               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops        
 LUM               landuse.lum       management.sch    cntable.lum       cons_practice.lum     ovn_table.lum       
 CHG               codes.cal         null     null     ls_parms.cal      ls_regions.cal     ch_orders.cal   ch_parms.cal
@@ -25,3 +25,8 @@ SOILS             soils.sol         nutrients.sol
 DECISION_TABLE    d_table.dtl        
 CONSTITUENTS      null     null     null     null     null 
 REGIONS           ls_unit.ele       ls_unit.def    null     null     null     null     null     aqu_unit.ele     null     null    null     null     null     null     null     null                        
+PATH_PCP          null
+PATH_TMP          null
+PATH_SLR          null
+PATH_HMD          null
+PATH_WND          null
