@@ -1,7 +1,7 @@
 file.cio (control input/output) - Small gull (Texas)
 SIMULATION        time.sim          print.prt         null              object.cnt
 CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null     null
-CONNECT           null              hru-lte.con       null     null     null     null     null     null     null     null     null     null      chandeg.con
+CONNECT           null              hru-lte.con       null     null     null     null     null     null     null     null     null     outlet.con      chandeg.con
 CHANNEL           null     null     null     null     null     null     channel-lte.cha
 RESERVOIR         null     null     null     null     null     null     null     null     null
 ROUTING_UNIT      null     null     null     null

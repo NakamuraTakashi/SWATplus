@@ -1,4 +1,4 @@
-channel.
+channel.con
 CHA_NUMB   CHA_NAME         AREA    LATITUDE    LONGITUDE      ELEV      CHA   WST_NAME CONST_TYPE OVERFLOW RULE OUT_TOT OBJ_TYP1 OBJ_ID1 HYDRO_TYPE FRAC1
        1       cha1       109.71      31.744     -83.734           0       1      26       0       0       0       1    cha        9    tot        1
        2       cha2        64.98      31.744     -83.734           0       2      26       0       0       0       1    cha       10    tot        1
