@@ -1,3 +1,3 @@
 pesticide.res: Reservoir pesticide inputs - asdf;lj
-      NUMB         NAME  PST_CONC   PST_KOC   PST_MIX   PST_REA   PST_RSP   PST_STL   PST_VOL  SPST_ACT  SPST_BRY SPST_CONC  SPST_REA
-         1 reservoir001      0.00      0.50      0.01      0.02      0.01      0.20     0.010      0.20      0.05      0.01      1.00
+NAME  PST_CONC   PST_KOC   PST_MIX   PST_REA   PST_RSP   PST_STL   PST_VOL  SPST_ACT  SPST_BRY SPST_CONC  SPST_REA
+reservoir001      0.00      0.50      0.01      0.02      0.01      0.20     0.010      0.20      0.05      0.01      1.00
