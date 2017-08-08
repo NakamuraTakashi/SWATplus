@@ -24,7 +24,7 @@ INIT              null              initial.plt
 SOILS             soils.sol         nutrients.sol
 DECISION_TABLE    d_table.dtl
 CONSTITUENTS      null     null     null     null     null 
-REGIONS           ls_unit.ele       ls_unit.def    null     null     null     null     null     null     null     null     null     null     null     null     null     null
+REGIONS           ls_unit.ele       ls_unit.def    null     null     null     null     null     null     null     null     null     null     null     null     null     null     null
 PATH_PCP          null
 PATH_TMP          null
 PATH_SLR          null

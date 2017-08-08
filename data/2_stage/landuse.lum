@@ -1,7 +1,7 @@
 landuse.lum: General land use properties
-name           plant_cov     mgt_ops     cn_lu          cons_prac       urb_lu         urb_ro                    ovn   tiledrain     septic    fstrip    grassww    bmpuser
-forestmixed         frst      null      wood_f      up_down_slope         null           null            fallow_nores     null         null     null      null       null  
-pasture             past      null      pasth       up_down_slope         null           null            fallow_nores     null         null     null      null       null
-agriculture         agrl      csoy  rc_strowres_p   up_down_slope         null           null            fallow_nores     null         null     null      null       null
-urban               utrn      null      urban       up_down_slope   residen_low_den   buildup_washoff    fallow_nores     null         null     null      null       null
-fpbench             cana      cana      pasth       up_down_slope         null           null            fallow_nores     null         null     null      null       null
+name            cal_group     plant_cov     mgt_ops     cn_lu          cons_prac       urb_lu         urb_ro                    ovn   tiledrain     septic    fstrip    grassww    bmpuser
+forestmixed          null          frst      null      wood_f      up_down_slope         null           null            fallow_nores     null         null     null      null       null  
+pasture              null          past      null      pasth       up_down_slope         null           null            fallow_nores     null         null     null      null       null
+agriculture          null          agrl      csoy  rc_strowres_p   up_down_slope         null           null            fallow_nores     null         null     null      null       null
+urban                null          utrn      null      urban       up_down_slope   residen_low_den   buildup_washoff    fallow_nores     null         null     null      null       null
+fpbench              null          cana      cana      pasth       up_down_slope         null           null            fallow_nores     null         null     null      null       null

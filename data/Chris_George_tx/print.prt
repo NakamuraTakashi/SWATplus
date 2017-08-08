@@ -9,7 +9,7 @@ SOIL        MGT        HYDCON         FDC
    n          n             n           n	 
 OBJECTS        DAILY       MONTHLY      YEARLY      AVANN      
 basin_wb           n             n           y          n
-basin_nb           n             n           y          n
+basin_nb           n             n           n          n
 basin_ls           n             n           y          n
 basin_pw           n             n           y          n
 basin_aqu          n             n           n          n
@@ -35,7 +35,7 @@ hru_nb             n             n           n          n
 hru_ls             n             n           n          n
 hru_pw             n             n           n          n
 hru-lte_wb         n             n           y          n
-hru-lte_nb         n             n           y          n
+hru-lte_nb         n             n           n          n
 hru-lte_ls         n             n           y          n
 hru-lte_pw         n             n           y          n
 channel            n             n           n          n

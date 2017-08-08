@@ -43,5 +43,5 @@ channel_sd         y             n           n          n
 aquifer            n             n           n          n
 reservoir          n             n           n          n
 recall	           n             n           n          n
-hyd                y             n           n          n
+hyd                n             n           n          n
           

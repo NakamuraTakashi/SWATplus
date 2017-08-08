@@ -1,3 +1,3 @@
 channel-lte.cha
-NAME   	             ORDER	 RTE_DB	CHW	CHD  CHS	     CHL	CHN     CHK  CHEROD	CHCOV	HC_COV	CHSEQ	D50	CLAY	BD      CHSS    BEDLD   TC  SHEAR_BNK   HC_KH  HC_HGT   HC_INI
-TreyIowa             null         1     21.9	3.3  0.0235	     0.6181	0.05	1	0.4	  0.0	 0.8	0.1175 	0.1 	30	1.25	0.312	 0.2	55.   .75        .028     1.5      0.00
+NAME   	             ORDER	 RTE_DB	     CHW	CHD     CHS	      CHL	 CHN   CHK  CHEROD	CHCOV	HC_COV	CHSEQ	D50	 CLAY	  BD     CHSS  BEDLD   TC  SHEAR_BNK   HC_KH  HC_HGT   HC_INI
+TreyIowa             null      null     21.9	3.3  0.0235	   0.6181	0.05	1	   0.4	  0.0	  0.8	0.1175 	0.1 	30	1.25	0.312	 0.2	55.     0.75   0.028     1.5     0.00

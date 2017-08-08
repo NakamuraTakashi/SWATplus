@@ -1,6 +1,0 @@
-fert.ops: Fertilizer operations - LREW Sub Water
-  FERT_OP_NAME   FERT_NAME   FERT_AMT  SURF_FRAC
-       fert001      elem-n      115.7       0.05
-       fert002      elem-p       18.8       0.05
-       fert003     anh-nh3       92.1       0.05
-       fert004        urea       12.3       0.05

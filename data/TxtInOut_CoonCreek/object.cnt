@@ -1,3 +1,3 @@
 object.cnt: Spatial object counts - SB_LS1
-        OBJS         HRU     HRU_LTE         SUB     MODFLOW         AQU        CHAN         RES      RECALL        EXCO          DR       CANAL        PUMP      OUTLET     CHANDEG       AQU2D        HERD         WRO
+        OBJS         HRU     HRU_LTE         RU     MODFLOW         AQU        CHAN         RES      RECALL        EXCO          DR       CANAL        PUMP      OUTLET     CHANDEG       AQU2D        HERD         WRO
         5268        3113          0         166           0         166          0           0           0           0           0           0           0           0        1823           0           0           0

@@ -1,3 +1,0 @@
-autoirr.ops: Auto-irrigation operations - Water_LS2_Take2
-  AIRR_OP_NAME    SRC_TYPE     SRC_LOC     WS_TRIG    WS_FACT    IRR_AMT   IRR_SALT    IRR_EFF SURQ_RATIO
-       example           0           0           1      0.000      0.000      0.000      0.000      0.000
