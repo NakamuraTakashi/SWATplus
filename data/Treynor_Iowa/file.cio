@@ -13,13 +13,13 @@ WATER_RIGHTS      null              null               null
 LINK              null     null
 BASIN             codes.bsn         parameters.bsn  
 HYDROLOGY         null     null     null     null     null 
-EXCO              null
+EXCO              null     null
 BACTERIA          null     null
 STRUCTURAL        null     null     null     null     null     
 PARM_DB           plants.plt        null     null     null     null     null     null
 OPS               null     null     null     null     null     null
 LUM               null     null     null     null     null
-CHG               null     null     null     null     null     null     null
+CHG               null     null     null     null     null     null     null     null     null
 INIT              null     null
 SOILS             null     null
 DECISION_TABLE    d_table.dtl

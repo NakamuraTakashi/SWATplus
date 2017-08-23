@@ -13,13 +13,13 @@ WATER_RIGHTS  null  null  null  null
 LINK          null  null  
 BASIN         null  null  
 HYDROLOGY     null  topography.hyd     field.fld  
-EXCO          null  
+EXCO          null  null  
 BACTERIA      null  null  
 STRUCTURAL    null  null  null  null  null  null  null  null  null  null  null  null  
 PARM_DB       plants.plt  fertilizer.frt  tillage.til  pesticide.pst  urban.urb  septic.sep  null  
 OPS           null  null  null  null  null  null  
 LUM           null  null  null  null  null  
-UPDATE        null  null  null  null  null  null  null  
+UPDATE        null  null  null  null  null  null  null  null  null  
 INIT          null  null  
 SOILS         null  null  
 DECISION      d_table.dtl  

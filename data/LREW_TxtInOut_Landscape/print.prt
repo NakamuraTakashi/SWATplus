@@ -29,7 +29,7 @@ region_psc         n             n           n          n
 lsunit_wb          n             n           y          n
 lsunit_nb          n             n           y          n
 lsunit_ls          n             n           y          n
-lsunit_pw          n             n           y          n
+lsunit_pw          n             n           y          y
 hru_wb             n             n           y          n
 hru_nb             n             n           y          n
 hru_ls             n             n           y          n
@@ -44,4 +44,4 @@ aquifer            n             n           y          n
 reservoir          y             n           y          n
 recall	           n             n           n          n
 hyd                n             n           n          n
-          
+ru                 n             n           n          n          

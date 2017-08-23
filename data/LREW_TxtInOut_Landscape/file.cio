@@ -13,18 +13,18 @@ WATER_RIGHTS      null     null     null
 LINK              null     null         
 BASIN             codes.bsn         parameters.bsn    
 HYDROLOGY         hydrology.hyd     topography.hyd    field.fld         
-EXCO              null        
+EXCO              null     null        
 BACTERIA          null              bacteria.bac      
 STRUCTURAL        null     null     null     null     null     
 PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     urban.urb         septic.sep        snow.sno      
 OPS               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops         
 LUM               landuse.lum       management.sch    cntable.lum       cons_practice.lum    ovn_table.lum        
-CHG               null     null     null     null    null    null    null     
+CHG               null     null     null     null    null    null    null     null     null     
 INIT              null              initial.plt       
 SOILS             soils.sol         nutrients.sol     
 DECISION_TABLE    d_table.dtl        
 CONSTITUENTS      null     null     null     null     null
-REGIONS           ls_unit.ele       ls_unit.def       null     null     null    null     null     null     aqu_unit.ele   null     null     null     null     null     null     null     null
+REGIONS           ls_unit.ele       ls_unit.def       null     null     null    null     null     aqu_unit.ele   null     null     null     null     null     null     null     null     null
 CLIMATE_PCP       null
 CLIMATE_TMP       null
 CLIMATE_SLR       null

@@ -1,4 +1,4 @@
-hru.con: HRU spatial units - Little River Experimental Watershed								
-NUMB	NAME	 AREA_HA    LAT     LONG     ELEV     HRU     WST   CONSTIT    OVERFLOW RULESET  OUT_TOT    OBTYP_OUT  OBTYPNO_OUT	HTYP_OUT   FRAC_OUT
-1	bench    	0.4800      0.0      0.0      0.00       1      1         0           0       0        0      0
-2	field    	495.27      0.0      0.0      0.00       2      1         0           0       0        0      0
+hru.con (2-stage)
+    NUMB   NAME     AREA       LAT      LONG      ELEV       HRU   WST      CONST_TYPE OVERFLOW RULESET OUT_TOT
+       1  bench    0.480     0.000     0.000     0.000         1  wea1               0        0       0       0
+       2  field   495.27     0.000     0.000     0.000         2  wea2               0        0       0       0
