@@ -1,0 +1,3 @@
+pesticide.cha: Pesticide channel properties - LREW Sub Water
+CHA_PST_NAME   PST_REAC  PST_VOLAT    PST_KOC    PST_MIX    PST_RSP    PST_STL SEDPST_ACT SEDPST_BUR SEDPST_CONC SEDPST_REAC
+        null      0.007      0.010      0.000      0.001      0.000      1.000      0.030      0.002       0.000       0.050

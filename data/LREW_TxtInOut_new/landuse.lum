@@ -1,0 +1,12 @@
+landuse.lum
+LULC_NAME    CAL_GROUP        PCOM_NAME    MGT_NAME         CN2      CONS_PRAC         URB_LU          URB_RO        OV_MANN TILE_NAME SEP_NAME VFS_NAME GRWW_NAME BMP_NAME
+lrew_ag01    all_lum      	    pcom001      mgt001  rc_strow_p  up_down_slope           null            null chisplow_nores      null     null     null      null     null
+lrew_ag02    all_lum            pcom001      mgt008  rc_strow_p  up_down_slope           null            null chisplow_nores      null     null     null      null     null
+lrew_ag03    all_lum            pcom001      mgt009  rc_strow_p  up_down_slope           null            null chisplow_nores      null     null     null      null     null
+lrew_ag04    all_lum            pcom001      mgt010  rc_strow_p  up_down_slope           null            null chisplow_nores      null     null     null      null     null
+landuse002   all_lum            pcom002      mgt002     pastg_p  up_down_slope           null            null   bermudagrass      null     null     null      null     null
+landuse003   all_lum            pcom003      mgt003      wood_f  up_down_slope           null            null   forest_light      null     null     null      null     null
+landuse004   all_lum            pcom004      mgt004      wood_f  up_down_slope           null            null   forest_light      null     null     null      null     null
+landuse005   all_lum            pcom005      mgt005      wood_f  up_down_slope           null            null   forest_light      null     null     null      null     null
+landuse006   all_lum            pcom006      mgt006        farm  up_down_slope           null            null   range_sparse      null     null     null      null     null
+landuse007   all_lum            pcom007      mgt007        farm  up_down_slope residen_ml_den buildup_washoff   range_sparse      null     null     null      null     null

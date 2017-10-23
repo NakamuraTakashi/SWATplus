@@ -1,6 +1,6 @@
 weather-sta.cli
-NUMB     NAME          WGN       PGAGE       TGAGE   SGAGE   HGAGE   WGAGE   WNDIR ATMODEP
-1        TreyIowa     wgn001 TreyIowa.pcp TreyIowa.tmp     sim     sim     sim    null    null
+NAME          WGN       PGAGE       TGAGE   SGAGE   HGAGE   WGAGE   WNDIR ATMODEP
+TreyIowa     wgn001 TreyIowa.pcp TreyIowa.tmp     sim     sim     sim    null    null
 
 
 

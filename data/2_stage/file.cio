@@ -4,7 +4,7 @@ CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli 
 CONNECT           hru.con           null              rout_unit.con     null     null     null     null     null     recall.con  null     null     outlet.con         chandeg.con
 CHANNEL           null              channel.cha       hydrology.cha     sediment.cha      nutrients.cha     pesticide.cha     channel-lte.cha
 RESERVOIR         null     null     null     null     null     null     null     null     null
-ROUTING_UNIT      rout_unit.def     rout_unit.ele     rout_unit.ru      null
+ROUTING_UNIT      rout_unit.def     rout_unit.ele     rout_unit.rtu     null
 HRU               hru-data.hru      null
 DR                null
 AQUIFER           null

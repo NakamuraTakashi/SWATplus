@@ -1,3 +1,0 @@
-bacteria.bac: Bacteria properties - Water_LS2_Take2
-BACT_NAME    DO_SOLN    GR_SOLN    DO_SORB    GR_SORB         KD      T_ADJ    WASHOFF    DO_PLNT    GR_PLNT  FR_MANURE      PERCO DET_THRSHD  DO_STREAM  GR_STREAM     DO_RES     GR_RES        SWF   CONC_MIN
-  Example     10.000      5.000     12.000      6.000      0.050      1.050      0.100    100.000      1.000      0.900     10.000    100.000      0.000      0.000      0.000      0.000      0.150    100.000

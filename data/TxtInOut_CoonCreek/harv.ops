@@ -1,4 +1,4 @@
-harv.ops: Harvest operations - LREW Sub Water
+harv.ops: Harvest operations
   HARV_OP_NAME   HARV_TYPE HARV_INDEX   HARV_EFF HARV_BIO_MIN
          grain       grain      0.000      0.950        0.000
    grass_mulch     biomass      0.500      0.000     2000.000
