@@ -1,4 +1,4 @@
-tmp.cli: Temperature file names - LREW Sub Water
+tmp.cli: Temperature file names - Water_LS2_Take2
      FILENAME
  lrewnoaa.tmp
   lrewuga.tmp
