@@ -1,6 +1,6 @@
 channel.cha: Channel properties - LREW Sub Water
     CHA_NUMB    CHA_NAME     CHA_INI     CHA_HYD     CHA_SED     CHA_NUT     CHA_PST  CHA_LS_LNK  CHA_AQU_LNK
-           1        cha1        null        cha1        null        null        null           0            0
+           1        cha1        null        chax        null        null        null           0            0
            2        cha2        null        cha2        null        null        null           0            0
            3        cha3        null        cha3        null        null        null           0            0
            4        cha4        null        cha4        null        null        null           0            0
