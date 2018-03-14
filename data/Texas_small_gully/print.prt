@@ -1,6 +1,6 @@
 print.prt:          Output print settings
-NYSKIP              JD_START            JD_END              YR_START            YR_END              INTERVAL
-1                   1                   366                 1996                1997                   1
+NYSKIP              DAY_START         YRC_START              DAY_END            YRC_END            INTERVAL
+1                   1                    1996                  366               1997                 1 
 AA_NUMINT
 0
 CSV                 DB                  NETCDF
