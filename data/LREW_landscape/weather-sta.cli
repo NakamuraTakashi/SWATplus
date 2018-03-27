@@ -1,0 +1,32 @@
+weather-sta.cli: Weather stations - Water_LS2_Take2
+WST_NAME    WGN_NAME    PCP_NAME     TMP_NAME    SLR_NAME    HMD_NAME    WND_NAME  WIND_DIR_NAME  ATMO_DEP_NAME
+    wea1      wgn001 lrew162.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea10      wgn001 lrew142.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea11      wgn001 lrew144.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea12      wgn001 lrew112.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea13      wgn001 lrew132.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea14      wgn001 lrew163.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea15      wgn001 lrew143.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea16      wgn001 lrew126.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea17      wgn001 lrew137.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea18      wgn001 lrew149.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea19      wgn001 lrew135.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea2      wgn001 lrew136.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea20      wgn001 lrew128.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea21      wgn001 lrew140.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea22      wgn001 lrew130.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea23      wgn001 lrew164.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea24      wgn001 lrew145.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea25      wgn001 lrew139.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea26      wgn001 lrew148.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea27      wgn001 lrew138.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+   wea28      wgn001 lrew131.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea3      wgn001 lrew116.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea4      wgn001 lrew122.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea5      wgn001 lrew134.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea6      wgn001 lrew127.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea7      wgn001 lrew108.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea8      wgn001 lrew146.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+    wea9      wgn001 lrew147.pcp  lrewuga.tmp lrewuga.slr lrewuga.hmd lrewuga.wnd         null         null
+
+
