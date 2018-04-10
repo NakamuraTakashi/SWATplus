@@ -35,11 +35,11 @@ hru_nb                                n                   n                   n 
 hru_ls                                n                   n                   n                   n
 hru_pw                                n                   n                   n                   n
 hru-lte_wb                            n                   n                   y                   n
-hru-lte_nb                            y                   n                   n                   n
-hru-lte_ls                            y                   n                   n                   n
-hru-lte_pw                            y                   n                   n                   n
+hru-lte_nb                            n                   n                   n                   n
+hru-lte_ls                            n                   n                   n                   n
+hru-lte_pw                            n                   n                   n                   n
 channel                               n                   n                   n                   n
-channel_sd                            y                   n                   y                   n
+channel_sd                            n                   n                   y                   n
 aquifer                               n                   n                   n                   n
 reservoir                             n                   n                   n                   n
 recall	                              n                   n                   n                   n

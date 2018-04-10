@@ -1,5 +1,5 @@
 ls_unit.ele
-NUMB           NAME   OBTYP OBTYPNO       BSN_FRAC     FRAC      DR
+NUMB           NAME   OBTYP  OBTYPNO       BSN_FRAC    FRAC      DR
        1  N62898901     hlt        1    2.62826E-05    0.54       0
        2  N62898902     hlt        2    1.33917E-05    0.27       0
        3  N62898903     hlt        3    8.42704E-06    0.17       0

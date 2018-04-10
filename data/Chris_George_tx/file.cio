@@ -1,29 +1,28 @@
 file.cio: control input/output - Texas (SWAT-LTE)
-SIMULATION    time.sim  print.prt  null  object.cnt  
+SIMULATION    time.sim  print.prt  null  object.cnt   null  
+BASIN         null  null 
 CLIMATE       weather-sta.cli  weather-wgn.cli  null  null  null  null  null  null  null  
 CONNECT       null  hru-lte.con null  null  null  null  null  null  null  null  null  null  null  
-CHANNEL       null  null  null  null  null  null  null  
-RESERVOIR     null  null  null  null  null  null  null  null  null  
-SUBBASIN      null  null  null  null  
-HRU           null  hru-lte.hru  
-DR            null  
+CHANNEL       null  null  null  null  null  null  null  null  null  null    
+RESERVOIR     null  null  null  null  null  null  null  null  null  null  null  null  
+RU            null  null  null  null  
+HRU           null  hru-lte.hru
+EXCO          null  null  null  null  null  null  
+RECALL        null
+DR            null  null  null  null  null  null  
 AQUIFER       null 
 HERD          null  null  null  null
 WATER_RIGHTS  null  null  null  null 
-LINK          null  null  
-BASIN         null  null  
-HYDROLOGY     null  topography.hyd     field.fld  
-EXCO          null  null  
-BACTERIA      null  null  
+LINK          null  null   
+HYDROLOGY     null  topography.hyd     field.fld   
 STRUCTURAL    null  null  null  null  null  null  null  null  null  null  null  null  
-PARM_DB       plants.plt  fertilizer.frt  tillage.til  pesticide.pst  urban.urb  septic.sep  null  
+PARM_DB       plants.plt  fertilizer.frt  tillage.til  pesticide.pst      null  null  null  urban.urb  septic.sep  null  
 OPS           null  null  null  null  null  null  
 LUM           null  null  null  null  null  
-UPDATE        null  null  null  null  null  null  null  null  null  
-INIT          null  null  
+CHG           null  null  null  null  null  null  null  null  null  
+INIT          null  null  null  null  null  null  null  null  null  
 SOILS         null  null  
 DECISION      d_table.dtl  
-CONSTITUENTS  null  null  null  null  null
 REGIONS       ls_unit.ele       ls_unit.def      null  null  null  null  null  null  null  null  null  null  null  null  null  null  null
 PATH_PCP	  null
 PATH_TMP      null
