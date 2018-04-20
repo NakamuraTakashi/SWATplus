@@ -1,6 +1,6 @@
 print.prt: Output print settings
 NYSKIP    JD_START      JD_END    YR_START     YR_END     INTERVAL
-     5           0           0           0          0            1
+     0           0           0           0          0            1
 AA_NUMINT
      0
 CSV         DB        NETCDF
@@ -38,7 +38,7 @@ hru-lte_wb         n             n           n          n
 hru-lte_nb         n             n           n          n
 hru-lte_ls         n             n           n          n
 hru-lte_pw         n             n           n          n
-channel            n             n           n          y
+channel            n             y           n          y
 channel_sd         n             n           n          n
 aquifer            n             n           y          n
 reservoir          n             n           y          n
