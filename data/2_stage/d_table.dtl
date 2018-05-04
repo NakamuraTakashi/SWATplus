@@ -50,11 +50,11 @@ irrigate	hru	  0	sprinkler sprinkler_high  50.	null			y
  NAME   	CONDS	ALTS	ACTS
 spring_fert	  2	 2	 2
  VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP	LIM_CONST			ALT1	ALT2
-n_stress 	hru	  0	null		  -	  0.9		 		-	 >
+n_stress 	hru	  0	null		  -	  0.8		 		-	 >
 phu_base0 	hru	  0	null		  -	  0.14		 		>	 -
  ACT_TYP			NAME		TYPE	CONST	APPLICATION		OUTCOME
-fertilize	hru	  0	ammonia_spring	anh-nh3	 160.	inject     		y    	 n
-fertilize	hru	  0	side_dress	urea	  50.	broadcast		n	 y
+fertilize	hru	  0	ammonia_spring	elem_n	 160.	inject     		y    	 n
+fertilize	hru	  0	side_dress	    elem_p	  50.	broadcast		n	     y
 
  NAME   	CONDS	ALTS	ACTS
 minimum_till	  2	 1	 
