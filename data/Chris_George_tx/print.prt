@@ -1,6 +1,6 @@
-print.prt:          Output print settings
+print.prt          Output print settings
 NYSKIP              DAY_START           YRC_START        DAY_END          YRC_END     INTERVAL
-1                   0                   0                0                0            1
+1                   1                   1981                10             1981            1
 AA_NUMINT
 0
 CSV                 DB                  NETCDF
@@ -34,12 +34,12 @@ hru_wb                                n                   n                   n 
 hru_nb                                n                   n                   n                   n
 hru_ls                                n                   n                   n                   n
 hru_pw                                n                   n                   n                   n
-hru-lte_wb                            n                   n                   y                   n
-hru-lte_nb                            y                   n                   n                   n
-hru-lte_ls                            y                   n                   n                   n
-hru-lte_pw                            y                   n                   n                   n
+hru-lte_wb                            y                   y                   n                   y
+hru-lte_nb                            n                   n                   y                   n
+hru-lte_ls                            n                   n                   y                   n
+hru-lte_pw                            n                   n                   y                   n
 channel                               n                   n                   n                   n
-channel_sd                            y                   n                   y                   n
+channel_sd                            n                   n                   y                   n
 aquifer                               n                   n                   n                   n
 reservoir                             n                   n                   n                   n
 recall	                              n                   n                   n                   n

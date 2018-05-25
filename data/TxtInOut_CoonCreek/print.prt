@@ -26,10 +26,10 @@ region_res                            n                   n                   n 
 region_cha                            n                   n                   n                   n
 region_sd_cha                         n                   n                   n                   n
 region_psc                            n                   n                   n                   n
-lsunit_wb                             y                   n                   n                   n
-lsunit_nb                             y                   n                   n                   n
-lsunit_ls                             y                   n                   n                   n
-lsunit_pw                             y                   n                   n                   n
+lsunit_wb                             n                   n                   n                   n
+lsunit_nb                             n                   n                   n                   n
+lsunit_ls                             n                   n                   n                   n
+lsunit_pw                             n                   n                   n                   n
 hru_wb                                n                   n                   n                   n
 hru_nb                                n                   n                   n                   n
 hru_ls                                n                   n                   n                   n
