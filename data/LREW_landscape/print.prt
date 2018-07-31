@@ -4,7 +4,7 @@ NYSKIP    JD_START      JD_END    YR_START     YR_END     INTERVAL
 AA_NUMINT
      0
 CSV         DB        NETCDF
-   y         n             n
+   n         n             n
 SOIL        MGT        HYDCON         FDC	
    n          n             n           n	 
 OBJECTS        DAILY       MONTHLY      YEARLY      AVANN      
@@ -39,7 +39,7 @@ hru-lte_nb         n             n           n          n
 hru-lte_ls         n             n           n          n
 hru-lte_pw         n             n           n          n
 channel            y             y           y          y
-channel_sd         n             n           n          n
+channel_sd         n             n           n          y
 aquifer            y             y           y          y
 reservoir          n             n           n          n
 recall	           n             n           n          n
