@@ -16,7 +16,7 @@ WATER_RIGHTS      null              null               null
 LINK              chan-surf.lin     chan-aqu.lin  
 HYDROLOGY         hydrology.hyd     topography.hyd     field.fld
 STRUCTURAL        tiledrain.str     septic.str        filterstrip.str  grassedww.str    bmpuser.str 
-PARM_DB           plants.plt        fertilizer.frt    tillage.til      pesticide.pst    pathogens.pth       null     null     urban.urb        septic.sep         snow.sno
+HRU_PARM_DB       plants.plt        fertilizer.frt    tillage.til      pesticide.pst    pathogens.pth       null     null     urban.urb        septic.sep         snow.sno
 OPS               harv.ops          null              irr.ops          chem_app.ops     null     null     
 LUM               landuse.lum       management.sch    cntable.lum      cons_practice.lum    ovn_table.lum    
 CHG               null     null     null     null     null     null     null     null     null

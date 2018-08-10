@@ -1,5 +1,4 @@
 ls_unit.def
- 19225
 NUMB       SUB_NAME         AREA  ELEM_TOT ELEM1   ELEM2
        1       lsu1  4.90958E-05       2       1      -4
        2       lsu2  4.90958E-05       2       5      -8

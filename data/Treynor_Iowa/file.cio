@@ -16,7 +16,7 @@ WATER_RIGHTS      null     null     null
 LINK              null     null  
 HYDROLOGY         null     null     null     null     null 
 STRUCTURAL        null     null     null     null     null     
-PARM_DB           plants.plt        null     null     null     null     null     null     null     null     null
+HRU_PARM_DB       plants.plt        null     null     null     null     null     null     null     null     null
 OPS               null     null     null     null     null     null
 LUM               null     null     null     null     null
 CHG               null     null     null     null     null     null     null     null     null

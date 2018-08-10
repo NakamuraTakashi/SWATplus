@@ -16,7 +16,7 @@ WATER_RIGHTS      null     null     null
 LINK              null     null             
 HYDROLOGY         hydrology.hyd     topography.hyd    field.fld              
 STRUCTURAL        null     null     null     null     null     
-PARM_DB           plants.plt        fertilizer.frt    tillage.til       pesticide.pst     null     null     null          urban.urb         septic.sep        snow.sno      
+HRU_PARM_DB       plants.plt        fertilizer.frt    tillage.til       pesticide.pst     null     null     null          urban.urb         septic.sep        snow.sno      
 OPS               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops         
 LUM               landuse.lum       management.sch    cntable.lum       cons_practice.lum    ovn_table.lum        
 CHG               null              cal_parms.cal     calibration.cal   null     null     null     null    null    null
