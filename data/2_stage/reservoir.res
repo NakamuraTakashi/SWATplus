@@ -1,3 +1,3 @@
 reservoir.res: Reservoir properties - asdf;lj
-    NUMB         NAME    INIT     HYD     REL     SED     NUT     PST
-       1 reservoir001       1       1       1       1       1       1
+    NUMB         NAME    INIT     	HYD     	      REL     	           SED      	  NUT                 PST
+       1 	  belton   high_init	belton_hyd	  corps_med_res1	  sw_us_med      southeast_us       default_us       

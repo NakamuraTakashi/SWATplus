@@ -1,3 +1,5 @@
-channel-lte.cha (large gully)
-NAME   	             ORDER	 RTE_DB	      CHW	 CHD	 CHS	     CHL	CHN	  CHK	CHEROD	 CHCOV	HC_COV	 CHSEQ	 D50	CLAY	  BD    CHSS    BEDLD    TC  SHEAR_BNK         HC_KH	HC_HGT   HC_INI
-BcGully_MainTrib     null      null     8.373	 3.8	 0.0231	     0.229	0.05	1	   0.2	  0.05	  0.95	0.0115	0.005	  46	1.87	0.53	 0.2	 39.       .75          .188       1.0      0.0
+channel.cha: Channel properties
+    CHA_NAME      CHA_INI     CHA_HYD     CHA_SED     CHA_NUT     	      CHA_PST  		    CHA_PATH  	    CHA_HMET   CHA_SALT   CH_TEMP
+      cha1        high_init   First_Ord1  null        midwest_1stord      organochlorines	e_coli		    null       null	  	  null
+      cha2        low_init    Gully_hru2  null        midwest_1stord      epsp_inhibitors	fecal_coliform  null       null	  	  null
+  

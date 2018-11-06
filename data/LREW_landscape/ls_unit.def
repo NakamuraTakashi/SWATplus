@@ -1,4 +1,5 @@
 ls_unit.def: Landscape unit definition file - LREW Landscape 
+   1248
        LSU_NUMB        LSU_NAME        LSU_AREA        ELEM_TOT           ELEM1           ELEM2
                1           lcu1           103.5               2               1             -21
                2           lcu2            6.21               2              22             -28

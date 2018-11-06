@@ -3,7 +3,7 @@ SIMULATION        time.sim          print.prt         null     object.cnt       
 BASIN             codes.bsn         parameters.bsn
 CLIMATE           weather-sta.cli   weather-wgn.cli   null     pcp.cli           tmp.cli           null     null     null     null
 CONNECT           null              hru-lte.con       null     null     null     null     null     null     null     null     null     null      chandeg.con
-CHANNEL           null     null     null     null     null     null     null     null     null     channel-lte.cha
+CHANNEL           initial.cha       null     null     null     nutrients.cha     null     null     null     null     channel-lte.cha   hyd-sed-lte.cha     null
 RESERVOIR         null     null     null     null     null     null     null     null     null     null     null     null
 ROUTING_UNIT      null     null     null     null
 HRU               null              hru-lte.hru
@@ -20,9 +20,9 @@ HRU_PARM_DB       plants.plt        null     null     null     null     null    
 OPS               null     null     null     null     null     null
 LUM               null     null     null     null     null
 CHG               null     null     null     null     null     null     null     null     null
-INIT              null     null     null     null     null     null     null     null     null
+INIT              null     null     om_water.ini      null     null     null     null     null     null     null    null
 SOILS             null     null
-DECISION_TABLE    d_table.dtl 
+DECISION_TABLE    lum.dtl           res_rel.dtl       scen_lu.dtl 
 REGIONS           null     null     null     null     null     null     null     null     null     null     null     null     null     null     null     null     null
 PATH_PCP          null
 PATH_TMP          null

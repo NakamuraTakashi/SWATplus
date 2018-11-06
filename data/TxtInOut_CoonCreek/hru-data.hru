@@ -1,5 +1,5 @@
-hru-data.hru: HRU properties - SB_LS1
-    HRU_NUMB    HRU_NAME     HRUTOPO       HYDRO        SOIL       LU_LM  SOILNUT_INIT   SURF_STOR        SNOW       FIELD
+hru-data.hru: HRU properties
+    HRU_NUMB    HRU_NAME     HRUTOPO       HYDRO        SOIL       LU_LM  SOIL_PLANT_INIT   SURF_STOR        SNOW       FIELD
            1        hru1        top1        hyd1     soil003  landuse001    soilnut001        null     snow001        null
            2        hru2        top2        hyd2     soil005  landuse001    soilnut001        null     snow001        null
            3        hru3        top3        hyd3     soil007  landuse001    soilnut001        null     snow001        null

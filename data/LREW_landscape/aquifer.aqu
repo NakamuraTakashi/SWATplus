@@ -1,5 +1,5 @@
-aquifer.aqu: Aquifer properties - Water_LS2_Take2
-    AQU_NUMB    AQU_NAME      GW_FLO   GW_STORE      GW_HT    GW_NO3N    GW_MINP    GW_PARN    GW_PARP   GW_DELAY   ALPHA_BF      REVAP    RCHG_DP     SP_YLD    HL_NO3N    FLO_MIN  REVAP_MIN
+aquifer.aqu: Aquifer properties
+    AQU_NUMB    AQU_NAME      GW_FLO   GW_STORE      GW_HT    GW_NO3N    GW_MINP    GW_PARN    GW_PARP   GW_DELAY   ALPHA_BF   REVAP_CO    RCHG_DP     SP_YLD    HL_NO3N    FLO_MIN  REVAP_MIN
            1        aqu1      50.000   1000.000      1.000      0.000      0.000      0.000      0.000      1.000      1.000      0.020      0.060      0.050      0.000     50.000   1000.000
            2        aqu2      50.000   1000.000      1.000      0.000      0.000      0.000      0.000      1.000      1.000      0.020      0.060      0.050      0.000     50.000   1000.000
            3        aqu3      50.000   1000.000      1.000      0.000      0.000      0.000      0.000      1.000      1.000      0.020      0.060      0.050      0.000     50.000   1000.000
