@@ -1,0 +1,2 @@
+ 2_stage                   SWAT+ Mar 30 2018    MODULAR Rev 2018.47-------CIO                             
+  time  year    unit      id  name               floin_m^3/s       pr_m^3/s     sedin_tons    sedout_tons    washld_tons     bedld_tons       dep_tons   deg_btm_tons  deg_bank_tons     hcsed_tons        width_m        depth_m      slope_m/m      deg_btm_m     deg_bank_m        hclen_m
