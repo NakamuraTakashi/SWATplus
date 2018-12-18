@@ -22,7 +22,7 @@ LUM               landuse.lum       management.sch    cntable.lum       cons_pra
 CHG               codes.cal         null     null     ls_parms.cal      ls_regions.cal     ch_orders.cal   ch_parms.cal     null     null
 INIT              plant.ini         soil_plant.ini    om_water.ini      null     null     null     null     null     null     null     null     null         
 SOILS             soils.sol         nutrients.sol     
-DECISION_TABLE    lum.dtl           res_rel.dtl       scen_lu.dtl        
+DECISION_TABLE    lum.dtl           res_rel.dtl       scen_lu.dtl       flo_con.dtl        
 REGIONS           ls_unit.ele       ls_unit.def       null     null     null     null     null     null    aqu_unit.ele     null     null    null     null     null     null     null     null                        
 PATH_PCP          null
 PATH_TMP          null

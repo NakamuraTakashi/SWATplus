@@ -1,4 +1,4 @@
-chan-aqu.lin: Channel Aquifer Linkage 2-D - Little River Experimental Watershed
+chan-aqu.lin: Channel Aquifer Linkage
      4
 NUMB     NAME    NSPU   AQU1  AQU2  AQU3
    1     chan1    3       1    2      3

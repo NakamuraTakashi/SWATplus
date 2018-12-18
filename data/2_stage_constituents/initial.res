@@ -1,3 +1,4 @@
-initial.res: Reservoir data file - asdf;lj
-NAME               VOL       SED      ORGN       NO3       NO2       NH3      ORGP      SOLP      SECI       SAN       SIL       CLA       SAG       LAG       GRA      CHLA  PST_MASS SPST_MASS    BACTLP     BACTP
-reservoir001      0.90    200.00     10.00      2.00      0.20      0.10      1.00      0.10      1.00      0.00      1.00      9.00      0.00      0.00      0.00      0.10      0.01      0.00      0.00      0.00
+initial.res Nutrient and Constituent initial amounts in water bodies - reservoirs and wetlands
+  NAME		ORG-MIN		PESTICIDES	PATHOGENS	HEAVY_METALS	SALTS
+ low_init	  low_init      no_ini		no_ini		null		null
+ high_init	  high_init     low_ini		low_ini		null		null

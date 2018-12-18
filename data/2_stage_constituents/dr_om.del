@@ -1,4 +1,4 @@
 dr_om
-          flo         sed      orgn     sedp     no3      solp     psol     psor     chla     nh3      no2      cbod     dox      bacp     bacpl    met1     met2     met3     san      sil      cla      sag      lag      grv      temp       C  
-dr_om1   .125        .100      .90      .80      .70      .60      .50      .40      .30      .20      .10       .9       .8       .7       .6       .5       .4       .3       .2       .1     .100      .90      .80      .70      .60      .50
-dr_om2   .225        .110      .99      .88      .77      .66      .55      .44      .33      .22      .11      .19      .28      .37      .46      .55      .64      .73      .82      .91     .190      .98      .87      .76      .65      .54
+            flo     sed    orgn    sedp     no3    solp    chla     nh3     no2    cbod     dox     san     sil     cla     sag     lag     grv    temp
+dr_om1     0.125     0.1     0.9     0.8     0.7     0.6     0.3     0.2     0.1     0.9     0.8     0.2     0.1     0.1     0.9     0.8     0.7     0.6
+dr_om2     0.225    0.11    0.99    0.88    0.77    0.66    0.33    0.22    0.11    0.19    0.28    0.82    0.91    0.19    0.98    0.87    0.76    0.65
