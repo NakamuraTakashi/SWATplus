@@ -1,0 +1,7 @@
+ files_out.out - OUTPUT FILES WRITTEN
+ OBJECT.PRT                outlet.out   
+ BASIN                     basin_wb_yr.txt
+ BASIN                     basin_pw_yr.txt
+ CROP                      crop_yld_aa.out
+ SWAT-DEG CHANNEL          channel_sd_yr.txt
+ BASIN AQUIFER             basin_aqu_aa.txt

@@ -1,0 +1,3 @@
+sweep.ops: Street sweeping operations
+name        swp_eff     frac_curb  
+high_eff    0.80000       0.90000  

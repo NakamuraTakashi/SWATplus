@@ -3,14 +3,14 @@ SIMULATION    time.sim  print.prt  null  object.cnt   null
 BASIN         null  null 
 CLIMATE       weather-sta.cli  weather-wgn.cli  null  null  null  null  null  null  null  
 CONNECT       null  hru-lte.con null  null  null  null  null  null  null  null  null  null  null  
-CHANNEL       null  null  null  null  null  null  null  null  null  null  null  null    
-RESERVOIR     null  null  null  null  null  null  null  null  null  null  null  null  
+CHANNEL       null  null  null  null  null  null  null  null   
+RESERVOIR     null  null  null  null  null  null  null  null 
 RU            null  null  null  null  
 HRU           null  hru-lte.hru
 EXCO          null  null  null  null  null  null  
 RECALL        null
 DR            null  null  null  null  null  null  
-AQUIFER       null 
+AQUIFER       null  null
 HERD          null  null  null
 WATER_RIGHTS  null  null  null 
 LINK          null  null   
@@ -21,7 +21,7 @@ OPS           null  null  null  null  null  null
 LUM           null  null  null  null  null  
 CHG           null  null  null  null  null  null  null  null  null  
 INIT          null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  
-SOILS         null  null  
+SOILS         null  null  soils-lte.sol  
 DECISION      lum.dtl     res_rel.dtl     scen_lu_dtl     flo_con.dtl 
 REGIONS       ls_unit.ele       ls_unit.def      null  null  null  null  null  null  null  null  null  null  null  null  null  null  null
 PATH_PCP	  null

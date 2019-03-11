@@ -1,0 +1,3 @@
+pesticide.cha: Channel presticides - LREW
+name          react_co    volat_co    part_co    mix_vel    rsp_vel    stl_vel     sed_dp    sed_bury    sed_conc    sed_react
+pestcha001     0.00700     0.01000    0.00000    0.00100    0.00200    1.00000    0.03000     0.00200     0.00000      0.05000

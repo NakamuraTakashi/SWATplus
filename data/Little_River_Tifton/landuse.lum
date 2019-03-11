@@ -1,0 +1,14 @@
+landuse.lum: Land use properties - LREW
+name          cal_group    plnt_com       mgt           cn2        cons_prac             urban             urb_ro           ov_mann    tile     sep     vfs    grww     bmp
+lrew_ag01          null     pcom001    mgt001    rc_strow_p    up_down_slope              null               null    chisplow_nores    null    null    null    null    null
+lrew_ag02          null     pcom001    mgt008    rc_strow_p    up_down_slope              null               null    chisplow_nores    null    null    null    null    null
+lrew_ag03          null     pcom001    mgt009    rc_strow_p    up_down_slope              null               null    chisplow_nores    null    null    null    null    null
+lrew_ag04          null     pcom001    mgt010    rc_strow_p    up_down_slope              null               null    chisplow_nores    null    null    null    null    null
+landuse002         null     pcom002    mgt002       pastg_p    up_down_slope              null               null      bermudagrass    null    null    null    null    null
+landuse003         null     pcom003    mgt003        wood_f    up_down_slope              null               null      forest_light    null    null    null    null    null
+landuse004         null     pcom004    mgt004        wood_f    up_down_slope              null               null      forest_light    null    null    null    null    null
+landuse005         null     pcom005    mgt005        wood_f    up_down_slope              null               null      forest_light    null    null    null    null    null
+landuse006         null     pcom006    mgt006          farm    up_down_slope              null               null      range_sparse    null    null    null    null    null
+landuse007         null     pcom007    mgt007          farm    up_down_slope    residen_ml_den    buildup_washoff      range_sparse    null    null    null    null    null
+
+

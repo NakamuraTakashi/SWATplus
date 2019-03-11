@@ -1,0 +1,3 @@
+ lrew                      SWAT+ Nov 28 2018    MODULAR Rev 2018.57                                       
+   jday   mon   day    yr   unit  gis_id  name                       flo            stor          rchrg           seep          revap            hgt          no3_st           min           orgn           orgp         rchrgn          nloss          no3gw        seepno3        flo_cha        flo_res         flo_ls
+                                                                       mm             mm             mm             mm             mm              m         kg/ha N            kg        kg/ha N        kg/ha P        kg/ha N        kg/ha N        kg/ha N             kg            m^3            m^3            m^3

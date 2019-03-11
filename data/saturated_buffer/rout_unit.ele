@@ -1,4 +1,4 @@
-sub_element.sub     Subbasin defining elements      -  Little   River Experimental Watershed
- NUMB    NAME        OBTYP  OBTYPNO   HTYP    FRAC      DR
-   1   hru1          hru        1     tot     0.5          0
-   2   hru2          hru        2     tot     0.5          0
+rout_unit.ele
+ NUMB    NAME        OBTYP  OBTYPNO   FRAC      DR
+   1   hru1          hru        1     0.5        0
+   2   hru2          hru        2     0.5        0

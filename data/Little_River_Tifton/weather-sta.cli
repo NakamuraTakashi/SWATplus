@@ -1,0 +1,32 @@
+weather-sta.cli: Weather stations - LREW
+name          wgn            pcp            tmp            slr            hmd            wnd    wnd_dir    atmo_dep
+wea1       wgn001    lrew162.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea10      wgn001    lrew142.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea11      wgn001    lrew144.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea12      wgn001    lrew112.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea13      wgn001    lrew132.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea14      wgn001    lrew163.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea15      wgn001    lrew143.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea16      wgn001    lrew126.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea17      wgn001    lrew137.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea18      wgn001    lrew149.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea19      wgn001    lrew135.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea2       wgn001    lrew136.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea20      wgn001    lrew128.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea21      wgn001    lrew140.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea22      wgn001    lrew130.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea23      wgn001    lrew164.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea24      wgn001    lrew145.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea25      wgn001    lrew139.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea26      wgn001    lrew148.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea27      wgn001    lrew138.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea28      wgn001    lrew131.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea3       wgn001    lrew116.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea4       wgn001    lrew122.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea5       wgn001    lrew134.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea6       wgn001    lrew127.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea7       wgn001    lrew108.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea8       wgn001    lrew146.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+wea9       wgn001    lrew147.pcp    lrewuga.tmp    lrewuga.slr    lrewuga.hmd    lrewuga.wnd        sim         sim
+
+

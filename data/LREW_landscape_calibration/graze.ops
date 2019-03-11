@@ -1,3 +1,0 @@
-graze.ops: Grazing operations - Water_LS2_Take2
-  GRZ_OP_NAME   FERT_NAME    GRZ_DAYS    BIO_EAT  BIO_TRAMP    MAN_AMT GRZ_BIO_MIN
-      example    dairy-fr           0      0.000      0.000      0.000       0.000
