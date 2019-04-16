@@ -1,14 +1,14 @@
-file.cio (control input/output) - 2 Stage Ditch input data
+file.cio (control input/output)
 SIMULATION        time.sim          print.prt         null       	object.cnt         constituents.cs
 BASIN             codes.bsn         parameters.bsn
 CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli      atmo_year.dat
-CONNECT           hru_gam.con       null              rout_unit.con     null     aquifer.con   null     null     res.con	null  null    null  outlet.con         chandeg.con
+CONNECT           hru.con           null              rout_unit.con     null     aquifer.con   null     null     res.con	  recall.con    null    null  outlet.con         chandeg.con
 CHANNEL           initial.cha       channel.cha       hydrology.cha     sediment.cha      nutrients.cha     channel-lte.cha	  hyd-sed-lte.cha	temperature.cha
-RESERVOIR         initial.res	    reservoir.res     hydrology.res	    sediment.res	  nutrients.res     weir.res	    null                hydrology.wet
+RESERVOIR         initial.res	    reservoir.res     hydrology.res	    sediment.res	  nutrients.res     weir.res	      wetland.wet       hydrology.wet
 ROUTING_UNIT      rout_unit.def     rout_unit.ele     rout_unit.rtu	    null
 HRU               hru-data.hru      null
-EXCO              null	 null	null	null	null	null
-RECALL            null
+EXCO              exco.exc	        exco_om.exc	      null	 null	null	null
+RECALL            recall.rec
 DR                null   null   null    null    null    null
 AQUIFER           initial.aqu	    aquifer.aqu
 HERD              null              null               null

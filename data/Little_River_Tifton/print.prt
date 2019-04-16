@@ -8,13 +8,13 @@ csvout        dbout         cdfout
 soilout       mgtout        hydcon        fdcout
       n            n             n             n	 
 objects        daily       monthly      yearly      avann       
-basin_wb           n             n           y          y
+basin_wb           n             n           y          n
 basin_nb           n             n           n          n
 basin_ls           n             n           n          n
 basin_pw           n             n           n          n
 basin_aqu          n             n           n          y
 basin_res          n             n           n          y
-basin_cha          n             n           n          y
+basin_cha          n             n           n          n
 basin_sd_cha       n             n           n          n
 basin_psc          n             n           n          n
 region_wb          n             n           n          n
@@ -26,23 +26,22 @@ region_res         n             n           n          n
 region_cha         n             n           n          n
 region_sd_cha      n             n           n          n 
 region_psc         n             n           n          n
-lsunit_wb          n             n           y          y
+lsunit_wb          n             n           n          y
 lsunit_nb          n             n           n          n
 lsunit_ls          n             n           n          n
 lsunit_pw          n             n           n          n
-hru_wb             n             n           y          y
+hru_wb             n             n           n          y
 hru_nb             n             n           n          n
 hru_ls             n             n           n          n
-hru_pw             n             n           y          y
-hru_cs             n             n           n          n
+hru_pw             n             n           n          y
 hru-lte_wb         n             n           n          n
 hru-lte_nb         n             n           n          n
 hru-lte_ls         n             n           n          n
 hru-lte_pw         n             n           n          n
-channel            n             n           y          y
-channel_sd         n             n           n          n
-aquifer            n             n           y          y
-reservoir          n             n           y          y
+channel            n             n           n          y
+channel_sd         n             y           y          n
+aquifer            n             n           n          y
+reservoir          n             n           n          y
 recall	           n             n           n          n
-hyd                n             n           y          y
+hyd                n             n           n          y
 ru                 n             n           n          n          

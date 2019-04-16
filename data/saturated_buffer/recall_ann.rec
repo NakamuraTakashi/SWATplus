@@ -1,9 +1,5 @@
 recall_day.rec
-       2
-     IYR   ISTEP     flo     sed     orgn    sedp    no3     solp    psol    psor    chla    nh3     C       no2     cbod    dox     bacp    bacpl   met1    met2    met3    san     sil     cla     sag     lag     grv     temp
-    2006       1 12120.5       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-
-
-
-
-    2007       2  9000.7       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+2
+IYR           ISTEP     flo     sed    orgn    sedp     no3    solp    chla     nh3      no2    cbod     dox     san     sil     cla     sag     lag     grv    temp
+2006               1 12120.5       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+2007               2  9000.7       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0

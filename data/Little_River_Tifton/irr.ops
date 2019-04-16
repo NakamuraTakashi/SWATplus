@@ -1,6 +1,6 @@
-irr.ops: Irrigation operations
-name                   irr_eff      surq_rto       irr_amt      irr_salt      irr_no3n      irr_po4n  
-surface                0.50000       0.40000       0.00000       0.00000       0.00000       0.00000  
-sprinkler              0.70000       0.10000       0.00000       0.00000       0.00000       0.00000  
-drip                   0.90000       0.00000       0.00000       0.00000       0.00000       0.00000  
-subsurface             1.00000       0.00000     150.00000       0.00000       0.00000       0.00000  
+irr.ops
+NAME                AMT_MM    EFF_FRAC   SUMQ_FRAC     DEP_SUB    SALT_PPM     NO3_PPM     PO4_PPM
+sprinkler_med         25.00        0.85        0.00        0.00      100.00       20.00        1.00
+sprinkler_high        40.00        0.80        0.00        0.00      100.00       20.00        1.00
+drip                  25.00        0.90        0.00      100.00      100.00       20.00        1.00
+furrow                50.00        0.70        0.20        0.00      100.00       20.00        1.00

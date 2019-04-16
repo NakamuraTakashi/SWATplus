@@ -20,10 +20,10 @@ NUMB	NAME	GIS_ID	AREA_HA	LAT	LONG	ELEV	HRU	WST	CONST_TYP	OVERFLOW	RULESET	OUT_TO
 18	hru18	18	299.16	43.787	-90.908	401.392	18	wea1	0	0	0	4	sdc	4	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 19	hru19	19	3.42	43.787	-90.908	375.981	19	wea1	0	0	0	4	sdc	5	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 20	hru20	20	25.02	43.787	-90.908	387.321	20	wea1	0	0	0	4	sdc	6	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
-21	hru21	21	4.5	43.787	-90.908	378.202	21	wea1	0	0	0	4	sdc	7	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
+21	hru21	21	4.5	43.787	-90.908	378.202	21		wea1	0	0	0	4	sdc	7	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 22	hru22	22	103.05	43.787	-90.908	403.798	22	wea1	0	0	0	4	sdc	8	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 23	hru23	23	0.72	43.787	-90.908	381.517	23	wea1	0	0	0	4	sdc	9	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
-24	hru24	24	9	43.787	-90.908	392.359	24	wea1	0	0	0	4	sdc	10	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
+24	hru24	24	9	43.787	-90.908	392.359	24		wea1	0	0	0	4	sdc	10	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 25	hru25	25	4.68	43.787	-90.908	345.219	25	wea1	0	0	0	4	sdc	11	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 26	hru26	26	0.27	43.787	-90.908	325.613	26	wea1	0	0	0	4	sdc	12	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1
 27	hru27	27	74.88	43.787	-90.908	358.728	27	wea1	0	0	0	4	sdc	13	sur	0.9	ru	1	sur	0.1	ru	1	lat	1	aqu	2	rhg	1

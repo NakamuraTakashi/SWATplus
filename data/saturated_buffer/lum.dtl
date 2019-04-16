@@ -58,10 +58,10 @@ year_rot 	hru	  0	    null		  -	    2		 		  -	 =	-	 =	 -	 =	   -
 jday    	hru	  0	    null   		  -	    350 		 	  -	 -      -	 -	 =	 =	   -
 year_rot        hru	  0	    null   		  -	    2		 		  -	 -      -	 -	 -	 -	   >
  ACT_TYP        OBJ  OBJ_NUM   NAME             OPTION        CONST   CONST2   FP               OUTCOMES
-plant		hru	  0	plant_corn	 corn1500       0        1    null	        y	n	n	 n	 n	 n	   n
-plant		hru	  0	plant_soyb	 soyb1300       0	 1    null		n	y	n	 n	 n	 n	   n
-harvest_kill    hru       0	grain_harv	 corn1500       0	 1   grain		n	n	y	 n	 y	 n	   n
-harvest_kill    hru       0	grain_harv	 soyb1300       0	 1   grain		n	n	n	 y	 n	 y	   n
+plant		hru	  0	plant_corn	 corn       0        1    null	        y	n	n	 n	 n	 n	   n
+plant		hru	  0	plant_soyb	 soyb       0	 1    null		n	y	n	 n	 n	 n	   n
+harvest_kill    hru       0	grain_harv	     corn       0	 1   grain		n	n	y	 n	 y	 n	   n
+harvest_kill    hru       0	grain_harv	     soyb       0	 1   grain		n	n	n	 y	 n	 y	   n
 rot_reset       hru       0	reset_2 	     null	1	 0    null		n	n	n	 n	 n	 n	   y
 
  NAME   	     CONDS	ALTS	ACTS
@@ -74,8 +74,8 @@ year_rot 	hru	  0	    null		  -	    1		 		=	=	=	-
 jday    	hru	  0	    null   		  -	    350 		 	-	-       =	-
 year_rot        hru	  0	    null   		  -	    1		 		-	-       -	>
  ACT_TYP        OBJ  OBJ_NUM   NAME             OPTION        CONST   CONST2      FP         OUTCOMES
-plant		hru	  0	plant_corn	corn1500       0        1     	null		 y	n	n	n
-harvest_kill    hru       0	grain_harv	corn1500       0	1      grain		 n	y	y	n
+plant		hru	  0	plant_corn	corn       0        1     	null		 y	n	n	n
+harvest_kill    hru       0	grain_harv	corn       0	1      grain		 n	y	y	n
 rot_reset       hru       0	reset_1 	 null	       1	0       null		 n	n	n	y
 
  NAME   	     CONDS	ALTS	ACTS
@@ -107,12 +107,12 @@ jday    	hru	  0	    null   		  -	    350 		 	-	-       -	-	-	-	-	=	=	-	-
 jday    	hru	  0	    null   		  -	    150 		 	-	-       -	-	-	-	-	-	-	=	-
 year_rot        hru	  0	    null   		  -	    4		 		-	-       -	-	-	-	-	-	-	-	>
  ACT_TYP        OBJ  OBJ_NUM   NAME             OPTION        CONST   CONST2      FP         OUTCOMES
-plant		hru	  0	plant_corn	 corn1500       0       1     	null		 y	n	n	n	n	n	n	n	n	n	n
-plant		hru	  0	plant_soyb	 soyb1300       0	1       null		 n	y	y	n	n	n	n	n	n	n	n
-plant		hru	  0	plant_wwht	 wwht1500       0	1       null		 n	n	n	y	n	n	n	n	n	n	n
-harvest_kill    hru       0	grain_harv	 corn1500       0	1      grain		 n	n	n	n	y	n	n	y	n	n	n
-harvest_kill    hru       0	grain_harv	 soyb1300       0	1      grain		 n	n	n	n	n	y	n	n	y	n	n
-harvest_kill    hru       0	grain_harv	 wwht1500       0	1      grain		 n	n	n	n	n	n	y	n	n	y	n
+plant		hru	  0	plant_corn	 corn           0       1     	null		 y	n	n	n	n	n	n	n	n	n	n
+plant		hru	  0	plant_soyb	 soyb           0	    1       null		 n	y	y	n	n	n	n	n	n	n	n
+plant		hru	  0	plant_wwht	 wwht           0	    1       null		 n	n	n	y	n	n	n	n	n	n	n
+harvest_kill    hru       0	grain_harv	 corn           0	1      grain		 n	n	n	n	y	n	n	y	n	n	n
+harvest_kill    hru       0	grain_harv	 soyb           0	1      grain		 n	n	n	n	n	y	n	n	y	n	n
+harvest_kill    hru       0	grain_harv	 wwht           0	1      grain		 n	n	n	n	n	n	y	n	n	y	n
 rot_reset       hru       0	reset_4 	 null	        1	0       null		 n	n	n	n	n	n	n	n	n	n	y
 
  NAME   	     CONDS	ALTS	ACTS
