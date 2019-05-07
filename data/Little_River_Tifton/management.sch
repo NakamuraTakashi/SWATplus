@@ -34,16 +34,14 @@ mgt001          33           0
 	                                        harv     11      1     0.000     cots  	      cotton_strip      0.000
 	                                        kill     11      1     0.000     cots         null           	0.000
 	                                        skip      0      0     0.000     null         null           	0.000
-mgt002           3           0                                         	                       
-                                            plnt      3      1     0.000     past         null           	0.000
+mgt002           2           0                                         	                       
                                             harv     11      1     0.000     past	      hay_cut_low       0.000
                                             skip      0      0     0.000     null         null           	0.000
 mgt003           0           0                                             
 mgt004           0           0                                             
 mgt005           0           0                                             
 mgt006           0           0                                             
-mgt007           3           0                                             
-                                            plnt      3      1     0.000     berm     	  null       	    0.000
+mgt007           2           0                                             
                                             harv     11      1     0.000     berm		  grass_bag     	0.000
                                             skip      0      0     0.000     null     	  null       	    0.000
 mgt008          33           0                                               

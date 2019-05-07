@@ -8,7 +8,7 @@ csvout        dbout         cdfout
 soilout       mgtout        hydcon        fdcout
       n            n             n             n	 
 objects        daily       monthly      yearly      avann       
-basin_wb           n             n           y          n
+basin_wb           n             n           y          y
 basin_nb           n             n           n          n
 basin_ls           n             n           n          n
 basin_pw           n             n           n          n
@@ -26,7 +26,7 @@ region_res         n             n           n          n
 region_cha         n             n           n          n
 region_sd_cha      n             n           n          n 
 region_psc         n             n           n          n
-lsunit_wb          n             n           n          y
+lsunit_wb          y             n           n          y
 lsunit_nb          n             n           n          n
 lsunit_ls          n             n           n          n
 lsunit_pw          n             n           n          n

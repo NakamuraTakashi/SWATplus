@@ -19,7 +19,7 @@ structural        tiledrain.str     septic.str        filterstrip.str   grassedw
 hru_parm_db       plants.plt        fertilizer.frt    tillage.til       pesticide.pst     null              null              null              urban.urb         septic.sep        snow.sno          
 ops               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops         
 lum               landuse.lum       management.sch    cntable.lum       cons_practice.lum ovn_table.lum     
-chg               codes.cal         cal_parms.cal     calibration.cal   ls_parms.cal      ls_regions.cal    null              null              null              null              
+chg               cal_parms.cal     calibration.cal   null   null   null   null   null   null   null              
 init              plant.ini         soil_plant.ini    om_water.ini      pest_hru.ini      pest_water.ini    path_hru.ini      path_water.ini    hmet_hru.ini      hmet_water.ini   salt_hru.ini      salt_water.ini        
 soils             soils.sol         nutrients.sol     soils-lte.sol
 decision_table    lum.dtl           res_rel.dtl       scen_lu.dtl       flo_con.dtl      

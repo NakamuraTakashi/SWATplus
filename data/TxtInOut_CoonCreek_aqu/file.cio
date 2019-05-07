@@ -19,7 +19,7 @@ STRUCTURAL        null              septic.str        null     null     null
 HRU_PARM_DB       plants.plt        fertilizer.frt    tillage.til       pesticide.pst     pathogens.pth     null     null     urban.urb         septic.sep        snow.sno      
 OPS               harv.ops          graze.ops         irr.ops           chem_app.ops      fire.ops          sweep.ops        
 LUM               landuse.lum       management.sch    cntable.lum       cons_practice.lum     ovn_table.lum       
-CHG               codes.cal         null     null     ls_parms.cal      ls_regions.cal     ch_orders.cal   ch_parms.cal     null     null
+CHG               null   null   null   null   null   null   null   null   null
 INIT              plant.ini         soil_plant.ini    om_water.ini      null     null     null     null     null     null     null     null     null         
 SOILS             soils.sol         nutrients.sol     null     
 DECISION_TABLE    lum.dtl           res_rel.dtl       scen_lu.dtl       flo_con.dtl        
