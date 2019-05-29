@@ -16,7 +16,7 @@ basin_aqu                             n                   n                   n 
 basin_res                             n                   n                   n                   n
 basin_cha                             n                   n                   n                   n
 basin_sd_cha                          y                   n                   n                   y
-basin_psc                             n                   n                   n                   n
+basin_psc                             y                   y                   y                   y
 region_wb                             n                   n                   n                   n
 region_nb                             n                   n                   n                   n
 region_ls                             n                   n                   n                   n
