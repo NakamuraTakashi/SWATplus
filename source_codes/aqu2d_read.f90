@@ -25,20 +25,20 @@
       
     !!read data for aquifer elements for 2-D groundwater model
       inquire (file=in_link%aqu_cha, exist=i_exist)
-      if (i_exist /= 0 .or. in_link%aqu_cha /= "null" ) then
-      do
+      if (i_exist .or. in_link%aqu_cha /= "null" ) then                  !!! TN mod: i_exist /= 0 -> i_exist
+!      do                                                                !!! TN rm
         open (107,file=in_link%aqu_cha)
         read (107,*,iostat=eof) titldum
-        if (eof < 0) exit
+!        if (eof < 0) exit                                               !!! TN rm
         read (107,*,iostat=eof) header
-        if (eof < 0) exit
+!        if (eof < 0) exit                                               !!! TN rm
         imax = 0
         do while (eof == 0)
           read (107,*,iostat=eof) i
           if (eof < 0) exit
           imax = Max(imax,i)
         end do
-      end do
+!      end do                                                              !!! TN rm
 
       db_mx%aqu2d = imax
       allocate (aq_ch(sp_ob%aqu))

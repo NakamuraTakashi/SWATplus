@@ -1,0 +1,13 @@
+build/*
+backup/*
+*.o
+*.mod
+*.depend
+*.a
+*.log
+*.stackdump
+*.exe
+
+*.txt
+*.out
+!CMakeLists.txt
