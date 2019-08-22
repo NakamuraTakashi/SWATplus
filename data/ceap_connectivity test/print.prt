@@ -12,7 +12,7 @@ basin_wb                              n                   n                   n 
 basin_nb                              n                   n                   n                   n
 basin_ls                              n                   n                   n                   n
 basin_pw                              n                   y                   n                   n
-basin_aqu                             n                   n                   n                   n
+basin_aqu                             n                   n                   n                   y
 basin_res                             n                   n                   n                   n
 basin_cha                             n                   n                   n                   n
 basin_sd_cha                          n                   n                   n                   y
