@@ -1,0 +1,6 @@
+ls_cal.reg
+   1
+NAME   NLUM 
+basin   1  
+  NAME      SRR	    LFR	    PCR     ETR      TFR      SED     ORGN     ORGP      NO3     SOLP
+  all_lum	0.10   0.02  	0.11  	0.53  	 0.20     0.10     0.00     0.00     0.00     0.00

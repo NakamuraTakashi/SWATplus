@@ -1,0 +1,5 @@
+grassedww_str Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:15 PM
+        NAME  FLAG  MANN SED_CO    DP    WD   LEN   SLP
+ grwway_high     1  0.05   0.02     1     4   0.5   0.1
+  grwway_low     1  0.05   0.02   0.5     2     1  0.01
+  grwway_med     1  0.05   0.02  0.75     3  0.75 0.035

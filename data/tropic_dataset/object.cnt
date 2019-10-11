@@ -1,0 +1,4 @@
+object.cnt: Spatial object counts - Water_LS2_Take2
+NAME	LS_AREA	TOT_AREA	OBJS	HRU	 HRU_LTE	RU	MODFLOW	  AQU	CHAN	RES	 RECALL	  EXCO	DR	CANAL	PUMP	OUTLET	CHANDEG	  AQU2D	  HERD	WRO
+hru1	   681	   681	      16	  16	   0	 0	      0	    0	   0	  0	      0	     0	 0	    0	   0	     0	      0	      0	     0	  0
+

@@ -1,0 +1,6 @@
+weather-sta.cli
+NAME          WGN        PGAGE        TGAGE        SGAGE   HGAGE   WGAGE   WNDIR  ATMODEP
+wea1        wgn007      gage7.pcp    tgage2.tmp     sim     sim     sim     null   null
+wea2        wgn042     gage42.pcp    tgage8.tmp     sim     sim     sim     null   null
+wea3        wgn062     gage62.pcp    tgage14.tmp    sim     sim     sim     null   null
+wea4        wgn079     gage75.pcp    tgage15.tmp    sim     sim     sim     null   null

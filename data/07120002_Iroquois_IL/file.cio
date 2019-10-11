@@ -1,0 +1,31 @@
+file_cio Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:43 PM
+           SIMULATION             time.sim            print.prt           object.prt           object.cnt      constituents.cs
+                BASIN            codes.bsn       parameters.bsn
+              CLIMATE      weather-sta.cli      weather-wgn.cli         wind-dir.cli              pcp.cli              tmp.cli              slr.cli              hmd.cli              wnd.cli             atmo.cli
+              CONNECT              hru.con          hru-lte.con        rout_unit.con          modflow.con          aquifer.con        aquifer2d.con          channel.con        reservoir.con           recall.con             exco.con         delratio.con           outlet.con          chandeg.con
+              CHANNEL          initial.cha          channel.cha        hydrology.cha         sediment.cha        nutrients.cha      channel-lte.cha      hyd-sed-lte.cha      temperature.cha
+            RESERVOIR          initial.res        reservoir.res        hydrology.res         sediment.res        nutrients.res             weir.res          wetland.wet        hydrology.wet
+            ROUT_UNIT        rout_unit.def        rout_unit.ele        rout_unit.rtu         rout_unit.dr
+                  HRU         hru-data.hru          hru-lte.hru
+                 EXCO             exco.exc                 null        exco_pest.exc        exco_path.exc        exco_hmet.exc        exco_salt.exc
+               RECALL           recall.rec
+                   DR         delratio.del            dr_om.del          dr_pest.del          dr_path.del          dr_hmet.dle          dr_salt.del
+              AQUIFER          initial.aqu          aquifer.aqu
+                 HERD           animal.hrd             herd.hrd            ranch.hrd
+         WATER_RIGHTS           define.wro          element.wro     water_rights.wro
+                 LINK        chan-surf.lin          aqu_cha.lin
+            HYDROLOGY        hydrology.hyd       topography.hyd            field.fld
+           STRUCTURAL        tiledrain.str           septic.str      filterstrip.str        grassedww.str          bmpuser.str
+          HRU_PARM_DB           plants.plt       fertilizer.frt          tillage.til        pesticide.pst        pathogens.pth           metals.mtl             salt.slt            urban.urb           septic.sep             snow.sno
+                  OPS             harv.ops            graze.ops              irr.ops         chem_app.ops             fire.ops            sweep.ops
+                  LUM          landuse.lum       management.sch          cntable.lum        cons_prac.lum        ovn_table.lum
+                  CHG        cal_parms.cal      calibration.cal            codes.sft         wb_parms.sft    water_balance.sft    ch_sed_budget.sft     ch_sed_parms.sft      plant_parms.sft        plant_gro.sft
+                 INIT            plant.ini       soil_plant.ini         om_water.ini         pest_hru.ini       pest_water.ini         path_hru.ini       path_water.ini         hmet_hru.ini       hmet_water.ini         salt_hru.ini       salt_water.ini
+                SOILS            soils.sol        nutrients.sol        soils-lte.sol
+       DECISION_TABLE              lum.dtl              res.dtl             scen.dtl                 null
+              REGIONS          ls_unit.ele          ls_unit.def           ls_reg.ele           ls_reg.def           ls_cal.reg       ch_catunit.ele       ch_catunit.def           ch_reg.def      aqu_catunit.ele      aqu_catunit.def          aqu_reg.def      res_catunit.ele      res_catunit.def          res_reg.def      rec_catunit.ele      rec_catunit.def          rec_reg.def
+             PCP_PATH            weather\\
+             TMP_PATH            weather\\
+             SLR_PATH                 null
+             HMD_PATH                 null
+             WND_PATH                 null
