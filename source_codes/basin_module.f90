@@ -39,6 +39,9 @@
                                  !!   0 do not model
                                  !!   1 model (QUAL2E)
         integer :: nostress = 0  !! redefined to the sequence number  -- changed to no nutrient stress
+                                 !!   0 = all stresses applied
+                                 !!   1 = turn off all plant stress
+                                 !!   2 = turn off nutrient plant stress only
         integer :: cn = 0        !! CN method flag
                                  !!   0 = use traditional SWAT method bases CN 
                                  !!   CN on soil moisture
@@ -116,7 +119,7 @@
         real :: trnsrch             !! fraction of transmission losses from main channel that enter
                                     !!  deep aquifer
         real :: evrch = 0.60        !! reach evaporation adjustment factor
-        real :: open_var1           !! variable not used
+        real :: scoef = 1.0         !! channel storage coefficient (0-1)
         real :: cdn = 1.40          !! denitrification expoential rate coefficient        
         real :: sdnco = 1.30        !! denitrification threshold frac of field cap
         real :: bact_swf = 0.15     !! frac of manure containing active colony forming units
@@ -177,8 +180,8 @@
         character(len=1) :: dbout  = "    n"         !!  code to print database (db) files n=no print; y=print;
         character(len=1) :: cdfout = "    n"         !!  code to print netcdf (cdf) files n=no print; y=print;
       ! OTHER OUTPUTS
-        character(len=1) :: snutc  = "    n"         !!  soils nutrients carbon output
-        character(len=1) :: mgtout = "    n"         !!  management output file (mgt.out)
+        character(len=1) :: snutc  = "    a"         !!  soils nutrients carbon output (default ave annual-d,m,y,a input)
+        character(len=1) :: mgtout = "    n"         !!  management output file (mgt.out) (default ave annual-d,m,y,a input)
         character(len=1) :: hydcon = "    n"         !!  hydrograph connect output file (hydcon.out)
         character(len=1) :: fdcout = "    n"         !!  flow duration curve output n=no print; avann=print;
       ! BASIN
@@ -334,5 +337,15 @@
           character (len=16) :: soil_water_p  = "   soil_water_p "  
       end type snutc_header
       type(snutc_header) :: snutc_hdr
+      
+      type basin_yld_header                              
+          character (len=10) :: year =       "      year "                                                     
+          character (len=16) :: plant_no =   "     plant_no"
+          character (len=16) :: plant_name = "plant_name "
+          character (len=16) :: area_ha =    " harv_area(ha)   "  
+          character (len=16) :: yield_t =    "  yld(t)         "
+          character (len=16) :: yield_tha =  " yld(t/ha)      "
+      end type basin_yld_header
+      type (basin_yld_header) :: bsn_yld_hdr
       
       end module basin_module

@@ -7,6 +7,8 @@
       use plant_module
       use carbon_module
       use organic_mineral_mass_module
+      use climate_module
+      use hydrograph_module
       
       implicit none 
       
@@ -17,7 +19,8 @@
                                 !                   |concentration
       real :: rto               !none               |ratio of current years of growth:years to maturity of perennial
       integer :: idp            !                   |
-  
+      integer :: iob            !                   |
+
       j = ihru
       idp = pcom(j)%plcur(ipl)%idplt
       rto = 1.
@@ -43,6 +46,12 @@
           end if
 
           beadj = pldb(idp)%bio_e
+          
+          !! adjust radiation-use efficiency for day length
+          iob = hru(j)%obj_no
+          iwst = ob(iob)%wst
+          beadj = beadj * wst(iwst)%weat%daylength / 12.
+          
           bioday = beadj * par(ipl)
           if (bioday < 0.) bioday = 0.
                     
@@ -70,13 +79,18 @@
           call pl_nup
           call pl_pup
 
-          !! code to turn off nutrient stress
+          !! code to turn off all plant stress
           if (bsn_cc%nostress == 1) then
             pcom(j)%plstr(ipl)%strsw = 1.
             pcom(j)%plstr(ipl)%strst = 1.
             pcom(j)%plstr(ipl)%strsn = 1.
             pcom(j)%plstr(ipl)%strsp = 1.
             pcom(j)%plstr(ipl)%strsa = 1.
+          end if
+          !! code to turn off nutrient plant stress only
+          if (bsn_cc%nostress == 2) then
+            pcom(j)%plstr(ipl)%strsn = 1.
+            pcom(j)%plstr(ipl)%strsp = 1.
           end if
           
           !! reduce predicted biomass due to stress on plant

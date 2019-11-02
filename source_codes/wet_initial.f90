@@ -6,6 +6,7 @@
       use hydrograph_module
       use hru_module, only : hru, ihru
       use maximum_data_module
+      use water_body_module
       
       implicit none
       
@@ -28,7 +29,7 @@
           wet_ob(ihru)%evol = wet_hyd(ihyd)%esa * hru(ihru)%area_ha * wet_hyd(ihyd)%edep * 10.
           wet_ob(ihru)%pvol = wet_hyd(ihyd)%psa * hru(ihru)%area_ha * wet_hyd(ihyd)%pdep * 10.
           wet_ob(ihru)%psa = wet_hyd(ihyd)%psa * hru(ihru)%area_ha 
-          wet_ob(ihru)%esa = wet_hyd(ihyd)%psa * hru(ihru)%area_ha 
+          wet_ob(ihru)%esa = wet_hyd(ihyd)%esa * hru(ihru)%area_ha 
 
           !!set initial n and p concentrations --> (ppm) * (m^3) / 1000 = kg    !! ppm = t/m^3 * 10^6
           init = wet_dat(iprop)%init
@@ -40,7 +41,7 @@
 
           !! update surface area
           !! wetland on hru - solve quadratic to find new depth
-          wet_om_d(ihru)%area_ha = 0.
+          wet_wat_d(ihru)%area_ha = 0.
           if (wet(ihru)%flo > 0.) then
             x1 = wet_hyd(ihyd)%bcoef ** 2 + 4. * wet_hyd(ihyd)%ccoef * (1. - wet(ihru)%flo / wet_ob(ihru)%pvol)
             if (x1 < 1.e-6) then
@@ -51,7 +52,7 @@
             end if
             wet_fr = (1. + wet_hyd(ihyd)%acoef * wet_h)
             wet_fr = min(wet_fr,1.)
-            wet_om_d(ihru)%area_ha = hru(ihru)%area_ha * wet_hyd(ihyd)%psa * wet_fr
+            wet_wat_d(ihru)%area_ha = hru(ihru)%area_ha * wet_hyd(ihyd)%psa * wet_fr
           end if 
 
         end if

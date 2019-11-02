@@ -5,20 +5,20 @@
 !!    hydrologic cycle
 
       use hru_module, only : hru, ihru, tmx, tmn, tmpav, hru_ra, hru_rmx, rhd, u10, tillage_switch,      &
-         tillage_days, ndeat, qdr, phubase, strsw_av, sedyld, surfq, grz_days, yield, &
+         tillage_days, ndeat, qdr, phubase, sedyld, surfq, grz_days, yield, &
          yr_skip, latq, tconc, smx, sepbtm, igrz, iseptic, i_sep, filterw, sed_con, soln_con, solp_con, & 
          orgn_con, orgp_con, cnday, nplnt, percn, tileno3, pplnt, sedorgn, sedorgp, surqno3, latno3,    &
          surqsolp, sedminpa, sedminps,       &
          fertn, fertp, fixn, grazn, grazp, ipl, peakr, qtile,      &
-         snofall, snomlt, strsn_av, strsp_av, strstmp_av, strsw_av, tloss, usle, canev,   &
+         snofall, snomlt, tloss, usle, canev,   &
          ep_day, es_day, etday, inflpcp, isep, iwgen, ls_overq, nd_30, pet_day,              &
-         pot, precipday, precip_eff, qday, sno_hru, latqrunon
+         precipday, precip_eff, qday, latqrunon
       use soil_module 
       use plant_module
       use basin_module
       use organic_mineral_mass_module
       use hydrograph_module
-      use climate_module, only : wst, wgn_pms
+      use climate_module, only : wst, weat, wgn_pms
       use septic_data_module
       use reservoir_data_module
       use plant_data_module
@@ -29,6 +29,7 @@
       use time_module
       use conditional_module
       use constituent_mass_module
+      use water_body_module
       
       implicit none
 
@@ -54,15 +55,19 @@
       real :: bf_m3                 !              |
       real :: peakrbf               !              |
       integer :: icn                !              |
-      real :: qdfr                  !              |
       real :: xx                    !              |
       integer :: iob_out            !              |object type out 
-      integer :: iru                !              | 
       integer :: iout               !none          |counter
       integer :: iac
+      integer :: npl_gro            !           |number of plants currently growing
       real :: over_flow             !              |
       real :: dep                   !              |
-
+      real :: strsw_av
+      real :: strsn_av
+      real :: strsp_av
+      real :: strstmp_av
+      real :: wet_outflow           !mm             |outflow from wetland
+      
       j = ihru
       !if (pcom(j)%npl > 0) idp = pcom(ihru)%plcur(1)%idplt
       ulu = hru(j)%luse%urb_lu
@@ -74,8 +79,10 @@
       ires =  hru(j)%dbs%surf_stor
       isched = hru(j)%mgt_ops
       
-      precipday = wst(iwst)%weat%precip
+      weat = wst(iwst)%weat
       precip_eff = precipday
+      
+      precipday = wst(iwst)%weat%precip
       tmx(j) = wst(iwst)%weat%tmax
       tmn(j) = wst(iwst)%weat%tmin
       tmpav(j) = (tmx(j) + tmn(j)) / 2.
@@ -167,21 +174,16 @@
         if (tmpav(j) > 0. .and. wgn_pms(iwgn)%phutot > 0.01) then
            phubase(j) = phubase(j) + tmpav(j) / wgn_pms(iwgn)%phutot
         end if
-
-        !! compute total parms for all plants in the community
-        strsw_av = 0.
-        strsa_av = 0.
-        strsn_av = 0.
-        strsp_av = 0.
-        strstmp_av = 0.
+   
+        !! zero stresses
         do ipl = 1, pcom(j)%npl
-          strsw_av(j) = strsw_av(j) + pcom(j)%plstr(ipl)%strsw / pcom(j)%npl
-          strsa_av = strsa_av + pcom(j)%plstr(ipl)%strsa / pcom(j)%npl
-          strsn_av = strsn_av + pcom(j)%plstr(ipl)%strsn / pcom(j)%npl
-          strsp_av = strsp_av + pcom(j)%plstr(ipl)%strsp / pcom(j)%npl
-          strstmp_av = strstmp_av + pcom(j)%plstr(ipl)%strst / pcom(j)%npl
+          pcom(j)%plstr(ipl)%strsw = 1.
+          pcom(j)%plstr(ipl)%strst = 1.
+          pcom(j)%plstr(ipl)%strsn = 1.
+          pcom(j)%plstr(ipl)%strsp = 1.
+          pcom(j)%plstr(ipl)%strsa = 1.
         end do
-        
+
         !! calculate albedo for day
         call albedo
 
@@ -195,20 +197,13 @@
         call et_pot
         call et_act
 
-        !! wetland processes
-        hru(j)%water_fr = 0.
-        if (ires > 0) then
-          call stor_surf
-        else
-          wet(j)%flo = 0.
-        end if
- 
         !! ht2%sed==sediment routed across hru from surface runon
         sedyld(j) = sedyld(j) + ht2%sed
 
         !! compute effective rainfall (amount that percs into soil)
-        !! add infiltration from surface runon 
-        inflpcp = Max(0., precip_eff - surfq(j)) + hru(j)%water_seep /(10.* hru(j)%area_ha)
+        !! add infiltration from surface runon
+        inflpcp = (precip_eff - surfq(j)) * (1.-hru(j)%water_fr) + hru(j)%water_seep /(10.* hru(j)%area_ha)
+        inflpcp = Max(0., inflpcp)
          
         !! perform management operations
         if (yr_skip(j) == 0) call mgt_operatn   
@@ -216,15 +211,21 @@
         !! perform soil water routing
         call swr_percmain
 
+        !! wetland processes
+        hru(j)%water_fr = 0.
+        if (ires > 0) then
+          call wetland_control
+        else
+          ht2%flo = wet(j)%flo * hru(j)%area_ha * 10.
+          wet(j)%flo = 0.
+        end if
+ 
         !! compute peak rate similar to swat-deg using SCS triangular unit hydrograph
         runoff_m3 = 10. * surfq(j) * hru(j)%area_ha
         bf_m3 = 10. * latq(j) * hru(j)%area_ha
         peakr = 2. * runoff_m3 / (1.5 * tconc(j) * 3600.)
         peakrbf = bf_m3 / 86400.
         peakr = (peakr + peakrbf)     !* prf     
-
-        !! compute water table depth using climate drivers
-        call wattable
 
         !! graze only if adequate biomass in HRU
         if (igrz(j) == 1) then
@@ -240,7 +241,7 @@
 
         !! compute plant community partitions
         call pl_community
-   
+
         !! compute plant biomass, leaf, root and seed growth
         call pl_grow
       
@@ -253,6 +254,27 @@
           call pl_moisture_senes_init
         end if
         
+        !! compute total parms for all plants in the community
+        strsw_av = 0.; strsa_av = 0.; strsn_av = 0.; strsp_av = 0.; strstmp_av = 0.
+        npl_gro = 0
+        do ipl = 1, pcom(j)%npl
+          if (pcom(j)%plcur(ipl)%gro == 'y' .and. pcom(j)%plcur(ipl)%idorm == 'n') then
+            npl_gro = npl_gro + 1
+            strsw_av = strsw_av + (1. - pcom(j)%plstr(ipl)%strsw)
+            strsa_av = strsa_av + (1. - pcom(j)%plstr(ipl)%strsa)
+            strsn_av = strsn_av + (1. - pcom(j)%plstr(ipl)%strsn)
+            strsp_av = strsp_av + (1. - pcom(j)%plstr(ipl)%strsp)
+            strstmp_av = strstmp_av + (1. - pcom(j)%plstr(ipl)%strst)
+          end if
+        end do
+        if (npl_gro > 0) then
+          strsw_av = strsw_av / npl_gro
+          strsa_av = strsa_av / npl_gro
+          strsn_av = strsn_av / npl_gro
+          strsp_av = strsp_av / npl_gro
+          strstmp_av = strstmp_av / npl_gro
+        end if
+
         !! compute aoil water content to 300 mm depth
         soil(j)%sw_300 = 0.
         do ly = 1, soil(j)%nly
@@ -379,36 +401,32 @@
           call smp_filter
           if (filterw(j) > 0.) call smp_buffer
         end if
-        if (hru(j)%lumv%vfsi == 0. .and. filterw(j) > 0.) then 
-          call smp_filtw
-          call smp_buffer
-        end if
 
 	 !! compute reduction in pollutants due to in field grass waterway
          if (hru(j)%lumv%grwat_i == 1) then
           call smp_grass_wway
         end if
 
-	 !! compute reduction in pollutants due to in fixed BMP eff
+	   !! compute reduction in pollutants due to in fixed BMP eff
 	   if (hru(j)%lumv%bmp_flag == 1) then
           call smp_bmpfixed
         end if
 
-        !! compute water yield for HRU - ht2%flo is outflow from routed runon
-        !! wet()%flo is outflow from wetland - or total saturation excess if no wetland
-        qday = qday + wet(j)%flo
-        qdr(j) = qday + latq(j) + qtile + ht2%flo
-        surfq(j) = surfq(j) + wet(j)%flo
-        wet(j)%flo = 0.
+        !! compute water yield for HRU
+        qdr(j) = qday + latq(j) + qtile
         
-        if (qdr(j) < 0.) qdr(j) = 0.
-        if (qdr(j) > 0.) then
-          qdfr = qday / qdr(j)
-        else
-          qdfr = 0.
+        !! ht2%flo is outflow from wetland or total saturation excess if no wetland
+
+        if(ht2%flo > 0.) then
+          wet_outflow = ht2%flo / hru(j)%area_ha / 10.   !! mm = m3/ha *ha/10000m2 *1000mm/m
+          qday = qday + wet_outflow
+          qdr(j) = qdr(j) + wet_outflow
+          surfq(j) = surfq(j) + wet_outflow
+          ht2%flo = 0.
         end if
-      
-          
+
+        if (qdr(j) < 0.) qdr(j) = 0.
+
         xx = sed_con(j) + soln_con(j) + solp_con(j) + orgn_con(j) + orgp_con(j)
         if (xx > 1.e-6) then
           call hru_urb_bmp
@@ -425,8 +443,7 @@
       iob_out = iob
       ! if the hru is part of a ru and it is routed
       if (ob(iob)%ru_tot > 0) then
-        iru = ob(iob)%ru(1)
-        iob_out = sp_ob1%ru + iru - 1
+        iob_out = sp_ob1%ru + ob(iob)%ru(1) - 1
       end if
       
       hwb_d(j)%surq_cha = 0.
@@ -489,21 +506,18 @@
         hwb_d(j)%snomlt = snomlt
         hwb_d(j)%surq_gen = qday
         hwb_d(j)%latq = latq(j)
-        if (j==1 .and. qday > 1.) then
-          iru = 0
-        end if
-        !hwb_d(j)%rchrg =  rchrg(j)
         hwb_d(j)%wateryld = qdr(j)
         hwb_d(j)%perc = sepbtm(j)
-        hwb_d(j)%et = etday
+        !! add evap from impounded water (wetland) to et and esoil
+        hwb_d(j)%et = etday + hru(j)%water_evap
         hwb_d(j)%tloss = tloss
         hwb_d(j)%eplant = ep_day
-        hwb_d(j)%esoil = es_day
+        hwb_d(j)%esoil = es_day + hru(j)%water_evap 
         hwb_d(j)%surq_cont = surfq(j)
         hwb_d(j)%cn = cnday(j)
         hwb_d(j)%sw = soil(j)%sw
         hwb_d(j)%sw_300 = soil(j)%sw_300
-        hwb_d(j)%snopack = sno_hru(j)
+        hwb_d(j)%snopack = hru(j)%sno_mm
         hwb_d(j)%pet = pet_day
         hwb_d(j)%qtile = qtile
         hwb_d(j)%irr = irrig(j)%applied
@@ -526,11 +540,11 @@
         hpw_d(j)%yield = pl_yield%m
         pl_yield = plt_mass_z
         hpw_d(j)%sol_tmp =  soil(j)%phys(2)%tmp
-        hpw_d(j)%strsw = (1. - strsw_av(j))
-        hpw_d(j)%strsa = (1. - strsa_av)
-        hpw_d(j)%strstmp = (1. - strstmp_av)
-        hpw_d(j)%strsn = (1. - strsn_av)        
-        hpw_d(j)%strsp = (1. - strsp_av)
+        hpw_d(j)%strsw = strsw_av
+        hpw_d(j)%strsa = strsa_av
+        hpw_d(j)%strstmp = strstmp_av
+        hpw_d(j)%strsn = strsn_av      
+        hpw_d(j)%strsp = strsp_av
         hpw_d(j)%nplnt = nplnt(j)
         hpw_d(j)%percn = percn(j)
         hpw_d(j)%pplnt = pplnt(j)

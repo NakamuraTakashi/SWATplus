@@ -19,6 +19,7 @@
       use output_landscape_module
       use conditional_module
       use constituent_mass_module
+      use calibration_data_module
 
       implicit none
 
@@ -50,6 +51,8 @@
       integer :: iplt_bsn
       integer :: irrop                     !         |
       integer :: igr
+      integer :: ireg                      !         |
+      integer :: ilum
       real :: hiad1                        !         |
       real :: irrig_m3                     !         |
       real :: amt_mm                       !         |
@@ -86,7 +89,7 @@
             !! if unlimited source, set irrigation applied directly to hru
             if (d_tbl%act(iac)%file_pointer == "unlim") then
               irrig(j)%applied = irrop_db(irrop)%amt_mm * irrop_db(irrop)%eff * (1. - irrop_db(irrop)%surq)
-              irrig(j)%runoff = irrop_db(irrop)%amt_mm * irrop_db(irrop)%surq
+              irrig(j)%runoff = irrop_db(irrop)%amt_mm * irrop_db(irrop)%eff * irrop_db(irrop)%surq
               !set organics and constituents from irr.ops ! irrig(j)%water =  cs_irr(j) = 
               if (pco%mgtout == "y") then
                 write (2612, *) j, time%yrc, time%mo, time%day, "        ", "IRRIGATE", phubase(j),  &
@@ -253,6 +256,14 @@
                   iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                   bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
                   bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + yield * hru(j)%area_ha / 1000.
+                  !! sum regional crop yields for soft calibration
+                  ireg = hru(j)%crop_reg
+                  do ilum = 1, plcal(ireg)%lum_num
+                    if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
+                      plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
+                      plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                    end if
+                  end do
             
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
@@ -332,6 +343,14 @@
                   iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                   bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
                   bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + yield * hru(j)%area_ha / 1000.
+                  !! sum regional crop yields for soft calibration
+                  ireg = hru(j)%crop_reg
+                  do ilum = 1, plcal(ireg)%lum_num
+                    if (plcal(ireg)%lum(ilum)%meas%name == d_tbl%act(iac)%option) then
+                      plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
+                      plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                    end if
+                  end do
             
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
@@ -368,7 +387,7 @@
               call pest_apply (j, ipst, pest_kg, ipestop)
 
               if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day_mo, mgt%op_char, "    PEST ",        &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, d_tbl%act(iac)%option, "    PEST ",        &
                  phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m,           &
                  rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), pest_kg
               endif
@@ -452,7 +471,7 @@
                            
           !tile flow control for saturated buffers
           case ("flow_control") !! set flow fractions to buffer tile and direct to channel
-            icon = d_tbl%act(iac)%ob_num
+            j = d_tbl%act(iac)%ob_num
             if (j == 0) j = ob_cur
             select case (d_tbl%act(iac)%option)
             case ("min_flo")    

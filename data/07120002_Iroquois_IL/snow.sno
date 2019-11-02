@@ -1,0 +1,3 @@
+snow_db Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:21 PM
+  NAME FALL_TMP MELT_TMP MELT_MAX MELT_MIN TMP_LAG SNOW_H2O COV50 SNOW_INIT
+ snow1        1      0.5      4.5      4.5       1        1   0.5          

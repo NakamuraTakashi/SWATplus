@@ -1,0 +1,8 @@
+landuse.lum
+LULC_NAME     CAL_GROUP     PCOM_NAME     MGT_NAME       CN2        CONS_PRAC         URB_LU      URB_RO     OV_MANN         TILE_NAME  SEP_NAME  VFS_NAME  GRWW_NAME  BMP_NAME
+frse_lum        all_lum     frse_comm     moisture_grow	 wood_f      up_down_slope    null          null     forest_heavy         null      null      null       null      null  
+rnge_lum        all_lum     rnge_comm     moisture_grow  pastg_f     up_down_slope    null          null     range_sparse         null      null      null       null      null  
+rngb_lum        all_lum     rngb_comm     moisture_grow  pastg_f     up_down_slope    null          null     range_sparse         null      null      null       null      null  
+wetl_lum        all_lum     rngb_comm     moisture_grow  pastg_f     up_down_slope    null          null     range_sparse         null      null      null       null      null  
+corn_lum        all_lum     rngb_comm     corn           pastg_f     up_down_slope    null          null     range_sparse         null      null      null       null      null  
+agrl_lum        all_lum     rngb_comm     moisture_grow  pastg_f     up_down_slope    null          null     range_sparse         null      null      null       null      null  

@@ -11,7 +11,8 @@
          real :: plet = 0.              !! mm H2O           |actual ET simulated during life of plant
          real :: plpet = 0.             !! mm H2O           |potential ET simulated during life of plant
          real :: laimxfr = 0.           !! 
-         real :: hvstiadj = 0.          !! (kg/ha)/(kg/ha)  |optimal harvest index for current time during growing season
+         real :: hi_adj = 0.            !! (kg/ha)/(kg/ha)  |temperature adjusted harvest index for current time during growing season
+         real :: hi_prev = 0.           !! (kg/ha)/(kg/ha)  |optimal harvest index for current time during growing season
          real :: olai = 0.              !!
          real :: leaf_frac = 0.         !! none             |fraction of above ground tree biomass that is leaf
          real :: root_dep = 0.          !! mm               |root depth
@@ -104,7 +105,6 @@
       type (plant_stress) :: plstrz
 
       type basin_crop_yields
-        character(len=16) :: name
         real :: area_ha = 0.        !ha         |area of crop harvested
         real :: yield = 0.          !t          |yield mass removed in harvest
       end type basin_crop_yields

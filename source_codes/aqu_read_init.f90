@@ -4,6 +4,7 @@
       use input_file_module
       use maximum_data_module
       use aquifer_module
+      use aqu_pesticide_module
       use hydrograph_module
       use constituent_mass_module
       
@@ -59,6 +60,14 @@
 
       end if
       
+      !! zero initial basin pesticides (for printing)
+      do ipest = 1, cs_db%num_pests
+        baqupst_d%pest(ipest)%stor_init = 0.
+        baqupst_m%pest(ipest)%stor_init = 0.
+        baqupst_y%pest(ipest)%stor_init = 0.
+        baqupst_a%pest(ipest)%stor_init = 0.
+      end do
+        
       !! initialize organics and constituents
       do iaq = 1, sp_ob%aqu
         iob = sp_ob1%aqu + iaq - 1
@@ -79,11 +88,13 @@
             end do
             
             !! initial pesticides
-            do ics = 1, db_mx%pestw_ini
-              if (aqu_init_dat_c(ini)%pest == pest_init_name(ics)) then
+            do ics = 1, db_mx%pest_ini
+              if (aqu_init_dat_c(ini)%pest == pest_soil_ini(ics)%name) then
                 !! initialize pesticides in aquifer water and benthic from input data
                 do ipest = 1, cs_db%num_pests
-                  cs_aqu(iaq)%pest(ipest) = pest_soil_ini(ics)%soil(ipest)
+                  !! kg/ha = mg/kg (ppm) * t/m3  * m * 10000.m2/ha * 1000kg/t * kg/1000000 mg
+                  !! assume bulk density of 2.0 t/m3
+                  cs_aqu(iaq)%pest(ipest) = pest_soil_ini(ics)%soil(ipest) * 2.0 * aqudb(idb)%dep_bot * 10.
                 end do
                 exit
               end if
@@ -115,7 +126,20 @@
               if (aqu_init(ini)%salt == 0) write (9001,*) salt_init_name(ics), " not found"
             end do
             
-          end do
+        end do
+          
+        do ipest = 1, cs_db%num_pests
+          !! set inital aquifer pesticides (for printing)
+          aqupst_d(iaq)%pest(ipest)%stor_init = cs_aqu(iaq)%pest(ipest)
+          aqupst_m(iaq)%pest(ipest)%stor_init = cs_aqu(iaq)%pest(ipest)
+          aqupst_y(iaq)%pest(ipest)%stor_init = cs_aqu(iaq)%pest(ipest)
+          aqupst_a(iaq)%pest(ipest)%stor_init = cs_aqu(iaq)%pest(ipest)
+          !! sum initial basin pesticides (for printing)
+          baqupst_d%pest(ipest)%stor_init = baqupst_d%pest(ipest)%stor_init + cs_aqu(iaq)%pest(ipest)
+          baqupst_m%pest(ipest)%stor_init = baqupst_m%pest(ipest)%stor_init + cs_aqu(iaq)%pest(ipest)
+          baqupst_y%pest(ipest)%stor_init = baqupst_y%pest(ipest)%stor_init + cs_aqu(iaq)%pest(ipest)
+          baqupst_a%pest(ipest)%stor_init = baqupst_a%pest(ipest)%stor_init + cs_aqu(iaq)%pest(ipest)
+        end do
 
       end do
 

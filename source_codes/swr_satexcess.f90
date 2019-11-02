@@ -15,7 +15,7 @@
 !!    ~ ~ ~ ~ ~ ~ END SPECIFICATIONS ~ ~ ~ ~ ~ ~
 
       use septic_data_module
-      use hru_module, only : hru, ihru, cbodu, surfq, surqno3, surqsolp, sep_tsincefail, pot, i_sep,  &
+      use hru_module, only : hru, ihru, cbodu, surfq, surqno3, surqsolp, sep_tsincefail, i_sep,  &
         isep, qday, sepday
       use soil_module
       use hydrograph_module
@@ -113,7 +113,7 @@
       if (sep(isep)%opt == 0) then
       if (j1 < soil(j)%nly) then
         if (soil(j)%phys(j1)%st - soil(j)%phys(j1)%ul > 1.e-4) then
-          sepday = sepday + (soil(j)%phys(j1)%st - soil(j)%phys(j1)%ul)
+          sepday = (soil(j)%phys(j1)%st - soil(j)%phys(j1)%ul)
           soil(j)%phys(j1)%st = soil(j)%phys(j1)%ul
           soil(j)%phys(j1+1)%st = soil(j)%phys(j1+1)%st + sepday
         end if

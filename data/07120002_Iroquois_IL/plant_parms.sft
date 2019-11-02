@@ -1,0 +1,4 @@
+plant_parms_sft Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:20 PM
+ 1
+NAME           CHG_TYP		NEG	  POS	LO	UP
+stress  	pctchg		-10.	  10.	-20.	20.

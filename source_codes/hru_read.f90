@@ -4,6 +4,7 @@
       use reservoir_data_module
       use landuse_data_module
       use hydrology_data_module
+      use hydrograph_module, only : sp_ob
       use topography_data_module
       use soil_data_module
       use input_file_module
@@ -61,14 +62,14 @@
         read (113,*,iostat=eof) header
         if (eof < 0) exit
 
-      do ihru = 1, imax
+      do ihru = 1, sp_ob%hru
         read (113,*,iostat=eof) i
         if (eof < 0) exit
         backspace (113)
         read (113,*,iostat=eof) k, hru_db(i)%dbsc
         if (eof < 0) exit
 
-          do ilum = 1, db_mx%landuse
+         do ilum = 1, db_mx%landuse
             if (hru_db(i)%dbsc%land_use_mgt == lum(ilum)%name) then
                hru_db(i)%dbs%land_use_mgt = ilum
             exit

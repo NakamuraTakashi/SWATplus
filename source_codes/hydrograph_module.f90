@@ -29,7 +29,7 @@
       integer, dimension (8) :: fdc_p = (/18,36,91,182,274,328,347,366/) !              |
       
       type hyd_output
-        real :: flo = 0.               !! m^3          |volume of water
+        real :: flo = 0.               !! m^3/s        |volume of water
         real :: sed = 0.               !! metric tons  |sediment
         real :: orgn = 0.              !! kg N         |organic N
         real :: sedp = 0.              !! kg P         |organic P
@@ -73,12 +73,13 @@
       
       character(len=16), dimension(:), allocatable :: om_init_name
       
-      type (hyd_output), dimension(:),allocatable :: aqu
-      type (hyd_output), dimension(:),allocatable :: res
-      type (hyd_output), dimension(:),allocatable :: wet
+      type (hyd_output), dimension(:),allocatable, target :: aqu
+      type (hyd_output), dimension(:),allocatable, target :: res
+      type (hyd_output), dimension(:),allocatable, target :: wet
       type (hyd_output), dimension(:),allocatable :: res_om_init
       type (hyd_output), dimension(:),allocatable :: wet_om_init
       type (hyd_output) :: resz
+      type (hyd_output), pointer :: wbody       !! used for reservoir and wetlands
       
       type (hyd_output), dimension(:),allocatable :: om_init_water
       type (hyd_output), dimension(:),allocatable :: ch_om_water_init
@@ -100,6 +101,7 @@
       type (hyd_output), dimension(:), allocatable, save :: res_out_m
       type (hyd_output), dimension(:), allocatable, save :: res_out_y
       type (hyd_output), dimension(:), allocatable, save :: res_out_a
+      type (hyd_output) :: bres
       type (hyd_output) :: bres_out_d
       type (hyd_output) :: bres_out_m
       type (hyd_output) :: bres_out_y
@@ -284,12 +286,16 @@
       
       !recall hydrograph inputs
       type recall_hydrograph_inputs
-         character (len=16) :: name
-         integer :: num = 0                    !number of elements
-         integer :: typ                        !recall type - 1=day, 2=mon, 3=year
-         character(len=16) :: filename         !filename
-         !hyd_output units are in cms and mg/L
-         type (hyd_output), dimension (:,:), allocatable :: hd     !export coefficients
+        character (len=16) :: name
+        integer :: num = 0                    !number of elements
+        integer :: typ                        !recall type - 1=day, 2=mon, 3=year
+        character(len=16) :: filename         !filename
+        !hyd_output units are in cms and mg/L
+        type (hyd_output), dimension (:,:), allocatable :: hd     !export coefficients
+        integer :: start_ts             !! start timestep of point source file
+        integer :: start_yr             !! start year of point source file
+        integer :: end_ts               !! end timestep of point source file
+        integer :: end_yr               !! end year of point source file
       end type recall_hydrograph_inputs
       type (recall_hydrograph_inputs),dimension(:),allocatable:: recall
 
@@ -322,7 +328,7 @@
         integer :: hru_lte = 5      !1=total 2=recharge 3=surface 4=lateral 5= tile
         integer :: ru = 5           !1=total 2=recharge 3=surface 4=lateral 5= tile
         integer :: modflow = 1      !1=total
-        integer :: aqu = 2          !1=return flow 3= deep perc
+        integer :: aqu = 2          !1=return flow 2=deep perc
         integer :: chan = 3         !1=total 2=recharge 3=overbank
         integer :: res = 2          !1=total 2=recharge 
         integer :: recall = 1       !1=total
@@ -331,7 +337,7 @@
         integer :: pump = 1         !1=total
         integer :: outlet = 1       !1=total
         integer :: chandeg = 3      !1=total 2=recharge 3=overbank
-        integer :: aqu2d = 2        !1=return flow 3= deep perc
+        integer :: aqu2d = 2        !1=return flow 3=deep perc
         integer :: herd = 1
         integer :: wro = 1
       end type object_total_hydrographs
@@ -423,7 +429,7 @@
       type (hyd_header) :: hyd_hdr
       
        type hyd_stor_header        
-        character (len=17) :: flo_stor  =    "         flo_stor"      !! ha-m         |volume of water        
+        character (len=17) :: flo_stor  =    "         flo_stor"      !! m^3/s        |volume of water        
         character (len=15) :: sed_stor  =    "       sed_stor"        !! metric tons  |sediment
         character (len=15) :: orgn_stor =    "      orgn_stor"        !! kg N         |organic N
         character (len=15) :: sedp_stor =    "      sedp_stor"        !! kg P         |organic P
@@ -445,7 +451,7 @@
       type (hyd_stor_header) :: hyd_stor_hdr
       
       type hyd_in_header        
-        character (len=15) :: flo_in  =    "         flo_in"      !! ha-m         |volume of water           
+        character (len=15) :: flo_in  =    "         flo_in"        !! m^3/s        |volume of water           
         character (len=15) :: sed_in  =    "         sed_in"        !! metric tons  |sediment
         character (len=15) :: orgn_in =    "        orgn_in"        !! kg N         |organic N
         character (len=15) :: sedp_in =    "        sedp_in"        !! kg P         |organic P
@@ -467,7 +473,7 @@
       type (hyd_in_header) :: hyd_in_hdr
       
     type hyd_out_header        
-        character (len=15) :: flo_out  =    "        flo_out"      !! ha-m         |volume of water       
+        character (len=15) :: flo_out  =    "        flo_out"        !! m^3/s        |volume of water       
         character (len=15) :: sed_out  =    "        sed_out"        !! metric tons  |sediment
         character (len=15) :: orgn_out =    "       orgn_out"        !! kg N         |organic N
         character (len=15) :: sedp_out =    "       sedp_out"        !! kg P         |organic P
@@ -490,37 +496,37 @@
       
       
       type ch_watbod_header 
-        character (len=6) :: day           = "      "
-        character (len=6) :: mo            = "      "
-        character (len=6) :: day_mo        = "      "
-        character (len=6) :: yrc           = "      "
-        character (len=8) :: isd           = "        "                                            
-        character (len=8) :: id            = "        "       
-        character (len=15) :: name         = "              " 
+        character (len=6) :: day           = "  jday"       
+        character (len=6) :: mo            = "   mon"
+        character (len=6) :: day_mo        = "   day"
+        character (len=6) :: yrc           = "    yr"       
+        character (len=9) :: isd           = "     unit"        
+        character (len=9) :: id            = "   gis_id"       
+        character (len=15) :: name         = "   name        "   
         character (len=15) :: area_ha      = '          area'
         character (len=15) :: precip       = '        precip'
         character (len=15) :: evap         = '          evap'
         character (len=15) :: seep         = '          seep'
       end type ch_watbod_header
-      type (ch_watbod_header) :: ch_watbod_hdr
+      type (ch_watbod_header) :: ch_wbod_hdr
       
       type ch_watbod_header_units
-        character (len=6) :: day           = "  jday"
-        character (len=6) :: mo            = "   mon"
-        character (len=6) :: day_mo        = "   day"
-        character (len=6) :: yrc           = "    yr"
-        character (len=8) :: isd           = "   unit "                                            
-        character (len=8) :: id            = " gis_id "      
-        character (len=15) :: name         = " name         "      
+        character (len=6) :: day           = "      "
+        character (len=6) :: mo            = "      "
+        character (len=6) :: day_mo        = "      "
+        character (len=6) :: yrc           = "      "       
+        character (len=9) :: isd           = "         "                                            
+        character (len=9) :: id            = "         "       
+        character (len=15) :: name         = "              "    
         character (len=15) :: area_ha      = '            ha'
         character (len=15) :: precip       = '          ha-m'
         character (len=15) :: evap         = '          ha-m'
         character (len=15) :: seep         = '          ha-m'
       end type ch_watbod_header_units
-      type (ch_watbod_header_units) :: ch_watbod_hdr_units
+      type (ch_watbod_header_units) :: ch_wbod_hdr_units
       
       type hyd_header_units1
-        character (len=15) :: flo    =  "           ha-m"      !! m^3          |volume of water
+        character (len=15) :: flo    =  "          m^3/s"        !! m^3/s        |volume of water
         character (len=15) :: sed    =  "          mtons"        !! metric tons  |sediment
         character (len=15) :: orgn   =  "            kgN"        !! kg N         |organic N
         character (len=15) :: sedp   =  "            kgP"        !! kg P         |organic P
@@ -548,7 +554,7 @@
         character (len=13) :: yrc    =  "            "
         character (len=12) :: name   =  "            "
         character (len=6) :: otype   =  "      "    
-        character (len=17) :: flo    =  "             ha-m"      !! m^3          |volume of water
+        character (len=17) :: flo    =  "            m^3/s"      !! m^3/s        |volume of water
         character (len=15) :: sed    =  "          mtons"        !! metric tons  |sediment
         character (len=15) :: orgn   =  "            kgN"        !! kg N         |organic N
         character (len=15) :: sedp   =  "            kgP"        !! kg P         |organic P
@@ -580,7 +586,7 @@
         character (len=9) :: iotypno =  "         "
         character (len=8) :: hydio   =  "        "
         character (len=8) :: objno   =  "        "
-        character (len=17) :: flo    =  "             ha-m"      !! ha-m         |volume of water
+        character (len=17) :: flo    =  "            m^3/s"      !! m^3/s          |volume of water
         character (len=15) :: sed    =  "          mtons"        !! metric tons  |sediment
         character (len=15) :: orgn   =  "            kgN"        !! kg N         |organic N
         character (len=15) :: sedp   =  "            kgP"        !! kg P         |organic P
@@ -611,6 +617,16 @@
         character (len=6) :: otype   =  "  type"
       end type hyd_header_time
        type (hyd_header_time) :: hyd_hdr_time
+    
+      type rec_header_time                                       
+        character (len=11) :: day    =  "       jday"
+        character (len=12) :: mo     =  "         mon"
+        character (len=12) :: day_mo =  "         day"
+        character (len=13) :: yrc    =  "          yr"
+        character (len=12) :: name   =  "name        "       
+        character (len=6) ::  blank  =  "      "
+      end type rec_header_time
+       type (rec_header_time) :: rec_hdr_time
        
       type hyd_header_obj
         character (len=13) :: iotyp  =  "   objtyp   "
