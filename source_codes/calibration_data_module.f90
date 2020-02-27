@@ -125,7 +125,20 @@
         type (soft_calib_ls_adjust) :: prm_prev                 !parameter adjustments used in landscape calibration
         type (soft_calib_ls_adjust) :: prm_lim                  !code if parameters are at limits
       end type ls_calib_regions
-      
+            
+      type soft_data_calib_landscape
+        character(len=16) :: name = "default"                               !name of region - (number of regions = db_mx%lsu_reg)
+        integer :: lum_num                                                  !number of land uses in each region
+        integer :: num_tot                                                  !number of hru"s in each region
+        integer, dimension(:), allocatable :: num                           !hru"s that are included in the region
+        integer :: num_reg                                                  !number of regions the soft data applies to
+        character(len=16), dimension(:), allocatable :: reg                 !name of regions the soft data applies to
+        integer, dimension(:), allocatable :: ireg                          !name of regions the soft data applies to
+        type (ls_calib_regions), dimension(:), allocatable :: lum           !dimension for land uses within a region
+      end type soft_data_calib_landscape
+      type (soft_data_calib_landscape), dimension(:), allocatable :: lscal  !dimension by region for hru"s
+      type (soft_data_calib_landscape), dimension(:), allocatable :: lscalt !dimension by region for hru_lte"s
+
       type cataloging_units
         character(len=16) :: name = "basin"                     !name of region - (number of regions = db_mx%lsu_reg)
         real :: area_ha                                         !area of landscape cataloging unit -hectares
@@ -151,16 +164,16 @@
         integer :: num_tot                                      !number of hru"s in each region
         integer, dimension(:), allocatable :: num               !hru"s that are included in the region
       end type landscape_units
-      type (landscape_units), dimension(:), allocatable :: lsu_out     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: lsu_reg     !dimension by region for elements (lsu or hru)
-      type (landscape_units), dimension(:), allocatable :: acu_out     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: acu_reg     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: ccu_out     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: ccu_reg     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: rcu_out     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: rcu_reg     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: pcu_out     !dimension by region for hru"s
-      type (landscape_units), dimension(:), allocatable :: pcu_reg     !dimension by region for hru"s
+      type (landscape_units), dimension(:), allocatable :: lsu_out     !dimension by region for hrus
+      type (landscape_units), dimension(:), allocatable :: lsu_reg     !dimension by region for hrus
+      type (landscape_units), dimension(:), allocatable :: acu_out     !dimension by region for aquifers
+      type (landscape_units), dimension(:), allocatable :: acu_reg     !dimension by region for aquifers
+      type (landscape_units), dimension(:), allocatable :: ccu_out     !dimension by region for channels
+      type (landscape_units), dimension(:), allocatable :: ccu_reg     !dimension by region for channels
+      type (landscape_units), dimension(:), allocatable :: rcu_out     !dimension by region for reservoirs
+      type (landscape_units), dimension(:), allocatable :: rcu_reg     !dimension by region for reservoirs
+      type (landscape_units), dimension(:), allocatable :: pcu_out     !dimension by region for point sources
+      type (landscape_units), dimension(:), allocatable :: pcu_reg     !dimension by region for point sources
       
       type landscape_region_elements
         character(len=16) :: name
@@ -177,7 +190,7 @@
         character (len=3) :: obtyp      !object type- 1=hru, 2=hru_lte, 11=export coef, etc
         integer :: obtypno = 0          !2-number of hru_lte"s or 1st hru_lte command
         real :: bsn_frac = 0            !fraction of element in basin (expansion factor)
-        real :: ru_frac = 0            !fraction of element in ru (expansion factor)
+        real :: ru_frac = 0             !fraction of element in ru (expansion factor)
         real :: reg_frac = 0            !fraction of element in calibration region (expansion factor)
       end type landscape_elements
       type (landscape_elements), dimension(:), allocatable :: lsu_elem       !landscape cataoging unit
@@ -185,19 +198,6 @@
       type (landscape_elements), dimension(:), allocatable :: acu_elem       !aquifer cataoging unit
       type (landscape_elements), dimension(:), allocatable :: rcu_elem       !reservoir cataoging unit
       type (landscape_elements), dimension(:), allocatable :: pcu_elem       !point source cataoging unit
-      
-      type soft_data_calib_landscape
-        character(len=16) :: name = "default"                               !name of region - (number of regions = db_mx%lsu_reg)
-        integer :: lum_num                                                  !number of land uses in each region
-        integer :: num_tot                                                  !number of hru"s in each region
-        integer, dimension(:), allocatable :: num                           !hru"s that are included in the region
-        integer :: num_reg                                                  !number of regions the soft data applies to
-        character(len=16), dimension(:), allocatable :: reg                 !name of regions the soft data applies to
-        integer, dimension(:), allocatable :: ireg                          !name of regions the soft data applies to
-        type (ls_calib_regions), dimension(:), allocatable :: lum           !dimension for land uses within a region
-      end type soft_data_calib_landscape
-      type (soft_data_calib_landscape), dimension(:), allocatable :: lscal  !dimension by region for hru"s
-      type (soft_data_calib_landscape), dimension(:), allocatable :: lscalt !dimension by region for hru_lte"s
 
       type soft_calib_pl_adjust
         real :: stress = 0.     !+/- or 0/1     |plant stress (pest, soil, etc) or at limit

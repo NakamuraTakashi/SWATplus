@@ -366,6 +366,7 @@
             jj = rcv_sum(kk)                                ! jj=seqential receiving number
             ob(kk)%obj_in(jj) = i                           ! source object number (for receiving unit)
             ob(kk)%obtyp_in(jj) = ob(i)%typ
+            ob(kk)%obtypno_in(jj) = ob(i)%num
             ob(kk)%htyp_in(jj) = ob(i)%htyp_out(ii)
             ob(kk)%ihtyp_in(jj) = ob(i)%ihtyp_out(ii)
             ob(kk)%frac_in(jj) = ob(i)%frac_out(ii)
@@ -398,7 +399,7 @@
       iord = 1
       dfn_sum = 0
       
-      do while (idone == 0)
+    do while (idone == 0)
         do i = 1, sp_ob%objs
         
         if (iord > 1000) then
@@ -406,19 +407,20 @@
 
             do iob = 1, sp_ob%objs
               if (ob(iob)%fired == 0 .and. ob(iob)%rcv_tot > 0) then
+                  kk=1
                 write (9001, *) iob, ob(iob)%fired, ob(iob)%typ, ob(iob)%num, ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj),  &
-                                     ob(iob)%obj_in(jj), jj = 1, ob(iob)%rcv_tot)
+                                    ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj), jj = 1, ob(iob)%rcv_tot)
               end if 
             end do
-            write (*,1002) 
-1002        format (5x,/,"ERROR - An infinite loop is detected in the connect file(s)",/, 15x, "the simulation will end",       &
-                       /, 9x, "(review diagnostics.out file for more info)",/)
-            pause   !!! stop the simulation run (ob(i)%fired == 0)
-            stop
+            write (*,1002)
+            !pause   !!! stop the simulation run (ob(i)%fired == 0)
+            !stop
+            call exit(1)
           end if
-
-        end if        
-          !check if all incoming and defining objects have been met
+        end if 
+   
+      
+            !check if all incoming and defining objects have been met
           !if not sum incoming 
           if (rcv_sum(i) == ob(i)%rcv_tot .and.                        & 
                                       dfn_sum(i) == ob(i)%dfn_tot) then
@@ -501,7 +503,7 @@
         iord = iord + 1
       end do
       
-      !! set command orders for parallelization
-      ! allocate (
+1002  format (5x,/,"ERROR - An infinite loop is detected in the connect file(s)",/, 15x, "the simulation will end",       &
+                       /, 9x, "(review diagnostics.out file for more info)",/)
       return
       end subroutine hyd_connect

@@ -32,13 +32,12 @@
 
 !!    ~ ~ ~ ~ ~ ~ END SPECIFICATIONS ~ ~ ~ ~ ~ ~
 
-      use hru_module, only : dormhr, hru, i_sep, isep, isep_ly, iseptic
+      use hru_module, only : hru, sdr, dormhr, hru, i_sep, isep, isep_ly, iseptic
       use soil_module
       use plant_module
       use climate_module
       use septic_data_module
       use plant_data_module
-      use tiles_data_module
       use pesticide_data_module
       use basin_module
       use channel_module
@@ -46,6 +45,7 @@
       use organic_mineral_mass_module
       use hydrograph_module, only : sp_ob, ob
       use constituent_mass_module
+      use output_landscape_module
       
       implicit none
 
@@ -109,6 +109,10 @@
         soil(j)%phys(k)%st = sffc * soil(j)%phys(k)%fc
         soil(j)%sw = soil(j)%sw + soil(j)%phys(k)%st
       end do
+      hwb_d(j)%sw_init = soil(j)%sw    !store initial soil water
+      hwb_m(j)%sw_init = soil(j)%sw
+      hwb_y(j)%sw_init = soil(j)%sw
+      hwb_a(j)%sw_init = soil(j)%sw
       
       !! set day length threshold for dormancy and initial dormancy
       dormhr(j) = wgn_pms(iwgn)%daylth

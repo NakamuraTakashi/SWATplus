@@ -21,7 +21,8 @@
       idp = pcom(j)%plcur(ipl)%idplt
 
       !! calculate root depth
-      if (pldb(idp)%typ == "warm_annual" .or. pldb(idp)%typ == "cold_annual") then
+      if (pldb(idp)%typ == "warm_annual" .or. pldb(idp)%typ == "cold_annual" .or.  &
+             pldb(idp)%typ == "warm_annual_tuber" .or. pldb(idp)%typ == "cold_annual_tuber") then
         pcom(j)%plg(ipl)%root_dep = 2.5 * pcom(j)%plcur(ipl)%phuacc * 1000. * pldb(idp)%rdmx
         if (pcom(j)%plg(ipl)%root_dep > soil(j)%zmx) pcom(j)%plg(ipl)%root_dep = soil(j)%zmx
         if (pcom(j)%plg(ipl)%root_dep < 10.) pcom(j)%plg(ipl)%root_dep = 10.

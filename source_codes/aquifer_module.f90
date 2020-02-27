@@ -15,7 +15,7 @@
         real :: bf_max = 0.         !mm         |maximum daily baseflow - when all channels are contributing
         real :: alpha = 0.          !1/days     |lag factor for groundwater recession curve
         real :: revap_co = 0.       !           |revap oefficient - evap=pet*revap_co
-        real :: seep = 0.           !mm         |seepage from aquifer
+        real :: seep = 0.           !frac       |fraction of recharge that seeps from aquifer
         real :: spyld = 0.          !m^3/m^3    |specific yield of aquifer
         real :: hlife_n = 0.        !days       |half-life of nitrogen in groundwater
         real :: flo_min = 0.        !m          |water table depth for return flow to occur
@@ -29,7 +29,9 @@
         real :: flo_min         !mm         |minimum aquifer storage to allow return flow
         real :: revap_co        !0-1 frac   |fraction of pet to calculate revap
         real :: revap_min = 0.  !mm H2O     |threshold depth of water in shallow aquifer required to allow revap to occur
-        real :: alpha_e = 0.    !days       |Exp(-alpha_bf(:))
+        real :: seep = 0.       !frac       |fraction of recharge that seeps from aquifer
+        real :: spyld = 0.      !m^3/m^3    |specific yield of aquifer
+        real :: alpha_e = 0.    !days       |Exp(-alpha)
         real :: nloss = 0.      !frac       |nloss based on half life
         real :: rchrg_prev = 0.   !m^3      |previous days recharge
         real :: rchrgn_prev = 0.  !m^3      |previous days n recharge
@@ -108,7 +110,7 @@
           character(len=15) :: seep     =      "           seep"        ! (mm)
           character(len=15) :: revap    =      "          revap"        ! (mm)
           character(len=15) :: no3_st   =      "         no3_st"        ! (kg/ha N)
-          character(len=14) :: minp     =      "           minp"        ! (kg)
+          character(len=15) :: minp     =      "           minp"        ! (kg)
           character(len=15) :: orgn     =      "           orgn"        ! (kg/ha N)
           character(len=15) :: orgp     =      "           orgp"        ! (kg/ha P)
           character(len=15) :: rchrgn   =      "         rchrgn"        ! (kg/ha N)

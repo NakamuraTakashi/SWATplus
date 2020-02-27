@@ -40,10 +40,10 @@
       end type topography
       
       type field
-           character(len=13) :: name = "rep field"
-           real :: length = 0.2  !!            |km            |field length for wind erosion
-           real :: wid = 0.2  !!               |km            |field width for wind erosion
-           real :: ang = 60.  !!               |deg           |field angle for wind erosion
+           character(len=13) :: name = "default"
+           real :: length = 500. !!               |m             |field length for wind erosion
+           real :: wid = 100.    !!               |m             |field width for wind erosion
+           real :: ang = 30.     !!               |deg           |field angle for wind erosion
       end type field
       
       type hydrology
@@ -81,6 +81,7 @@
          real :: cov50 = 0.       !none          |frac of COVMX
          real :: init_mm = 0.     !mm H20        |initial snow water content at start of simulation
       end type snow_parameters
+      type (snow_parameters), dimension (:), allocatable :: snodb
       
       type subsurface_drainage_parameters
         character(len=13) :: name = "default"
@@ -93,6 +94,7 @@
         real :: pumpcap = 0.  !! |mm/hr         |pump capacity 
         real :: latksat = 0.  !! !na            |multiplication factor to determine lat sat hyd conductivity for profile
       end type subsurface_drainage_parameters
+      type (subsurface_drainage_parameters), dimension (:), allocatable :: sdr
               
       type landuse
           character(len=15) :: name

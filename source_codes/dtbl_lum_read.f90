@@ -10,6 +10,8 @@
       use conditional_module
       use pesticide_data_module
       use constituent_mass_module
+      use hydrograph_module, only : sp_ob
+      use hru_module, only : hru
       
       implicit none
                   
@@ -26,6 +28,7 @@
       integer :: idb                  !none       |counter
       integer :: ilum                 !none       |counter
       integer :: iburn                !none       |counter
+      integer :: ihru                 !none       |counter
       
       mdtbl = 0
       eof = 0
@@ -64,6 +67,20 @@
             do ic = 1, dtbl_lum(i)%conds
               read (107,*,iostat=eof) dtbl_lum(i)%cond(ic), (dtbl_lum(i)%alt(ic,ial), ial = 1, dtbl_lum(i)%alts)
               if (eof < 0) exit
+            end do
+            
+            !if land_use conditional variable, determine number of hru's and areas (used for probabilistic operations
+            dtbl_lum(i)%hru_lu = 0
+            dtbl_lum(i)%ha_lu = 0.
+            do ic = 1, dtbl_lum(i)%conds
+              if (dtbl_lum(i)%cond(ic)%var == "land_use") then
+                do ihru = 1, sp_ob%hru
+                  if (dtbl_lum(i)%cond(ic)%lim_var == hru(ihru)%land_use_mgt_c) then
+                    dtbl_lum(i)%hru_lu = dtbl_lum(i)%hru_lu + 1
+                    dtbl_lum(i)%ha_lu = dtbl_lum(i)%ha_lu + hru(ihru)%area_ha
+                  end if
+                end do
+              end if
             end do
                         
             !read actions and action outcomes

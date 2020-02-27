@@ -26,27 +26,26 @@
       real, dimension (:), allocatable :: hyd_km2                        !              |  
       integer, dimension (:), allocatable :: ob_order                    !              |
       real, dimension(:,:,:), allocatable:: rchhr                        !              |
-      integer, dimension (8) :: fdc_p = (/18,36,91,182,274,328,347,366/) !              |
       
       type hyd_output
-        real :: flo = 0.               !! m^3/s        |volume of water
-        real :: sed = 0.               !! metric tons  |sediment
-        real :: orgn = 0.              !! kg N         |organic N
-        real :: sedp = 0.              !! kg P         |organic P
-        real :: no3 = 0.               !! kg N         |NO3-N
-        real :: solp = 0.              !! kg P         |mineral (soluble P)
-        real :: chla = 0.              !! kg           |chlorophyll-a
-        real :: nh3 = 0.               !! kg N         |NH3
-        real :: no2 = 0.               !! kg N         |NO2
-        real :: cbod = 0.              !! kg           |carbonaceous biological oxygen demand
-        real :: dox = 0.               !! kg           |dissolved oxygen
-        real :: san = 0.               !! tons         |detached sand
-        real :: sil = 0.               !! tons         |detached silt
-        real :: cla = 0.               !! tons         |detached clay
-        real :: sag = 0.               !! tons         |detached small ag
-        real :: lag = 0.               !! tons         |detached large ag
-        real :: grv = 0.               !! tons         |gravel
-        real :: temp = 0.              !! deg c        |temperature
+        real :: flo = 0.               !! m^3           |volume of water
+        real :: sed = 0.               !! metric tons   |sediment
+        real :: orgn = 0.              !! kg N          |organic N
+        real :: sedp = 0.              !! kg P          |organic P
+        real :: no3 = 0.               !! kg N          |NO3-N
+        real :: solp = 0.              !! kg P          |mineral (soluble P)
+        real :: chla = 0.              !! kg            |chlorophyll-a
+        real :: nh3 = 0.               !! kg N          |NH3
+        real :: no2 = 0.               !! kg N          |NO2
+        real :: cbod = 0.              !! kg            |carbonaceous biological oxygen demand
+        real :: dox = 0.               !! kg            |dissolved oxygen
+        real :: san = 0.               !! tons          |detached sand
+        real :: sil = 0.               !! tons          |detached silt
+        real :: cla = 0.               !! tons          |detached clay
+        real :: sag = 0.               !! tons          |detached small ag
+        real :: lag = 0.               !! tons          |detached large ag
+        real :: grv = 0.               !! tons          |gravel
+        real :: temp = 0.              !! deg c         |temperature
       end type hyd_output
       
       type (hyd_output), dimension(:),allocatable :: hd
@@ -162,7 +161,7 @@
       type timestep
         type (hyd_output), dimension(:),allocatable :: hh
       end type timestep
-      type (timestep), dimension(:),allocatable, save :: ts
+      type (timestep), dimension(:), allocatable, save :: ts
 
       type sorted_duration_curve
         !linked list to sort the flow duration curves
@@ -172,22 +171,22 @@
       
       type duration_curve_points
         real :: min = 1.e10
-        real :: p5 = 0.
-        real :: p10 = 0.
-        real :: p25 = 0.
-        real :: p50 = 0.
-        real :: p75 = 0.
-        real :: p90 = 0.
-        real :: p95 = 0.
         real :: max = 0.
-        real :: mean = 0.
+        real :: mean = 0
+        real, dimension(27) :: p        !probabilities for all points on the fdc
       end type duration_curve_points
+
+      integer :: fdc_npts = 27
+      real, dimension (27) :: fdc_p = (/.1,.5,1.,2.,3.,5.,10.,15.,20.,25.,30.,35.,40.,45.,50.,55.,60.,65.,70.,75.,80.,85.,90.,95.,97.,98.,99./) !percent        |output percent on the fdc (input)
+      integer, dimension (27) :: fdc_days = (/1,2,4,7,11,18,37,55,73,91,110,128,146,164,182,201,219,237,256,274,292,310,329,347,354,358,361/)
+      real, dimension (27) :: fdc_n             !               |flow on the fdc at given percents
+      real, dimension (27) :: fdc_norm_mean     !               |normalized flow on the fdc at given percents
       
       type flow_duration_curve
         integer :: mfe = 1
         integer :: mle = 1
-        type (duration_curve_points) :: p_md                            !median of all years
-        type (duration_curve_points), dimension(:),allocatable :: p     !dimension to number of years
+        type (duration_curve_points) :: p_md                                !median of all years
+        type (duration_curve_points), dimension (:), allocatable :: yr      !flow on the fdc at given percents for each year
       end type flow_duration_curve
                
       type object_connectivity
@@ -494,7 +493,62 @@
       end type hyd_out_header
       type (hyd_out_header) :: hyd_out_hdr
       
+      type sed_hyd_header        
+        character (len=15) :: flo_in  =    "         flo_in"        !! m^3/s        |volume of water 
+        character (len=15) :: flo_out  =   "        flo_out"        !! m^3/s        |volume of water  
+        character (len=15) :: sed_in  =    "         sed_in"        !! metric tons  |sediment
+        character (len=15) :: sed_out  =   "        sed_out"        !! metric tons  |sediment      
+        character (len=15) :: orgn_in =    "        orgn_in"        !! kg N         |organic N
+        character (len=15) :: orgn_out =   "       orgn_out"        !! kg N         |organic N 
+        character (len=15) :: sedp_in =    "        sedp_in"        !! kg P         |organic P
+        character (len=15) :: sedp_out =   "       sedp_out"        !! kg P         |organic P
+        character (len=15) :: no3_in  =    "         no3_in"        !! kg N         |NO3-N
+        character (len=15) :: no3_out  =   "        no3_out"        !! kg N         |NO3-N
+        character (len=15) :: solp_in =    "        solp_in"        !! kg P         |mineral (soluble P)
+        character (len=15) :: solp_out =   "       solp_out"        !! kg P         |mineral (soluble P)       
+        character (len=15) :: chla_in =    "        chla_in"        !! kg           |chlorophyll-a
+        character (len=15) :: chla_out =   "       chla_out"        !! kg           |chlorophyll-a
+        character (len=15) :: nh3_in  =    "         nh3_in"        !! kg N         |NH3
+        character (len=15) :: nh3_out  =   "        nh3_out"        !! kg N         |NH3
+        character (len=15) :: no2_in  =    "         no2_in"        !! kg N         |NO2
+        character (len=15) :: no2_out  =   "        no2_out"        !! kg N         |NO2
+        character (len=15) :: cbod_in =    "        cbod_in"        !! kg           |carbonaceous biological oxygen demand
+        character (len=15) :: cbod_out =   "       cbod_out"        !! kg           |carbonaceous biological oxygen demand
+        character (len=15) :: dox_in  =    "         dox_in"        !! kg           |dissolved oxygen
+        character (len=15) :: dox_out  =   "        dox_out"        !! kg           |dissolved oxygen
+        character (len=15) :: temp_in =    "        temp_in"        !! deg c        |temperature
+        character (len=15) :: temp_out =   "       temp_out"        !! deg c        |temperature        
+      end type sed_hyd_header
+      type (sed_hyd_header) :: sd_hyd_hdr
       
+     type sd_hyd_header_units
+        character (len=15) :: flo_in    =  "          m^3/s"        !! m^3/s        |volume of water
+        character (len=15) :: flo_out   =  "          m^3/s"        !! m^3/s        |volume of water
+        character (len=15) :: sed_in    =  "          mtons"        !! metric tons  |sediment
+        character (len=15) :: sed_out   =  "          mtons"        !! metric tons  |sediment
+        character (len=15) :: orgn_in   =  "            kgN"        !! kg N         |organic N
+        character (len=15) :: orgn_out  =  "            kgN"        !! kg N         |organic N
+        character (len=15) :: sedp_in   =  "            kgP"        !! kg P         |organic P
+        character (len=15) :: sedp_out  =  "            kgP"        !! kg P         |organic P
+        character (len=15) :: no3_in    =  "            kgN"        !! kg N         |NO3-N
+        character (len=15) :: no3_out   =  "            kgN"        !! kg N         |NO3-N
+        character (len=15) :: solp_in   =  "            kgP"        !! kg P         |mineral (soluble P)
+        character (len=15) :: solp_out  =  "            kgP"        !! kg P         |mineral (soluble P)
+        character (len=15) :: chla_in   =  "             kg"        !! kg           |chlorophyll-a
+        character (len=15) :: chla_out  =  "             kg"        !! kg           |chlorophyll-a
+        character (len=15) :: nh3_in    =  "            kgN"        !! kg N         |NH3
+        character (len=15) :: nh3_out   =  "            kgN"        !! kg N         |NH3
+        character (len=15) :: no2_in    =  "            kgN"        !! kg N         |NO2
+        character (len=15) :: no2_out   =  "            kgN"        !! kg N         |NO2
+        character (len=15) :: cbod_in   =  "             kg"        !! kg           |carbonaceous biological oxygen demand
+        character (len=15) :: cbod_out  =  "             kg"        !! kg           |carbonaceous biological oxygen demand
+        character (len=15) :: dox_in    =  "             kg"        !! kg           |dissolved oxygen
+        character (len=15) :: dox_out   =  "             kg"        !! kg           |dissolved oxygen
+        character (len=15) :: temp_in   =  "           degc"        !! deg c        |temperature
+        character (len=15) :: temp_out  =  "           degc"        !! deg c        |temperature
+      end type sd_hyd_header_units
+      type (sd_hyd_header_units) :: sd_hyd_hdr_units
+                          
       type ch_watbod_header 
         character (len=6) :: day           = "  jday"       
         character (len=6) :: mo            = "   mon"
@@ -637,18 +691,39 @@
       type (hyd_header_obj) :: hyd_hdr_obj
       
       type output_flow_duration_header
-        character (len=11) :: obtyp =   "ob_typ     "
-        character (len=12) :: props =   "    props   "
-        character (len=11) :: min   =     "       min "
-        character (len=15) :: p5    =     "            p5 "
-        character (len=13) :: p10   =     "         p10 "     
-        character (len=19) :: p25   =     "           p25 "
+        character (len=11) :: obtyp =     "ob_typ     "
+        character (len=12) :: props =    "    props   "
+        character (len=12) :: area  =    "    area_ha "
+        character (len=13) :: mean  =     "      mean "
+        character (len=11) :: max   =     "       max "
+        character (len=18) :: p01   =     "       p.1 "
+        character (len=13) :: p05   =     "       p.5 "     
+        character (len=19) :: p1    =     "        p1 "
+        character (len=15) :: p2    =     "        p2 "
+        character (len=15) :: p3    =     "        p3 "
+        character (len=15) :: p5    =     "        p5 "
+        character (len=15) :: p10   =     "       p10 "
+        character (len=15) :: p15   =     "       p15 "
+        character (len=15) :: p20   =     "       p20 "
+        character (len=15) :: p25   =     "       p25 "
+        character (len=15) :: p30   =     "       p30 "
+        character (len=15) :: p35   =     "       p35 "
+        character (len=15) :: p40   =     "       p40 "
+        character (len=15) :: p45   =     "       p45 "
         character (len=15) :: p50   =     "       p50 "
+        character (len=15) :: p55   =     "       p55 "
+        character (len=15) :: p60   =     "       p60 "
+        character (len=15) :: p65   =     "       p65 "
+        character (len=15) :: p70   =     "       p70 "
         character (len=15) :: p75   =     "       p75 "
+        character (len=15) :: p80   =     "       p80 "
+        character (len=15) :: p85   =     "       p85 "
         character (len=15) :: p90   =     "       p90 "
         character (len=15) :: p95   =     "       p95 "
-        character (len=11) :: max   =     "   max     "
-        character (len=14) :: mean  =    "     mean "
+        character (len=15) :: p97   =     "       p97 "
+        character (len=15) :: p98   =     "       p98 "
+        character (len=15) :: p99   =     "       p99 "
+        character (len=11) :: min   =     "       min "
       end type output_flow_duration_header    
       type (output_flow_duration_header) :: fdc_hdr
 	  
@@ -920,7 +995,7 @@
         type (hyd_output) :: hyd2
         hyd2%temp = hyd1%temp
         hyd2%flo = const * hyd1%flo 
-        hyd2%sed = const * hyd1%sed / 1000.
+        hyd2%sed = const * hyd1%sed !/ 1000.
         hyd2%orgn = const * hyd1%orgn       
         hyd2%sedp = const * hyd1%sedp 
         hyd2%no3 = const * hyd1%no3

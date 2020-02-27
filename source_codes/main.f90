@@ -11,11 +11,11 @@
 
       implicit none
       
-      prog = " SWAT+ Oct 10 2019    MODULAR Rev 2019.60.1"
+      prog = " SWAT+ Feb 26 2020    MODULAR Rev 2020.60.2"
 
       write (*,1000)
  1000 format(1x,"                  SWAT+               ",/,             &
-     &          "               Revision 60.1          ",/,             &
+     &          "               Revision 60.2          ",/,             &
      &          "      Soil & Water Assessment Tool    ",/,             &
      &          "               PC Version             ",/,             &
      &          "    Program reading . . . executing",/)
@@ -28,27 +28,39 @@
       call exco_db_read
       call dr_db_read
       call hyd_connect
-           
       call object_read_output
 
-      !! read decision table data for conditional management
-      call dtbl_lum_read
-      call dtbl_res_read
-      call dtbl_scen_read
-      call dtbl_flocon_read
-      
       call om_water_init
       call pest_cha_res_read
       call path_cha_res_read
       call salt_cha_res_read
-      call proc_res
+      
+      !! read decision table data for conditional management      
+      call dtbl_lum_read
+      
       call proc_hru
       call proc_cha
       call proc_allo
+      
+      !! read decision table data for conditional management
+      !call dtbl_lum_read
       call proc_cond
+      call dtbl_res_read
+      call dtbl_scen_read
+      call dtbl_flocon_read
       call hru_dtbl_actions_init
+            
+      ! read reservoir and wetland data
+      call proc_res
+      call wet_read_hyd
+      call wet_read
+      if (db_mx%wet_dat > 0) call wet_initial
+
       call proc_cal
       call proc_open
+            
+      ! set initial soil water for basin and lsu
+      if (db_mx%lsu_elem > 0) call basin_sw_init
       
       ! compute unit hydrograph parameters for subdaily runoff
       if (time%step > 0) call unit_hyd

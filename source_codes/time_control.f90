@@ -68,6 +68,7 @@
       integer :: date_time(8)        !              | 
       character*10 b(3)              !              |
       real :: crop_yld_t_ha          !t/ha          |annual and ave annual basin crop yields
+      real :: sw_init
       integer :: iob                 !              |
       integer :: curyr               !              |
       integer :: iwgn                !              |
@@ -263,7 +264,9 @@
         
         do j = 1, sp_ob%hru
           !! zero yearly balances after using them in soft data calibration (was in hru_output)
+          sw_init = hwb_y(j)%sw_init
           hwb_y(j) = hwbz
+          hwb_y(j)%sw_init = sw_init
           hnb_y(j) = hnbz
           hpw_y(j) = hpwz
           hls_y(j) = hlsz

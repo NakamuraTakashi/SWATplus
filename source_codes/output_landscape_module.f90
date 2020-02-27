@@ -16,7 +16,9 @@
         real :: esoil = 0.            !mm H2O        |actual amt of evap (from soil) that occurs during mon in HRU
         real :: surq_cont = 0.        !mm H2O        |amt of surf runoff gen during mon in HRU
         real :: cn = 0.               !none          |CN values during mon in HRU
-        real :: sw = 0.               !mm H2O        |soil water content of entire profile
+        real :: sw_init = 0.          !mm H2O        |initial soil water content of entire profile
+        real :: sw_final = 0.         !mm H2O        |final soil water content of entire profile
+        real :: sw = 0.               !mm H2O        |average soil water content of entire profile
         real :: sw_300 = 0.           !mm H2O        |soil water content of upper 300 mm
         real :: snopack = 0.          !mm            |snow pack
         real :: pet = 0.              !mm H2O        |pot et on current day in HRU
@@ -232,7 +234,9 @@
         character (len=12) :: esoil      =  "       esoil"
         character (len=12) :: surq_cont  =  "   surq_cont"
         character (len=12) :: cn         =  "          cn"
-        character (len=12) :: sw         =  "          sw"
+        character (len=12) :: sw_init    =  "     sw_init"
+        character (len=12) :: sw_final   =  "    sw_final"
+        character (len=12) :: sw_ave     =  "      sw_ave"
         character (len=12) :: sw_300     =  "      sw_300"
         character (len=12) :: snopack    =  "     snopack"   
         character (len=12) :: pet        =  "         pet"
@@ -271,7 +275,9 @@
         character (len=12) :: esoil      =  "          mm"
         character (len=12) :: surq_cont  =  "          mm"
         character (len=12) :: cn         =  "         ---"
-        character (len=12) :: sw         =  "          mm"
+        character (len=12) :: sw_init    =  "          mm"
+        character (len=12) :: sw_final   =  "          mm"
+        character (len=12) :: sw_ave     =  "          mm"
         character (len=12) :: sw_300     =  "          mm"
         character (len=12) :: snopack    =  "          mm"  
         character (len=12) :: pet        =  "          mm"
@@ -450,7 +456,7 @@
       interface operator (+)
         module procedure hruout_waterbal_add
       end interface
-             
+
       interface operator (+)
         module procedure hruout_nutbal_add
       end interface
@@ -522,6 +528,8 @@
         hru3%esoil = hru1%esoil + hru2%esoil
         hru3%surq_cont = hru1%surq_cont + hru2%surq_cont
         hru3%cn = hru1%cn + hru2%cn
+        hru3%sw_init = hru1%sw_init
+        hru3%sw_final = hru1%sw_final
         hru3%sw = hru1%sw + hru2%sw
         hru3%sw_300 = hru1%sw_300 + hru2%sw_300
         hru3%snopack = hru1%snopack + hru2%snopack
@@ -651,6 +659,8 @@
         hru2%esoil = hru1%esoil
         hru2%surq_cont = hru1%surq_cont
         hru2%cn = hru1%cn / const
+        hru2%sw_init = hru1%sw_init
+        hru2%sw_final = hru1%sw_final
         hru2%sw = hru1%sw / const
         hru2%sw_300 = hru1%sw_300 / const
         hru2%snopack = hru1%snopack / const
