@@ -54,6 +54,7 @@
       real :: sdlat                  !none       |(-Tan(sd)*Tan(lat))
       real :: h                      !none       |Acos(-Tan(sd)*Tan(lat))
       real :: daylength              !hours      |daylength
+      real :: laimx_pop              !           |max lai given plant population
 
       j = ihru
       
@@ -285,12 +286,14 @@
           pcom(j)%plcur(ipl)%phuacc))) + pldb(idp)%pltnfr3
            pl_mass(j)%tot(ipl)%p = pcom(j)%plm(ipl)%p_fr * pl_mass(j)%tot(ipl)%m
           if (pcom(j)%plcur(ipl)%pop_com < 1.e-6) then
-            pcom(j)%plcur(ipl)%laimx_pop = pldb(idp)%blai
+            laimx_pop = pldb(idp)%blai
           else
             xx = pcom(j)%plcur(ipl)%pop_com / 1001.
-            pcom(j)%plcur(ipl)%laimx_pop = pldb(idp)%blai * xx / (xx +          &
+            laimx_pop = pldb(idp)%blai * xx / (xx +          &
                     exp(pldb(idp)%pop1 - pldb(idp)%pop2 * xx))
           end if
+          pcom(j)%plcur(ipl)%harv_idx = pldb(idp)%hvsti
+          pcom(j)%plcur(ipl)%lai_pot = laimx_pop
           
           !! initialize plant mass
           call pl_root_gro

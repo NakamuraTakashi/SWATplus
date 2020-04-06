@@ -42,6 +42,8 @@
       integer :: ihyd                 !              |
       integer :: idr                  !              |
       integer :: ifirst               !              |
+      integer :: iwro                 !              |
+      integer :: ob_num               !              |
       real :: conv                    !              |
       real :: frac_in                 !              |  
 
@@ -249,11 +251,34 @@
             if (sd_ch(isdch)%chl > 1.e-3) then
               call sd_channel_control
             else
-              !! artificial channel - length=0 - no transformations
-              ob(icmd)%hd(1) = ob(icmd)%hin
-              if (cs_db%num_tot > 0) then
-                obcs(icmd)%hd(1) = obcs(icmd)%hin
-              end if
+                !! artificial channel - length=0 - no transformations
+                ob(icmd)%hd(1) = ob(icmd)%hin
+                
+                ch_in_d(isdch) = ht1                        !set inflow om hydrograph
+                chsd_d(isdch)%flo_in = ht1%flo / 86400.     !flow for morphology output
+                ch_in_d(isdch)%flo = ht1%flo / 86400.       !flow for om output
+                ch_out_d(isdch) = ht1                       !set inflow om hydrograph
+                ch_out_d(isdch)%flo = ht1%flo / 86400.      !m3 -> m3/s
+                !! output channel morphology
+                chsd_d(isdch)%flo = ht1%flo / 86400.        !adjust if overbank flooding is moved to landscape
+                chsd_d(isdch)%peakr = 0. 
+                chsd_d(isdch)%sed_in = ob(icmd)%hin%sed
+                chsd_d(isdch)%sed_out = ob(icmd)%hin%sed
+                chsd_d(isdch)%washld = 0.
+                chsd_d(isdch)%bedld = 0.
+                chsd_d(isdch)%dep = 0.
+                chsd_d(isdch)%deg_btm = .0
+                chsd_d(isdch)%deg_bank = 0.
+                chsd_d(isdch)%hc_sed = 0.
+                chsd_d(isdch)%width = sd_ch(isdch)%chw
+                chsd_d(isdch)%depth = sd_ch(isdch)%chd
+                chsd_d(isdch)%slope = sd_ch(isdch)%chs
+                chsd_d(isdch)%deg_btm_m = 0.
+                chsd_d(isdch)%deg_bank_m = 0.
+                chsd_d(isdch)%hc_m = 0.
+                if (cs_db%num_tot > 0) then
+                  obcs(icmd)%hd(1) = obcs(icmd)%hin
+                end if
             end if
             
           end select
@@ -276,7 +301,18 @@
         icmd = ob(icmd)%cmd_next
         
       end do
-
+      
+      !! set demand requirements for water rights objects
+      !! call water_demand
+      do iwro =1, db_mx%wro_db
+        wro(iwro)%demand = 0.
+        do iob = 1, wro(iwro)%num_objs
+          ob_num = wro(iwro)%field(iob)%ob_num
+          wro(iwro)%demand = irrig(ob_num)%demand
+        end do
+      end do
+    
+      !! print all output files
       if (time%yrs > pco%nyskip .and. time%step == 0) then
         call obj_output
         

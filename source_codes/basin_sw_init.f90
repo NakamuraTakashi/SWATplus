@@ -47,28 +47,28 @@
         end do
 
       do ilsu = 1, db_mx%lsu_out
-        ! summing HRU output for the landscape unit(
+        ! summing HRU output for the landscape units
         do ielem = 1, lsu_out(ilsu)%num_tot
           ihru = lsu_out(ilsu)%num(ielem)
           if (lsu_elem(ihru)%ru_frac > 1.e-9) then
             const = lsu_elem(ihru)%ru_frac
             if (lsu_elem(ihru)%obtyp == "hru") then
-              ruwb_d%sw_init = ruwb_d%sw_init + hwb_d(ihru)%sw_init * const
-              ruwb_d%sw_final = ruwb_d%sw_final + hwb_d(ihru)%sw_final * const
+              ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hwb_d(ihru)%sw_init * const
+              ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final + hwb_d(ihru)%sw_final * const
             end if
             ! summing HRU_LTE output
             if (lsu_elem(ihru)%obtyp == "hlt") then
-              ruwb_d%sw_init = ruwb_d%sw_init + hltwb_d(ihru)%sw_init * const
-              ruwb_d%sw_final = ruwb_d%sw_final + hltwb_d(ihru)%sw_final * const
+              ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hltwb_d(ihru)%sw_init * const
+              ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final + hltwb_d(ihru)%sw_final * const
             end if
           end if
         end do    !ielem
-        ruwb_d%sw_init = ruwb_d%sw_init
-        ruwb_d%sw_final = ruwb_d%sw_final
-        ruwb_y%sw_init = ruwb_d%sw_init
-        ruwb_y%sw_final = ruwb_d%sw_final
-        ruwb_a%sw_init = ruwb_d%sw_init
-        ruwb_a%sw_final = ruwb_d%sw_final
+        ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init
+        ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final
+        ruwb_y(ilsu)%sw_init = ruwb_d(ilsu)%sw_init
+        ruwb_y(ilsu)%sw_final = ruwb_d(ilsu)%sw_final
+        ruwb_a(ilsu)%sw_init = ruwb_d(ilsu)%sw_init
+        ruwb_a(ilsu)%sw_final = ruwb_d(ilsu)%sw_final
       end do      !ilsu
         
       end subroutine basin_sw_init

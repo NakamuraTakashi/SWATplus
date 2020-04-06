@@ -27,7 +27,7 @@
       integer :: i                    !           |
       integer :: iexco_om
       integer :: ifirst               !           |
-
+      
       eof = 0
       imax = 0
 
@@ -63,7 +63,6 @@
         read (107,*,iostat=eof) i
         if (eof < 0) exit
         backspace (107)
- !       read (107,*,iostat = eof) k, rec_om(i)%name, rec_om(i)%typ, rec_om(i)%filename
         read (107,*,iostat = eof) k, recall(i)%name, recall(i)%typ, recall(i)%filename
         if (eof < 0) exit
         
@@ -76,24 +75,20 @@
           read (108,*,iostat=eof) header
           if (eof < 0) exit 
         
-!        select case (rec_om(i)%typ)
         select case (recall(i)%typ)
            case (1) !! daily
-!            allocate (rec_om(i)%hd_om(366,nbyr))
             allocate (recall(i)%hd(366,nbyr))
             
            case (2) !! monthly
-            !allocate (rec_om(i)%hd_om(12,nbyr))
             allocate (recall(i)%hd(12,nbyr))
             
            case (3) !! annual
-            !allocate (rec_om(i)%hd_om(1,nbyr))
             allocate (recall(i)%hd(1,nbyr))
 
         end select
            
-        ! read and store entire year
-       ! ifirst = 0
+       !! read and store entire year
+       !ifirst = 0
        do 
          read (108,*,iostat=eof) iyr, istep
          if (ifirst == 0) then
@@ -113,7 +108,6 @@
        
        do
          iyr_prev = iyr
- !        read (108,*,iostat=eof) iyr, istep, rec_om(i)%hd_om(istep,iyrs)
          read (108,*,iostat=eof) iyr, istep, recall(i)%hd(istep,iyrs)
          if (eof < 0) exit
          !call hyd_convert_mass (rec_om(i)%hd_om(istep,iyrs))

@@ -74,7 +74,7 @@
                   write (2612, *) j, time%yrc, time%mo, time%day_mo, pldb(idp)%plantnm,  "PLANT ", &
                       phubase(j), pcom(j)%plcur(ipl)%phuacc,  soil(j)%sw,                          &
                       pl_mass(j)%tot(ipl)%m, rsd1(j)%tot_com%m, sol_sumno3(j),                     &
-                      sol_sumsolp(j),pcom(j)%plg(ipl)%lai, pcom(j)%plcur(ipl)%laimx_pop
+                      sol_sumsolp(j),pcom(j)%plg(ipl)%lai, pcom(j)%plcur(ipl)%lai_pot
                 end if
               end if
             end do

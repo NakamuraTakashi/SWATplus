@@ -13,9 +13,9 @@
         real :: chw             !m         |channel width
         real :: chd             !m         |channel depth
         real :: chs             !m/m       |channel slope
-        real :: chl             !km        |channel length (if the chl < 1m, no routing; output = 0.0)
+        real :: chl             !km        |channel length
         real :: chn             !          |channel Manning's n
-        real :: chk             !mm/day    |channel bottom conductivity
+        real :: chk             !mm/h      |channel bottom conductivity
         real :: cherod          !          |channel erodibility
         real :: cov             !0-1       |channel cover factor
         real :: hc_cov          !0-1       |head cut cover factor

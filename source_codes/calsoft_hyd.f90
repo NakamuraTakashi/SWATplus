@@ -68,6 +68,12 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            
+            !zero plant calibration data in case plants are calibrated
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            !plcal(ireg)%lum(ilum)%aa = plcal_z
 
             ! pet adjustment
             cal_sim =  " pet adj "
@@ -112,11 +118,11 @@
               iihru = region(ireg)%num(ihru_s)
               if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
                 !set parms for 1st et calibration
-                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco - chg_val
+                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco + chg_val
                 hru(iihru)%hyd%esco = amin1 (hru(iihru)%hyd%esco, ls_prms(2)%up)
                 hru(iihru)%hyd%esco = Max (hru(iihru)%hyd%esco, ls_prms(2)%lo)
                 hru_init(iihru)%hyd%esco = hru(iihru)%hyd%esco
-                hru(iihru)%hyd%epco = hru(iihru)%hyd%epco - chg_val * .5
+                hru(iihru)%hyd%epco = hru(iihru)%hyd%epco + chg_val * .5
                 hru(iihru)%hyd%epco = amin1 (hru(iihru)%hyd%epco, ls_prms(2)%up)
                 hru(iihru)%hyd%epco = Max (hru(iihru)%hyd%epco, ls_prms(2)%lo)
                 hru_init(iihru)%hyd%epco = hru(iihru)%hyd%epco
@@ -125,19 +131,16 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            !zero plant calibration data in case plants are calibrated
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            !plcal(ireg)%lum(ilum)%aa = plcal_z
+
           end if
           end do
         end do
-        
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
-        
+            
         !! re-initialize all objects
         call re_initialize
 
@@ -189,11 +192,11 @@
                 iihru = region(ireg)%num(ihru_s)
               if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
                 !set parms for et calibration
-                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco - chg_val
+                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco + chg_val
                 hru(iihru)%hyd%esco = amin1 (hru(iihru)%hyd%esco, ls_prms(2)%up)
                 hru(iihru)%hyd%esco = Max (hru(iihru)%hyd%esco, ls_prms(2)%lo)
                 hru_init(iihru)%hyd%esco = hru(iihru)%hyd%esco
-                hru(iihru)%hyd%epco = hru(iihru)%hyd%epco - chg_val * .5
+                hru(iihru)%hyd%epco = hru(iihru)%hyd%epco + chg_val * .5
                 hru(iihru)%hyd%epco = amin1 (hru(iihru)%hyd%epco, ls_prms(2)%up)
                 hru(iihru)%hyd%epco = Max (hru(iihru)%hyd%epco, ls_prms(2)%lo)
                 hru_init(iihru)%hyd%epco = hru(iihru)%hyd%epco
@@ -202,6 +205,10 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            !plcal(ireg)%lum(ilum)%aa = plcal_z
           end if
           end do
           end do
@@ -209,15 +216,6 @@
           !! re-initialize all objects
           call re_initialize
 
-          !zero plant calibration data in case plants are calibrated
-          do ireg = 1, db_mx%plcal_reg
-            do ilum = 1, plcal(ireg)%lum_num
-              plcal(ireg)%lum(ilum)%nbyr = 0
-              plcal(ireg)%lum(ilum)%precip_aa = 0.
-              plcal(ireg)%lum(ilum)%aa = plcal_z
-            end do
-          end do
-          
           !! re-initialize all objects
           call re_initialize
 
@@ -275,18 +273,14 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            plcal(ireg)%lum(ilum)%aa = plcal_z
           end if
           end do
         end do
-        
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
+
         ! 1st cn2 adjustment 
         if (isim > 0) then
           cal_sim = " first cn2 adj "
@@ -355,6 +349,7 @@
           do ilum = 1, plcal(ireg)%lum_num
             plcal(ireg)%lum(ilum)%nbyr = 0
             plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
             plcal(ireg)%lum(ilum)%aa = plcal_z
           end do
         end do
@@ -432,6 +427,7 @@
           do ilum = 1, plcal(ireg)%lum_num
             plcal(ireg)%lum(ilum)%nbyr = 0
             plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
             plcal(ireg)%lum(ilum)%aa = plcal_z
           end do
         end do
@@ -515,6 +511,7 @@
           do ilum = 1, plcal(ireg)%lum_num
             plcal(ireg)%lum(ilum)%nbyr = 0
             plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
             plcal(ireg)%lum(ilum)%aa = plcal_z
           end do
         end do
@@ -530,7 +527,7 @@
         
         end do      ! iperco  
 
-        ! 1st lat_len adjustment for lateral soil flow
+        ! 1st latq_co adjustment for lateral soil flow
         isim = 0
         do ireg = 1, db_mx%lsu_reg
           do ilum = 1, region(ireg)%nlum
@@ -574,29 +571,24 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            plcal(ireg)%lum(ilum)%aa = plcal_z
           end if
           end do
         end do
-        
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
-        
+
         !! re-initialize all objects
         call re_initialize
 
-        ! 1st lat_len adjustment 
+        ! 1st latq_co adjustment 
         if (isim > 0) then
-          cal_sim =  " first lat_len adj "
+          cal_sim =  " first latq_co adj "
           call time_control
         end if
 
-        ! adjust lat_len adjustment for lateral soil flow
+        ! adjust latq_co adjustment for lateral soil flow
         do ik = 1, iter_ind
           isim = 0
         do ireg = 1, db_mx%lsu_reg
@@ -644,25 +636,20 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            plcal(ireg)%lum(ilum)%aa = plcal_z
           end if
           end do
         end do
-        
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
-        
+
         !! re-initialize all objects
         call re_initialize
 
-        ! lat_len adjustment for lateral soil flow
+        ! latq_co adjustment for lateral soil flow
         if (isim > 0) then
-          cal_sim =  " lat_len adj "
+          cal_sim =  " latq_co adj "
           call time_control
         end if
         end do  
@@ -702,7 +689,7 @@
               iihru = region(ireg)%num(ihru_s)
               if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
                 !set parms for 1st perco calibration
-                !! don't change for tile  *********************Mike
+                !! don't change for tile  ***Mike
                 if (hru(iihru)%tiledrain == 0) then
                 hru(iihru)%hyd%cn3_swf = hru(iihru)%hyd%cn3_swf + chg_val
                 hru(iihru)%hyd%cn3_swf = amin1 (hru(iihru)%hyd%cn3_swf, ls_prms(10)%up)
@@ -715,19 +702,14 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            plcal(ireg)%lum(ilum)%aa = plcal_z
           end if
           end do
         end do
-        
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
-        
+
         !! re-initialize all objects
         call re_initialize
 
@@ -789,19 +771,14 @@
             lscal(ireg)%lum(ilum)%nbyr = 0
             lscal(ireg)%lum(ilum)%precip_aa = 0.
             lscal(ireg)%lum(ilum)%aa = lscal_z
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%ha = 0.
+            plcal(ireg)%lum(ilum)%aa = plcal_z
             end if
           end do
         end do
-          
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
-        
+
         !! re-initialize all objects
         call re_initialize
 
@@ -815,7 +792,7 @@
           
       end do    ! iter_all loop
         
-      cal_codes%hyd_hru = "n"
+      !cal_codes%hyd_hru = "n"
       
 	  return
       end subroutine calsoft_hyd

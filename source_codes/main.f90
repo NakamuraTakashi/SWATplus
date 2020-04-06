@@ -11,11 +11,11 @@
 
       implicit none
       
-      prog = " SWAT+ Feb 26 2020    MODULAR Rev 2020.60.2"
+      prog = " SWAT+ APR 3  2020    MODULAR Rev 2020.60.3"
 
       write (*,1000)
  1000 format(1x,"                  SWAT+               ",/,             &
-     &          "               Revision 60.2          ",/,             &
+     &          "               Revision 60.3          ",/,             &
      &          "      Soil & Water Assessment Tool    ",/,             &
      &          "               PC Version             ",/,             &
      &          "    Program reading . . . executing",/)
@@ -29,21 +29,20 @@
       call dr_db_read
       call hyd_connect
       call object_read_output
+      call water_rights_read
 
       call om_water_init
       call pest_cha_res_read
       call path_cha_res_read
       call salt_cha_res_read
       
-      !! read decision table data for conditional management      
+      !! read decision table data for conditional management
       call dtbl_lum_read
       
       call proc_hru
       call proc_cha
       call proc_allo
-      
-      !! read decision table data for conditional management
-      !call dtbl_lum_read
+
       call proc_cond
       call dtbl_res_read
       call dtbl_scen_read
@@ -60,7 +59,7 @@
       call proc_open
             
       ! set initial soil water for basin and lsu
-      if (db_mx%lsu_elem > 0) call basin_sw_init
+      call basin_sw_init
       
       ! compute unit hydrograph parameters for subdaily runoff
       if (time%step > 0) call unit_hyd
@@ -89,7 +88,11 @@
         call calhard_control
       end if
            
+      !! write successful completion to screen and file
       write (*,1001)
+      open (107,file="success.fin")
+      write (107,1001)
+      
  1001 format (/," Execution successfully completed ")
 
 	  stop

@@ -3,11 +3,11 @@
       implicit none
       
        type calibration_parameters
-        character(len=16) :: name       !         |cn2, esco, awc, etc.
-        character(len=16) :: ob_typ     !         |object type the parameter is associated with (hru, chan, res, basin, etc)
-        real :: absmin                  !         |minimum range for variable
-        real :: absmax                  !         |maximum change for variable
-        character(len=16) :: units      !         |units used for each parameter
+        character(len=16) :: name = "default"   !         |cn2, esco, awc, etc.
+        character(len=16) :: ob_typ = "plt"     !         |object type the parameter is associated with (hru, chan, res, basin, etc)
+        real :: absmin = 0.                     !         |minimum range for variable
+        real :: absmax = 1.e6                   !         |maximum change for variable
+        character(len=16) :: units = "null"     !         |units used for each parameter
       end type calibration_parameters
       type (calibration_parameters), dimension (:), allocatable :: cal_parms    !dimensioned to db_mx%cal_parms_tot
       
@@ -72,9 +72,8 @@
         real :: up                      !! upper limit of parameter
       end type soft_calib_parms
       type (soft_calib_parms), dimension(:), allocatable :: ls_prms
-      type (soft_calib_parms), dimension(:), allocatable :: pl_prms
       type (soft_calib_parms), dimension(:), allocatable :: ch_prms
-            
+
       type soft_calib_ls_adjust
         real :: cn = 0.         !+/- or 0/1       |cn2 adjustment or at limit
         real :: esco = 0.       !+/- or 0/1       |esco adjustment or at limit
@@ -138,7 +137,28 @@
       end type soft_data_calib_landscape
       type (soft_data_calib_landscape), dimension(:), allocatable :: lscal  !dimension by region for hru"s
       type (soft_data_calib_landscape), dimension(:), allocatable :: lscalt !dimension by region for hru_lte"s
+            
+      type pl_parms_cal
+        character(len=16) :: var = "default"
+        character(len=16) :: name = "default"
+        real :: init_val                            !! xwalk lum()%name with lscal()%lum()%name
+        character(len=16) :: chg_typ                !! type of change (absval,abschg,pctchg)
+        real :: neg                     !! negative limit of change
+        real :: pos                     !! positive limit of change
+        real :: lo                      !! lower limit of parameter
+        real :: up                      !! upper limit of parameter
+      end type pl_parms_cal
 
+      type pl_parm_region
+        character(len=16) :: name = "default"                           !name of region - (number of regions = db_mx%lsu_reg)
+        integer :: lum_num                                              !number of land uses in each region
+        integer :: parms = 2                                            !number of plant parameters used in calibration
+        integer :: num_tot                                              !number of hru"s in each region
+        integer, dimension(:), allocatable :: num                       !hru"s that are included in the region
+        type (pl_parms_cal), dimension(:), allocatable :: prm           !dimension for land uses within a region
+      end type pl_parm_region
+      type (pl_parm_region), dimension(:), allocatable :: pl_prms       !dimension by region for hru"s
+ 
       type cataloging_units
         character(len=16) :: name = "basin"                     !name of region - (number of regions = db_mx%lsu_reg)
         real :: area_ha                                         !area of landscape cataloging unit -hectares
@@ -200,7 +220,8 @@
       type (landscape_elements), dimension(:), allocatable :: pcu_elem       !point source cataoging unit
 
       type soft_calib_pl_adjust
-        real :: stress = 0.     !+/- or 0/1     |plant stress (pest, soil, etc) or at limit
+        real :: harv_idx = 0.   !+/- or 0/1     |harvest index
+        real :: lai_pot = 0.    !+/- or 0/1     |potential leaf area index
       end type soft_calib_pl_adjust
       
       type soft_calib_pl_processes
@@ -217,7 +238,7 @@
 
       type pl_calib_regions
         character(len=16) :: name = "default"
-        integer :: lum_no                                       !xwalk lum()%name with lscal()%lum()%name
+        integer :: plant_no                                     !xwalk lum()%name with lscal()%lum()%name
         real :: ha                                              !ha of each land use
         integer :: nbyr = 0                                     !number of years the land use occurred 
         type (soft_calib_pl_processes) :: meas                  !input soft calibration parms of each land use - ratio,t/ha,kg/ha

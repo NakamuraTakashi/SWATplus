@@ -5,6 +5,7 @@
       use basin_module
       use hydrograph_module
       use constituent_mass_module
+      use conditional_module
       use channel_data_module
       use channel_module
       use ch_pesticide_module
@@ -21,6 +22,7 @@
       integer :: idb                  !none          |channel data pointer
       integer :: ihyd                 !              |
       integer :: ipest                !              |
+      integer :: id
       real :: erode_btm               !cm            |
       real :: erode_bank              !cm            |
       real :: deg_btm                 !tons          |bottom erosion
@@ -91,7 +93,7 @@
       real :: rchvol
       
       ich = isdch
-      isd_db = ob(icmd)%props
+      isd_db = sd_dat(ich)%hyd
       iwst = ob(icmd)%wst
       erode_btm = 0.
       erode_bank = 0.
@@ -462,6 +464,14 @@
         ch_water(ich) = frac * hcs1
       end if
 
+      !! check decision table for flow control - water allocation
+      if (ob(icmd)%ruleset /= "null" .and. ob(icmd)%ruleset /= "0") then
+        id = ob(icmd)%flo_dtbl
+        d_tbl => dtbl_flo(id)
+        call conditions (ich, id)
+        call actions (ich, icmd, id)
+      end if
+
       ob(icmd)%hd(1) = ht2
       ob(icmd)%hd(1)%temp = 5. + .75 * wst(iwst)%weat%tave
       
@@ -470,7 +480,7 @@
       end if
       
       !! output channel organic-mineral
-      ch_out_d(ich) = ht2                       !set inflow om hydrograph
+      ch_out_d(ich) = ht2                       !set outflow om hydrograph
       ch_out_d(ich)%flo = ht2%flo / 86400.      !m3 -> m3/s
       
       !! output channel morphology

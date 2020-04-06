@@ -153,7 +153,7 @@
         character (len=3) :: hydtyp    !! hydrograph type: tot,rhg,sur,lat,til
         integer :: objno               !! object number
         integer :: hydno               !! code computes from hydtyp
-        character (len=13) :: filename !! file with hydrograph output from the object
+        character (len=26) :: filename !! file with hydrograph output from the object
         integer :: unitno = 5009       !! filename unit number
       end type object_output
       type (object_output), dimension (:), allocatable :: ob_out
@@ -173,7 +173,7 @@
         real :: min = 1.e10
         real :: max = 0.
         real :: mean = 0
-        real, dimension(27) :: p        !probabilities for all points on the fdc
+        real, dimension (27) :: p        !probabilities for all points on the fdc
       end type duration_curve_points
 
       integer :: fdc_npts = 27
@@ -215,17 +215,17 @@
         integer :: rcv_tot = 0          !total number of incoming (receiving) hydrographs
         integer :: dfn_tot = 0          !total number of defining objects (ie hru"s within a subbasin)
         integer :: ru_tot               !number of routing units that contain this object
-        integer,  dimension(:), allocatable :: ru                  !subbasin the element is in
+        integer,  dimension (:), allocatable :: ru                  !subbasin the element is in
         integer :: elem                 !subbasins element number for this object- used for routing over (can only have one)
         integer :: flood_ch_lnk = 0     !channel the landscape unit is linked to
         integer :: flood_ch_elem = 0    !landscape unit number - 1 is nearest to stream
         integer :: flood_frac = 0       !fraction of flood flow assigned to the object
-        character (len=3), dimension(:), allocatable :: obtyp_out   !outflow object type (ie 1=hru, 2=sd_hru, 3=sub, 4=chan, etc)
+        character (len=3), dimension (:), allocatable :: obtyp_out   !outflow object type (ie 1=hru, 2=sd_hru, 3=sub, 4=chan, etc)
         integer, dimension(:), allocatable :: obtypno_out           !outflow object type name
         integer, dimension(:), allocatable :: obj_out               !outflow object
-        character (len=3), dimension(:), allocatable :: htyp_out    !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
-        integer, dimension(:), allocatable :: ihtyp_out             !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
-        real, dimension(:), allocatable :: frac_out                 !fraction of hydrograph
+        character (len=3), dimension (:), allocatable :: htyp_out    !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
+        integer, dimension (:), allocatable :: ihtyp_out             !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
+        real, dimension (:), allocatable :: frac_out                 !fraction of hydrograph
         character(len=8), dimension(:), allocatable :: obtyp_in     !inflow object type (ie 1=hru, 2=sd_hru, 3=sub, 4=chan, etc)
         integer, dimension(:), allocatable :: obtypno_in            !outflow object type number
         integer, dimension(:), allocatable :: obj_in
@@ -265,17 +265,30 @@
       
       !water rights elements (objects) within the water rights object
       type water_rights_elements
-        character (len=16) :: num
+        integer :: num
         character (len=16) :: ob_typ            !object type - hru, channel, reservoir, etc
         integer :: ob_num                       !object number
-        character (len=16) :: rights_typ        !ie. irr demand, minimum flow, flow fraction, etc)
+        character (len=16) :: irr_typ           !character from irr.ops - was irr demand, minimum flow, flow fraction, etc
+        integer :: irr_no                       !irrigation number from irr.ops - walk irr_typ
         real :: amount                          !0 for irr demand; ha-m for min_flo; frac for min_frac
         integer :: rights                       !0-100 scale
       end type water_rights_elements
+      
+      !water rights objects
+      type water_rights_objects
+        character (len=16) :: name              !name of wro or irrigation cummunity
+        character (len=16) :: rule_typ          !
+        real :: right                           !
+        integer :: num_objs                     !number of rights objects
+        real :: demand                          !total demand for the water rights object - m3
+        real, dimension (12) :: min_mon         !minimum flow to leave in channel after withdrawals
+        type (water_rights_elements),dimension(:),allocatable :: field   !irrigation fields
+      end type water_rights_objects
+      type (water_rights_objects),dimension(:),allocatable:: wro         !dimension by wro (num)
 
       !water allocation
       type irrigation_water_transfer
-        real :: demand = 0.                     !irrigation demand          |ha-m
+        real :: demand = 0.                     !irrigation demand          |m3
         real :: applied = 0.                    !irrigation applied         |mm
         real :: runoff = 0.                     !irrigation surface runoff  |mm
         !hyd_output units are in mm and mg/L

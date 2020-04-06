@@ -12,9 +12,9 @@ print Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:55
       basin_nb         n         n         y         y
       basin_ls         n         n         y         y
       basin_pw         n         n         y         y
-     basin_aqu         n         n         n         n
-     basin_res         n         n         n         n
-     basin_cha         n         n         n         n
+     basin_aqu         n         n         n         y
+     basin_res         n         n         n         y
+     basin_cha         n         n         n         y
   basin_sd_cha         n         n         y         y
      basin_psc         n         n         n         n
      region_wb         n         n         n         n
@@ -40,7 +40,7 @@ print Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:55
     hru-lte_pw         n         n         n         n
        channel         n         n         y         n
     channel_sd         n         n         y         y
-       aquifer         n         n         y         n
+       aquifer         y         y         y         y
      reservoir         n         n         y         n
         recall         n         n         n         n
            hyd         n         n         n         n

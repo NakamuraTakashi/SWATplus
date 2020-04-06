@@ -38,7 +38,7 @@
       else
         leaf_frac_veg = 0.30    !should be plant parm
       end if
-      leaf_mass_frac_veg = leaf_frac_veg * pcom(j)%plg(ipl)%lai / pldb(idp)%blai
+      leaf_mass_frac_veg = leaf_frac_veg * pcom(j)%plg(ipl)%lai / pcom(j)%plcur(ipl)%lai_pot
       
       !! partition root and above ground biomass for tuber crops
       if (pldb(idp)%typ == "warm_annual_tuber" .or. pldb(idp)%typ == "cold_annual_tuber") then
