@@ -165,7 +165,7 @@
 
       return
      
-100   format (4i6,2i8,2x,a,28f12.3)
+100   format (4i6,2i8,2x,a,30f12.3)
 101   format (1x,4i6,i7,i8,2x,a,21f12.3)
  
       end subroutine hru_lte_output

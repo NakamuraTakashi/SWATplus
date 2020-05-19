@@ -1,7 +1,7 @@
       subroutine topohyd_init
     
       use hydrograph_module, only : sp_ob, sp_ob1, ob
-      use hru_module, only : hru, hru_db, ihru
+      use hru_module, only : hru, hru_db, ihru, snodb
       use hydrology_data_module
       use topography_data_module
       use soil_data_module
@@ -17,6 +17,7 @@
       integer :: itopohd_db           !           |
       integer :: ihyd_db              !           |
       integer :: itopo_db             !           |
+      integer :: isno_db
       integer :: iob                  !           |
       real :: perc_ln_func            !none       |function to convert perco to perc_lim
     
@@ -26,7 +27,6 @@
         itopo_db = hru(ihru)%dbs%topo
         ihyd_db = hru(ihru)%dbs%hyd
         itopohd_db = hru(ihru)%dbs%topo
-        ihyd_db = hru(ihru)%dbs%hyd
         isol = hru(ihru)%dbs%soil
         ifield_db = hru(ihru)%dbs%field
         hru(ihru)%topo%name = topo_db(itopo_db)%name
@@ -45,6 +45,10 @@
         hru(ihru)%hyd%erorgp = hyd_db(ihyd_db)%erorgp
         hru(ihru)%hyd%cn3_swf = hyd_db(ihyd_db)%cn3_swf
         hru(ihru)%hyd%perco = hyd_db(ihyd_db)%perco
+        
+        !! set hru snow paramters
+        isno_db = hru(ihru)%dbs%snow
+        hru(ihru)%sno = snodb(isno_db)
         
         !! try setting for tile  *********************Mike
         if (hru(ihru)%tiledrain > 0) then

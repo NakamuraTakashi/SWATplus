@@ -42,7 +42,6 @@
       real :: perc_ln_func
 
       ! calibrate hydrology
-        ical_hyd = 0
         iter_all = 1
         iter_ind = 1
 
@@ -78,6 +77,157 @@
       end do
       
       do iterall = 1, iter_all
+
+        ! 1st esco adjustment
+        isim = 0
+        do ireg = 1, db_mx%lsu_reg
+          do ilum = 1, region(ireg)%nlum
+            soft = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa
+            diff = 0.
+            if (soft > 1.e-6) diff = abs((soft - lscal(ireg)%lum(ilum)%aa%etr) / soft)
+            if (diff > .01 .and. lscal(ireg)%lum(ilum)%ha > 1.e-6 .and. lscal(ireg)%lum(ilum)%prm_lim%etco < 1.e-6) then
+            isim = 1
+            
+                lscal(ireg)%lum(ilum)%prm_prev = lscal(ireg)%lum(ilum)%prm
+                lscal(ireg)%lum(ilum)%prev = lscal(ireg)%lum(ilum)%aa
+
+                diff = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa - lscal(ireg)%lum(ilum)%aa%etr
+                chg_val = - diff / 500.     ! increment etco .4 for every 100 mm difference
+                lscal(ireg)%lum(ilum)%prm_prev%etco = lscal(ireg)%lum(ilum)%prm%etco
+                lscal(ireg)%lum(ilum)%prm%etco = lscal(ireg)%lum(ilum)%prm%etco + chg_val
+                lscal(ireg)%lum(ilum)%prev%etr = lscal(ireg)%lum(ilum)%aa%etr
+                
+                if (lscal(ireg)%lum(ilum)%prm%etco >= ls_prms(2)%pos) then
+                  chg_val = ls_prms(2)%pos - lscal(ireg)%lum(ilum)%prm_prev%etco
+                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%pos
+                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
+                end if
+                if (lscal(ireg)%lum(ilum)%prm%etco <= ls_prms(2)%neg) then
+                  chg_val = lscal(ireg)%lum(ilum)%prm_prev%etco + ls_prms(2)%neg
+                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%neg
+                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
+                end if
+                           
+            do ihru_s = 1, region(ireg)%num_tot
+              iihru = region(ireg)%num(ihru_s)
+              if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
+                !set parms for 1st et calibration
+                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco - chg_val
+                hru(iihru)%hyd%esco = amin1 (hru(iihru)%hyd%esco, ls_prms(2)%up)
+                hru(iihru)%hyd%esco = Max (hru(iihru)%hyd%esco, ls_prms(2)%lo)
+                hru_init(iihru)%hyd%esco = hru(iihru)%hyd%esco
+                hru(iihru)%hyd%epco = hru(iihru)%hyd%epco - chg_val * .5
+                hru(iihru)%hyd%epco = amin1 (hru(iihru)%hyd%epco, ls_prms(2)%up)
+                hru(iihru)%hyd%epco = Max (hru(iihru)%hyd%epco, ls_prms(2)%lo)
+                hru_init(iihru)%hyd%epco = hru(iihru)%hyd%epco
+              end if
+            end do
+            lscal(ireg)%lum(ilum)%nbyr = 0
+            lscal(ireg)%lum(ilum)%precip_aa = 0.
+            lscal(ireg)%lum(ilum)%aa = lscal_z
+          end if
+          end do
+        end do
+        
+        !zero plant calibration data in case plants are calibrated
+        do ireg = 1, db_mx%plcal_reg
+          do ilum = 1, plcal(ireg)%lum_num
+            plcal(ireg)%lum(ilum)%nbyr = 0
+            plcal(ireg)%lum(ilum)%precip_aa = 0.
+            plcal(ireg)%lum(ilum)%aa = plcal_z
+          end do
+        end do
+        
+        !! re-initialize all objects
+        call re_initialize
+
+        ! 1st esco adjustment 
+        if (isim > 0) then
+          cal_sim =  " first esco adj "
+          call time_control
+        end if
+        
+        ! adjust et using esco
+        do ietco = 1, iter_ind
+          isim = 0
+          do ireg = 1, db_mx%lsu_reg
+          do ilum = 1, region(ireg)%nlum
+            !check all hru"s for proper lum
+            soft = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa
+            diff = 0.
+            if (soft > 1.e-6) diff = abs((soft - lscal(ireg)%lum(ilum)%aa%etr) / soft)
+            if (diff > .01 .and. lscal(ireg)%lum(ilum)%ha > 1.e-6 .and. lscal(ireg)%lum(ilum)%prm_lim%etco < 1.e-6) then
+            isim = 1
+
+                rmeas = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa
+                denom = lscal(ireg)%lum(ilum)%prev%etr - lscal(ireg)%lum(ilum)%aa%etr
+                if (abs(denom) > 1.e-6) then
+                  chg_val = - (lscal(ireg)%lum(ilum)%prm_prev%etco - lscal(ireg)%lum(ilum)%prm%etco)                  &
+                    * (lscal(ireg)%lum(ilum)%aa%etr - rmeas) / denom
+                else
+                  chg_val = diff / 200.
+                end if
+                ! lower chg_val - changing both esco and epco causes esco to go too low
+                chg_val = chg_val * .5
+                
+                lscal(ireg)%lum(ilum)%prm_prev%etco = lscal(ireg)%lum(ilum)%prm%etco
+                lscal(ireg)%lum(ilum)%prm%etco = lscal(ireg)%lum(ilum)%prm%etco + chg_val
+                lscal(ireg)%lum(ilum)%prev%etr = lscal(ireg)%lum(ilum)%aa%etr
+                      
+                if (lscal(ireg)%lum(ilum)%prm%etco >= ls_prms(2)%pos) then
+                  chg_val = ls_prms(2)%pos - lscal(ireg)%lum(ilum)%prm_prev%etco
+                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%pos
+                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
+                end if
+                if (lscal(ireg)%lum(ilum)%prm%etco <= ls_prms(2)%neg) then
+                  chg_val = ls_prms(2)%neg - lscal(ireg)%lum(ilum)%prm_prev%etco
+                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%neg
+                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
+                end if
+                
+            do ihru_s = 1, region(ireg)%num_tot
+                iihru = region(ireg)%num(ihru_s)
+              if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
+                !set parms for et calibration
+                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco - chg_val
+                hru(iihru)%hyd%esco = amin1 (hru(iihru)%hyd%esco, ls_prms(2)%up)
+                hru(iihru)%hyd%esco = Max (hru(iihru)%hyd%esco, ls_prms(2)%lo)
+                hru_init(iihru)%hyd%esco = hru(iihru)%hyd%esco
+                hru(iihru)%hyd%epco = hru(iihru)%hyd%epco - chg_val * .5
+                hru(iihru)%hyd%epco = amin1 (hru(iihru)%hyd%epco, ls_prms(2)%up)
+                hru(iihru)%hyd%epco = Max (hru(iihru)%hyd%epco, ls_prms(2)%lo)
+                hru_init(iihru)%hyd%epco = hru(iihru)%hyd%epco
+              end if
+            end do
+            lscal(ireg)%lum(ilum)%nbyr = 0
+            lscal(ireg)%lum(ilum)%precip_aa = 0.
+            lscal(ireg)%lum(ilum)%aa = lscal_z
+          end if
+          end do
+          end do
+
+          !! re-initialize all objects
+          call re_initialize
+
+          !zero plant calibration data in case plants are calibrated
+          do ireg = 1, db_mx%plcal_reg
+            do ilum = 1, plcal(ireg)%lum_num
+              plcal(ireg)%lum(ilum)%nbyr = 0
+              plcal(ireg)%lum(ilum)%precip_aa = 0.
+              plcal(ireg)%lum(ilum)%aa = plcal_z
+            end do
+          end do
+          
+          !! re-initialize all objects
+          call re_initialize
+
+          ! et adjustment 
+          if (isim > 0) then
+            cal_sim =  " esco adj "
+            call time_control
+          end if
+        
+        end do      ! iesco
           
         ! 1st cn2 adjustment
         isim = 0
@@ -215,154 +365,6 @@
         end if
         end do      ! icn
           
-        ! 1st esco adjustment
-        isim = 0
-        do ireg = 1, db_mx%lsu_reg
-          do ilum = 1, region(ireg)%nlum
-            soft = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa
-            diff = 0.
-            if (soft > 1.e-6) diff = abs((soft - lscal(ireg)%lum(ilum)%aa%etr) / soft)
-            if (diff > .01 .and. lscal(ireg)%lum(ilum)%ha > 1.e-6 .and. lscal(ireg)%lum(ilum)%prm_lim%etco < 1.e-6) then
-            isim = 1
-            
-                lscal(ireg)%lum(ilum)%prm_prev = lscal(ireg)%lum(ilum)%prm
-                lscal(ireg)%lum(ilum)%prev = lscal(ireg)%lum(ilum)%aa
-
-                diff = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa - lscal(ireg)%lum(ilum)%aa%etr
-                chg_val = - diff / 250.     ! increment etco .4 for every 100 mm difference
-                lscal(ireg)%lum(ilum)%prm_prev%etco = lscal(ireg)%lum(ilum)%prm%etco
-                lscal(ireg)%lum(ilum)%prm%etco = lscal(ireg)%lum(ilum)%prm%etco + chg_val
-                lscal(ireg)%lum(ilum)%prev%etr = lscal(ireg)%lum(ilum)%aa%etr
-                
-                if (lscal(ireg)%lum(ilum)%prm%etco >= ls_prms(2)%pos) then
-                  chg_val = ls_prms(2)%pos - lscal(ireg)%lum(ilum)%prm_prev%etco
-                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%pos
-                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
-                end if
-                if (lscal(ireg)%lum(ilum)%prm%etco <= ls_prms(2)%neg) then
-                  chg_val = lscal(ireg)%lum(ilum)%prm_prev%etco + ls_prms(2)%neg
-                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%neg
-                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
-                end if
-                           
-            do ihru_s = 1, region(ireg)%num_tot
-              iihru = region(ireg)%num(ihru_s)
-              if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
-                !set parms for 1st et calibration
-                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco - chg_val
-                hru(iihru)%hyd%esco = amin1 (hru(iihru)%hyd%esco, ls_prms(2)%up)
-                hru(iihru)%hyd%esco = Max (hru(iihru)%hyd%esco, ls_prms(2)%lo)
-                hru_init(iihru)%hyd%esco = hru(iihru)%hyd%esco
-                !hru(iihru)%hyd%epco = hru(iihru)%hyd%epco + chg_val
-                !hru(iihru)%hyd%epco = amin1 (hru(iihru)%hyd%epco, ls_prms(2)%up)
-                !hru(iihru)%hyd%epco = Max (hru(iihru)%hyd%epco, ls_prms(2)%lo)
-                !hru_init(iihru)%hyd%epco = hru(iihru)%hyd%epco
-              end if
-            end do
-            lscal(ireg)%lum(ilum)%nbyr = 0
-            lscal(ireg)%lum(ilum)%precip_aa = 0.
-            lscal(ireg)%lum(ilum)%aa = lscal_z
-          end if
-          end do
-        end do
-        
-        !zero plant calibration data in case plants are calibrated
-        do ireg = 1, db_mx%plcal_reg
-          do ilum = 1, plcal(ireg)%lum_num
-            plcal(ireg)%lum(ilum)%nbyr = 0
-            plcal(ireg)%lum(ilum)%precip_aa = 0.
-            plcal(ireg)%lum(ilum)%aa = plcal_z
-          end do
-        end do
-        
-        !! re-initialize all objects
-        call re_initialize
-
-        ! 1st esco adjustment 
-        if (isim > 0) then
-          cal_sim =  " first esco adj "
-          call time_control
-        end if
-        
-        ! adjust et using esco
-        do ietco = 1, iter_ind
-          isim = 0
-          do ireg = 1, db_mx%lsu_reg
-          do ilum = 1, region(ireg)%nlum
-            !check all hru"s for proper lum
-            soft = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa
-            diff = 0.
-            if (soft > 1.e-6) diff = abs((soft - lscal(ireg)%lum(ilum)%aa%etr) / soft)
-            if (diff > .01 .and. lscal(ireg)%lum(ilum)%ha > 1.e-6 .and. lscal(ireg)%lum(ilum)%prm_lim%etco < 1.e-6) then
-            isim = 1
-
-                rmeas = lscal(ireg)%lum(ilum)%meas%etr * lscal(ireg)%lum(ilum)%precip_aa
-                denom = lscal(ireg)%lum(ilum)%prev%etr - lscal(ireg)%lum(ilum)%aa%etr
-                if (abs(denom) > 1.e-6) then
-                  chg_val = - (lscal(ireg)%lum(ilum)%prm_prev%etco - lscal(ireg)%lum(ilum)%prm%etco)                  &
-                    * (lscal(ireg)%lum(ilum)%aa%etr - rmeas) / denom
-                else
-                  chg_val = diff / 200.
-                end if
-                lscal(ireg)%lum(ilum)%prm_prev%etco = lscal(ireg)%lum(ilum)%prm%etco
-                lscal(ireg)%lum(ilum)%prm%etco = lscal(ireg)%lum(ilum)%prm%etco + chg_val
-                lscal(ireg)%lum(ilum)%prev%etr = lscal(ireg)%lum(ilum)%aa%etr
-                      
-                if (lscal(ireg)%lum(ilum)%prm%etco >= ls_prms(2)%pos) then
-                  chg_val = ls_prms(2)%pos - lscal(ireg)%lum(ilum)%prm_prev%etco
-                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%pos
-                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
-                end if
-                if (lscal(ireg)%lum(ilum)%prm%etco <= ls_prms(2)%neg) then
-                  chg_val = ls_prms(2)%neg - lscal(ireg)%lum(ilum)%prm_prev%etco
-                  lscal(ireg)%lum(ilum)%prm%etco = ls_prms(2)%neg
-                  lscal(ireg)%lum(ilum)%prm_lim%etco = 1.
-                end if
-                
-            do ihru_s = 1, region(ireg)%num_tot
-                iihru = region(ireg)%num(ihru_s)
-              if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
-                !set parms for et calibration
-                hru(iihru)%hyd%esco = hru(iihru)%hyd%esco - chg_val
-                hru(iihru)%hyd%esco = amin1 (hru(iihru)%hyd%esco, ls_prms(2)%up)
-                hru(iihru)%hyd%esco = Max (hru(iihru)%hyd%esco, ls_prms(2)%lo)
-                hru_init(iihru)%hyd%esco = hru(iihru)%hyd%esco
-                !hru(iihru)%hyd%epco = hru(iihru)%hyd%epco + chg_val
-                !hru(iihru)%hyd%epco = amin1 (hru(iihru)%hyd%epco, ls_prms(2)%up)
-                !hru(iihru)%hyd%epco = Max (hru(iihru)%hyd%epco, ls_prms(2)%lo)
-                !hru_init(iihru)%hyd%epco = hru(iihru)%hyd%epco
-              end if
-            end do
-            lscal(ireg)%lum(ilum)%nbyr = 0
-            lscal(ireg)%lum(ilum)%precip_aa = 0.
-            lscal(ireg)%lum(ilum)%aa = lscal_z
-          end if
-          end do
-          end do
-
-          !! re-initialize all objects
-          call re_initialize
-
-          !zero plant calibration data in case plants are calibrated
-          do ireg = 1, db_mx%plcal_reg
-            do ilum = 1, plcal(ireg)%lum_num
-              plcal(ireg)%lum(ilum)%nbyr = 0
-              plcal(ireg)%lum(ilum)%precip_aa = 0.
-              plcal(ireg)%lum(ilum)%aa = plcal_z
-            end do
-          end do
-          
-          !! re-initialize all objects
-          call re_initialize
-
-          ! et adjustment 
-          if (isim > 0) then
-            cal_sim =  " esco adj "
-            call time_control
-          end if
-        
-        end do      ! iesco
-
         ! 1st perco for percolation
         isim = 0
         do ireg = 1, db_mx%lsu_reg
@@ -679,8 +681,8 @@
                 lscal(ireg)%lum(ilum)%prev = lscal(ireg)%lum(ilum)%aa
 
                 diff = lscal(ireg)%lum(ilum)%meas%srr * lscal(ireg)%lum(ilum)%precip_aa - lscal(ireg)%lum(ilum)%aa%srr
-                !chg_val = - diff / 300.     !assume 10 mm runoff for .3 cn3_swf
-                chg_val = - diff / 700.     !assume 10 mm runoff for .7 cn3_swf
+                chg_val = - diff / 300.     !assume 10 mm runoff for .3 cn3_swf
+                !chg_val = - diff / 700.     !assume 10 mm runoff for .5 cn3_swf
                 lscal(ireg)%lum(ilum)%prm_prev%cn3_swf = lscal(ireg)%lum(ilum)%prm%cn3_swf
                 lscal(ireg)%lum(ilum)%prm%cn3_swf = lscal(ireg)%lum(ilum)%prm%cn3_swf + chg_val
                 lscal(ireg)%lum(ilum)%prev%srr = lscal(ireg)%lum(ilum)%aa%srr

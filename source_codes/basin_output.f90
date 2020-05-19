@@ -12,7 +12,6 @@
       integer :: iihru    !          |
       real :: const       !          |constant used for rate, days, etc
               
-
         ! summing subbasin output for the basin
         do ihru = 1, sp_ob%hru
           iihru = lsu_elem(ihru)%obtypno
@@ -20,12 +19,14 @@
             const = lsu_elem(iihru)%bsn_frac
             if (lsu_elem(iihru)%obtyp == "hru") then
               bwb_d = bwb_d + hwb_d(iihru) * const
+              bwb_d%sw_init = bwb_d%sw_init + hwb_d(iihru)%sw_init * const
+              bwb_d%sw_final = bwb_d%sw_final + hwb_d(iihru)%sw_final * const
               bnb_d = bnb_d + hnb_d(iihru) * const
               bls_d = bls_d + hls_d(iihru) * const
               bpw_d = bpw_d + hpw_d(iihru) * const
             end if
-           end if
-          end do
+          end if
+        end do
           
             ! or if it is not routed and not in a subbasin
         do ihru = 1, sp_ob%hru_lte
@@ -35,6 +36,8 @@
             if (lsu_elem(iihru)%obtyp == "hlt") then
               !const = lsu_elem(iihru)%bsn_frac
               bwb_d = bwb_d + hltwb_d(iihru) * const
+              bwb_d%sw_init = bwb_d%sw_init + hltwb_d(iihru)%sw_init * const
+              bwb_d%sw_final = bwb_d%sw_final + hltwb_d(iihru)%sw_final * const
               bnb_d = bnb_d + hltnb_d(iihru) * const
               bls_d = bls_d + hltls_d(iihru) * const
               bpw_d = bpw_d + hltpw_d(iihru) * const
@@ -54,6 +57,7 @@
             write (2050,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_d  !! waterbal
             if (pco%csvout == "y") then 
               write (2054,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_d  !! waterbal
+              bwb_d%sw_init = bwb_d%sw_final
             end if
           end if 
           if (pco%nb_bsn%d == "y") then
@@ -96,6 +100,7 @@
             write (2051,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_m
             if (pco%csvout == "y") then 
               write (2055,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_m
+              bwb_m%sw_init = bwb_m%sw_final
             end if          
           end if
           if (pco%nb_bsn%m == "y") then 
@@ -137,6 +142,7 @@
              write (2052,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_y
              if (pco%csvout == "y") then 
                 write (2056,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_y
+                bwb_y%sw_init = bwb_y%sw_final
              end if 
            end if
            if (pco%nb_bsn%y == "y") then
@@ -203,7 +209,7 @@
       
       return
 
-100   format (4i6,2a,2x,a16,28f12.3) 
-103   format (4i6,2x,2a,2x,a16,28f12.3,a)
+100   format (4i6,2a,2x,a16,30f12.3) 
+103   format (4i6,2x,2a,2x,a16,30f12.3,a)
        
       end subroutine basin_output

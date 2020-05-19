@@ -2,7 +2,7 @@
       use conditional_module
       use climate_module
       use time_module
-      use hru_module, only : fertno3, fertnh3, fertorgn, fertorgp, fertsolp,   &
+      use hru_module, only : hru, fertno3, fertnh3, fertorgn, fertorgp, fertsolp,   &
         ihru, ipl, isol, ndeat, phubase, sol_sumno3, sol_sumsolp, hru, yield 
       use soil_module
       use plant_module
@@ -15,7 +15,6 @@
       use basin_module
       use organic_mineral_mass_module
       use hydrograph_module
-      use tiles_data_module
       use output_landscape_module
       use conditional_module
       use constituent_mass_module
@@ -335,14 +334,14 @@
             
                   call mgt_killop (j, ipl)
 
-                  !! sum yield and num. of harvest to calc ave yields
+                  !! sum yield and number of harvests to calc ave yields
                   pl_mass(j)%yield_tot(ipl) = pl_mass(j)%yield_tot(ipl) + pl_yield
                   pcom(j)%plcur(ipl)%harv_num = pcom(j)%plcur(ipl)%harv_num + 1
                             
                   !! sum basin crop yields and area harvested
                   iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                   bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
-                  bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + yield * hru(j)%area_ha / 1000.
+                  bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + pl_yield%m * hru(j)%area_ha / 1000.
                   !! sum regional crop yields for soft calibration
                   ireg = hru(j)%crop_reg
                   do ilum = 1, plcal(ireg)%lum_num
@@ -392,6 +391,8 @@
                  rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), pest_kg
               endif
               pcom(j)%dtbl(idtbl)%num_actions(iac) = pcom(j)%dtbl(idtbl)%num_actions(iac) + 1
+              dtbl_lum(idtbl)%hru_lu_cur = dtbl_lum(idtbl)%hru_lu_cur + 1
+              dtbl_lum(idtbl)%hru_ha_cur = dtbl_lum(idtbl)%hru_ha_cur + hru(j)%area_ha
             end if
           
           case ("graze")    !! grazing operation
@@ -457,7 +458,7 @@
             
             if (pcom(j)%dtbl(idtbl)%num_actions(iac) <= Int(d_tbl%act(iac)%const2)) then
              istr = hru(j)%tiledrain
-              hru(j)%lumv%sdr_dep = d_tbl%act(iac)%const * sdr(istr)%depth
+              hru(j)%lumv%sdr_dep = d_tbl%act(iac)%const
               !if (hru(j)%lumv%sdr_dep > 0) then
               !  do jj = 1, soil(j)%nly
               !    if (hru(j)%lumv%sdr_dep < soil(j)%phys(jj)%d) hru(j)%lumv%ldrain = jj

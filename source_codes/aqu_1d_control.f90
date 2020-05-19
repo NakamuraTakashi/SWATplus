@@ -49,7 +49,7 @@
       aqu_d(iaq)%rchrg = ob(icmd)%hin%flo / (10. * ob(icmd)%area_ha)
       
       !! lag recharge from bottom of soil to water table ** disabled
-      !aqu_d(iaq)%rchrg = (1. - aqu_prm(iaqdb)%delay_e) * aqu_d(iaq)%rchrg + aqu_prm(iaqdb)%delay_e * aqu_st(iaq)%rchrg_prev
+      !aqu_d(iaq)%rchrg = (1. - aqu_prm(iaq)%delay_e) * aqu_d(iaq)%rchrg + aqu_prm(iaq)%delay_e * aqu_st(iaq)%rchrg_prev
       
       aqu_prm(iaq)%rchrg_prev = aqu_d(iaq)%rchrg
       
@@ -58,7 +58,7 @@
       
       !! compute flow and substract from storage
       if (aqu_d(iaq)%dep_wt < aqu_prm(iaq)%flo_min) then
-        aqu_d(iaq)%flo = aqu_d(iaq)%flo * aqu_prm(iaqdb)%alpha_e + aqu_d(iaq)%rchrg * (1. - aqu_prm(iaqdb)%alpha_e)
+        aqu_d(iaq)%flo = aqu_d(iaq)%flo * aqu_prm(iaq)%alpha_e + aqu_d(iaq)%rchrg * (1. - aqu_prm(iaq)%alpha_e)
         aqu_d(iaq)%flo = Max (0., aqu_d(iaq)%flo)
         aqu_d(iaq)%flo = Min (aqu_d(iaq)%stor, aqu_d(iaq)%flo)
         aqu_d(iaq)%stor = aqu_d(iaq)%stor - aqu_d(iaq)%flo
@@ -70,9 +70,9 @@
       ob(icmd)%hd(1)%flo = 10. * aqu_d(iaq)%flo * ob(icmd)%area_ha
       
       !! compute seepage through aquifer and subtract from storage
-      aqu_d(iaq)%seep = aqu_d(iaq)%rchrg * aqudb(iaqdb)%seep
-      aqu_d(iaq)%seep = amin1 (aqu_d(iaq)%seep, aqu_d(iaq)%stor)
-      ob(icmd)%hd(2)%flo = 10. * aqu_d(iaq)%seep * ob(icmd)%area_ha
+      aqu_d(iaq)%seep = aqu_d(iaq)%rchrg * aqu_prm(iaq)%seep
+      aqu_d(iaq)%seep = amin1 (aqu_prm(iaq)%seep, aqu_d(iaq)%stor)
+      ob(icmd)%hd(2)%flo = 10. * aqu_prm(iaq)%seep * ob(icmd)%area_ha
       
       aqu_d(iaq)%stor = aqu_d(iaq)%stor - aqu_d(iaq)%seep
       
@@ -86,13 +86,8 @@
       end if
 
       !! compute groundwater depth from surface
-      aqu_d(iaq)%dep_wt = aqudb(iaqdb)%dep_bot - (aqu_d(iaq)%stor / (1000. * aqudb(iaqdb)%spyld))
+      aqu_d(iaq)%dep_wt = aqudb(iaqdb)%dep_bot - (aqu_d(iaq)%stor / (1000. * aqu_prm(iaq)%spyld))
       aqu_d(iaq)%dep_wt = amax1 (0., aqu_d(iaq)%dep_wt)
-      
-      !! compute groundwater height - datum: above bottom of channel
-      !aqu_d(iaq)%hgt = aqu_d(iaq)%hgt * aqu_prm(iaqdb)%alpha_e + aqu_d(iaq)%rchrg * (1. - aqu_prm(iaqdb)%alpha_e) /   & 
-      !                                       (800. * aqudb(iaqdb)%spyld * aqu_prm(iaq)%alpha + 1.e-6)       
-      !aqu_d(iaq)%hgt = Max(1.e-6, aqu_d(iaq)%hgt)
 
       !! compute nitrate recharge into the aquifer
       aqu_d(iaq)%rchrg_n = ob(icmd)%hin%no3 / (10. * ob(icmd)%area_ha)
@@ -130,7 +125,7 @@
       !! compute fraction of flow to each channel in the aquifer
       !! if connected to aquifer - add flow
       if (db_mx%aqu2d > 0) then
-        contrib_len = aq_ch(iaq)%len_tot * aqu_d(iaq)%flo / aqudb(iaqdb)%bf_max
+        contrib_len = aq_ch(iaq)%len_tot * aqu_d(iaq)%flo / aqu_prm(iaq)%bf_max
       
         !! find the first channel contributing
         icontrib = 0
@@ -175,7 +170,7 @@
         !! assume specific yield = upper limit (effective vs total porosity) 
         !! and bulk density of 2.0 (ave of rock and soil - 2.65 and 1.35)
         !! mm = (mm/mm + (m^3/ton)*(ton/m^3)) * m * 1000.
-        zdb1 = (aqudb(iaqdb)%spyld + kd * 2.0) * aqudb(iaqdb)%flo_dist * 1000.
+        zdb1 = (aqu_prm(iaq)%spyld + kd * 2.0) * aqudb(iaqdb)%flo_dist * 1000.
 
         !! compute volume of flow through the layer - mm
         flow_mm = aqu_d(iaq)%flo + aqu_d(iaq)%seep

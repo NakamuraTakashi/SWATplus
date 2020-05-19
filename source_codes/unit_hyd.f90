@@ -64,8 +64,7 @@
       real :: xi               !              |
       real :: q                !              |
       integer :: max           !              |
-      integer :: ij            !              |
- 
+
 !!    compute unit hydrograph for computing subbasin hydrograph from direct runoff
       do j = 1, sp_ob%hru
         ql = 0.
@@ -114,7 +113,7 @@
 	      i = i + 1
 	      if (i>3.*time%step) exit
 	    end do
-	    itb(ij) = i - 1
+	    itb(j) = i - 1
           do i = 1, itb(j)
             uh(j,i) = uh(j,i) / sumq
           end do

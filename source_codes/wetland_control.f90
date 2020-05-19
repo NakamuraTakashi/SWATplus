@@ -153,8 +153,8 @@
       if (time%yrs > pco%nyskip) then
         wet_in_d(ihru) = ht1 
         wet_out_d(ihru) = ht2
-        wet_in_d(ihru)%flo = wet(ihru)%flo / 10000.   !m^3 -> ha-m
-        wet_out_d(ihru)%flo = wet(ihru)%flo / 10000.  !m^3 -> ha-m
+        !wet_in_d(ihru)%flo = wet(ihru)%flo / 10000.   !m^3 -> ha-m
+        !wet_out_d(ihru)%flo = wet(ihru)%flo / 10000.  !m^3 -> ha-m
       end if  
 
       return

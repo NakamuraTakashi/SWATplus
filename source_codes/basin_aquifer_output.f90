@@ -40,7 +40,7 @@
           baqu_m%dep_wt = baqu_m%dep_wt / const
           baqu_m%no3 = baqu_m%no3 / const
           baqu_y = baqu_y + baqu_m
-          if (pco%aqu_bsn%d == "y") then
+          if (pco%aqu_bsn%m == "y") then
             write (2091,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "     1", bsn%name, baqu_m
             if (pco%csvout == "y") then
               write (2095,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "     1", bsn%name, baqu_m

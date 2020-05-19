@@ -96,7 +96,7 @@
               else
                 ! if hyd in is not a total hyd from an hru or ru -> add the specified hyd typ 
                 select case (ob(icmd)%htyp_in(in))
-                case ("tot")   ! tile flow
+                case ("tot")   ! total flow
                   ob(icmd)%hin_sur = ob(icmd)%hin_sur + frac_in * ob(iob)%hd(ihyd)
                   !add constituents
                   if (cs_db%num_tot > 0) then
@@ -149,14 +149,14 @@
 
           !convert to per area basis
           if (ob(icmd)%typ == "hru" .or. ob(icmd)%typ == "ru") then  !only convert hru and subbasin hyds for routing
-            if (ob(icmd)%ru_tot > 0) then
-              !object is in a subbasin
-              ielem = ob(icmd)%elem
-              iru = ob(icmd)%ru(1)  !can only be in one subbasin if routing over
-              conv = 100. * ru(iru)%da_km2  !* ru_elem(ielem)%frac
-            else
+            !if (ob(icmd)%ru_tot > 0) then
+            !  !object is in a subbasin
+            !  ielem = ob(icmd)%elem
+            !  iru = ob(icmd)%ru(1)  !can only be in one subbasin if routing over
+            !  conv = 100. * ru(iru)%da_km2  !* ru_elem(ielem)%frac
+            !else
               conv = ob(icmd)%area_ha
-            end if
+            !end if
             ob(icmd)%hin_sur = ob(icmd)%hin_sur // conv
             ob(icmd)%hin_lat = ob(icmd)%hin_lat // conv
             ob(icmd)%hin_til = ob(icmd)%hin_til // conv
@@ -246,10 +246,18 @@
           case ("chandeg")  !swatdeg channel
             isdch = ob(icmd)%num
             isd_chsur = ob(icmd)%props2
-            call sd_channel_control
+            if (sd_ch(isdch)%chl > 1.e-3) then
+              call sd_channel_control
+            else
+              !! artificial channel - length=0 - no transformations
+              ob(icmd)%hd(1) = ob(icmd)%hin
+              if (cs_db%num_tot > 0) then
+                obcs(icmd)%hd(1) = obcs(icmd)%hin
+              end if
+            end if
             
           end select
-        if (pco%fdcout == "y") call flow_dur_curve
+        if (pco%fdcout == "y" .and. ob(icmd)%typ == "chandeg") call flow_dur_curve
         
         !print all outflow hydrographs
         if (ob(icmd)%src_tot > 0) then

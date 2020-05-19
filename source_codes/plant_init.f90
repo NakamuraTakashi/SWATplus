@@ -126,6 +126,7 @@
           idp = pcomdb(icom)%pl(ipl)%db_num
           rsd1(j)%tot(ipl)%m = pcomdb(icom)%pl(ipl)%rsdin
           !set fresh organic pools--assume cn ratio = 57 and cp ratio = 300
+          rsd1(j)%tot(ipl)%c = 0.43 * rsd1(j)%tot(ipl)%m
           rsd1(j)%tot(ipl)%n = 0.43 * rsd1(j)%tot(ipl)%m / 57.
           rsd1(j)%tot(ipl)%p = 0.43 * rsd1(j)%tot(ipl)%m / 300.
           
@@ -156,7 +157,7 @@
             pcom(j)%plcur(ipl)%phumat = .95 * phutot
           else
             ! caculate planting day for summer annuals
-            if (pldb(idp)%typ == "warm_annual") then
+            if (pldb(idp)%typ == "warm_annual" .or. pldb(idp)%typ == "warm_annual_tuber") then
               iday_sum = 181
               phutot = 0.
               phu0 = 0.15 * phu0    !assume planting at 0.15 base 0 heat units
