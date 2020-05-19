@@ -1,6 +1,6 @@
 water_balance.sft
    1
- NAME      	NLUM
+ NAME      	  NLUM
  basin           1
-  NAME              SRR		LFR	    PCR      ETR      TFR     PET     ORGN     ORGP      NO3     SOLP
-  basin            0.160   0.0126	0.091	 0.645    0.00   950.00     0.00     0.00     0.00     0.00
+  NAME              SRR		LFR	    PCR      ETR      TFR     PET      SED    ORGP      NO3     SOLP
+  basin            0.160   0.0126	0.091	 0.645    0.00   950.00   0.00    0.00     0.00     0.00

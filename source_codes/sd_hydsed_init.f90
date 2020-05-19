@@ -21,7 +21,7 @@
       integer :: ipath_ini              !none      |counter
       integer :: ipest                  !none      |counter
       integer :: ipath                  !none      |counter
-      
+      integer :: idat
       real :: aa                      !none         |area/area=1 (used to calculate velocity with
                                       !             |Manning"s equation)
       real :: a                       !m^2          |cross-sectional area of channel
@@ -44,7 +44,8 @@
 
       do i = 1, sp_ob%chandeg
         icmd = sp_ob1%chandeg + i - 1
-        idb = ob(icmd)%props
+        idat = ob(icmd)%props
+        idb = sd_dat(idat)%hyd
         sd_ch(i)%name = sd_chd(idb)%name
         sd_ch(i)%order = sd_chd(idb)%order
         sd_ch(i)%chw = sd_chd(idb)%chw

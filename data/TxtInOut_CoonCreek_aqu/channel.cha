@@ -83,3 +83,4 @@ CHA_NUMB   CHA_NAME   CHA_INI   CHA_HYD   CHA_SED   CHA_NUT
         81    cha81 high_init     cha81   sed_cha   nut_cha
         82    cha82 high_init     cha82   sed_cha   nut_cha
         83    cha83 high_init     cha83   sed_cha   nut_cha
+        84    cha84 high_init     cha84   sed_cha   nut_cha

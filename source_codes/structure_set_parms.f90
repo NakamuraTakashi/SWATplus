@@ -41,7 +41,7 @@
           hru(j)%lumv%tile_ttime = 0.
         end if
 
-      case ("filter")
+      case ("fstrip")
         hru(j)%lumv%vfsi = filtstrip_db(istr)%vfsi
         hru(j)%lumv%vfsratio = filtstrip_db(istr)%vfsratio
         hru(j)%lumv%vfscon = filtstrip_db(istr)%vfscon

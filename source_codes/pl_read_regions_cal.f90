@@ -95,5 +95,6 @@
         
       db_mx%plcal_reg = mreg
 	  
+      close(107)
       return
       end subroutine pl_read_regions_cal

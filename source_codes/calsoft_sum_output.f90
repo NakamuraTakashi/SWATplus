@@ -105,19 +105,19 @@
         end if
           
         !! sum landscape output for plant soft data calibration
-        !if (cal_codes%plt == "y") then
-          !calibrate plnt growth - yield and area summed when harvest (mgt_sched and actions)
-          !do ireg = 1, db_mx%plcal_reg
-          !  do ilu = 1, plcal(ireg)%lum_num
-          !    if (plcal(ireg)%lum(ilu)%ha > 1.e-6) then
-          !      plcal(ireg)%lum(ilu)%nbyr = plcal(ireg)%lum(ilu)%nbyr + 1
-          !      !! convert back to mm, t/ha, kg/ha
-          !      plcal(ireg)%lum(ilu)%aa%yield = plcal(ireg)%lum(ilu)%aa%yield + plcal(ireg)%lum(ilu)%sim%yield / plcal(ireg)%lum(ilu)%ha
-          !      plcal(ireg)%lum(ilu)%sim = plcal_z  !! zero all calibration parameters
-          !    end if
-          !  end do
-          !end do    !reg
-        !end if
+        if (cal_codes%plt == "y") then
+          !! calibrate plnt growth - yield and area summed when harvest (mgt_sched and actions)
+          do ireg = 1, db_mx%plcal_reg
+            do ilu = 1, plcal(ireg)%lum_num
+              if (plcal(ireg)%lum(ilu)%ha > 1.e-6) then
+                plcal(ireg)%lum(ilu)%nbyr = plcal(ireg)%lum(ilu)%nbyr + 1
+                !! convert back to mm, t/ha, kg/ha
+                plcal(ireg)%lum(ilu)%aa%yield = plcal(ireg)%lum(ilu)%aa%yield + plcal(ireg)%lum(ilu)%sim%yield / plcal(ireg)%lum(ilu)%ha
+                plcal(ireg)%lum(ilu)%sim = plcal_z  !! zero all calibration parameters
+              end if
+            end do
+          end do    !reg
+        end if
 
         !! sum channel output for soft data calibration
         if (cal_codes%chsed == "y" .and. cal_codes%sed == "n" .and. cal_codes%plt == "n" .and. cal_codes%hyd_hru == "n" .and. cal_codes%hyd_hrul == "n") then

@@ -24,8 +24,8 @@
             const = lsu_elem(ihru)%ru_frac
             if (lsu_elem(ihru)%obtyp == "hru") then
               ruwb_d(ilsu) = ruwb_d(ilsu) + hwb_d(ihru) * const
-              ruwb_d%sw_init = ruwb_d%sw_init + hwb_d(ihru)%sw_init * const
-              ruwb_d%sw_final = ruwb_d%sw_final + hwb_d(ihru)%sw_final * const
+              ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hwb_d(ihru)%sw_init * const
+              ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final + hwb_d(ihru)%sw_final * const
               runb_d(ilsu) = runb_d(ilsu) + hnb_d(ihru) * const
               ruls_d(ilsu) = ruls_d(ilsu) + hls_d(ihru) * const
               rupw_d(ilsu) = rupw_d(ilsu) + hpw_d(ihru) * const
@@ -33,8 +33,8 @@
             ! summing HRU_LTE output
             if (lsu_elem(ihru)%obtyp == "hlt") then
               ruwb_d(ilsu) = ruwb_d(ilsu) + hltwb_d(ihru) * const
-              ruwb_d%sw_init = ruwb_d%sw_init + hltwb_d(ihru)%sw_init * const
-              ruwb_d%sw_final = ruwb_d%sw_final + hltwb_d(ihru)%sw_final * const
+              ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hltwb_d(ihru)%sw_init * const
+              ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final + hltwb_d(ihru)%sw_final * const
               runb_d(ilsu) = runb_d(ilsu) + hltnb_d(ihru) * const
               ruls_d(ilsu) = ruls_d(ilsu) + hltls_d(ihru) * const
               rupw_d(ilsu) = rupw_d(ilsu) + hltpw_d(ihru) * const

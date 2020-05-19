@@ -96,7 +96,7 @@
       wbody_wb => wet_wat_d(ihru)
       pvol_m3 = wet_ob(ihru)%pvol
       evol_m3 = wet_ob(ihru)%evol
-      call conditions (ihru)
+      call conditions (ihru, irel)
       call res_hydro (ihru, irel, ihyd, pvol_m3, evol_m3)
       call res_sediment (ihru, ihyd, ised)
       
@@ -121,6 +121,11 @@
 
       end if 
  
+      !! subtract sediment leaving from reservoir
+      wet(ihru)%sed = wet(ihru)%sed - ht2%sed
+      wet(ihru)%sil = wet(ihru)%sil - ht2%sil
+      wet(ihru)%cla = wet(ihru)%cla - ht2%cla
+          
       !! perform reservoir nutrient balance
       inut = wet_dat(ires)%nut
       call res_nutrient (ires, inut, ihru)

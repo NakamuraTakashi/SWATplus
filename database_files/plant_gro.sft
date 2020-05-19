@@ -1,0 +1,7 @@
+plant_gro.sft
+   1
+ NAME      	  NLUM	NSPU
+ basin           2	   0
+  NAME             YIELD	  NPP	   LAI_MX    WSTRESS      ASTRESS    TSTRESS
+  corn             12.0       0.0 	      0.0 	     0.0         0.0         0.0  
+  soyb              3.5       0.0 	      0.0 	     0.0         0.0         0.0  

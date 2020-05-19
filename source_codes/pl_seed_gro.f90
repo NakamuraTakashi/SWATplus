@@ -29,7 +29,7 @@
         pcom(j)%plg(ipl)%plpet = pcom(j)%plg(ipl)%plpet + pet_day
       end if
      
-      ajhi = pldb(idp)%hvsti * 100. * pcom(j)%plcur(ipl)%phuacc /          &
+      ajhi = pcom(j)%plcur(ipl)%harv_idx * 100. * pcom(j)%plcur(ipl)%phuacc /          &
                 (100. * pcom(j)%plcur(ipl)%phuacc + Exp(11.1 - 10. * pcom(j)%plcur(ipl)%phuacc))
        
       !! adjust harvest index for temperature stress

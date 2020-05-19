@@ -73,6 +73,8 @@
       integer :: curyr               !              |
       integer :: iwgn                !              |
       integer :: ipg                 !              |
+      integer :: ireg                !              |
+      integer :: ilu                 !              |
 
       time%yrc = time%yrc_start
       
@@ -192,7 +194,7 @@
               iob = sp_ob1%hru + j - 1
               id = upd_cond(iupd)%cond_num
               d_tbl => dtbl_scen(id)
-              call conditions (j)
+              call conditions (j, id)
               call actions (j, iob, id)
             end do
           end do
@@ -229,6 +231,8 @@
         call calsoft_sum_output
         
         !! write annual basin crop yields and harvested areas
+       if (sp_ob%hru > 0) then
+        write (5101,*) cal_sim
         do iplt = 1, basin_plants
           crop_yld_t_ha = bsn_crop_yld(iplt)%yield / (bsn_crop_yld(iplt)%area_ha + 1.e-6)
           write (5100,*) time%yrc, iplt, plants_bsn(iplt), bsn_crop_yld(iplt)%area_ha,            &
@@ -242,8 +246,10 @@
             bsn_crop_yld_aa(iplt)%yield = bsn_crop_yld_aa(iplt)%yield / time%yrs_prt
             write (5101,*) time%yrc, iplt, plants_bsn(iplt), bsn_crop_yld_aa(iplt)%area_ha,   &
                                                 bsn_crop_yld_aa(iplt)%yield, crop_yld_t_ha
+            bsn_crop_yld_aa(iplt) = bsn_crop_yld_z
           end if
         end do
+        end if
         
         do j = 1, sp_ob%hru_lte
           !! zero yearly balances after using them in soft data calibration (was in hru_lte_output)

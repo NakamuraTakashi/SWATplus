@@ -103,9 +103,9 @@
               rto_lin = float(pcom(j)%plcur(ipl)%curyr_mat) / float(pldb(idp)%mat_yrs)
               rto = alog10 (rto_lin)
               lai_exp = rto * pldb(idp)%laixco_tree
-              laimax = pcom(j)%plcur(ipl)%laimx_pop * 10. ** lai_exp
+              laimax = pcom(j)%plcur(ipl)%lai_pot * 10. ** lai_exp
             else
-              laimax = pcom(j)%plcur(ipl)%laimx_pop
+              laimax = pcom(j)%plcur(ipl)%lai_pot
             end if
             
             !! calculate new canopy height

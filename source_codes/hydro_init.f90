@@ -80,13 +80,16 @@
       real :: sdlat
       real :: h 
       real :: daylength
+      real :: rock
 
       do j = 1, sp_ob%hru
        iob = hru(j)%obj_no
        iwst = ob(iob)%wst
        iwgn = wst(iwst)%wco%wgn
        
-       hru(j)%lumv%usle_mult = soil(j)%phys(1)%rock * soil(j)%ly(1)%usle_k *       &
+!!    calculate composite usle value
+      rock = Exp(-.053 * soil(j)%phys(1)%rock)
+      hru(j)%lumv%usle_mult = rock * soil(j)%ly(1)%usle_k *       &
                                  hru(j)%lumv%usle_p * hru(j)%lumv%usle_ls * 11.8
 
       tsoil = (wgn(iwgn)%tmpmx(12) + wgn(iwgn)%tmpmx(12)) / 2.

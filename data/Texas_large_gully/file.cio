@@ -23,7 +23,7 @@ CHG               null     null     null     null     null     null     null    
 INIT              null     null     om_water.ini      null     null     null     null     null     null     null    null
 SOILS             null     null     soils_lte.sol
 DECISION_TABLE    lum.dtl           res_rel.dtl       scen_lu.dtl       flo_con.dtl 
-REGIONS           null     null     null     null     null     null     null     null     null     null     null     null     null     null     null     null     null
+REGIONS           ls_unit.ele       ls_unit.def		null     null     null     null     null     null     null     null     null     null     null     null     null     null     null
 PATH_PCP          null
 PATH_TMP          null
 PATH_SLR          null

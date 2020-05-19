@@ -54,6 +54,7 @@
             read (107,*,iostat=eof) dtbl_lum(i)%name, dtbl_lum(i)%conds, dtbl_lum(i)%alts, dtbl_lum(i)%acts
             if (eof < 0) exit
             allocate (dtbl_lum(i)%cond(dtbl_lum(i)%conds))
+            allocate (dtbl_lum(i)%con_act(dtbl_lum(i)%conds))
             allocate (dtbl_lum(i)%alt(dtbl_lum(i)%conds,dtbl_lum(i)%alts))
             allocate (dtbl_lum(i)%act(dtbl_lum(i)%acts))
             allocate (dtbl_lum(i)%act_hit(dtbl_lum(i)%alts))
@@ -69,7 +70,7 @@
               if (eof < 0) exit
             end do
             
-            !if land_use conditional variable, determine number of hru's and areas (used for probabilistic operations
+            !if land_use conditional variable, determine number of hru's and areas (used for probabilistic operations)
             dtbl_lum(i)%hru_lu = 0
             dtbl_lum(i)%ha_lu = 0.
             do ic = 1, dtbl_lum(i)%conds
@@ -81,7 +82,7 @@
                   end if
                 end do
               end if
-            end do
+            end do      ! ic
                         
             !read actions and action outcomes
             read (107,*,iostat=eof) header
@@ -176,9 +177,17 @@
                   end do
                 end select
                 
-            end do
+                !xwalk conditions and actions for days since last action
+                do ic = 1, dtbl_lum(i)%conds
+                  if (dtbl_lum(i)%cond(ic)%lim_var == dtbl_lum(i)%act(iac)%name) then
+                    dtbl_lum(i)%con_act(ic) = iac
+                  end if
+                end do      ! ic
+                
+            end do      ! iac
             
-          end do
+          end do        ! mdtbl
+          
           db_mx%dtbl_lum = mdtbl
           exit
         end do
