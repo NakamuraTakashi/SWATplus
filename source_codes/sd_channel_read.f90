@@ -34,6 +34,7 @@
             
       !! allocate sd channel variables
       allocate (sd_ch(0:sp_ob%chandeg))
+      allocate (ch_rcurv(0:sp_ob%chandeg))
       allocate (sd_ch_vel(0:sp_ob%chandeg))
       allocate (chsd_d(0:sp_ob%chandeg))
       allocate (chsd_m(0:sp_ob%chandeg))

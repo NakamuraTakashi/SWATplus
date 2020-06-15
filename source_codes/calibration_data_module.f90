@@ -78,7 +78,7 @@
         real :: cn = 0.         !+/- or 0/1       |cn2 adjustment or at limit
         real :: esco = 0.       !+/- or 0/1       |esco adjustment or at limit
         real :: lat_len = 0.    !+/- or 0/1       |lateral flow soil length adjustment or at limit
-        real :: k_lo = 0.       !+/- or 0/1       |k (lowest layer) adjustment or at limit
+        real :: petco = 0.      !+/- or 0/1       |k (lowest layer) adjustment or at limit
         real :: slope = 0.      !+/- or 0/1       |slope adjustment or at limit        
         real :: tconc = 0.      !+/- or 0/1       |time of concentration adjustment or at limit
         real :: etco = 0.       !+/- or 0/1       |etco adjustment or at limit

@@ -1,6 +1,6 @@
       subroutine plant_init (init)
 
-      use hru_module, only : blai_com, cn2, cvm_com, hru, ihru, ipl, isol, rsdco_plcom, ilu
+      use hru_module, only : cn2, cvm_com, hru, ihru, ipl, isol, rsdco_plcom, ilu
       use soil_module
       use plant_module
       use hydrograph_module
@@ -60,6 +60,7 @@
       
       !!assign land use pointers for the hru
         hru(j)%land_use_mgt = ilu
+        pcom(j)%name = lum(ilu)%plant_cov
         hru(j)%plant_cov = lum_str(ilu)%plant_cov
         hru(j)%lum_group_c = lum(ilu)%cal_group
         do ilug = 1, lum_grp%num
@@ -116,10 +117,10 @@
         allocate (rsd1(j)%tot(ipl))
 
         cvm_com(j) = 0.
-        blai_com(j) = 0.
         rsdco_plcom(j) = 0.
         pcom(j)%pcomdb = icom
         pcom(j)%rot_yr = 1
+        pcom(j)%laimx_sum = 0.
         do ipl = 1, pcom(j)%npl
           pcom(j)%plg(ipl)%cpnm = pcomdb(icom)%pl(ipl)%cpnm
           pcom(j)%plcur(ipl)%gro = pcomdb(icom)%pl(ipl)%igro
@@ -141,6 +142,7 @@
             tave = (wgn(iwgn)%tmpmx(mo) + wgn(iwgn)%tmpmn(mo)) / 2.
             if (tave > 0.) phu0 = phu0 + tave
           end do
+          iday_sh = 181
 
           ! if days to maturity are not input (0) - assume the plant is potentially active during entire growing season
           if (pldb(idp)%days_mat < 1.e-6) then
@@ -268,6 +270,7 @@
           pcom(j)%plg(ipl)%laimxfr = pcom(j)%plcur(ipl)%phuacc / (pcom(j)%plcur(ipl)%phuacc +     &
               Exp(plcp(idp)%leaf1 - plcp(idp)%leaf2 * pcom(j)%plcur(ipl)%phuacc))
           pcom(j)%plg(ipl)%lai = pcomdb(icom)%pl(ipl)%lai
+          pcom(j)%laimx_sum = pcom(j)%laimx_sum + pcom(j)%plg(ipl)%lai
           pl_mass(j)%tot(ipl)%m = pcomdb(icom)%pl(ipl)%bioms
           pcom(j)%plcur(ipl)%curyr_mat = int (pcomdb(icom)%pl(ipl)%fr_yrmat * float(pldb(idp)%mat_yrs))
           pcom(j)%plcur(ipl)%curyr_mat = max (1, pcom(j)%plcur(ipl)%curyr_mat)
@@ -316,9 +319,7 @@
         case ("D")
           cn2(j) = cn(icn)%cn(4)
         end select
- 
-        call curno(cn2(j),j)
-        
+
         !! set p factor and slope length (ls factor)
         icp = lum_str(ilum)%cons_prac
         xm = .6 * (1. - Exp(-35.835 * hru(ihru)%topo%slope))

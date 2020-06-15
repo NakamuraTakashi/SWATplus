@@ -1,7 +1,7 @@
       subroutine topohyd_init
     
       use hydrograph_module, only : sp_ob, sp_ob1, ob
-      use hru_module, only : hru, hru_db, ihru, snodb
+      use hru_module, only : hru, hru_db, ihru, snodb, cn2
       use hydrology_data_module
       use topography_data_module
       use soil_data_module
@@ -49,12 +49,14 @@
         !! set hru snow paramters
         isno_db = hru(ihru)%dbs%snow
         hru(ihru)%sno = snodb(isno_db)
-        
+         
         !! try setting for tile  *********************Mike
         if (hru(ihru)%tiledrain > 0) then
           hru(ihru)%hyd%cn3_swf = 0.95
           hru(ihru)%hyd%perco = 0.1
         end if
+        
+        call curno(cn2(ihru),ihru)
         
         if (hru(ihru)%hyd%perco > 1.e-9) then
           perc_ln_func = 1.0052 * log(-log(hru(ihru)%hyd%perco - 1.e-6)) + 5.6862

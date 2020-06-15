@@ -80,9 +80,8 @@
       isched = hru(j)%mgt_ops
       
       weat = wst(iwst)%weat
-      precip_eff = precipday
-      
       precipday = wst(iwst)%weat%precip
+      precip_eff = precipday
       tmx(j) = wst(iwst)%weat%tmax
       tmn(j) = wst(iwst)%weat%tmin
       tmpav(j) = (tmx(j) + tmn(j)) / 2.

@@ -22,8 +22,6 @@
 !!    hvsti(:)    |(kg/ha)/(kg/ha)  |harvest index: crop yield/aboveground
 !!                                  |biomass
 !!    ihru        |none             |HRU number
-!!    lai_yrmx(:) |none             |maximum leaf area index for the year in the
-!!                                  |HRU
 !!    leaf1(:)    |none             |1st shape parameter for leaf area
 !!                                  |development equation.
 !!    leaf2(:)    |none             |2nd shape parameter for leaf area
@@ -44,8 +42,6 @@
 !!    name        |units         |definition
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !!    bioday      |kg            |biomass generated on current day in HRU
-!!    lai_yrmx(:) |none          |maximum leaf area index for the year in the
-!!                               |HRU
 !!    rsr1c(:)    |              |initial root to shoot ratio at beg of growing season
 !!    rsr2c(:)    |              |root to shoot ratio at end of growing season
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -63,7 +59,7 @@
 
       use plant_data_module
       use basin_module
-      use hru_module, only : hru, uapd, uno3d, lai_yrmx, par, bioday, ep_day, es_day,              &
+      use hru_module, only : hru, uapd, uno3d, par, bioday, ep_day, es_day,              &
          ihru, ipl, pet_day, rto_no3, rto_solp, sum_no3, sum_solp, uapd_tot, uno3d_tot, vpd
       use plant_module
       use carbon_module
@@ -138,7 +134,6 @@
             
             if (pcom(j)%plg(ipl)%lai > laimax) pcom(j)%plg(ipl)%lai = laimax
             pcom(j)%plg(ipl)%olai = pcom(j)%plg(ipl)%lai
-            if (pcom(j)%lai_sum > lai_yrmx(j)) lai_yrmx(j) = pcom(j)%lai_sum
           end if    ! phu < 1.
           
       return

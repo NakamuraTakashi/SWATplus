@@ -27,6 +27,7 @@
       
       implicit none
 
+      real, dimension(time%step) :: hyd_flo     !flow hydrograph
       integer :: in                   !              |
       integer :: ielem                !              |  
       integer :: iob                  !              |
@@ -69,7 +70,7 @@
           obcs(icmd)%hin_til = hin_csz
           hcs1 = hin_csz
           hcs2 = hin_csz
-          if (time%step > 0) ob(icmd)%tsin(:) = hz
+          if (time%step > 0) ob(icmd)%tsin = 0.
           ob(icmd)%peakrate = 0.
           
           if (ob(icmd)%rcv_tot > 0) then
@@ -141,10 +142,24 @@
             
             !sum subdaily hydrographs
             if (time%step > 0) then
-              do kk = 1, time%step
-                iday = ob(iob)%day_cur
-                ob(icmd)%tsin(kk) = ob(icmd)%tsin(kk) + ob(iob)%ts(iday,kk)
-              end do
+              iday = ob(iob)%day_cur
+              !! iob = inflow object number
+              if (ob(icmd)%frac_in(ihyd) < .999) then
+                if (ob(icmd)%obtyp_in(ihyd) == "hru" .or. ob(icmd)%obtyp_in(ihyd) == "ru") then
+                  !! if fraction of an hru/ru - need to calc the flow hydrograph each day
+                  call flow_hyd_ru_hru (ob(iob)%day_cur, ob(iob)%hd(3)%flo, ob(iob)%hd(4)%flo,     &
+                        ob(iob)%hd(5)%flo, ob(icmd)%hin_uh(ihyd)%uh, ob(icmd)%hin_uh(ihyd)%hyd_flo)
+                  hyd_flo = ob(icmd)%hin_uh(ihyd)%hyd_flo(iday,:)
+                else
+                  !! if entire hru/ru or other object - use the flow hydrograph of the entire object
+                  hyd_flo = ob(iob)%hyd_flo(iday,:)
+                end if
+              else
+                !! if fraction in is 1.0 - always use the flow hydrograph of the entire object
+                hyd_flo = ob(iob)%hyd_flo(iday,:)
+              end if
+              !! add flow hydrographs for each incoming object
+              ob(icmd)%tsin = ob(icmd)%tsin + hyd_flo
             end if
 
           end do    ! in = 1, ob(icmd)%rcv_tot
@@ -208,6 +223,8 @@
           case ("recall")   ! recall hydrograph
             irec = ob(icmd)%num
             select case (recall(irec)%typ)
+              case (0)    !subdaily
+                ob(icmd)%hyd_flo(ob(icmd)%day_cur,:) = recall(irec)%hyd_flo(1:time%step,time%yrs)
               case (1)    !daily
                 ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
               case (2)    !monthly
@@ -217,7 +234,7 @@
                     ob(icmd)%hd(1) = hz
                 end if
               case (3)    !annual
-                if (time%yrc < recall(irec)%start_yr .or. time%yrc > recall(irec)%end_yr) then
+                if (time%yrc >= recall(irec)%start_yr .or. time%yrc <= recall(irec)%end_yr) then
                   ob(icmd)%hd(1) = recall(irec)%hd(1,time%yrs)
                 else
                   ob(icmd)%hd(1) = hz

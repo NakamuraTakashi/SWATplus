@@ -117,7 +117,7 @@
             sum = epmax(ipl) * (1. - Exp(-uptake%water_dis * gx / pcom(j)%plg(ipl)%root_dep)) / uptake%water_norm
           end if
 
-          wuse = sum - sump * hru(j)%hyd%epco
+          wuse = sum - sump * (1. - hru(j)%hyd%epco)
           ! adjust for impervious area
           ulu = hru(j)%luse%urb_lu
           !wuse = wuse * urbdb(ulu)%fcimp

@@ -85,9 +85,9 @@
           do ireg = 1, db_mx%ch_reg
             do ich = 1, chcal(ireg)%ord_num
               if (chcal(ireg)%ord(ich)%nbyr > 0) then
-                !! soft data for w and d in mm/year (convert to m) -- hc soft and model in m -- fpd soft and model in mm
-                chcal(ireg)%ord(ich)%aa%chd = 1000. * chcal(ireg)%ord(ich)%aa%chd / chcal(ireg)%ord(ich)%nbyr
-                chcal(ireg)%ord(ich)%aa%chw = 1000. * chcal(ireg)%ord(ich)%aa%chw / chcal(ireg)%ord(ich)%nbyr
+                !! soft data for w and d in m/year per m of channel w and d
+                chcal(ireg)%ord(ich)%aa%chd = chcal(ireg)%ord(ich)%aa%chd / chcal(ireg)%ord(ich)%nbyr
+                chcal(ireg)%ord(ich)%aa%chw = chcal(ireg)%ord(ich)%aa%chw / chcal(ireg)%ord(ich)%nbyr
                 chcal(ireg)%ord(ich)%aa%hc = chcal(ireg)%ord(ich)%aa%hc / chcal(ireg)%ord(ich)%nbyr
                 chcal(ireg)%ord(ich)%aa%fpd = chcal(ireg)%ord(ich)%aa%fpd / chcal(ireg)%ord(ich)%nbyr
               end if

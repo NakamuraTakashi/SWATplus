@@ -9,14 +9,28 @@
       
       implicit none
       
-      integer :: ilsu          !none        |counter
-      integer :: ielem         !none        |counter
-      integer :: ihru          !none        |counter 
-      integer :: iob           !none        |counter 
-      real :: const            !            |  
-                            
+      integer :: ilsu           !none       |counter
+      integer :: ielem          !none       |counter
+      integer :: ihru           !none       |counter 
+      integer :: iob            !none       |counter 
+      real :: const             !           |  
+      real :: sw_init           !           |
+      real :: sno_init          !           |
+          
+      !! zero daily outputs before summing
       do ilsu = 1, db_mx%lsu_out
-        ! summing HRU output for the landscape unit(
+        sw_init = ruwb_d(ilsu)%sw_init
+        sno_init = ruwb_d(ilsu)%sno_init
+        ruwb_d(ilsu) = hwbz
+        ruwb_d(ilsu)%sw_init = sw_init
+        ruwb_d(ilsu)%sno_init = sno_init
+        runb_d(ilsu) = hnbz
+        ruls_d(ilsu) = hlsz
+        rupw_d(ilsu) = hpwz
+      end do
+                     
+      do ilsu = 1, db_mx%lsu_out
+        ! summing HRU output for the landscape unit
         do ielem = 1, lsu_out(ilsu)%num_tot
           ihru = lsu_out(ilsu)%num(ielem)
           iob = sp_ob1%ru + ilsu - 1
@@ -24,8 +38,10 @@
             const = lsu_elem(ihru)%ru_frac
             if (lsu_elem(ihru)%obtyp == "hru") then
               ruwb_d(ilsu) = ruwb_d(ilsu) + hwb_d(ihru) * const
-              ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hwb_d(ihru)%sw_init * const
+              !ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hwb_d(ihru)%sw_init * const
               ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final + hwb_d(ihru)%sw_final * const
+              !ruwb_d(ilsu)%sno_init = ruwb_d(ilsu)%sno_init + hwb_d(ihru)%sno_init * const
+              ruwb_d(ilsu)%sno_final = ruwb_d(ilsu)%sno_final + hwb_d(ihru)%sno_final * const
               runb_d(ilsu) = runb_d(ilsu) + hnb_d(ihru) * const
               ruls_d(ilsu) = ruls_d(ilsu) + hls_d(ihru) * const
               rupw_d(ilsu) = rupw_d(ilsu) + hpw_d(ihru) * const
@@ -33,7 +49,7 @@
             ! summing HRU_LTE output
             if (lsu_elem(ihru)%obtyp == "hlt") then
               ruwb_d(ilsu) = ruwb_d(ilsu) + hltwb_d(ihru) * const
-              ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hltwb_d(ihru)%sw_init * const
+              !ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_init + hltwb_d(ihru)%sw_init * const
               ruwb_d(ilsu)%sw_final = ruwb_d(ilsu)%sw_final + hltwb_d(ihru)%sw_final * const
               runb_d(ilsu) = runb_d(ilsu) + hltnb_d(ihru) * const
               ruls_d(ilsu) = ruls_d(ilsu) + hltls_d(ihru) * const
@@ -51,10 +67,14 @@
         !! daily print - LANDSCAPE UNIT
          if (pco%day_print == "y" .and. pco%int_day_cur == pco%int_day) then
           if (pco%wb_lsu%d == "y") then
+            ruwb_d(ilsu)%sw = (ruwb_d(ilsu)%sw_init + ruwb_d(ilsu)%sw_final) / 2.
+            ruwb_d(ilsu)%snopack = (ruwb_d(ilsu)%sno_init + ruwb_d(ilsu)%sno_final) / 2.
             write (2140,100) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_d(ilsu)  !! waterbal
-              if (pco%csvout == "y") then 
-                write (2144,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_d(ilsu)  !! waterbal
-              end if 
+            if (pco%csvout == "y") then 
+              write (2144,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_d(ilsu)  !! waterbal
+            end if 
+            ruwb_d(ilsu)%sw_init = ruwb_d(ilsu)%sw_final
+            ruwb_d(ilsu)%sno_init = ruwb_d(ilsu)%sno_final
           end if 
           if (pco%nb_lsu%d == "y") then
             write (2150,103) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, runb_d(ilsu)  !! nutrient bal
@@ -74,13 +94,8 @@
               write (2175,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, rupw_d(ilsu)  !! plant weather 
             end if
           end if 
-        end if
+         end if
 
-        ruwb_d(ilsu) = hwbz
-        runb_d(ilsu) = hnbz
-        ruls_d(ilsu) = hlsz
-        rupw_d(ilsu) = hpwz
-        
         !! check end of month
         if (time%end_mo == 1) then
           ruwb_y(ilsu) = ruwb_y(ilsu) + ruwb_m(ilsu)
@@ -93,10 +108,14 @@
           ruwb_m(ilsu) = ruwb_m(ilsu) // const 
           
           if (pco%wb_lsu%m == "y") then
+            ruwb_m(ilsu)%sw_final = ruwb_d(ilsu)%sw_final
+            ruwb_m(ilsu)%sno_final = ruwb_d(ilsu)%sno_final
             write (2141,100) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_m(ilsu)
             if (pco%csvout == "y") then 
               write (2145,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_m(ilsu)
-            end if 
+            end if
+            ruwb_m(ilsu)%sw_init = ruwb_m(ilsu)%sw_final
+            ruwb_m(ilsu)%sno_init = ruwb_m(ilsu)%sno_final
           end if
           if (pco%nb_lsu%m == "y") then 
             write (2151,103) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, runb_m(ilsu)
@@ -117,7 +136,11 @@
             end if 
           end if
   
+          sw_init = ruwb_m(ilsu)%sw_final
+          sno_init = ruwb_m(ilsu)%sno_final
           ruwb_m(ilsu) = hwbz
+          ruwb_m(ilsu)%sw_init = sw_init
+          ruwb_m(ilsu)%sno_init = sno_init
           runb_m(ilsu) = hnbz
           ruls_m(ilsu) = hlsz
           rupw_m(ilsu) = hpwz
@@ -134,10 +157,14 @@
            rupw_y(ilsu) = rupw_y(ilsu) // const
 
            if (pco%wb_lsu%y == "y") then
+             ruwb_y(ilsu)%sw_final = ruwb_d(ilsu)%sw_final
+             ruwb_y(ilsu)%sno_final = ruwb_d(ilsu)%sno_final
              write (2142,102) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_y(ilsu)
              if (pco%csvout == "y") then 
                write (2146,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_y(ilsu)
-             end if 
+             end if
+             ruwb_y(ilsu)%sw_init = ruwb_y(ilsu)%sw_final
+             ruwb_y(ilsu)%sno_init = ruwb_y(ilsu)%sno_final
            end if
            if (pco%nb_lsu%y == "y") then
              write (2152,103) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, runb_y(ilsu)
@@ -158,8 +185,12 @@
              end if 
            end if
  
-          !! zero yearly variables        
+          !! zero yearly variables
+          sw_init = ruwb_y(ilsu)%sw_final
+          sno_init = ruwb_y(ilsu)%sno_final
           ruwb_y(ilsu) = hwbz
+          ruwb_y(ilsu)%sw_init = sw_init
+          ruwb_y(ilsu)%sno_init = sno_init
           runb_y(ilsu) = hnbz
           ruls_y(ilsu) = hlsz
           rupw_y(ilsu) = hpwz
@@ -167,8 +198,15 @@
         
       !! average annual print - LANDSCAPE UNIT
       if (time%end_sim == 1 .and. pco%wb_lsu%a == "y") then
+        sw_init = ruwb_a(ilsu)%sw_init
+        sno_init = ruwb_a(ilsu)%sno_init
         ruwb_a(ilsu) = ruwb_a(ilsu) / time%yrs_prt
         ruwb_a(ilsu) = ruwb_a(ilsu) // time%days_prt
+        ruwb_a(ilsu)%sw_init = sw_init
+        ruwb_a(ilsu)%sw_final = ruwb_d(ilsu)%sw_final
+        ruwb_a(ilsu)%sno_init = sno_init
+        ruwb_a(ilsu)%sno_final = ruwb_d(ilsu)%sno_final
+        
         write (2143,102) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_a(ilsu)
         if (pco%csvout == "y") then 
           write (2147,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, ruwb_a(ilsu)
@@ -200,8 +238,8 @@
       
       return
       
-100   format (1x,4i6,i7,a,2x,a,30f12.3)
-102   format (1x,4i6,i7,a,2x,a,30f12.3)
+100   format (1x,4i6,i7,a,2x,a,32f12.3)
+102   format (1x,4i6,i7,a,2x,a,32f12.3)
 103   format (4i6,i8,a,2x,a,6f12.3,22f17.3)
 104   format (4i6,i8,a,2x,a,6f12.3,22f17.3)
        

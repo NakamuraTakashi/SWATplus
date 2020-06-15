@@ -41,8 +41,7 @@
       real :: b               !m             |bottom width of channel
       real :: c               !none          |inverse of channel side slope
       real :: d               !m             |depth of flow
-      integer :: isol         !              |
-      real :: anion_excl_bsn  !              |      
+      integer :: isol         !              |   
       real :: drpor           !              |
       real :: sa              !ha            |surface area of impounded water body
       real :: cl              !              |

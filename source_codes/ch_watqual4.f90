@@ -158,6 +158,8 @@
         !! QUAL2E section 3.3.1 equation III-16
         bc1_k = Theta(ch_nut(jnut)%bc1,thbc1,wtmp)
         bc3_k = Theta(ch_nut(jnut)%bc3,thbc3,wtmp) 
+        bc1_k = bc1_k * 2.
+        bc3_k = bc3_k * 2.
         rs4_k = 0.
         if (rchdep > 0.001)  rs4_k = Theta (ch_nut(jnut)%rs4, thrs4, wtmp) / rchdep   
 

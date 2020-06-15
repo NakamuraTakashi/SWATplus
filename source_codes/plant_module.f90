@@ -93,6 +93,7 @@
                                         !!               |   1 = in monsoon period but new growth not triggered
        real :: cht_mx = 0.              !! m             |height of tallest plant in community for pet calculation
        real :: lai_sum = 0.             !! m/m           |sum of lai for each plant
+       real :: laimx_sum = 0.           !! m/m           |sum of maximum lai for each plant - for canopy interception
        type (auto_operations), dimension(:), allocatable :: dtbl               !!d_tble action - to limit number of actions per year 
        type (plant_growth), dimension(:), allocatable :: plg    !!plant growth variables
        type (plant_stress), dimension(:), allocatable :: plstr  !!plant stress variables

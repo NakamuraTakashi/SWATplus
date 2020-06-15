@@ -189,6 +189,12 @@
         type (duration_curve_points), dimension (:), allocatable :: yr      !flow on the fdc at given percents for each year
       end type flow_duration_curve
                
+      type inflow_unit_hyds
+        !need for incoming hru or ru that are a fraction of the hru or ru
+        real, dimension (:,:), allocatable :: uh                  !unit hydrograph
+        real, dimension (:,:), allocatable :: hyd_flo             !flow hydrograph
+      end type inflow_unit_hyds
+               
       type object_connectivity
         character(len=16) :: name = "default"
         character(len=8) :: typ = " "   !object type - ie hru, hru_lte, sub, chan, res, recall
@@ -227,9 +233,9 @@
         integer, dimension (:), allocatable :: ihtyp_out             !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
         real, dimension (:), allocatable :: frac_out                 !fraction of hydrograph
         character(len=8), dimension(:), allocatable :: obtyp_in     !inflow object type (ie 1=hru, 2=sd_hru, 3=sub, 4=chan, etc)
-        integer, dimension(:), allocatable :: obtypno_in            !outflow object type number
+        integer, dimension(:), allocatable :: obtypno_in            !inflow object type number
         integer, dimension(:), allocatable :: obj_in
-        character (len=3), dimension(:), allocatable :: htyp_in     !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
+        character (len=3), dimension(:), allocatable :: htyp_in     !inflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
         integer, dimension(:), allocatable :: ihtyp_in
         real, dimension(:), allocatable :: frac_in
         integer, dimension(:), allocatable :: rcvob_inhyd           !inflow hydrograph number of recieving object - used for dtbl flow fractions
@@ -242,10 +248,13 @@
         type (hyd_output) :: hin_til                                        !inflow hydrograph for tile flow - sum of all tile inflow hyds
         type (hyd_output), dimension(:),allocatable :: hd                   !generated hydrograph (ie 1=tot, 2= recharge, 3=surf, etc)
         type (hyd_output), dimension(:,:),allocatable :: ts                 !subdaily hydrographs
-        type (hyd_output), dimension(:),allocatable :: tsin                 !inflow subdaily hydrograph
+        type (inflow_unit_hyds), dimension(:),allocatable :: hin_uh         !inflow unit hydrographs
+        real, dimension(:,:),allocatable :: uh                              !subdaily flow unit hydrograph
+        real, dimension(:,:),allocatable :: hyd_flo                         !subdaily flow hydrograph
+        real, dimension(:),allocatable :: tsin                              !inflow subdaily flow hydrograph
         type (hyd_output) :: supply                                         !water supply allocation
         real :: demand                                                      !water irrigation demand (ha-m)
-        integer :: day_cur = 1                                              !current hydrograph day in ts
+        integer :: day_cur = 0                                              !current hydrograph day in ts
         integer :: day_max                                                  !maximum number of days to store the hydrograph
         real :: peakrate                                                    !peak flow rate during time step - m3/s
         
@@ -298,15 +307,14 @@
       
       !recall hydrograph inputs
       type recall_hydrograph_inputs
-        character (len=16) :: name
+        character (len=25) :: name
         integer :: num = 0                    !number of elements
         integer :: typ                        !recall type - 1=day, 2=mon, 3=year
-        character(len=16) :: filename         !filename
-        !hyd_output units are in cms and mg/L
-        type (hyd_output), dimension (:,:), allocatable :: hd     !export coefficients
-        integer :: start_ts             !! start timestep of point source file
+        character(len=25) :: filename         !filename
+        !hd and hyd_flo units are in cms and mg/L
+        type (hyd_output), dimension (:,:), allocatable :: hd   !m3/s for flow  |input total hyd for daily, monthly, annual and exco
+        real, dimension (:,:), allocatable :: hyd_flo           !m3/s           |input flow only for subdaily recall
         integer :: start_yr             !! start year of point source file
-        integer :: end_ts               !! end timestep of point source file
         integer :: end_yr               !! end year of point source file
       end type recall_hydrograph_inputs
       type (recall_hydrograph_inputs),dimension(:),allocatable:: recall
@@ -533,6 +541,20 @@
         character (len=15) :: temp_out =   "       temp_out"        !! deg c        |temperature        
       end type sed_hyd_header
       type (sed_hyd_header) :: sd_hyd_hdr
+      
+      type sol_header        
+        character (len=15) :: layer1 =  "        st_mm_1"        !!mm H2O       |amt of water stored in layer 1 
+        character (len=15) :: layer2 =  "        st_mm_2"        !!mm H2O       |amt of water stored in layer 2              
+        character (len=15) :: layer3 =  "        st_mm_3"        !!mm H2O       |amt of water stored in layer 3
+        character (len=15) :: layer4 =  "        st_mm_4"        !!mm H2O       |amt of water stored in layer 4      
+        character (len=15) :: layer5 =  "        st_mm_5"        !!mm H2O       |amt of water stored in layer 5
+        character (len=15) :: layer6 =  "        st_mm_6"        !!mm H2O       |amt of water stored in layer 6 
+        character (len=15) :: layer7 =  "        st_mm_7"        !!mm H2O       |amt of water stored in layer 7
+        character (len=15) :: layer8 =  "        st_mm_8"        !!mm H2O       |amt of water stored in layer 8
+        character (len=15) :: layer9 =  "        st_mm_9"        !!mm H2O       |amt of water stored in layer 9
+        character (len=15) :: layer10 = "       st_mm_10"        !!mm H2O       |amt of water stored in layer 10
+      end type sol_header
+      type (sol_header) :: sol_hdr
       
      type sd_hyd_header_units
         character (len=15) :: flo_in    =  "          m^3/s"        !! m^3/s        |volume of water
@@ -770,7 +792,7 @@
 		character (len=12) :: cn_prm_aa   =   "     cn     "
 		character (len=12) :: esco        =   "   esco     "
 		character (len=12) :: lat_len     =   "lat_len     "
-		character (len=12) :: k_lo        =   "   k_lo     "
+		character (len=12) :: petco       =   "  petco     "
 		character (len=12) :: slope       =   "  slope     "
 		character (len=12) :: tconc       =   "  tconc     "
 		character (len=12) :: etco        =   "   etco     "
@@ -857,11 +879,11 @@
              
       contains
 
-      !! function to convert concentration to mass
+      !! function to convert mass to concentration
       subroutine hyd_convert_conc_to_mass (hyd1)
         type (hyd_output), intent (inout) :: hyd1
         ! m3/s to m3
-        hyd1%flo = hyd1%flo * 86400.
+        hyd1%flo = hyd1%flo ! * 86400.
         ! t = ppm * m3 / 1000000.
         hyd1%sed = hyd1%sed * hyd1%flo / 1000000.
         ! kg = ppm * m3 / 1000.

@@ -127,26 +127,24 @@
               chcal(ireg)%ord(iord)%sim = chcal_z  !! zero all calibration parameters
               do ich_s = 1, chcal(ireg)%num_tot
                 ich = chcal(ireg)%num(ich_s)
-                if (chcal(ireg)%ord(iord)%meas%name == sd_ch(ich)%order) then
-                  chcal(ireg)%ord(iord)%nbyr = chcal(ireg)%ord(iord)%nbyr + 1
+                if (chcal(ireg)%ord(iord)%meas%name == sd_ch(ich)%order .or. chcal(ireg)%ord(iord)%meas%name == "basin") then
                   chcal(ireg)%ord(iord)%length = chcal(ireg)%ord(iord)%length + sd_ch(ich)%chl
-                  chcal(ireg)%ord(iord)%aa%chw = chcal(ireg)%ord(iord)%aa%chw + chsd_y(ich)%deg_bank_m * sd_ch(ich)%chl
-                  chcal(ireg)%ord(iord)%aa%chd = chcal(ireg)%ord(iord)%aa%chd + chsd_y(ich)%deg_btm_m * sd_ch(ich)%chl
-                  chcal(ireg)%ord(iord)%aa%hc = chcal(ireg)%ord(iord)%aa%hc + chsd_y(ich)%hc_m * sd_ch(ich)%chl
-                  chcal(ireg)%ord(iord)%aa%fpd = chcal(ireg)%ord(iord)%aa%fpd !+ chsd_y()%dep_fp_m * sd_ch(ich)%chl
+                  chcal(ireg)%ord(iord)%sim%chw = chcal(ireg)%ord(iord)%sim%chw + chsd_y(ich)%deg_bank_m / sd_ch(ich)%chw * sd_ch(ich)%chl
+                  chcal(ireg)%ord(iord)%sim%chd = chcal(ireg)%ord(iord)%sim%chd + chsd_y(ich)%deg_btm_m / sd_ch(ich)%chd * sd_ch(ich)%chl
+                  chcal(ireg)%ord(iord)%sim%hc = chcal(ireg)%ord(iord)%sim%hc + chsd_y(ich)%hc_m * sd_ch(ich)%chl
+                  chcal(ireg)%ord(iord)%sim%fpd = chcal(ireg)%ord(iord)%sim%fpd !+ chsd_y()%dep_fp_m * sd_ch(ich)%chl
                 end if
               end do
             end do
             !average the channel data by length
             do iord = 1, chcal(ireg)%ord_num
-              if (chcal(ireg)%ord(iord)%nbyr > 0) then
-                !! convert back to mm, t/ha, kg/ha
-                if (chcal(ireg)%ord(iord)%length > 1.e-6) then
-                  chcal(ireg)%ord(iord)%aa%chd = chcal(ireg)%ord(iord)%aa%chd / chcal(ireg)%ord(iord)%length
-                  chcal(ireg)%ord(iord)%aa%chw = chcal(ireg)%ord(iord)%aa%chw / chcal(ireg)%ord(iord)%length
-                  chcal(ireg)%ord(iord)%aa%hc = chcal(ireg)%ord(iord)%aa%hc / chcal(ireg)%ord(iord)%length
-                  chcal(ireg)%ord(iord)%aa%fpd = chcal(ireg)%ord(iord)%aa%fpd / chcal(ireg)%ord(iord)%length
-                end if
+              !! convert back to mm, t/ha, kg/ha
+              if (chcal(ireg)%ord(iord)%length > 1.e-6) then
+                chcal(ireg)%ord(iord)%nbyr = chcal(ireg)%ord(iord)%nbyr + 1
+                chcal(ireg)%ord(iord)%aa%chd = chcal(ireg)%ord(iord)%aa%chd + chcal(ireg)%ord(iord)%sim%chd / chcal(ireg)%ord(iord)%length
+                chcal(ireg)%ord(iord)%aa%chw = chcal(ireg)%ord(iord)%aa%chw + chcal(ireg)%ord(iord)%sim%chw / chcal(ireg)%ord(iord)%length
+                chcal(ireg)%ord(iord)%aa%hc = chcal(ireg)%ord(iord)%aa%hc + chcal(ireg)%ord(iord)%sim%hc / chcal(ireg)%ord(iord)%length
+                chcal(ireg)%ord(iord)%aa%fpd = chcal(ireg)%ord(iord)%aa%fpd + chcal(ireg)%ord(iord)%sim%fpd / chcal(ireg)%ord(iord)%length
               end if
             end do
           end do    !reg
