@@ -226,7 +226,11 @@
               case (0)    !subdaily
                 ob(icmd)%hyd_flo(ob(icmd)%day_cur,:) = recall(irec)%hyd_flo(1:time%step,time%yrs)
               case (1)    !daily
-                ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
+                if (time%yrc >= recall(irec)%start_yr .and. time%yrc <= recall(irec)%end_yr) then 
+                    ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
+                else
+                    ob(icmd)%hd(1) = hz
+                end if
               case (2)    !monthly
                 if (time%yrc >= recall(irec)%start_yr .and. time%yrc <= recall(irec)%end_yr) then 
                     ob(icmd)%hd(1) = recall(irec)%hd(time%mo,time%yrs)

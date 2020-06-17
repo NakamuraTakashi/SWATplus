@@ -690,8 +690,8 @@
         ! cn3_swf adjustment
         if (isim > 0) then
           cal_sim =  " cn3_swf adj "
-          pco%wb_hru%a = "y"
-          if (icn == 2) pco%wb_hru%d = "y"
+          !pco%wb_hru%a = "y"
+          !if (icn == 2) pco%wb_hru%d = "y"
           call time_control
         end if
         end do      ! icn

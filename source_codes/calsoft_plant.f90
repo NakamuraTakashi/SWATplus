@@ -52,8 +52,8 @@
                 plcal(ireg)%lum(ilum)%prm_prev = plcal(ireg)%lum(ilum)%prm
                 plcal(ireg)%lum(ilum)%prev = plcal(ireg)%lum(ilum)%aa
 
-                diff = plcal(ireg)%lum(ilum)%meas%yield - plcal(ireg)%lum(ilum)%aa%yield
-                chg_val =  2. * diff      !assume 1 t/ha for .1 stress??
+                diff = (soft - plcal(ireg)%lum(ilum)%aa%yield) / soft
+                chg_val =  diff * 5.     !assume 1 lai for every 20% difference in yield
                 plcal(ireg)%lum(ilum)%prm_prev%lai_pot = plcal(ireg)%lum(ilum)%prm%lai_pot
                 plcal(ireg)%lum(ilum)%prm%lai_pot = plcal(ireg)%lum(ilum)%prm%lai_pot + chg_val
                 plcal(ireg)%lum(ilum)%prev%yield = plcal(ireg)%lum(ilum)%aa%yield
@@ -116,7 +116,7 @@
                   chg_val = - (plcal(ireg)%lum(ilum)%prm_prev%lai_pot - plcal(ireg)%lum(ilum)%prm%lai_pot) *                &
                               (plcal(ireg)%lum(ilum)%aa%yield - rmeas) / denom
                 else
-                  chg_val = 2. * diff
+                  chg_val = diff / 5.     !assume 1 lai for every 20% difference in yield
                 end if
                 plcal(ireg)%lum(ilum)%prm_prev%lai_pot = plcal(ireg)%lum(ilum)%prm%lai_pot
                 plcal(ireg)%lum(ilum)%prm%lai_pot = plcal(ireg)%lum(ilum)%prm%lai_pot + chg_val

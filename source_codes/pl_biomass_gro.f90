@@ -50,7 +50,7 @@
           !! adjust radiation-use efficiency for day length
           iob = hru(j)%obj_no
           iwst = ob(iob)%wst
-          beadj = beadj * wst(iwst)%weat%daylength / 12.
+          beadj = beadj * wst(iwst)%weat%daylength / 14.    !Jimmy used 12,
           
           bioday = beadj * par(ipl)
           if (bioday < 0.) bioday = 0.

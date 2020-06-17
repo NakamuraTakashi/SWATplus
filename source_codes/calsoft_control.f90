@@ -26,11 +26,11 @@
       
       pco = pco_init
       pco%wb_bsn%a = "y"
-      pco%wb_bsn%y = "y"
-      pco%wb_bsn%m = "y"
-      pco%wb_bsn%d = "y"
-      pco%wb_hru%a = "y"
-      pco%sd_chan%a = "y"
+      !pco%wb_bsn%y = "y"
+      !pco%wb_bsn%m = "y"
+      !pco%wb_bsn%d = "y"
+      !pco%wb_hru%a = "y"
+      !pco%sd_chan%a = "y"
 
       !calibrate hydrology for hru
       if (cal_codes%hyd_hru == "y") then
