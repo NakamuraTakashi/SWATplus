@@ -324,7 +324,8 @@
           !10 cm / 1000 = 0.01m; 1 ha = 10000 m2; ton/m3; * 1000 --> final unit is kg/ha; rock fraction is considered
           sol_mass = (10) / 1000.* 10000. * soil(j)%phys(k)%bd * 1000. * (1. - soil(j)%phys(k)%rock / 100.)            
         else
-          sol_mass = (soil(j)%phys(k)%d - soil(j)%phys(k-1)%d) / 1000. * 10000. * soil(j)%phys(k)%bd * 1000. * (1- soil(j)%phys(k)%rock / 100.)
+          sol_mass = (soil(j)%phys(k)%d - soil(j)%phys(k-1)%d) / 1000. * 10000. * soil(j)%phys(k)%bd * 1000. * &
+                    (1- soil(j)%phys(k)%rock / 100.)
         end if        
          
         ! if k = 1, then using temperature, soil moisture in layer 2 to calculate decomposition factor
@@ -374,8 +375,8 @@
           org_con%cdg = fcgd(soil(j)%phys(k)%tmp)
 
           !!compute oxygen (ox)
-          org_con%ox = 1. - 0.8 * ((soil(j)%phys(kk)%d + soil(j)%phys(kk-1)%d) / 2) / (((soil(j)%phys(kk)%d + soil(j)%phys(kk-1)%d) / 2) +   &
-                    exp(18.40961 - 0.023683632 * ((soil(j)%phys(kk)%d + soil(j)%phys(kk-1)%d) / 2))) 
+          org_con%ox = 1. - 0.8 * ((soil(j)%phys(kk)%d + soil(j)%phys(kk-1)%d) / 2) / (((soil(j)%phys(kk)%d + &
+             soil(j)%phys(kk-1)%d) / 2) + exp(18.40961 - 0.023683632 * ((soil(j)%phys(kk)%d + soil(j)%phys(kk-1)%d) / 2))) 
           
           !! compute combined factor
           org_con%cs = min(10., sqrt(org_con%cdg * org_con%sut) * 0.9* org_con%ox * till_eff) 
@@ -905,7 +906,8 @@
               !!update soil respiration
               !!===============================
               !!soil rspc for layer k
-              rspc = .3 * lslcta + a1co2 * (lslncta + lmcta) + org_allo%abco2 * bmcta + org_allo%asco2 * hscta + org_allo%apco2 * hpcta
+              rspc = .3 * lslcta + a1co2 * (lslncta + lmcta) + org_allo%abco2 * bmcta + org_allo%asco2 * hscta + &
+                org_allo%apco2 * hpcta
               !!rspc_da is accounting variable summarizing co2 emissions from all soil layers
               cbn_loss(j)%rspc_d = cbn_loss(j)%rspc_d +  rspc 
               

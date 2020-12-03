@@ -47,7 +47,7 @@
           !! logistic decline rate - Strauch and Volk
           rto = (1. - wst(iwst)%weat%phubase0) / (1. - pldb(idp)%dlai)
           pcom(j)%plg(ipl)%lai = (pcom(j)%plg(ipl)%olai - pldb(idp)%alai_min) /   &
-                (1. + Exp((rto - .5) * -12)) + pldb(idp)%alai_min
+                (1. + Exp((rto - .5) * (-12))) + pldb(idp)%alai_min
                   
           !! compute leaf biomass drop
           lai_drop = lai_init - pcom(j)%plg(ipl)%lai

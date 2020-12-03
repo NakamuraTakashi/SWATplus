@@ -4,8 +4,7 @@
      
       integer :: basin_plants           !! number of different plants in the basin
       
-      type plant_growth
-         character(len=4) :: cpnm       !! N/A              |plant name 
+      type plant_growth 
          real :: cht = 0.               !! m                |canopy height 
          real :: lai = 0.               !! m**2/m**2        |leaf area index
          real :: plet = 0.              !! mm H2O           |actual ET simulated during life of plant
@@ -38,7 +37,7 @@
       
       type plant_status
         integer :: idplt = 0            !! none         land cover code from plants.plt
-        integer :: bsn_num = 0         !!none              |basin plant number
+        integer :: bsn_num = 0          !!none              |basin plant number
         character(len=1) :: gro = "y"   !               |land cover status
                                         !               |n = no land cover growing
                                         !               |y = land cover growing
@@ -52,8 +51,10 @@
         integer :: monsoon_init = 0     !! julian day   |monsoon initiation period
         integer :: days_senes = 0.      !! mm           |days since scenesence began (for moisture growth perennials)
         real :: leaf_tov = 0.           !! none         |leaf turnover rate - decline in lai and leaf biomass
-        real :: lai_pot = 0.           !! mm               |root depth
-        real :: harv_idx = 0.          !! kg/ha            |root fraction of total plant mass
+        real :: lai_pot = 0.            !! none         |potential leaf area index
+        real :: harv_idx = 0.           !! fraction     |harvest index - grain fraction of above ground plant mass
+        real :: pest_stress = 0.        !! fraction     |pest (insect, disease) stress on harvest index
+        real :: epco = 0.               !! fraction     |water uptake compensation factor for each plant
       end type plant_status
       
       type plant_stress
@@ -84,6 +85,7 @@
       type plant_community
        character(len=4) :: name
        integer :: npl                   !! number of plants in community
+       character(len=4), dimension(:), allocatable :: pl       !! N/A              |plant name
        integer :: pcomdb                !! current plant community database number
        integer :: rot_yr = 1            !! rotation year
        integer :: days_plant = 1        !!               |days since last harvest - for conditional scheduling planting of winter annuals
