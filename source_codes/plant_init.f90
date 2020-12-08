@@ -208,7 +208,7 @@
                 endif 
                 daylength = 7.6394 * h
                 iday_sh = iday
-                if (daylength - 0.5 > wgn_pms(iwgn)%daylmn) exit
+                if (daylength - bsn_prm%dorm_hr > wgn_pms(iwgn)%daylmn) exit
               end do
             end if
             
