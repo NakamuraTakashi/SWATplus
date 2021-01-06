@@ -1,4 +1,4 @@
-harv_ops Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:15 PM
+harv_ops Generated from Y:\HUC8_models\models\10130103.accdb Time: 1/30/2020 8:45:11 PM
          NAME HARV_TYP HARV_IDX HARV_EFF HARV_BM_MIN
    forest_cut     tree     0.95     0.99           0
         grain    grain        0     0.95           0
@@ -8,7 +8,7 @@ harv_ops Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23
   hay_cut_low  biomass      0.8        1        1000
       orchard  biomass     0.01        1           0
       peanuts    tuber      1.1     0.95           0
-     potatoes    tuber      1.1     0.95           0
+        tuber    tuber      1.1     0.95           0
        silage  biomass      0.9     0.95           0
   stover_high  residue      0.9        1        1000
    stover_los  residue      0.3        1        3000

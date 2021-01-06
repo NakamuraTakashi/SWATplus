@@ -1,4 +1,4 @@
-      subroutine conditions (ob_cur)
+      subroutine conditions (ob_cur, idtbl)
       !current conditions include: w_stress, n_stress, phu_plant, phu_base0, soil_water, jday, month, vol
       ! year_rot, year_cal, year_seq, prob, land_use   
       !target variables include: w_stress -> wp, fc, ul; vol -> pvol, evol
@@ -20,11 +20,13 @@
       implicit none
 
       integer, intent (in)  :: ob_cur         !          |
+      integer, intent (in)  :: idtbl          !none      |
       integer :: ob_num                       !          |object number   
       integer :: nbz = 748932582              !          |
       integer, dimension(1) :: seed = (/3/)   !          |
       integer :: ic                           !none      |counter
       integer :: ialt                         !none      |counter
+      integer :: iac                          !none      |counter
       integer :: iob                          !          |
       real :: targ_val                        !          |
       real :: ran_num                         !          |
@@ -34,7 +36,12 @@
       integer :: iipl                         !          |
       real :: targ                            !          |
       integer :: pl_sum                       !none      |number of plants growing
+      integer :: days_tot                     !none      |
       real :: strs_sum                        !none      |sum of stress (water or n) of all growing plants
+      real :: prob_cum                        !          |
+      real :: prob_apply                      !          |
+      real :: hru_exp_left                    !          |number of hru's expected to still be applied (uniform or normal distr)
+      real :: hru_act_left                    !          |number of hru's actually still to be applied
       
       d_tbl%act_hit = "y"
       do ic = 1, d_tbl%conds
@@ -53,7 +60,11 @@
               strs_sum = strs_sum + pcom(ob_num)%plstr(ipl)%strsw
             end if
           end do
-          if (pl_sum > 0) strs_sum = strs_sum / pl_sum
+          if (pl_sum > 0) then
+            strs_sum = strs_sum / pl_sum
+          else
+            strs_sum = 1.
+          end if
 
           do ialt = 1, d_tbl%alts
             if (d_tbl%alt(ic,ialt) == "<") then    !to trigger irrigation
@@ -200,7 +211,7 @@
             end if
           end do
                       
-        !plants growing
+        !plant growing
         case ("plant_gro")
           ob_num = d_tbl%cond(ic)%ob_num
           if (ob_num == 0) ob_num = ob_cur
@@ -212,14 +223,31 @@
               end if
             end if
           end do
-                    
+                                    
+        !specific plant growing
+        case ("plant_name_gro")
+          ob_num = d_tbl%cond(ic)%ob_num
+          if (ob_num == 0) ob_num = ob_cur
+          do iipl = 1, pcom(ob_num)%npl
+            if (d_tbl%cond(ic)%lim_var == pcom(ob_num)%name) then
+              ipl = iipl
+            end if
+          end do
+          do ialt = 1, d_tbl%alts
+            if (d_tbl%alt(ic,ialt) == "=") then    !determine if growing (y) or not (n)
+              if (pcom(ob_num)%plcur(ipl)%gro == "n") then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end if
+          end do
+                         
         !days since last plant
         case ("days_plant")
           ob_num = d_tbl%cond(ic)%ob_num
           if (ob_num == 0) ob_num = ob_cur
           do ialt = 1, d_tbl%alts
-            if (d_tbl%alt(ic,ialt) == "=") then    !determine if growing (y) or not (n)
-              if (pcom(ob_num)%days_plant /= d_tbl%cond(ic)%lim_const) then
+            if (d_tbl%alt(ic,ialt) == "=") then
+              if (pcom(ob_num)%days_plant /= Int(d_tbl%cond(ic)%lim_const)) then
                 d_tbl%act_hit(ialt) = "n"
               end if
             end if
@@ -230,19 +258,37 @@
           ob_num = d_tbl%cond(ic)%ob_num
           if (ob_num == 0) ob_num = ob_cur
           do ialt = 1, d_tbl%alts
-            if (d_tbl%alt(ic,ialt) == "=") then    !determine if growing (y) or not (n)
-              if (pcom(ob_num)%days_harv /= d_tbl%cond(ic)%lim_const) then
+            if (d_tbl%alt(ic,ialt) == "=") then
+              if (pcom(ob_num)%days_harv /= Int(d_tbl%cond(ic)%lim_const)) then
                 d_tbl%act_hit(ialt) = "n"
               end if
             end if
           end do
-                                            
-        !days since last harvest
+                                                    
+        !days since last action
+        case ("days_act")
+          ob_num = d_tbl%cond(ic)%ob_num
+          if (ob_num == 0) ob_num = ob_cur
+          iac = d_tbl%con_act(ic)
+          do ialt = 1, d_tbl%alts
+            if (d_tbl%alt(ic,ialt) == "=") then
+              if (pcom(ob_num)%dtbl(idtbl)%days_act(iac) /= Int(d_tbl%cond(ic)%lim_const)+2) then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end if
+            if (d_tbl%alt(ic,ialt) == ">") then
+              if (pcom(ob_num)%dtbl(idtbl)%days_act(iac) < Int(d_tbl%cond(ic)%lim_const+2)) then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end if
+          end do
+                                                      
+        !days since first simulation day of year
         case ("day_start")
           ob_num = d_tbl%cond(ic)%ob_num
           if (ob_num == 0) ob_num = ob_cur
           do ialt = 1, d_tbl%alts
-            if (d_tbl%alt(ic,ialt) == "=") then    !determine if growing (y) or not (n)
+            if (d_tbl%alt(ic,ialt) == "=") then
               if (time%day_start /= int(d_tbl%cond(ic)%lim_const)) then
                 d_tbl%act_hit(ialt) = "n"
               end if
@@ -481,7 +527,7 @@
           !call RANDOM_SEED ()
           !call RANDOM_NUMBER (ran_num)
           !ran_num = ran1(1)
-          ran_num = Aunif(nbz)
+          ran_num = Aunif(rndseed_cond)
           do ialt = 1, d_tbl%alts
             if (d_tbl%alt(ic,ialt) == "<") then
               if (ran_num > d_tbl%cond(ic)%lim_const) then
@@ -495,6 +541,85 @@
             end if
           end do
                     
+        !probability of event within a defined period assuming uniform distribution
+        case ("prob_unif")
+          prob_cum = 0.
+          !check if period falls over a calendar year - ob_num is first and lim_const is last day
+          if (d_tbl%cond(ic)%lim_const > d_tbl%cond(ic)%ob_num) then
+            if (time%day <= d_tbl%cond(ic)%lim_const .and. time%day >= d_tbl%cond(ic)%ob_num) then
+              !cumulative prob of uniform distribution on current day of the window
+              days_tot = d_tbl%cond(ic)%lim_const - d_tbl%cond(ic)%ob_num + 1
+              prob_cum = 1. / days_tot
+            end if
+          else
+            if (time%day >= d_tbl%cond(ic)%lim_const .or. time%day <= d_tbl%cond(ic)%ob_num) then
+              days_tot = time%day_end_yr - d_tbl%cond(ic)%lim_const + d_tbl%cond(ic)%ob_num + 1
+              prob_cum = 1. / days_tot
+            end if
+          end if
+          
+          ran_num = Aunif(rndseed_cond)
+          if (ran_num > prob_cum) then
+            do ialt = 1, d_tbl%alts
+              if (d_tbl%alt(ic,ialt) == "=") then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end do
+          end if
+                       
+        !probability of event within a defined period assuming uniform distribution across a land use
+        case ("prob_unif_lu")
+          prob_cum = 0.
+          !check if period falls over a calendar year - ob_num is first and lim_const is last day
+          if (d_tbl%cond(ic)%lim_const > d_tbl%cond(ic)%ob_num) then
+            if (time%day <= d_tbl%cond(ic)%lim_const .and. time%day >= d_tbl%cond(ic)%ob_num) then
+              !cumulative prob of uniform distribution on current day of the window
+              prob_cum = (time%day - d_tbl%cond(ic)%ob_num + 1) / (d_tbl%cond(ic)%lim_const - d_tbl%cond(ic)%ob_num)
+            end if
+          else
+            if (time%day >= d_tbl%cond(ic)%lim_const .or. time%day <= d_tbl%cond(ic)%ob_num) then
+              days_tot = time%day_end_yr - d_tbl%cond(ic)%lim_const + d_tbl%cond(ic)%ob_num
+              if (time%day >= d_tbl%cond(ic)%lim_const) then
+                !cumulative prob of uniform distribution on current day of the window
+                prob_cum = (time%day - d_tbl%cond(ic)%lim_const) / days_tot
+              else
+                !cumulative prob of uniform distribution on current day of the window
+                prob_cum = (time%day_end_yr - d_tbl%cond(ic)%lim_const + time%day + 1) / days_tot
+              end if
+            end if
+          end if
+          if (prob_cum > 0.) then
+            ran_num = Aunif(rndseed_cond)
+            hru_exp_left = d_tbl%hru_lu - (prob_cum * d_tbl%hru_lu)
+            hru_act_left = d_tbl%hru_lu - d_tbl%hru_lu_cur
+            prob_apply = (hru_act_left - hru_exp_left) / (hru_act_left + 1)
+            !prob_apply = (prob_cum * d_tbl%hru_lu - d_tbl%hru_lu_cur + 1) / d_tbl%hru_lu
+            if (ran_num > prob_apply) then
+              do ialt = 1, d_tbl%alts
+                if (d_tbl%alt(ic,ialt) == "=") then
+                  d_tbl%act_hit(ialt) = "n"
+                end if
+              end do
+            else
+              !if (pcom(ob_cur)%dtbl(idtbl)%num_actions(iac) <= Int(d_tbl%act(iac)%const2)) then
+              !  d_tbl%hru_lu_cur = d_tbl%hru_lu_cur + 1
+              !  d_tbl%hru_ha_cur = d_tbl%hru_ha_cur + hru(ob_cur)%area_ha
+              !end if
+              ipl = 1
+            end if
+          else
+            do ialt = 1, d_tbl%alts
+              if (d_tbl%alt(ic,ialt) == "=") then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end do
+          end if
+          
+          if (time%day > d_tbl%cond(ic)%lim_const) then
+            d_tbl%hru_lu_cur = 0
+            d_tbl%hru_ha_cur = 0.
+          end if
+
         !tile flow
         case ("tile_flo")
           ob_num = ob_cur   !the dtbl ob_num is the sequential hyd number in the con file
@@ -524,6 +649,24 @@
             end if
             if (d_tbl%alt(ic,ialt) == ">") then    !may use for grazing or fire
               if (irrig(ob_num)%demand < d_tbl%cond(ic)%lim_const) then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end if
+          end do
+                                        
+        !irrigation demand
+        case ("irr_demand_wro")
+          ob_num = d_tbl%cond(ic)%ob_num
+          if (ob_num == 0) ob_num = ob_cur
+          !determine if condition is met
+          do ialt = 1, d_tbl%alts
+            if (d_tbl%alt(ic,ialt) == "<") then
+              if (wro(ob_num)%demand > d_tbl%cond(ic)%lim_const) then
+                d_tbl%act_hit(ialt) = "n"
+              end if
+            end if
+            if (d_tbl%alt(ic,ialt) == ">") then    !may use for grazing or fire
+              if (wro(ob_num)%demand <= d_tbl%cond(ic)%lim_const) then
                 d_tbl%act_hit(ialt) = "n"
               end if
             end if

@@ -140,7 +140,11 @@
             ep_max = pet * ep_max / (es_max + ep_max)
           end if
         end if
-
+        
+        !! adjust es_max and ep_max for impervous urban cover
+        !es_max = 0.5 * es_max
+        !ep_max = 0.5 * ep_max
+          
         !! initialize soil evaporation variables
         esleft = es_max
 
@@ -173,11 +177,11 @@
         endif
         
         if (dep < esd) then
-          !hru(j)%hyd%esco = 0.
+          !hru(j)%hyd%esco = 1.  !***jga
           !! calculate evaporation from soil layer
           evz = eosl * soil(j)%phys(ly)%d / (soil(j)%phys(ly)%d +        &
              Exp(2.374 - .00713 * soil(j)%phys(ly)%d))
-          sev = (evz - evzp) * hru(j)%hyd%esco
+          sev = evz - evzp * (1. - hru(j)%hyd%esco)
           evzp = evz
           !if (soil(j)%phys(ly)%st < soil(j)%phys(ly)%fc) then
           !  xx =  2.5 * (soil(j)%phys(ly)%st - soil(j)%phys(ly)%fc) /    &
@@ -210,7 +214,7 @@
           soil1(j)%mn(1)%no3 = soil1(j)%mn(1)%no3 + no3up
         endif
 
-      end do
+      end do    !layer loop
 
       !! update total soil water content
       soil(j)%sw = 0.

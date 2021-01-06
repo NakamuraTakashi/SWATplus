@@ -73,7 +73,7 @@
                                  !!   1 = sim wt_shall using subsurface new water table depth routine
                                  !!   0 = sim wt_shall using subsurface orig water table depth routine
         integer :: sol_p_model=0 !! 1 = new soil P model
-        integer :: abstr = 0     !! Initial abstraction on impervious cover (mm) 
+        integer :: gampt = 0     !! Initial abstraction on impervious cover (mm) 
         character(len=1) :: atmo = "a"   !! atmospheric deposition interval
                                          !!   "m" = monthly
                                          !!   "y" = yearly
@@ -98,7 +98,7 @@
         real :: cmn = 0.0003        !! rate factor for mineralization on active org N
         real :: n_updis = 20.0      !! nitrogen uptake dist parm
         real :: p_updis = 20.0      !! phosphorus uptake dist parm
-        real :: nperco = 20.0       !! nitrate perc coeff (0-1)
+        real :: nperco = 0.10       !! nitrate perc coeff (0-1)
                                     !!   0 = conc of nitrate in surface runoff is zero
                                     !!   1 = perc has same conc of nitrate as surf runoff
         real :: pperco = 10.0       !! phos perc coeff (0-1)
@@ -141,7 +141,7 @@
                                     !!  overland flow erosion
         real :: ch_d50 = 0.         !! median particle diameter of main channel (mm)
         real :: sig_g = 0.          !! geometric std dev of part sizes for the main channel
-        real :: open_var3 = 0.      !! curve number retention parameter adjustment for low gradient
+        integer :: day_lag_mx = 0.  !! max days to lag hydrographs for hru, ru and channels
                                     !!  non-draining soils
         integer :: igen = 0         !!  random generator code: 
                                     !!   0 = use default numbers
@@ -165,6 +165,7 @@
         character (len=1)  :: day_print = "n"
         character (len=1)  :: day_print_over = "n"
         integer :: nyskip = 0                           !!  number of years to skip output summarization
+        character (len=1)  :: sw_init = "n"             !!  n=sw not initialized, y=sw intialized for output (when hit nyskip)
       ! DAILY START/END AND INTERVAL
         integer :: day_start = 0                        !!  julian day to start printing output
         integer :: day_end = 0                          !!  julian day to end printing output

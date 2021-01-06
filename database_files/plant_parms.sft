@@ -1,0 +1,9 @@
+plant_parms.sft 
+ 1
+NAME          PLANTS       PARMS      NSPU
+basin              2           2         0
+VAR         NAME       INIT    CHG_TYP		NEG	    POS	   LO	UP
+lai_pot     corn        5.0  	abschg		-3.      3.    3.    6.
+lai_pot     toma        2.5     abschg      -2.      2.    2.    4. 
+harv_idx    corn        0.5     abschg     -.15     .15   .45    .6
+harv_idx    toma        0.3     abschg     -.15     .15   .25    .4

@@ -2,14 +2,14 @@
     
       implicit none
     
-      integer :: ical_hyd                   !              |
+      integer :: rndseed_cond = 748932582   ! random number seed for dtbl conditional
 
       type conditions_var
         character(len=16) :: var            ! condition variable (ie volume, flow, sw, time, etc)
         character(len=16) :: ob             ! object variable (ie res, hru, canal, etc)
         integer :: ob_num                   ! object number
         character(len=16) :: lim_var        ! limit variable (ie evol, pvol, fc, ul, etc)
-        character(len=2) :: lim_op          ! limit operator (*,+,-)
+        character(len=16) :: lim_op         ! limit operator (*,+,-)
         real :: lim_const                   ! limit constant
       end type conditions_var
               
@@ -37,6 +37,11 @@
         character(len=1), dimension(:), allocatable :: act_hit          ! "y" if all condition alternatives (rules) are met; "n" if not
         integer, dimension(:), allocatable :: act_typ                   ! pointer to action type (ie plant, fert type, tillage implement, release type, etc)
         integer, dimension(:), allocatable :: act_app                   ! pointer to operation or application type (ie harvest.ops, chem_app.ops, wier shape, etc)
+        integer, dimension(:), allocatable :: con_act                   ! pointer for days since last action condition to point to appropriate action
+        integer :: hru_lu = 0                                           ! number of hru's in the land_use condition(s) - used for probabilistic mgt operations or lu change
+        real :: ha_lu = 0.                                              ! area of land_use in ha
+        integer :: hru_lu_cur = 0                                       ! number of hru's in the land_use condition(s) that have currently been applied
+        real :: hru_ha_cur = 0.                                          ! area of land_use in ha that has currently been applied
       end type decision_table
       type (decision_table), dimension(:), allocatable, target :: dtbl_lum
       type (decision_table), dimension(:), allocatable, target :: dtbl_res

@@ -16,6 +16,7 @@
       integer :: nstep            !none      |counter
       integer :: tstep            !none      |hru number
       integer :: iac              !none      |counter 
+      integer :: ic              !none      |counter
       integer,  intent (in) :: id               !none      |hru number
       integer :: ial              !none      |counter
       integer :: irel             !          |
@@ -47,6 +48,7 @@
             select case (dtbl_res(id)%act(iac)%option)
             case ("rate")
               ht2%flo = dtbl_res(id)%act(iac)%const * 86400.
+              
             case ("days")
               select case (dtbl_res(id)%act(iac)%file_pointer)
                 case ("null")
@@ -57,8 +59,35 @@
                   b_lo = evol_m3
               end select
               ht2%flo = (wbody%flo - b_lo) / dtbl_res(id)%act(iac)%const
+              
+            case ("dyrt")
+              !for base volume for drawdown days, use condition associated with action
+              select case (dtbl_res(id)%act(iac)%file_pointer)
+                case ("con1")
+                  ic = 1
+                case ("con2")
+                  ic = 2
+                case ("con3")
+                  ic = 3
+                case ("con4")
+                  ic = 4
+              end select
+              !perform operation on target variable to get target
+              select case ((d_tbl%cond(ic)%lim_op))
+              case ("*")
+                b_lo = (evol_m3 - pvol_m3) * d_tbl%cond(ic)%lim_const
+              case ("+")
+                b_lo = (evol_m3 - pvol_m3) + d_tbl%cond(ic)%lim_const
+              case ("-")
+                b_lo = (evol_m3 - pvol_m3) - d_tbl%cond(ic)%lim_const
+              case ("/")
+                b_lo = (evol_m3 - pvol_m3) / d_tbl%cond(ic)%lim_const
+              end select
+              ht2%flo = (wbody%flo - b_lo) / dtbl_res(id)%act(iac)%const + dtbl_res(id)%act(iac)%const2 / 100.
+              
             case ("weir")
               ht2%flo = res_weir(ihyd)%c * res_weir(ihyd)%k * res_weir(ihyd)%w * (res_h ** 1.5)
+              
             case ("meas")
               irel = int(dtbl_res(id)%act(iac)%const)
               select case (recall(irel)%typ)
@@ -70,6 +99,7 @@
                 ht2%flo = recall(irel)%hd(1,time%yrs)%flo
               end select
             end select
+            
           end if
         end do    ! iac
 
