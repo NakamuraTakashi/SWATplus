@@ -3,7 +3,7 @@
       use climate_module
       use time_module
       use aquifer_module
-      use hru_module, only : hru, fertno3, fertnh3, fertorgn, fertorgp, fertsolp,   &
+      use hru_module, only : hru, cn2, fertno3, fertnh3, fertorgn, fertorgp, fertsolp,   &
         ihru, ipl, isol, ndeat, phubase, sol_sumno3, sol_sumsolp, hru, yield 
       use soil_module
       use plant_module
@@ -70,6 +70,7 @@
       real :: pest_kg                      !kg/ha    |amount of pesticide applied 
       real :: irr_mm
       real :: vol_avail
+      real :: chg_par                      !variable |new parameter value
       character(len=1) :: action           !         |
 
       do iac = 1, d_tbl%acts
@@ -99,14 +100,14 @@
               irrig(j)%runoff = irrop_db(irrop)%amt_mm * irrop_db(irrop)%eff * irrop_db(irrop)%surq
               !set organics and constituents from irr.ops ! irrig(j)%water =  cs_irr(j) = 
               if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day, "        ", "IRRIGATE", phubase(j),  &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIGATE", phubase(j),  &
                     pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
                     sol_sumno3(j), sol_sumsolp(j), irrig(j)%applied
               end if
             else
               !! set demand for irrigation from channel, reservoir or aquifer
               if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day, "        ", "IRRIG_DMD", phubase(j), &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIG_DMD", phubase(j), &
                     pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
                     sol_sumno3(j), sol_sumsolp(j), irrop_db(irrop)%amt_mm
               end if
@@ -160,7 +161,7 @@
             end select
                   
             if (pco%mgtout == "y") then
-              write (2612, *) j, time%yrc, time%mo, time%day, "        ", "IRRIGATE", phubase(j),  &
+              write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIGATE", phubase(j),  &
                   pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
                   sol_sumno3(j), sol_sumsolp(j), irrig(j)%demand
             end if
@@ -242,7 +243,7 @@
                                 
               if (pco%mgtout == "y") then
                 ipl = 1
-                write (2612, *) j, time%yrc, time%mo, time%day, "        ", "IRRIGATE", phubase(j), &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIGATE", phubase(j), &
                   pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m,  &
                   sol_sumno3(j), sol_sumsolp(j), irr_mm
               end if
@@ -264,8 +265,8 @@
               call pl_fert (j, ifrt, frt_kg, ifertop)
 
               if (pco%mgtout == "y") then
-                !write (2612, *) j, time%yrc, time%mo, time%day, chemapp_db(mgt%op4)%name, "    FERT", &
-                write (2612, *) j, time%yrc, time%mo, time%day, fertdb(ifrt)%fertnm, "    FERT",       &
+                !write (2612, *) j, time%yrc, time%mo, time%day_mo, chemapp_db(mgt%op4)%name, "    FERT", &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, fertdb(ifrt)%fertnm, "    FERT",       &
                   phubase(j),pcom(j)%plcur(ipl)%phuacc, soil(j)%sw, pl_mass(j)%tot(ipl)%m,            &
                   rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), frt_kg, fertno3, fertnh3,        &
                   fertorgn, fertsolp, fertorgp
@@ -286,7 +287,7 @@
               call mgt_newtillmix(j, 0., idtill)
             
               if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day, tilldb(idtill)%tillnm, "TILLAGE",    &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, tilldb(idtill)%tillnm, "    TILLAGE",    &
                     phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw, pl_mass(j)%tot(ipl)%m,        &
                     rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), tilldb(idtill)%effmix
               end if
@@ -308,8 +309,11 @@
                 if (d_tbl%act(iac)%option == pcomdb(icom)%pl(ipl)%cpnm) then
                   pcom(j)%plcur(ipl)%gro = "y"
                   pcom(j)%plcur(ipl)%idorm = "n"
+                  if (d_tbl%act_app(iac) > 0) then
+                    call mgt_transplant (d_tbl%act_app(iac))
+                  end if
                 if (pco%mgtout == "y") then
-                  write (2612, *) j, time%yrc, time%mo, time%day, pldb(idp)%plantnm, "PLANT",   &
+                  write (2612, *) j, time%yrc, time%mo, time%day_mo, pldb(idp)%plantnm, "    PLANT",   &
                       phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(ihru)%sw,                     &
                       pl_mass(j)%tot(ipl)%m, rsd1(j)%tot_com%m, sol_sumno3(j),                  &
                       sol_sumsolp(j), pcom(j)%plg(ipl)%lai, pcom(j)%plcur(ipl)%lai_pot
@@ -366,7 +370,7 @@
             
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
-                    write (2612, *) j, time%yrc, time%mo, time%day,  pldb(idp)%plantnm, "HARVEST",      &
+                    write (2612, *) j, time%yrc, time%mo, time%day_mo,  pldb(idp)%plantnm, "    HARVEST",      &
                         phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw, biomass, rsd1(j)%tot(ipl)%m, &
                         sol_sumno3(j), sol_sumsolp(j), pl_yield%m, pcom(j)%plstr(ipl)%sum_n, &
                         pcom(j)%plstr(ipl)%sum_p, pcom(j)%plstr(ipl)%sum_tmp, pcom(j)%plstr(ipl)%sum_w, &
@@ -395,7 +399,7 @@
 
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
-                    write (2612, *) j, time%yrc, time%mo, time%day,  pldb(idp)%plantnm, "HARV/KILL",     &
+                    write (2612, *) j, time%yrc, time%mo, time%day_mo,  pldb(idp)%plantnm, "    HARV/KILL",     &
                         phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw, biomass, rsd1(j)%tot(ipl)%m,  &
                         sol_sumno3(j), sol_sumsolp(j), yield, pcom(j)%plstr(ipl)%sum_n,                  &
                         pcom(j)%plstr(ipl)%sum_p, pcom(j)%plstr(ipl)%sum_tmp, pcom(j)%plstr(ipl)%sum_w,  &
@@ -457,7 +461,7 @@
             
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
-                    write (2612, *) j, time%yrc, time%mo, time%day,  pldb(idp)%plantnm, "HARV/KILL",        &
+                    write (2612, *) j, time%yrc, time%mo, time%day_mo,  pldb(idp)%plantnm, "    HARV/KILL",        &
                         phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw, biomass, rsd1(j)%tot(ipl)%m,     &
                         sol_sumno3(j), sol_sumsolp(j), pl_yield%m, pcom(j)%plstr(ipl)%sum_n,   &
                         pcom(j)%plstr(ipl)%sum_p, pcom(j)%plstr(ipl)%sum_tmp, pcom(j)%plstr(ipl)%sum_w,     &
@@ -510,7 +514,7 @@
             call pl_graze
             
               !if (pco%mgtout == "y") then
-              !  write (2612, *) j, time%yrc, time%mo, time%day, "         ", "    GRAZE",         &
+              !  write (2612, *) j, time%yrc, time%mo, time%day_mo, "         ", "    GRAZE",         &
               !    phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m,        &
               !    rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), grazeop_db(igr)%eat, grazeop_db(igr)%manure
               !end if
@@ -672,13 +676,24 @@
               end do
                         
               if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day, "        ", "    BURN", phubase(j),    &
+                write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "    BURN", phubase(j),    &
                     pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m,   &
                     sol_sumno3(j), sol_sumsolp(j)
               end if
               pcom(j)%dtbl(idtbl)%num_actions(iac) = pcom(j)%dtbl(idtbl)%num_actions(iac) + 1
             end if
           
+          !update curve number
+          case ("cn_update")
+            j = d_tbl%act(iac)%ob_num
+            if (j == 0) j = ob_cur
+            
+            if (pcom(j)%dtbl(idtbl)%num_actions(iac) <= Int(d_tbl%act(iac)%const2)) then
+              cn2(j) = chg_par (cn2(j), j, d_tbl%act(iac)%option, d_tbl%act(iac)%const, 35., 95., 0)
+              call curno (cn2(j), j)
+            end if
+            pcom(j)%dtbl(idtbl)%num_actions(iac) = pcom(j)%dtbl(idtbl)%num_actions(iac) + 1
+              
           !herd management - move the herd
           case ("herd")
 

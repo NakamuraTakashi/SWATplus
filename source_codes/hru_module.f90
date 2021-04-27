@@ -226,6 +226,7 @@
         real :: water_fr
         real :: water_seep
         real :: water_evap
+        real :: strsa
         integer :: ich_flood
       end type hydrologic_response_unit
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru
@@ -246,7 +247,7 @@
       real :: strsa_av,strsn_av,strsp_av,strstmp_av
       real :: rto_no3,rto_solp,uno3d_tot,uapd_tot,sum_no3
       real :: sum_solp
-      real, dimension (:), allocatable :: epmax,cvm_com,blai_com
+      real, dimension (:), allocatable :: epmax,cvm_com
       real, dimension (:), allocatable :: rsdco_plcom, translt
       real, dimension (:), allocatable :: uno3d,uapd
       real, dimension (:), allocatable :: par,htfac,un2,up2
@@ -307,7 +308,6 @@
       
 !!!!!! drains
       real, dimension (:), allocatable :: wnan
-      real, dimension (:,:), allocatable :: uh
 
       real, dimension (:), allocatable :: phusw
       integer, dimension (:), allocatable :: yr_skip, isweep
@@ -353,7 +353,7 @@
       real, dimension (:), allocatable :: sedorgp,sedyld,sepbtm
       real, dimension (:), allocatable :: surfq,surqno3
       real, dimension (:), allocatable :: phubase
-      real, dimension (:), allocatable :: lai_yrmx,dormhr
+      real, dimension (:), allocatable :: dormhr
       real, dimension (:,:), allocatable :: wrt
       real, dimension (:,:), allocatable :: bss,surf_bs  
       integer, dimension (:), allocatable :: swtrg

@@ -1,5 +1,5 @@
 sed_lcha Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:20 PM
-    NAME ORDER       WD        DP          SLP      LEN  MANN     K EROD_FACT COV_FACT HC_COV EQ_SLP   D50  CLAY CARBON DRY_BD SIDE_SLP BED_LOAD T_CONC SHEAR_BNK HC_EROD HC_HT HC_LEN
+    NAME ORDER       WD        DP          SLP      LEN  MANN     K EROD_FACT COV_FACT WD_RTO EQ_SLP   D50  CLAY CARBON DRY_BD SIDE_SLP BED_LOAD T_CONC SHEAR_BNK HC_EROD HC_HT HC_LEN
   main_1  main 11.98124 0.7391172  0.001052544   14.616  0.05     5       0.1      0.1  0.005  0.001   1.5    30    0.4    1.5        1      0.5    120      0.75     0.2   0.5      0
  main_10  main 11.86383 0.7347257        0.001    9.842  0.05     5       0.1      0.1  0.005  0.001   1.5    30    0.4    1.5        1      0.5    120      0.75     0.2   0.5      0
  main_11  main 11.83629 0.7336932        0.001    6.648  0.05     5       0.1      0.1  0.005  0.001   1.5    30    0.4    1.5        1      0.5    120      0.75     0.2   0.5      0

@@ -154,7 +154,7 @@
         integer :: objno               !! object number
         integer :: hydno               !! code computes from hydtyp
         character (len=26) :: filename !! file with hydrograph output from the object
-        integer :: unitno = 5009       !! filename unit number
+        integer :: unitno = 6100       !! filename unit number
       end type object_output
       type (object_output), dimension (:), allocatable :: ob_out
       
@@ -177,8 +177,10 @@
       end type duration_curve_points
 
       integer :: fdc_npts = 27
-      real, dimension (27) :: fdc_p = (/.1,.5,1.,2.,3.,5.,10.,15.,20.,25.,30.,35.,40.,45.,50.,55.,60.,65.,70.,75.,80.,85.,90.,95.,97.,98.,99./) !percent        |output percent on the fdc (input)
-      integer, dimension (27) :: fdc_days = (/1,2,4,7,11,18,37,55,73,91,110,128,146,164,182,201,219,237,256,274,292,310,329,347,354,358,361/)
+      real, dimension (27) :: fdc_p = (/.1,.5,1.,2.,3.,5.,10.,15.,20.,25.,30.,35.,40.,45.,50.,55.,60.,65.,70.,75.,80.,85.,90.,95.,&
+                                        97.,98.,99./) !percent        |output percent on the fdc (input)
+      integer, dimension (27) :: fdc_days = (/1,2,4,7,11,18,37,55,73,91,110,128,146,164,182,201,219,237,256,274,292,310,329,347,&
+                                             354,358,361/)
       real, dimension (27) :: fdc_n             !               |flow on the fdc at given percents
       real, dimension (27) :: fdc_norm_mean     !               |normalized flow on the fdc at given percents
       
@@ -188,6 +190,12 @@
         type (duration_curve_points) :: p_md                                !median of all years
         type (duration_curve_points), dimension (:), allocatable :: yr      !flow on the fdc at given percents for each year
       end type flow_duration_curve
+               
+      type inflow_unit_hyds
+        !need for incoming hru or ru that are a fraction of the hru or ru
+        real, dimension (:,:), allocatable :: uh                  !unit hydrograph
+        real, dimension (:,:), allocatable :: hyd_flo             !flow hydrograph
+      end type inflow_unit_hyds
                
       type object_connectivity
         character(len=16) :: name = "default"
@@ -227,9 +235,9 @@
         integer, dimension (:), allocatable :: ihtyp_out             !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
         real, dimension (:), allocatable :: frac_out                 !fraction of hydrograph
         character(len=8), dimension(:), allocatable :: obtyp_in     !inflow object type (ie 1=hru, 2=sd_hru, 3=sub, 4=chan, etc)
-        integer, dimension(:), allocatable :: obtypno_in            !outflow object type number
+        integer, dimension(:), allocatable :: obtypno_in            !inflow object type number
         integer, dimension(:), allocatable :: obj_in
-        character (len=3), dimension(:), allocatable :: htyp_in     !outflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
+        character (len=3), dimension(:), allocatable :: htyp_in     !inflow hyd type (ie 1=tot, 2= recharge, 3=surf, etc)
         integer, dimension(:), allocatable :: ihtyp_in
         real, dimension(:), allocatable :: frac_in
         integer, dimension(:), allocatable :: rcvob_inhyd           !inflow hydrograph number of recieving object - used for dtbl flow fractions
@@ -240,12 +248,16 @@
         type (hyd_output) :: hin_sur                                        !inflow hydrograph for surface runoff - sum of all surface inflow hyds
         type (hyd_output) :: hin_lat                                        !inflow hydrograph for lateral soil flow - sum of all lateral inflow hyds
         type (hyd_output) :: hin_til                                        !inflow hydrograph for tile flow - sum of all tile inflow hyds
+        type (hyd_output) :: hin_aqu                                        !inflow hydrograph for aquifer flow - sum of all aquifer inflow hyds
         type (hyd_output), dimension(:),allocatable :: hd                   !generated hydrograph (ie 1=tot, 2= recharge, 3=surf, etc)
         type (hyd_output), dimension(:,:),allocatable :: ts                 !subdaily hydrographs
-        type (hyd_output), dimension(:),allocatable :: tsin                 !inflow subdaily hydrograph
+        type (inflow_unit_hyds), dimension(:),allocatable :: hin_uh         !inflow unit hydrographs
+        real, dimension(:,:),allocatable :: uh                              !subdaily flow unit hydrograph
+        real, dimension(:,:),allocatable :: hyd_flo                         !subdaily flow hydrograph
+        real, dimension(:),allocatable :: tsin                              !inflow subdaily flow hydrograph
         type (hyd_output) :: supply                                         !water supply allocation
         real :: demand                                                      !water irrigation demand (ha-m)
-        integer :: day_cur = 1                                              !current hydrograph day in ts
+        integer :: day_cur = 0                                              !current hydrograph day in ts
         integer :: day_max                                                  !maximum number of days to store the hydrograph
         real :: peakrate                                                    !peak flow rate during time step - m3/s
         
@@ -298,15 +310,14 @@
       
       !recall hydrograph inputs
       type recall_hydrograph_inputs
-        character (len=16) :: name
+        character (len=25) :: name
         integer :: num = 0                    !number of elements
         integer :: typ                        !recall type - 1=day, 2=mon, 3=year
-        character(len=16) :: filename         !filename
-        !hyd_output units are in cms and mg/L
-        type (hyd_output), dimension (:,:), allocatable :: hd     !export coefficients
-        integer :: start_ts             !! start timestep of point source file
+        character(len=25) :: filename         !filename
+        !hd and hyd_flo units are in cms and mg/L
+        type (hyd_output), dimension (:,:), allocatable :: hd   !m3/s for flow  |input total hyd for daily, monthly, annual and exco
+        real, dimension (:,:), allocatable :: hyd_flo           !m3/s           |input flow only for subdaily recall
         integer :: start_yr             !! start year of point source file
-        integer :: end_ts               !! end timestep of point source file
         integer :: end_yr               !! end year of point source file
       end type recall_hydrograph_inputs
       type (recall_hydrograph_inputs),dimension(:),allocatable:: recall
@@ -317,7 +328,7 @@
         integer :: hru_lte = 0   !2-number of hru_lte"s or 1st hru_lte command
         
         integer :: ru = 0        !3-number of ru"s or 1st ru command
-        integer :: modflow = 0   !4-number of modparm"s or 1st modparm command
+        integer :: gwflow = 0    !4-number of gwflow"s or 1st gwflow command !rtb gwflow
         integer :: aqu = 0       !5-number of aquifer"s or 1st aquifer command
         integer :: chan = 0      !6-number of chan"s or 1st chan command
         integer :: res = 0       !7-number of res"s or 1st res command
@@ -339,7 +350,7 @@
         integer :: hru = 5          !1=total 2=recharge 3=surface 4=lateral 5= tile
         integer :: hru_lte = 5      !1=total 2=recharge 3=surface 4=lateral 5= tile
         integer :: ru = 5           !1=total 2=recharge 3=surface 4=lateral 5= tile
-        integer :: modflow = 1      !1=total
+        integer :: gwflow = 1       !1=total
         integer :: aqu = 2          !1=return flow 2=deep perc
         integer :: chan = 3         !1=total 2=recharge 3=overbank
         integer :: res = 2          !1=total 2=recharge 
@@ -436,7 +447,7 @@
         character (len=15) :: sag  =    "            sag"        !! tons         |detached small ag
         character (len=15) :: lag  =    "            lag"        !! tons         |detached large ag
         character (len=15) :: grv  =    "            grv"        !! tons         |gravel
-        character (len=15) :: temp =    "           temp"        !! deg c        |temperature
+        character (len=15) :: temp =    "           null"        !! deg c        |temperature
       end type hyd_header
       type (hyd_header) :: hyd_hdr
       
@@ -458,7 +469,7 @@
         character (len=15) :: sag_stor  =    "       sag_stor"        !! tons         |detached small ag
         character (len=15) :: lag_stor  =    "       lag_stor"        !! tons         |detached large ag
         character (len=15) :: grv_stor  =    "       grv_stor"        !! tons         |gravel
-        character (len=15) :: temp_stor =    "      temp_stor"        !! deg c        |temperature
+        character (len=15) :: temp_stor =    "           null"        !! deg c        |temperature
       end type hyd_stor_header
       type (hyd_stor_header) :: hyd_stor_hdr
       
@@ -480,7 +491,7 @@
         character (len=15) :: sag_in  =    "         sag_in"        !! tons         |detached small ag
         character (len=15) :: lag_in  =    "         lag_in"        !! tons         |detached large ag
         character (len=15) :: grv_in  =    "         grv_in"        !! tons         |gravel
-        character (len=15) :: temp_in =    "        temp_in"        !! deg c        |temperature
+        character (len=15) :: temp_in =    "           null"        !! deg c        |temperature
       end type hyd_in_header
       type (hyd_in_header) :: hyd_in_hdr
       
@@ -502,10 +513,15 @@
         character (len=15) :: sag_out  =    "        sag_out"        !! tons         |detached small ag
         character (len=15) :: lag_out  =    "        lag_out"        !! tons         |detached large ag
         character (len=15) :: grv_out  =    "        grv_out"        !! tons         |gravel
-        character (len=15) :: temp_out =    "       temp_out"        !! deg c        |temperature
+        character (len=15) :: temp_out =    "           null"        !! deg c        |temperature
       end type hyd_out_header
       type (hyd_out_header) :: hyd_out_hdr
       
+      type wtmp_out_header
+        character (len=15) :: water_temp =    "     water_temp"        !! deg c        |temperature
+        end type wtmp_out_header
+      type (wtmp_out_header) :: wtmp_hdr
+         
       type sed_hyd_header        
         character (len=15) :: flo_in  =    "         flo_in"        !! m^3/s        |volume of water 
         character (len=15) :: flo_out  =   "        flo_out"        !! m^3/s        |volume of water  
@@ -533,6 +549,20 @@
         character (len=15) :: temp_out =   "       temp_out"        !! deg c        |temperature        
       end type sed_hyd_header
       type (sed_hyd_header) :: sd_hyd_hdr
+      
+      type sol_header        
+        character (len=15) :: layer1 =  "        st_mm_1"        !!mm H2O       |amt of water stored in layer 1 
+        character (len=15) :: layer2 =  "        st_mm_2"        !!mm H2O       |amt of water stored in layer 2              
+        character (len=15) :: layer3 =  "        st_mm_3"        !!mm H2O       |amt of water stored in layer 3
+        character (len=15) :: layer4 =  "        st_mm_4"        !!mm H2O       |amt of water stored in layer 4      
+        character (len=15) :: layer5 =  "        st_mm_5"        !!mm H2O       |amt of water stored in layer 5
+        character (len=15) :: layer6 =  "        st_mm_6"        !!mm H2O       |amt of water stored in layer 6 
+        character (len=15) :: layer7 =  "        st_mm_7"        !!mm H2O       |amt of water stored in layer 7
+        character (len=15) :: layer8 =  "        st_mm_8"        !!mm H2O       |amt of water stored in layer 8
+        character (len=15) :: layer9 =  "        st_mm_9"        !!mm H2O       |amt of water stored in layer 9
+        character (len=15) :: layer10 = "       st_mm_10"        !!mm H2O       |amt of water stored in layer 10
+      end type sol_header
+      type (sol_header) :: sol_hdr
       
      type sd_hyd_header_units
         character (len=15) :: flo_in    =  "          m^3/s"        !! m^3/s        |volume of water
@@ -610,9 +640,14 @@
         character (len=15) :: sag    =  "           tons"        !! tons         |detached small ag
         character (len=15) :: lag    =  "           tons"        !! tons         |detached large ag
         character (len=15) :: grv    =  "           tons"        !! tons         |gravel
-        character (len=15) :: temp   =  "           degc"        !! deg c        |temperature
+        character (len=15) :: temp   =  "               "        !! deg c        |temperature
       end type hyd_header_units1
       type (hyd_header_units1) :: hyd_hdr_units1 
+ 
+      type wtmp_header_units
+        character (len=15) :: wtmp   =  "           degc"        !! deg c        |temperature
+      end type wtmp_header_units
+      type (wtmp_header_units) :: wtmp_units 
       
        type hyd_header_units  !pts (point source)/deposition/ru (routing_unit) files output uses this units header
         character (len=11) :: day    =  "           "
@@ -770,7 +805,7 @@
 		character (len=12) :: cn_prm_aa   =   "     cn     "
 		character (len=12) :: esco        =   "   esco     "
 		character (len=12) :: lat_len     =   "lat_len     "
-		character (len=12) :: k_lo        =   "   k_lo     "
+		character (len=12) :: petco       =   "  petco     "
 		character (len=12) :: slope       =   "  slope     "
 		character (len=12) :: tconc       =   "  tconc     "
 		character (len=12) :: etco        =   "   etco     "
@@ -857,11 +892,11 @@
              
       contains
 
-      !! function to convert concentration to mass
+      !! function to convert mass to concentration
       subroutine hyd_convert_conc_to_mass (hyd1)
         type (hyd_output), intent (inout) :: hyd1
         ! m3/s to m3
-        hyd1%flo = hyd1%flo * 86400.
+        hyd1%flo = hyd1%flo ! * 86400.
         ! t = ppm * m3 / 1000000.
         hyd1%sed = hyd1%sed * hyd1%flo / 1000000.
         ! kg = ppm * m3 / 1000.

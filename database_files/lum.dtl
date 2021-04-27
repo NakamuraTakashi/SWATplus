@@ -1,5 +1,5 @@
-lum_dtl Generated from Y:\HUC8_models\models\07050003.accdb Time: 11/15/2019 9:44:34 AM
-12
+lum_dtl
+13
 
  NAME   	CONDS	ALTS	ACTS
  pl_grow_sum	  2	 2	 1
@@ -140,3 +140,11 @@ lum_dtl Generated from Y:\HUC8_models\models\07050003.accdb Time: 11/15/2019 9:4
  harvest_kill   hru       0 grain_harv       wwht     0      0         null     n     y     y     n                                    
         plant   hru       0 plant_wwht       wwht     0      0         null     y     n     n     n                                    
     rot_reset   hru       0    reset_1       null     1      1         null     n     n     n     y                                    
+
+DTBL Name                CONDS      ALTS      ACTS 
+cn_update_corn             1         1         1  
+var                        obj   obj_num           lim_var            lim_op     lim_const                      alt1  
+plant_name_gro             hru         0              corn                 -       0.00000                      =   
+act_typ                    obj   obj_num              name            option         const    const2     fp     outcome           
+pest_apply                 hru         0           ffa_app                ffa           99      1.0     inject    y   
+

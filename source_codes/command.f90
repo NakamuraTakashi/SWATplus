@@ -24,9 +24,11 @@
       use basin_module
       use maximum_data_module
       use output_landscape_module, only : hnb_d
+      use gwflow_module
       
       implicit none
 
+      real, dimension(time%step) :: hyd_flo     !flow hydrograph
       integer :: in                   !              |
       integer :: ielem                !              |  
       integer :: iob                  !              |
@@ -45,7 +47,12 @@
       integer :: iwro                 !              |
       integer :: ob_num               !              |
       real :: conv                    !              |
-      real :: frac_in                 !              |  
+      real :: frac_in                 !              |
+      integer dum
+      integer :: i_mfl !rtb gwflow; counter
+      real :: sum
+            
+      sum = 0.
 
       icmd = sp_ob1%objs
       do while (icmd /= 0)
@@ -69,7 +76,7 @@
           obcs(icmd)%hin_til = hin_csz
           hcs1 = hin_csz
           hcs2 = hin_csz
-          if (time%step > 0) ob(icmd)%tsin(:) = hz
+          if (time%step > 0) ob(icmd)%tsin = 0.
           ob(icmd)%peakrate = 0.
           
           if (ob(icmd)%rcv_tot > 0) then
@@ -122,6 +129,12 @@
                   if (cs_db%num_tot > 0) then
                     obcs(icmd)%hin_til = obcs(icmd)%hin_til + frac_in * obcs(iob)%hd(ihyd)
                   end if
+                case ("aqu")   ! aquifer inflow
+                  ob(icmd)%hin_aqu = ob(icmd)%hin_aqu + frac_in * ob(iob)%hd(ihyd)
+                  !add constituents
+                  if (cs_db%num_tot > 0) then
+                    obcs(icmd)%hin_aqu = obcs(icmd)%hin_aqu + frac_in * obcs(iob)%hd(ihyd)
+                  end if
                 end select
               end if
               
@@ -141,10 +154,24 @@
             
             !sum subdaily hydrographs
             if (time%step > 0) then
-              do kk = 1, time%step
-                iday = ob(iob)%day_cur
-                ob(icmd)%tsin(kk) = ob(icmd)%tsin(kk) + ob(iob)%ts(iday,kk)
-              end do
+              iday = ob(iob)%day_cur
+              !! iob = inflow object number
+              if (ob(icmd)%frac_in(ihyd) < .999) then
+                if (ob(icmd)%obtyp_in(ihyd) == "hru" .or. ob(icmd)%obtyp_in(ihyd) == "ru") then
+                  !! if fraction of an hru/ru - need to calc the flow hydrograph each day
+                  call flow_hyd_ru_hru (ob(iob)%day_cur, ob(iob)%hd(3)%flo, ob(iob)%hd(4)%flo,     &
+                        ob(iob)%hd(5)%flo, ob(icmd)%hin_uh(ihyd)%uh, ob(icmd)%hin_uh(ihyd)%hyd_flo)
+                  hyd_flo = ob(icmd)%hin_uh(ihyd)%hyd_flo(iday,:)
+                else
+                  !! if entire hru/ru or other object - use the flow hydrograph of the entire object
+                  hyd_flo = ob(iob)%hyd_flo(iday,:)
+                end if
+              else
+                !! if fraction in is 1.0 - always use the flow hydrograph of the entire object
+                hyd_flo = ob(iob)%hyd_flo(iday,:)
+              end if
+              !! add flow hydrographs for each incoming object
+              ob(icmd)%tsin = ob(icmd)%tsin + hyd_flo
             end if
 
           end do    ! in = 1, ob(icmd)%rcv_tot
@@ -184,8 +211,12 @@
             call ru_control
             if (ob(icmd)%rcv_tot > 0) call hyddep_output
 
-          case ("modflow")   ! modflow
-            !! call modflow (daily)  **Ryan**
+          case ("gwflow")   ! gwflow
+            call gwflow_simulate
+            do i_mfl = 1,sp_ob%gwflow
+              icmd = icmd + 1
+            enddo
+            icmd = icmd - 1
             
           case ("aqu")   ! aquifer
             if (ob(icmd)%dfn_tot == 0) then   !1-D use old bf recession
@@ -208,8 +239,14 @@
           case ("recall")   ! recall hydrograph
             irec = ob(icmd)%num
             select case (recall(irec)%typ)
+              case (0)    !subdaily
+                ob(icmd)%hyd_flo(ob(icmd)%day_cur,:) = recall(irec)%hyd_flo(1:time%step,time%yrs)
               case (1)    !daily
-                ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
+                if (time%yrc >= recall(irec)%start_yr .and. time%yrc <= recall(irec)%end_yr) then 
+                    ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
+                else
+                    ob(icmd)%hd(1) = hz
+                end if
               case (2)    !monthly
                 if (time%yrc >= recall(irec)%start_yr .and. time%yrc <= recall(irec)%end_yr) then 
                     ob(icmd)%hd(1) = recall(irec)%hd(time%mo,time%yrs)
@@ -217,7 +254,7 @@
                     ob(icmd)%hd(1) = hz
                 end if
               case (3)    !annual
-                if (time%yrc < recall(irec)%start_yr .or. time%yrc > recall(irec)%end_yr) then
+                if (time%yrc >= recall(irec)%start_yr .or. time%yrc <= recall(irec)%end_yr) then
                   ob(icmd)%hd(1) = recall(irec)%hd(1,time%yrs)
                 else
                   ob(icmd)%hd(1) = hz
@@ -315,6 +352,11 @@
       !! print all output files
       if (time%yrs > pco%nyskip .and. time%step == 0) then
         call obj_output
+        
+        !! print water allocation output
+        do iwro =1, db_mx%wallo_db
+          call water_allocation_output (iwro)
+        end do
         
         do isd = 1, sp_ob%hru_lte
           call hru_lte_output (isd)

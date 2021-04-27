@@ -41,8 +41,7 @@
       real :: b               !m             |bottom width of channel
       real :: c               !none          |inverse of channel side slope
       real :: d               !m             |depth of flow
-      integer :: isol         !              |
-      real :: anion_excl_bsn  !              |      
+      integer :: isol         !              |   
       real :: drpor           !              |
       real :: sa              !ha            |surface area of impounded water body
       real :: cl              !              |
@@ -51,7 +50,7 @@
       
 
       if (sol(isol)%s%alb < 0.1) sol(isol)%s%alb  = 0.1
-      if (sol(isol)%s%anion_excl<=1.e-6) sol(isol)%s%anion_excl = anion_excl_bsn
+      if (sol(isol)%s%anion_excl<=1.e-6) sol(isol)%s%anion_excl = 0.5
       if (sol(isol)%s%anion_excl >= 1.) sol(isol)%s%anion_excl = 0.99
 
       nly = sol(isol)%s%nly

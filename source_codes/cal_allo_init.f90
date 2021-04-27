@@ -51,8 +51,8 @@
           id = sched(isched)%num_db(iauto)
           allocate (pcom_init(iihru)%dtbl(iauto)%num_actions(dtbl_lum(id)%acts))
           pcom_init(iihru)%dtbl(iauto)%num_actions = 1
-          allocate (pcom_init(ihru)%dtbl(iauto)%days_act(dtbl_lum(id)%acts))
-          pcom_init(ihru)%dtbl(iauto)%days_act = 0
+          allocate (pcom_init(iihru)%dtbl(iauto)%days_act(dtbl_lum(id)%acts))
+          pcom_init(iihru)%dtbl(iauto)%days_act = 0
         end do
              
         allocate (rsd1_init(iihru)%tot(nplt))

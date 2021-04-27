@@ -26,6 +26,7 @@
       !! from air temperature.  Water Res. Bull. p. 27-45 SWAT manual equation 2.3.13
       wtmp = 5.0 + 0.75 * wst(iwst)%weat%tave
       if (wtmp <= 0.) wtmp = 0.1
+      ht2%temp = wtmp
 
       !! benthic sources/losses in mg   
       rs2_s =  Theta(ch_nut(jnut)%rs2,thrs2,wtmp) * ben_area    !ch_hyd(jhyd)%l *ch_hyd(jhyd)%w * rt_delt
@@ -158,6 +159,8 @@
         !! QUAL2E section 3.3.1 equation III-16
         bc1_k = Theta(ch_nut(jnut)%bc1,thbc1,wtmp)
         bc3_k = Theta(ch_nut(jnut)%bc3,thbc3,wtmp) 
+        bc1_k = bc1_k * 2.
+        bc3_k = bc3_k * 2.
         rs4_k = 0.
         if (rchdep > 0.001)  rs4_k = Theta (ch_nut(jnut)%rs4, thrs4, wtmp) / rchdep   
 

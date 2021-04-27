@@ -1,10 +1,10 @@
 lum_dtl Generated from Y:\HUC8_models\models\07050003.accdb Time: 11/15/2019 9:44:34 AM
- 12
+12
 
  NAME   	CONDS	ALTS	ACTS
  pl_grow_sum	  2	 2	 1
  VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	                                    ALT1  ALT2
- phu_base0 	hlt	  0	    null		  -	  	     0.15		                                    >	  <
+ phu_base0 	hlt	  0	    null		  -	  	     0.15		                                >	  <
  phu_base0 	hlt	  0	    null		  -	  	     0.2		<	 -
  ACT_TYP    OBJ OBJ_NUM   NAME                OPTION        CONST         CONST2      FP        OUTCOMES
  grow_init	hlt	  0	      start_growth	      file	        0	          0         null		y	  n

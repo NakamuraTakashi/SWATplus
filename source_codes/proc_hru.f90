@@ -21,11 +21,9 @@
         if (cs_db%num_paths > 0) call pathogen_init
         if (cs_db%num_salts > 0) call salt_hru_init
         call plant_all_init
-        call topohyd_init
+        call cn2_init
         call hydro_init
       end if
-
-      call hru_lte_read
 
       call ls_link
         

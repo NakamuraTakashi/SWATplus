@@ -42,8 +42,8 @@
       imax = 0
       maxint = 10
       
-      allocate (timeint(maxint))
-      allocate (hyd_rad(maxint))
+      allocate (timeint(10))    !***jga
+      allocate (hyd_rad(10))
       
       inquire (file=in_cha%hyd_sed, exist=i_exist)
       if (.not. i_exist .or. in_cha%hyd_sed == "null") then
@@ -65,6 +65,10 @@
            
         allocate (sd_chd(0:imax))
         
+        !rtb floodplain
+        !allocate(flood_freq(imax))
+        !flood_freq = 0
+
         rewind (1)
         read (1,*,iostat=eof) titldum
         if (eof < 0) exit
@@ -73,6 +77,7 @@
         
         do idb = 1, db_mx%ch_lte
           read (1,*,iostat=eof) sd_chd(idb)
+          if (sd_chd(idb)%wd_rto < 1.e-6) sd_chd(idb)%wd_rto = 4.
           if (eof < 0) exit
         end do
 

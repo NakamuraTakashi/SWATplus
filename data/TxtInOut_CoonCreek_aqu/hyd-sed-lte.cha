@@ -1,5 +1,5 @@
 hyd-sed-lte.cha
-NAME            ORDER        CHW     CHD     CHS     CHL     CHN     CHK  CHEROD   CHCOV  HC_COV   CHSEQ     D50    CLAY  CARBON      BD    CHSS   BEDLD      TC SHEAR_BNK   HC_KH  HC_HGT  HC_INI
+NAME            ORDER        CHW     CHD     CHS     CHL     CHN     CHK  CHEROD   CHCOV  WD_RTO   CHSEQ     D50    CLAY  CARBON      BD    CHSS   BEDLD      TC SHEAR_BNK   HC_KH  HC_HGT  HC_INI
 sdc1        tributary      5.461   0.459   0.017   3.277    0.05       1    0.01   0.005       0   0.001      12      50    0.04       1     0.5     0.5      10      0.75   0.001     0.3     0.3
 sdc2        tributary      6.427   0.507   0.012   4.496    0.05       1    0.01   0.005       0   0.001      12      50    0.04       1     0.5     0.5      10      0.75     0.1     0.3     0.3
 sdc3        tributary      4.581   0.413   0.022   0.504    0.05       1    0.01   0.005       0   0.001      12      50    0.04       1     0.5     0.5      10      0.75     0.1     0.3     0.3

@@ -1,21 +1,17 @@
       program main
 
-      use hru_module, only : hru, ihru
-      use mgt_operations_module
       use time_module
       use hydrograph_module
       use maximum_data_module
-      use conditional_module
-      use climate_module
       use calibration_data_module
 
       implicit none
       
-      prog = " SWAT+ APR 3  2020    MODULAR Rev 2020.60.3"
+      prog = " SWAT+ Dec 8  2020    MODULAR Rev 2020.60.5.1"
 
       write (*,1000)
  1000 format(1x,"                  SWAT+               ",/,             &
-     &          "               Revision 60.3          ",/,             &
+     &          "             Revision 60.5.1          ",/,             &
      &          "      Soil & Water Assessment Tool    ",/,             &
      &          "               PC Version             ",/,             &
      &          "    Program reading . . . executing",/)
@@ -30,18 +26,23 @@
       call hyd_connect
       call object_read_output
       call water_rights_read
+      call water_allocation_read
 
       call om_water_init
       call pest_cha_res_read
       call path_cha_res_read
       call salt_cha_res_read
+
+      call lsu_read_elements        !defining landscape units by hru
+
+      call proc_hru
+      call proc_cha
+      call proc_aqu
       
       !! read decision table data for conditional management
       call dtbl_lum_read
-      
-      call proc_hru
-      call proc_cha
-      call proc_allo
+ 
+      call hru_lte_read
 
       call proc_cond
       call dtbl_res_read
@@ -56,14 +57,15 @@
       if (db_mx%wet_dat > 0) call wet_initial
 
       call proc_cal
+      
       call proc_open
             
       ! set initial soil water for basin and lsu
       call basin_sw_init
       
       ! compute unit hydrograph parameters for subdaily runoff
-      if (time%step > 0) call unit_hyd
-      
+      call unit_hyd_ru_hru
+
       call dr_ru
         
       call hyd_connect_out

@@ -112,11 +112,7 @@
         soil(j)%phys(k)%st = sffc * soil(j)%phys(k)%fc
         soil(j)%sw = soil(j)%sw + soil(j)%phys(k)%st
       end do
-      hwb_d(j)%sw_init = soil(j)%sw    !store initial soil water
-      hwb_m(j)%sw_init = soil(j)%sw
-      hwb_y(j)%sw_init = soil(j)%sw
-      hwb_a(j)%sw_init = soil(j)%sw
-      
+     
       !! set day length threshold for dormancy and initial dormancy
       dormhr(j) = wgn_pms(iwgn)%daylth
       sd = Asin(.4 * Sin((Real(time%day) - 82.) / 58.09))  !!365/2pi = 58.09
@@ -177,6 +173,7 @@
         else
           hru(j)%hyd%lat_ttime = 1. - Exp(-1. / hru(j)%hyd%lat_ttime)
         end if
+        hru(j)%hyd%lat_ttime = .295     !***jga
 
         isdr = hru(j)%tiledrain
         if (hru(j)%lumv%ldrain > 0 .and. sdr(isdr)%lag > 0.01) then

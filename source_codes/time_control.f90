@@ -29,7 +29,7 @@
 
 !!    ~ ~ ~ SUBROUTINES/FUNCTIONS CALLED ~ ~ ~
 !!    Intrinsic: Mod, Real
-!!    SWAT: sim_inityr, std3, xmon, sim_initday, clicon, command
+!!    SWAT: std3, xmon, sim_initday, clicon, command
 !!    SWAT: writed, writem, tillmix
 
 !!    ~ ~ ~ ~ ~ ~ END SPECIFICATIONS ~ ~ ~ ~ ~ ~
@@ -55,6 +55,9 @@
       
       implicit none
       
+      !rtb floodplain
+      !integer :: flood_count
+
       integer :: j                   !none          |counter
       integer :: julian_day          !none          |counter
       integer :: id                  !              |
@@ -69,6 +72,7 @@
       character*10 b(3)              !              |
       real :: crop_yld_t_ha          !t/ha          |annual and ave annual basin crop yields
       real :: sw_init
+      real :: sno_init
       integer :: iob                 !              |
       integer :: curyr               !              |
       integer :: iwgn                !              |
@@ -91,10 +95,12 @@
       call cli_precip_control (0)
 
       do curyr = 1, time%nbyr
+    !!!!!  uncomment next two lines for RELEASE version only (Srin/Karim)
+          !call DATE_AND_TIME (b(1), b(2), b(3), date_time)
+          !write (*,1235) cal_sim, time%yrc
+    !1235 format (1x, a, 2x, i4)
+          
         time%yrs = curyr
-        
-        !! initialize annual variables for hru's
-        if (sp_ob%hru > 0) call sim_inityr
 
         !! determine beginning and ending dates of simulation in current year
         if (Mod(time%yrc,4) == 0) then 
@@ -124,13 +130,22 @@
           !! tell user they are skipping more years than simulating
           time%yrs_prt = time%nbyr
         end if
-        
+            
+        !! set initial soil water for hru, basin and lsu - for checking water balance
+        if (pco%sw_init == "n") then
+          if (time%yrs > pco%nyskip) then
+            call basin_sw_init
+            pco%sw_init = "y"  !! won't reset again
+          end if
+        end if
+          
         do julian_day = time%day_start, time%day_end_yr      !! begin daily loop
           time%day = julian_day
           !! determine month and day of month - time%mo and time%day_mo
           call xmon
           
           time%yrc_tot = time%yrc_end - time%yrc_start + 1
+          !! Uncomment next three lines for DEBUG version only            
           
           call DATE_AND_TIME (b(1), b(2), b(3), date_time)
           write (*,1234) cal_sim, time%mo, time%day_mo, time%yrc, time%yrs, time%yrc_tot,  &
@@ -200,9 +215,17 @@
           end do
 
           !! allocate water for water rights objects
-          !call water_allocation
+          if (db_mx%wallo_db > 0) call water_allocation     !***jga
+
+
+          !rtb floodplain
+          !flood_freq = 0
 
           call command              !! command loop 
+          
+          !rtb floodplain - output array of floodplain flags
+          !write(5555,1235) (flood_freq(flood_count),flood_count=1,2407)
+
         
           ! reset base0 heat units and yr_skip at end of year for southern hemisphere
           ! near winter solstace (winter solstice is around June 22)
@@ -231,8 +254,7 @@
         call calsoft_sum_output
         
         !! write annual basin crop yields and harvested areas
-       if (sp_ob%hru > 0) then
-        write (5101,*) cal_sim
+        if (sp_ob%hru > 0) then
         do iplt = 1, basin_plants
           crop_yld_t_ha = bsn_crop_yld(iplt)%yield / (bsn_crop_yld(iplt)%area_ha + 1.e-6)
           write (5100,*) time%yrc, iplt, plants_bsn(iplt), bsn_crop_yld(iplt)%area_ha,            &
@@ -271,8 +293,10 @@
         do j = 1, sp_ob%hru
           !! zero yearly balances after using them in soft data calibration (was in hru_output)
           sw_init = hwb_y(j)%sw_init
+          sno_init = hwb_y(j)%sno_init
           hwb_y(j) = hwbz
           hwb_y(j)%sw_init = sw_init
+          hwb_y(j)%sno_init = sno_init
           hnb_y(j) = hnbz
           hpw_y(j) = hpwz
           hls_y(j) = hlsz

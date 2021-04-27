@@ -20,7 +20,9 @@
         real :: sw_final = 0.         !mm H2O        |final soil water content of entire profile
         real :: sw = 0.               !mm H2O        |average soil water content of entire profile
         real :: sw_300 = 0.           !mm H2O        |soil water content of upper 300 mm
-        real :: snopack = 0.          !mm            |snow pack
+        real :: sno_init = 0.         !mm H2O        |initial soil water content of snow pack
+        real :: sno_final = 0.        !mm H2O        |final soil water content of snow pack
+        real :: snopack = 0.          !mm H2O        |snow pack
         real :: pet = 0.              !mm H2O        |pot et on current day in HRU
         real :: qtile = 0.            !mm H2O        |drainage tile flow contrib to main channel from HRU in mon
         real :: irr = 0.              !mm H2O        |amount of water applied to HRU
@@ -238,6 +240,8 @@
         character (len=12) :: sw_final   =  "    sw_final"
         character (len=12) :: sw_ave     =  "      sw_ave"
         character (len=12) :: sw_300     =  "      sw_300"
+        character (len=12) :: sno_init   =  "    sno_init"
+        character (len=12) :: sno_final  =  "   sno_final"
         character (len=12) :: snopack    =  "     snopack"   
         character (len=12) :: pet        =  "         pet"
         character (len=12) :: qtile      =  "       qtile"
@@ -279,6 +283,8 @@
         character (len=12) :: sw_final   =  "          mm"
         character (len=12) :: sw_ave     =  "          mm"
         character (len=12) :: sw_300     =  "          mm"
+        character (len=12) :: sno_init   =  "          mm"
+        character (len=12) :: sno_final  =  "          mm"
         character (len=12) :: snopack    =  "          mm"  
         character (len=12) :: pet        =  "          mm"
         character (len=12) :: qtile      =  "          mm"
@@ -532,6 +538,8 @@
         hru3%sw_final = hru1%sw_final
         hru3%sw = hru1%sw + hru2%sw
         hru3%sw_300 = hru1%sw_300 + hru2%sw_300
+        hru3%sno_init = hru1%sno_init
+        hru3%sno_final = hru1%sno_final
         hru3%snopack = hru1%snopack + hru2%snopack
         hru3%pet = hru1%pet + hru2%pet
         hru3%qtile = hru1%qtile + hru2%qtile
@@ -663,6 +671,8 @@
         hru2%sw_final = hru1%sw_final
         hru2%sw = hru1%sw / const
         hru2%sw_300 = hru1%sw_300 / const
+        hru2%sno_init = hru1%sno_init
+        hru2%sno_final = hru1%sno_final
         hru2%snopack = hru1%snopack / const
         hru2%pet = hru1%pet
         hru2%qtile = hru1%qtile

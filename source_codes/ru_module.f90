@@ -6,9 +6,8 @@
       integer :: mru_db                            !                |
       real, dimension (:), allocatable :: ru_tc    !                |    
       real, dimension (:), allocatable :: ru_n     !                | 
-      real, dimension (:), allocatable :: hyd_flo  !                |
-      integer, dimension (:), allocatable :: itsb  !none            |end of loop 
-      real, dimension (:,:), allocatable :: uhs    !                |
+      !real, dimension (:), allocatable :: hyd_flo  !                |
+      integer, dimension (:), allocatable :: itsb  !none            |end of loop
    
       type ru_databases_char
         character(len=16) :: elem_def = ""
@@ -33,7 +32,7 @@
       
       type ru_parameters
         character(len=16) :: name = ""
-        real :: da_km2 = 0.      !! km2      drainage area
+        real :: da_km2 = 0.                         !! km2      |drainage area
         type (ru_databases_char) :: dbsc
         type (ru_databases) :: dbs
         type (field) :: field
