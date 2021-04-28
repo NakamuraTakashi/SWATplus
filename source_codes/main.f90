@@ -7,15 +7,14 @@
 
       implicit none
       
-      prog = " SWAT+ Dec 8  2020    MODULAR Rev 2020.60.5.1"
+      prog = " SWAT+ Feb 22 2021    MODULAR Rev 2020.60.5.2"
 
       write (*,1000)
  1000 format(1x,"                  SWAT+               ",/,             &
-     &          "             Revision 60.5.1          ",/,             &
+     &          "             Revision 60.5.2          ",/,             &
      &          "      Soil & Water Assessment Tool    ",/,             &
      &          "               PC Version             ",/,             &
      &          "    Program reading . . . executing",/)
-     
       call proc_bsn   
       call proc_date_time
       call proc_db
@@ -59,9 +58,6 @@
       call proc_cal
       
       call proc_open
-            
-      ! set initial soil water for basin and lsu
-      call basin_sw_init
       
       ! compute unit hydrograph parameters for subdaily runoff
       call unit_hyd_ru_hru

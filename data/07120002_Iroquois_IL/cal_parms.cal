@@ -55,7 +55,7 @@ usle_k                         sol       0.00000       0.65000              null
 ec                             sol       0.00000     100.00000              dS/m  
 cal                            sol       0.00000      65.00000                 %  
 ph                             sol       3.00000      10.00000              null  
-surlag                         hru       0.05000      24.00000              days  
+surlag                         bsn       0.05000      24.00000              days  
 adj_pkr                        bsn       0.50000       2.00000              null  
 prf                            bsn       0.00000       2.00000              null  
 spcon                          bsn       0.00010       0.01000              null  
@@ -151,8 +151,7 @@ alpha                          aqu       0.00000       1.00000              days
 bf_max                         aqu       0.10000       2.00000                mm  
 flo_min                        aqu       0.00000    5000.00000                mm  
 revap_co                       aqu       0.02000       0.20000              null  
-revap_min                      aqu       0.00000     500.00000                mm
-sp_yld                         aqu       0.00000       0.50000           fraction  
+revap_min                      aqu       0.00000     500.00000                mm  
 cn2_lte                        hlt      25.00000      98.00000              null  
 awc_lte                        hlt       0.01000       1.00000         mm_H20/mm  
 etco_lte                       hlt       0.00000       1.00000              null  
@@ -177,7 +176,7 @@ pst_koc                        pst       0.00000       1.00000            m**3/g
 pst_washoff                    pst       0.00000       1.00000              null  
 pst_foliar_hlife               pst       0.00000   10000.00000              days  
 pst_soil_hlife                 pst       0.00000  100000.00000              days  
-pst_solub                      pst       0.00000  11000000.00000            mg/L  
+pst_solub                      pst       0.00000  11000000.00000              mg/L  
 pst_aq_hlife                   pst       0.00000   10000.00000             1/day  
 pst_aq_volat                   pst       0.00000      10.00000             m/day  
 pst_aq_settle                  pst       0.00000      10.00000             m/day  

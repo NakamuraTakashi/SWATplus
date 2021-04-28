@@ -71,7 +71,6 @@
             write (2050,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_d  !! waterbal
             if (pco%csvout == "y") then 
               write (2054,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bwb_d  !! waterbal
-              bwb_d%sw_init = bwb_d%sw_final
             end if
             bwb_d%sw_init = bwb_d%sw_final
             bwb_d%sno_init = bwb_d%sno_final
