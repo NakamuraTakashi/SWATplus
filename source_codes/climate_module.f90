@@ -64,6 +64,7 @@
         real, dimension (:), allocatable :: precip_mce           !!mm            |precip on current day of 30 day list 
         real, dimension (:), allocatable :: pet_mce              !!mm            |pet on current day of 30 day list 
         integer :: ireg = 0                     !!               |annual precip category-1 <= 508 mm; 2 > 508 and <= 1016 mm; 3 > 1016 mm/yr
+        integer :: idewpt = 0                   !!               |0=dewpoint; 1=rel humididty input
       end type wgn_parms
       type (wgn_parms), dimension(:),allocatable :: wgn_pms
           
@@ -122,16 +123,32 @@
 
       type weather_station
         character(len=50) :: name = "Farmer Branch IL"
-        real :: lat                          ! degrees    |latitude
+        real :: lat                         ! degrees    |latitude
         type (weather_codes_station_char) :: wco_c
         type (weather_codes_station) :: wco 
         type (weather_daily) :: weat
-        real, dimension(12) :: rfinc = 0     ! deg C      |monthly precipitation adjustment
-        real, dimension(12) :: tmpinc = 0    ! deg C      |monthly temperature adjustment
-        real, dimension(12) :: radinc = 0    ! MJ/m^2     |monthly solar radiation adjustment
-        real, dimension(12) :: huminc = 0    ! none       |monthly humidity adjustment
+        integer :: pcp_ts = 0               ! 1/day      |precipitation time steps per day (0 or 1 = daily)
+        real, dimension(12) :: rfinc = 0    ! deg C      |monthly precipitation adjustment
+        real, dimension(12) :: tmpinc = 0   ! deg C      |monthly temperature adjustment
+        real, dimension(12) :: radinc = 0   ! MJ/m^2     |monthly solar radiation adjustment
+        real, dimension(12) :: huminc = 0   ! none       |monthly humidity adjustment
       end type weather_station
       type (weather_station), dimension(:),allocatable :: wst
+         
+      type climate_change_variables
+        character(len=50) :: name = "Increment or Scenario"
+        integer :: ref_yr                   ! none       |reference year to begin incremental adjustments
+        real :: co2inc = 0                  ! ppm        |annual CO2 increment
+        real, dimension(12) :: rfinc = 0    ! deg C      |monthly precipitation annual increment
+        real, dimension(12) :: tmpinc = 0   ! deg C      |monthly temperature annual increment
+        real, dimension(12) :: radinc = 0   ! MJ/m^2     |monthly solar radiation annual increment
+        real, dimension(12) :: huminc = 0   ! none       |monthly humidity annual increment
+        real :: co2scen = 0                 ! ppm        |annual CO2 scenario adjustment
+        real, dimension(12) :: rfscen = 0   ! deg C      |monthly precipitation scenario adjustment
+        real, dimension(12) :: tmpscen = 0  ! deg C      |monthly temperature scenario adjustment
+        real, dimension(12) :: radscen = 0  ! MJ/m^2     |monthly solar radiation scenario adjustment
+        real, dimension(12) :: humscen = 0  ! none       |monthly humidity scenario adjustment
+      end type climate_change_variables
          
       type climate_measured_data
         character (len=50) :: filename

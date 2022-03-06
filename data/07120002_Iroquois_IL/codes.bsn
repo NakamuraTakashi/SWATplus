@@ -1,3 +1,3 @@
-bsn_code Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:13 PM
-    PET_FILE     WQ_FILE   PET EVENT CRACK RTU_WQ SED_DET RTE_CHA DEG_CHA WQ_CHA    STRESS   CN  C_FACT CARBON BASEFLO  UHYD SED_CHA TILEDRAIN WTABLE SOIL_P ABSTR_INIT ATMO_DEP STOR_MAX HEADWATER
- petfile.imp wwqfile.imp     2     0     0      0       1       1       0      0       0      0      0      0       0     1       0         0      0      0          0        0        0         0
+codes.bsn
+    PET_FILE     WQ_FILE   PET EVENT CRACK RTU_WQ SED_DET RTE_CHA DEG_CHA WQ_CHA    STRESS   CN  C_FACT CARBON  LAPSE  UHYD SED_CHA TILEDRAIN WTABLE SOIL_P ABSTR_INIT ATMO_DEP STOR_MAX  I_FPWET
+ petfile.imp wwqfile.imp     2     0     0      0       1       1       0      0       0      0      0      0       0     1       0         0      0      0          0        0        0        0

@@ -1,3 +1,3 @@
-nutrients.sol: Soil nutrients - LREW
-name                     dp_co         tot_n         min_n         org_n         tot_p         min_p         org_p         sol_p         h3a_p        mehl_p        bray_p  
-soilnut1              13.00000       6.00000       3.00000       3.00000       3.50000       0.40000       0.15000       0.25000       1.20000       0.85000       0.85000  
+nutrients.sol
+name             exp_co       lab_p     nitrate  fr_hum_act     hum_c_n     hum_c_p      inorgp  watersol_p       h3a_p   mehlich_p bray_strong_p
+soilnut1          0.001         5.0         7.0        0.02        10.0        80.0        3.50        0.15        25.0        1.20         0.85

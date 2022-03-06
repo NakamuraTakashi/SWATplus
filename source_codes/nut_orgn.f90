@@ -31,7 +31,7 @@
         j = ihru
 
         !! HRU calculations
-        xx = soil1(j)%hp(1)%n + soil1(j)%hs(1)%n
+        xx = soil1(j)%hsta(1)%n + soil1(j)%hact(1)%n
         wt1 = soil(j)%phys(1)%bd * soil(j)%phys(1)%d / 100.
 
         if (hru(j)%hyd%erorgn > .001) then
@@ -48,17 +48,17 @@
 
 	!! update soil nitrogen pools only for HRU calculations
       if (xx > 1.e-6) then
-       soil1(j)%hs(1)%n = soil1(j)%hs(1)%n - sedorgn(j) * (soil1(j)%hs(1)%n / xx)
-       soil1(j)%hp(1)%n = soil1(j)%hp(1)%n - sedorgn(j) * (soil1(j)%hp(1)%n / xx)
+       soil1(j)%hact(1)%n = soil1(j)%hact(1)%n - sedorgn(j) * (soil1(j)%hact(1)%n / xx)
+       soil1(j)%hsta(1)%n = soil1(j)%hsta(1)%n - sedorgn(j) * (soil1(j)%hsta(1)%n / xx)
 
-       if (soil1(j)%hs(1)%n < 0.) then
-         sedorgn(j) = sedorgn(j) + soil1(j)%hs(1)%n
-         soil1(j)%hs(1)%n = 0.
+       if (soil1(j)%hact(1)%n < 0.) then
+         sedorgn(j) = sedorgn(j) + soil1(j)%hact(1)%n
+         soil1(j)%hact(1)%n = 0.
        end if
 
-       if (soil1(j)%hp(1)%n < 0.) then
-         sedorgn(j) = sedorgn(j) + soil1(j)%hp(1)%n
-         soil1(j)%hp(1)%n = 0.
+       if (soil1(j)%hsta(1)%n < 0.) then
+         sedorgn(j) = sedorgn(j) + soil1(j)%hsta(1)%n
+         soil1(j)%hsta(1)%n = 0.
        end if
 
       end if

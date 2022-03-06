@@ -22,9 +22,9 @@
       
       !!Section 1
       !!this section sets, allocates, and initializes the original soil database
-       msoils = Max(0,db_mx%soil)
-       allocate (sol(0:msoils))
-       allocate (sol1(0:msoils))       
+      msoils = Max(0,db_mx%soil)
+      allocate (sol(0:msoils))
+       
       do isol = 1, msoils
         sol(isol)%s%snam = soildb(isol)%s%snam
         if (soildb(isol)%ly(1)%z > 19.5) then
@@ -40,29 +40,13 @@
         mlyr = sol(isol)%s%nly
         allocate (sol(isol)%ly(mlyr))
         allocate (sol(isol)%phys(mlyr))
-        allocate (sol1(isol)%sw(mlyr))
-        allocate (sol1(isol)%cbn(mlyr))
-        allocate (sol1(isol)%sed(mlyr))
-        allocate (sol1(isol)%mn(mlyr))
-        allocate (sol1(isol)%mp(mlyr))
-        allocate (sol1(isol)%tot(mlyr))
-        allocate (sol1(isol)%hs(mlyr))
-        allocate (sol1(isol)%hp(mlyr))
-        allocate (sol1(isol)%str(mlyr))
-        allocate (sol1(isol)%lig(mlyr))
-        allocate (sol1(isol)%meta(mlyr))
-        allocate (sol1(isol)%microb(mlyr))
-        allocate (sol1(isol)%man(mlyr))
-        allocate (sol1(isol)%water(mlyr))
         
         !!set first 10 mm layer
         sol(isol)%phys(1)%d = 10.
         sol(isol)%phys(1)%bd = soildb(isol)%ly(1)%bd
         sol(isol)%phys(1)%awc = soildb(isol)%ly(1)%awc
         sol(isol)%phys(1)%k = soildb(isol)%ly(1)%k
-        sol1(isol)%cbn(1) = soildb(isol)%ly(1)%cbn
-        !assume 0.01% carbon if zero
-        sol1(isol)%cbn(1) = amax1(.01, sol1(isol)%cbn(1))
+        
         sol(isol)%phys(1)%clay = soildb(isol)%ly(1)%clay
         sol(isol)%phys(1)%silt = soildb(isol)%ly(1)%silt
         sol(isol)%phys(1)%sand = soildb(isol)%ly(1)%sand
@@ -79,7 +63,6 @@
             sol(isol)%phys(j)%bd = soildb(isol)%ly(j-1)%bd
             sol(isol)%phys(j)%awc = soildb(isol)%ly(j-1)%awc
             sol(isol)%phys(j)%k = soildb(isol)%ly(j-1)%k
-            sol1(isol)%cbn(j) = soildb(isol)%ly(j-1)%cbn
             sol(isol)%phys(j)%clay = soildb(isol)%ly(j-1)%clay
             sol(isol)%phys(j)%silt = soildb(isol)%ly(j-1)%silt
             sol(isol)%phys(j)%sand = soildb(isol)%ly(j-1)%sand
@@ -97,7 +80,6 @@
             sol(isol)%phys(j)%bd = soildb(isol)%ly(j)%bd
             sol(isol)%phys(j)%awc = soildb(isol)%ly(j)%awc
             sol(isol)%phys(j)%k = soildb(isol)%ly(j)%k
-            sol1(isol)%cbn(j) = soildb(isol)%ly(j)%cbn
             sol(isol)%phys(j)%clay = soildb(isol)%ly(j)%clay
             sol(isol)%phys(j)%silt = soildb(isol)%ly(j)%silt
             sol(isol)%phys(j)%sand = soildb(isol)%ly(j)%sand
@@ -110,10 +92,10 @@
           end do
         end if
       end do
-
+           
       do isol = 1, msoils
         call soil_phys_init(isol)          !! initialize soil physical parameters
-        call soil_nutcarb_init(isol)       !! initialize soil chemical parameters
+        !call soil_nutcarb_init(isol)       !! initialize soil chemical parameters
       end do
       
       !!Section 2
@@ -143,6 +125,8 @@
         allocate (soil1(ihru)%mn(nly))
         allocate (soil1(ihru)%mp(nly))
         allocate (soil1(ihru)%tot(nly))
+        allocate (soil1(ihru)%hact(nly))
+        allocate (soil1(ihru)%hsta(nly))
         allocate (soil1(ihru)%str(nly))
         allocate (soil1(ihru)%lig(nly))
         allocate (soil1(ihru)%meta(nly))
@@ -158,6 +142,8 @@
         allocate (soil1_init(ihru)%mn(nly))
         allocate (soil1_init(ihru)%mp(nly))
         allocate (soil1_init(ihru)%tot(nly))
+        allocate (soil1_init(ihru)%hact(nly))
+        allocate (soil1_init(ihru)%hsta(nly))
         allocate (soil1_init(ihru)%str(nly))
         allocate (soil1_init(ihru)%lig(nly))
         allocate (soil1_init(ihru)%meta(nly))
@@ -168,22 +154,20 @@
         allocate (soil1_init(ihru)%water(nly))
         
         !! set hru soils to appropriate database soil layers
-        
-        soil1(ihru) = sol1(isol)
-        
         do ly = 1, nly
           soil(ihru)%phys(ly) = sol(isol)%phys(ly)
-          soil1(ihru)%tot(ly) = sol1(isol)%tot(ly)
           soil(ihru)%ly(ly) = sol(isol)%ly(ly)
           !! set arrays that are layer and plant dependent - residue and roots
           !allocate (soil(ihru)%ly(ly)%rs(pcom(ihru)%npl))
         end do
+        
+        !! initialize carbon and nutrient contents for each hru
+        call soil_nutcarb_init(isol)
+        
       end do
       
       do ihru = 1, sp_ob%hru
         if (pco%snutc == "d" .or. pco%snutc == "m" .or. pco%snutc == "y" .or. pco%snutc == "a") then
-          time%day = 0
-          time%yrc = 0
           call soil_nutcarb_write
         end if
       end do

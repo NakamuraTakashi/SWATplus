@@ -54,9 +54,9 @@
         j = ihru
 
         !! HRU sediment calculations
-        sedp_attach = soil1(j)%hp(1)%p + soil1(j)%man(1)%p + rsd1(j)%man%p + soil1(j)%mp(1)%sta + soil1(j)%mp(1)%act
+        sedp_attach = soil1(j)%hsta(1)%p + soil1(j)%man(1)%p + rsd1(j)%man%p + soil1(j)%mp(1)%sta + soil1(j)%mp(1)%act
         if (sedp_attach > 1.e-9) then
-          fr_orgp = (soil1(j)%hp(1)%p + soil1(j)%man(1)%p  + rsd1(j)%man%p) / sedp_attach
+          fr_orgp = (soil1(j)%hsta(1)%p + soil1(j)%man(1)%p  + rsd1(j)%man%p) / sedp_attach
           fr_actmin = soil1(j)%mp(1)%sta / sedp_attach
           fr_stamin = soil1(j)%mp(1)%act / sedp_attach
         end if
@@ -81,11 +81,11 @@
           sedminps(j) = amin1 (sedminps(j), soil1(j)%mp(1)%sta)
           soil1(j)%mp(1)%sta = soil1(j)%mp(1)%sta - sedminps(j)
         
-          sed_orgp = soil1(j)%hp(1)%p + soil1(j)%man(1)%p  + rsd1(j)%man%p
+          sed_orgp = soil1(j)%hsta(1)%p + soil1(j)%man(1)%p  + rsd1(j)%man%p
           if (sed_orgp > 1.e-6) then
-            sed_hump = sedorgp(j) * (soil1(j)%hp(1)%p / sed_orgp)
-            sed_hump = amin1 (sed_hump, soil1(j)%hp(1)%p)
-            soil1(j)%hp(1)%p = soil1(j)%hp(1)%p - sed_hump
+            sed_hump = sedorgp(j) * (soil1(j)%hsta(1)%p / sed_orgp)
+            sed_hump = amin1 (sed_hump, soil1(j)%hsta(1)%p)
+            soil1(j)%hsta(1)%p = soil1(j)%hsta(1)%p - sed_hump
         
             sed_manp = sedorgp(j) * (soil1(j)%man(1)%p / sed_orgp)
             sed_manp = amin1 (sed_manp, soil1(j)%man(1)%p)

@@ -69,6 +69,10 @@
             do ic = 1, dtbl_lum(i)%conds
               read (107,*,iostat=eof) dtbl_lum(i)%cond(ic), (dtbl_lum(i)%alt(ic,ial), ial = 1, dtbl_lum(i)%alts)
               if (eof < 0) exit
+              if (dtbl_lum(i)%cond(ic)%var == "prob_unif") then
+                backspace (107)
+                read (107,*,iostat=eof) dtbl_lum(i)%cond(ic)%var, dtbl_lum(i)%frac_app
+              end if
             end do
             
             !if land_use conditional variable, determine number of hru's and areas (used for probabilistic operations)
@@ -131,6 +135,14 @@
                   end do
                 
                 case ("irr_demand")
+                  do idb = 1, db_mx%irrop_db
+                    if (dtbl_lum(i)%act(iac)%option == irrop_db(idb)%name) then
+                      dtbl_lum(i)%act_typ(iac) = idb
+                      exit
+                    end if
+                  end do
+                       
+                case ("irrigate")
                   do idb = 1, db_mx%irrop_db
                     if (dtbl_lum(i)%act(iac)%option == irrop_db(idb)%name) then
                       dtbl_lum(i)%act_typ(iac) = idb

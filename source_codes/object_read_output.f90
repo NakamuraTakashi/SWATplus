@@ -106,6 +106,4 @@
       
       return
       
-100   format (4a8,32a18) !H
-!      100   format (2a8,a8,a8, 30(a18)) !H
       end subroutine object_read_output

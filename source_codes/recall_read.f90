@@ -33,6 +33,7 @@
       integer :: iexco_om
       integer :: ifirst               !           |
       integer :: iexo_allo = 0
+      integer :: idaystep
       
       eof = 0
       imax = 0
@@ -52,6 +53,7 @@
             if (eof < 0) exit
             imax = Max(imax,i) 
           end do
+          db_mx%recall_max = imax
           
       allocate (recall(0:imax))
       allocate (rec_d(imax))
@@ -73,18 +75,21 @@
         if (eof < 0) exit
         
         if (recall(i)%typ /= 4) then
-          open (108,file = recall(i)%filename)
-          read (108,*,iostat=eof) titldum
-          if (eof < 0) exit
-          read (108,*,iostat=eof) nbyr
-          if (eof < 0) exit
-          read (108,*,iostat=eof) header
-          if (eof < 0) exit 
+          do 
+            open (108,file = recall(i)%filename)
+            read (108,*,iostat=eof) titldum
+            if (eof < 0) exit
+            read (108,*,iostat=eof) nbyr
+            if (eof < 0) exit
+            read (108,*,iostat=eof) header
+            exit 
+          end do
         
         select case (recall(i)%typ)
             
         case (0) !! subdaily
             allocate (recall(i)%hyd_flo(time%step*366,nbyr))
+            allocate (recall(i)%hd(366,nbyr))
             
           case (1) !! daily
             allocate (recall(i)%hd(366,nbyr))
@@ -101,7 +106,7 @@
         do 
           read (108,*,iostat=eof) jday, mo, day_mo, iyr
           if (eof < 0) exit
-        end do
+        
         recall(i)%end_yr = iyr
         rewind (108)
         read (108,*,iostat=eof) titldum
@@ -112,16 +117,15 @@
         if (eof < 0) exit 
        
         !! find data at start of simulation
-        if (recall(i)%typ == 0) then
-        iyrs = 1
-        iyr_prev = jday
-        else
         do 
           read (108,*,iostat=eof) jday, mo, day_mo, iyr
           if (eof < 0) exit
           if (iyr == time%yrc) then
             recall(i)%start_yr = iyr
             select case (recall(i)%typ)
+              case (0) !! subdaily
+                istep = (jday - 1) * time%step + 1
+                idaystep = jday
               case (1) !! daily
                 istep = jday
               case (2) !! monthly
@@ -137,33 +141,50 @@
         backspace (108)
         iyr_prev = iyr
         iyrs = 1
-        end if
        
         do
           iyr_prev = iyr
           if (recall(i)%typ == 0) then
-            read (108,*,iostat=eof) iyr, istep, recall(i)%hyd_flo(istep,iyrs)
-            !convert m3/s -> m3
-            recall(i)%hyd_flo(istep,iyrs) = recall(i)%hyd_flo(istep,iyrs) * 86400. / time%step
-            recall(i)%hyd_flo(istep,iyrs) = recall(i)%hyd_flo(istep,iyrs) / 35.     !***jga - input test hyd in cfs -> cms
+            !! don't store subdaily (ht1) - sum to get daily to save
+            read (108,*,iostat=eof) jday, mo, day_mo, iyr, ob_typ, ob_name, ht1
           else
-            read (108,*,iostat=eof) jday, mo, day_mo, iyr, ob_typ, ob_name, recall(i)%hd(istep,iyrs)  ! * 86400.  left in m3 for NAM
+            read (108,*,iostat=eof) jday, mo, day_mo, iyr, ob_typ, ob_name, recall(i)%hd(istep,iyrs)
           end if
           if (eof < 0) exit
-          !call hyd_convert_mass (rec_om(i)%hd_om(istep,iyrs))
-          !check to see when next year
+          
+          !check to set next year
           select case (recall(i)%typ)
-            !case (0) !! subdaily
-            !  if (iyr_prev /= iyr) then
-            !    iyr_prev = iyr
-            !    iyrs = iyrs + 1
-            !    backspace (108)
-            !    read (108,*,iostat=eof) iyr, istep, recall(i)%hyd_flo(istep,iyrs)
-            !    !convert m3/s -> m3
-            !    recall(i)%hyd_flo(istep,iyrs) = recall(i)%hyd_flo(istep,iyrs) * 86400. / time%step
-            !    recall(i)%hyd_flo(istep,iyrs) = recall(i)%hyd_flo(istep,iyrs) / 35.     !***jga - input test hyd in cfs -> cms
-            !  end if
-            
+            case (0) !! subdaily
+                 
+              !! convert m3/s -> m3
+              recall(i)%hyd_flo(istep,iyrs) = ht1%flo * 86400. / time%step
+              
+              !! reset daily step and sum the daily hyd
+              if (istep > idaystep * time%step) then
+                !! convert daily flow m3/s -> m3 -- other subdaily inputs are in t and kg
+                recall(i)%hd(idaystep,iyrs)%flo = recall(i)%hd(idaystep,iyrs)%flo * 86400. / time%step
+                idaystep = idaystep + 1
+                recall(i)%hd(idaystep,iyrs) = recall(i)%hd(idaystep,iyrs) + ht1
+              else
+                recall(i)%hd(idaystep,iyrs) = recall(i)%hd(idaystep,iyrs) + ht1
+              end if
+           
+              !! increment subdaily time step
+              istep = istep + 1
+              
+              !! reset year, day, and subday at end of year
+              if (jday == 365 .or. jday == 366) then
+                read (108,*,iostat=eof) jday, mo, day_mo, iyr
+                if (eof < 0) exit
+                backspace (108)
+                if (iyr /= iyr_prev) then
+                  iyr_prev = iyr
+                  iyrs = iyrs + 1
+                  istep = 1
+                  idaystep = 1
+                end if
+              end if
+              
             case (1) !! daily
               istep = istep + 1
               if (jday == 365 .or. jday == 366) then
@@ -178,6 +199,7 @@
              end if
             
             case (2) !! monthly
+              istep = istep + 1
               if (mo == 12) then
                 iyrs = iyrs + 1
                 istep = 1
@@ -187,7 +209,7 @@
               iyrs = iyrs + 1
 
          end select
-           
+         end do
        end do   
          close (108)
       else

@@ -40,6 +40,7 @@
             ob(iob)%flood_ch_elem = ics   !pointer to landscape element - 1 nearest to channel
             
             ihru = ch_sur(ics)%obtypno(ii)
+            hru(ihru)%wet_fp = "y"
             tot_ha = tot_ha + ob(iob)%area_ha
             
           case ("hlt")   !hru_lte

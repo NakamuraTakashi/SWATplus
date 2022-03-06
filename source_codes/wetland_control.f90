@@ -49,40 +49,19 @@
       ihyd = wet_dat(ires)%hyd
       ised = wet_dat(ires)%sed
       irel = wet_dat(ires)%release
-      hru(j)%water_fr = 0.
 
-      !! initialize variables for reservoir daily simulation
+      !! initialize variables for wetland daily simulation
       hru(ihru)%water_seep = 0.
 
-      bypass = 1. - wet_hyd(ihyd)%frac
-      fracwet = 1. - bypass 
-      fracwet = max (fracwet,0.)
-
-      !! set incoming flow, sediment and nutrients
-      ht1%flo = qday
-      ht1%sed = sedyld(ihru)
-      ht1%san = sanyld(ihru)
-      ht1%sil = silyld(ihru)
-	  ht1%cla = clayld(ihru) 
-	  ht1%sag = sagyld(ihru)
-	  ht1%lag = lagyld(ihru)
-	  ht1%grv = grayld(ihru)
-      ht1%orgn = sedorgn(ihru)
-      ht1%sedp = sedorgp(ihru)
-      ht1%no3 = surqno3(ihru)
-      ht1%nh3 = 0. 
-      ht1%no2 = 0.
-      ht1%solp = sedminps(ihru) + sedminpa(ihru)
-               
       !! add precipitation - mm*ha*10.=m3 (used same area for infiltration and soil evap)
       wet_wat_d(ihru)%precip = w%precip * wet_wat_d(ihru)%area_ha * 10.
       wet(ihru)%flo =  wet(ihru)%flo + wet_wat_d(ihru)%precip
       
       !! subtract evaporation and seepage - mm*ha*10.=m3
-      wet_wat_d(ihru)%evap = pet_day * wet_hyd(ihyd)%evrsv * wet_wat_d(ihru)%area_ha * 10.
-      wet_wat_d(ihru)%evap = min(wet_wat_d(ihru)%evap, wet(ihru)%flo)
-      wet(ihru)%flo =  wet(ihru)%flo - wet_wat_d(ihru)%evap
-      hru(ihru)%water_evap = wet_wat_d(ihru)%evap / (10. * hru(ihru)%area_ha)
+      !wet_wat_d(ihru)%evap = pet_day * wet_hyd(ihyd)%evrsv * wet_wat_d(ihru)%area_ha * 10.
+      !wet_wat_d(ihru)%evap = min(wet_wat_d(ihru)%evap, wet(ihru)%flo)
+      !wet(ihru)%flo =  wet(ihru)%flo - wet_wat_d(ihru)%evap
+      !hru(ihru)%water_evap = wet_wat_d(ihru)%evap / (10. * hru(ihru)%area_ha)
         
       !! save hru(ihru)%water_seep to add to infiltration on next day
       wet_wat_d(ihru)%seep = wet_wat_d(ihru)%area_ha * wet_hyd(ihyd)%k * 10.* 24.
@@ -90,18 +69,21 @@
       wet(ihru)%flo = wet(ihru)%flo - hru(ihru)%water_seep
       hru(ihru)%water_seep = wet_wat_d(ihru)%seep / (10. * hru(ihru)%area_ha)
         
-      !! calc release from decision table
-      d_tbl => dtbl_res(irel)
-      wbody => wet(ihru)
-      wbody_wb => wet_wat_d(ihru)
-      pvol_m3 = wet_ob(ihru)%pvol
-      evol_m3 = wet_ob(ihru)%evol
-      call conditions (ihru, irel)
-      call res_hydro (ihru, irel, ihyd, pvol_m3, evol_m3)
-      call res_sediment (ihru, ihyd, ised)
+      !! if not a floodplain wetland
+      if (hru(ihru)%wet_fp == "n") then
+        !! calc release from decision table
+        d_tbl => dtbl_res(irel)
+        wbody => wet(ihru)
+        wbody_wb => wet_wat_d(ihru)
+        pvol_m3 = wet_ob(ihru)%pvol
+        evol_m3 = wet_ob(ihru)%evol
+        call conditions (ihru, irel)
+        call res_hydro (ihru, irel, ihyd, pvol_m3, evol_m3)
+        call res_sediment (ihru, ihyd, ised)
       
-      !! subtract outflow from storage
-      wet(ihru)%flo =  wet(ihru)%flo - ht2%flo
+        !! subtract outflow from storage
+        wet(ihru)%flo =  wet(ihru)%flo - ht2%flo
+      end if
 
       !! update surface area - solve quadratic to find new depth
       wet_wat_d(ihru)%area_ha = 0.
@@ -116,9 +98,6 @@
         wet_fr = (1. + wet_hyd(ihyd)%acoef * wet_h)
         wet_fr = min(wet_fr,1.)
         wet_wat_d(ihru)%area_ha = hru(ihru)%area_ha * wet_fr
-                
-        hru(ihru)%water_fr =  wet_wat_d(ihru)%area_ha / hru(ihru)%area_ha
-
       end if 
  
       !! subtract sediment leaving from reservoir

@@ -62,6 +62,7 @@
                if (db_mx%wgnsta > 0) call search (wgn_n, db_mx%wgnsta, wst(i)%wco_c%wgn, wst(i)%wco%wgn)
                if (wst(i)%wco%wgn == 0 .and. wst(i)%wco_c%wgn /= "sim") write (9001,*) wst(i)%wco_c%wgn, "file not found (wgn)"
                if (db_mx%pcpfiles > 0) call search (pcp_n, db_mx%pcpfiles, wst(i)%wco_c%pgage, wst(i)%wco%pgage)
+                 wst(i)%pcp_ts = pcp(wst(i)%wco%pgage)%tstep
                if (wst(i)%wco%pgage == 0 .and. wst(i)%wco_c%pgage /= "sim") write (9001,*) &
                     wst(i)%wco_c%pgage,"file not found (pgage)"
                if (db_mx%tmpfiles > 0) call search (tmp_n, db_mx%tmpfiles, wst(i)%wco_c%tgage, wst(i)%wco%tgage)

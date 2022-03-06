@@ -42,21 +42,6 @@
       hruirrday = 0.
       irmmdt = 0.
 
-      !!compute canopy interception
-      call sq_canopyint
-
-      !! compute snow melt
-      call sq_snom
-
-      !! compute crack volume
-      if (bsn_cc%crk == 1) call sq_crackvol
-
-      if (time%step > 0) then
-        do ii = 1, time%step
-          wst(iwst)%weat%ts(ii) = wst(iwst)%weat%ts(ii) ! + ovrlnd_dt(j,ii)
-        end do
-      end if
-
       !!calculate subdaily curve number value
       call sq_dailycn
 

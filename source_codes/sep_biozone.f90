@@ -148,8 +148,8 @@
            soil(j)%phys(bz_lyr)%wp)
 		 soil1(j)%mn(bz_lyr)%nh4 = 0
 		 soil1(j)%mn(bz_lyr)%no3 = 0
-		 soil1(j)%hp(bz_lyr)%n = 0
-		 soil1(j)%hp(bz_lyr)%p = 0
+		 soil1(j)%hsta(bz_lyr)%n = 0
+		 soil1(j)%hsta(bz_lyr)%p = 0
 		 soil1(j)%tot(bz_lyr)%p = 0 
 		 soil1(j)%mp(bz_lyr)%lab = 0
          soil1(j)%mp(bz_lyr)%act = 0
@@ -177,11 +177,11 @@
                      sepdb(sep(isep)%typ)%no2concs)  
       soil1(j)%mn(bz_lyr)%nh4 = soil1(j)%mn(bz_lyr)%nh4 + xx *            &
                                     sepdb(sep(isep)%typ)%nh4concs 
-      soil1(j)%hp(bz_lyr)%n = soil1(j)%hp(bz_lyr)%n + xx *                & 
+      soil1(j)%hsta(bz_lyr)%n = soil1(j)%hsta(bz_lyr)%n + xx *                & 
                                    sepdb(sep(isep)%typ)%orgnconcs*rtof
       soil1(j)%tot(bz_lyr)%n = soil1(j)%tot(bz_lyr)%n +                 &
                xx*sepdb(sep(isep)%typ)%orgnconcs*(1-rtof)
-      soil1(j)%hp(bz_lyr)%p = soil1(j)%hp(bz_lyr)%p + xx *                &
+      soil1(j)%hsta(bz_lyr)%p = soil1(j)%hsta(bz_lyr)%p + xx *                &
                                     sepdb(sep(isep)%typ)%orgps*rtof
       soil1(j)%tot(bz_lyr)%p = soil1(j)%tot(bz_lyr)%p + xx *              &
                                     sepdb(sep(isep)%typ)%orgps*           &        

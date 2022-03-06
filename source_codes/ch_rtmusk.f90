@@ -71,11 +71,12 @@
       use basin_module
       use channel_data_module
       use channel_module
-      use hydrograph_module, only : ob, icmd, jrch, isdch
+      use hydrograph_module !, only : ob, icmd, jrch, isdch, fp_stor, ch_stor
       use time_module
       use channel_velocity_module
       use sd_channel_module
       use climate_module
+      use reservoir_module
       
       implicit none
       
@@ -83,11 +84,11 @@
                            !                  |routing in the muskingum routing method
       integer :: ii        !none              |counter
       integer :: i         !none              |current day of simulation
-      real :: xkm          !hr                |storage time constant for the reach on
-                           !                  |current day 
-      real :: det          !hr                |time step (24 hours)
-      real :: yy           !none              |variable to hold intermediate calculation
-                           !                  |value
+      integer :: ihru
+      integer :: icha
+      integer :: irtstep
+      integer :: isubstep
+      
       real :: c1           !units             |description 
       real :: c2           !units             |description
       real :: c3           !units             |description
@@ -98,10 +99,7 @@
       real :: c            !none              |inverse of channel side slope
       real :: rh           !m                 |hydraulic radius
       real :: topw         !m                 |top width of main channel
-      real :: msk1         !units             |description 
-      real :: msk2         !units             |description 
-      real :: detmax       !units             |description 
-      real :: detmin       !units             |description 
+      
       real :: qinday       !units             |description 
       real :: qoutday      !units             |description  
 	  real :: volrt        !units             |description 
@@ -116,13 +114,11 @@
       real :: qman         !m^3/s or m/s      |flow rate or flow velocity
       real :: vc           !m/s               |flow velocity in reach
       real :: aaa          !units             |description 
-      real :: sum_rttlc    !                  |           !! Van Tam Nguyen 10/2018
-      real :: sum_rtevp    !                  |           !! Van Tam Nguyen 10/2018 
-      
       real :: inflo        !m^3           |inflow water volume
+      real :: inflo_rate   !m^3/s         |inflow rate
       real :: xs_area      !m^2           |cross section area of channel
       real :: dep_flo      !m             |depth of flow
-      real :: perim_wet    !m             |wetted perimeter
+      real :: wet_perim    !m             |wetted perimeter
       real :: ttime        !hr            |travel time through the reach
       real :: t_inc        !hr            |time in routing step - 1/time%step
       real :: outflo       !m^3           |outflow water volume
@@ -131,154 +127,240 @@
       real :: rate_flo     !m^3/s         |flow rate
       real :: ev           !m^3           |evaporation during time step
       real :: evap         !m^3           |evaporation losses during day
-      integer :: iwst
+      real :: above_prin_fr
+      real :: out_decr_fr
+      real :: ch_out_fr
+      real :: fp_out_fr
+      real :: ch_fp_fr
+      real :: fp_ch_fr
+      real :: rto
+      real :: rto_w
+      real :: outflo_rate
+      real :: ch_st             !m^3        |water storage in and above channel
+      real :: fp_st             !m^3        |water storage in flood plain
+      real :: wet_st            !m^3        |wetland storage above principal
+      real :: dts               !seconds    |time step interval for substep
+      real :: dthr
+      real :: scoef
+      real :: vol_ch_av
+      real :: vol_fp_av
+      real :: vol_tot_av
 
       jrch = isdch
       jhyd = sd_dat(jrch)%hyd
       
       qinday = 0
       qoutday = 0
-      det = 24.
-      sum_rttlc = 0.0   !! Van Tam Nguyen 10/2018
-      sum_rtevp = 0.0   !! Van Tam Nguyen 10/2018
-      ch(jrch)%chfloodvol = 0.
-
-      !! Compute storage time constant for reach (msk_co1 + msk_co2 = 1.)
-	  msk1 = bsn_prm%msk_co1 / (bsn_prm%msk_co1 + bsn_prm%msk_co2)
-	  msk2 = bsn_prm%msk_co2 / (bsn_prm%msk_co1 + bsn_prm%msk_co2)
-	  bsn_prm%msk_co1 = msk1
-	  bsn_prm%msk_co2 = msk2
-      xkm = ch_vel(jrch)%wid_btm * bsn_prm%msk_co1 + ch_vel(jrch)%stor_dis_1bf * bsn_prm%msk_co1
-      
-      !! Muskingum numerical stability -Jaehak Jeong, 2011
-      !! Check numerical stability
-      detmax = 2.* xkm * (1.- bsn_prm%msk_x)
-      detmin = 2.* xkm * bsn_prm%msk_x
-      
-      !! Discretize time interval to meet the stability criterion 
-      if (det > detmax) then
-        if (det / 2. <= detmax) then
-          det = 12
-          nn = 2
-        elseif (det / 4. <= detmax) then
-          det = 6
-          nn = 4
-        else
-          det = 1
-          nn = 24
-        endif
-      else
-        det = 24
-        nn = 1
-      end if
+      !det = time%dtm / 60.
       
       !! volume at start of day
-      vol = sd_ch(jrch)%stor
+      vol = ch_stor(jrch)%flo + fp_stor(jrch)%flo
+      
+      irtstep = 1
+      isubstep = 0
+      dts = time%dtm / sd_ch(jrch)%msk%substeps * 60.
+      dthr = dts / 3600.
 
       !! subdaily time step
-      do ii = 1, time%step
+      do ii = 1, sd_ch(jrch)%msk%nsteps
 
-        !! water entering reach during time step
-        inflo = ob(icmd)%tsin(ii)
+        !! water entering reach during time step - substeps for stability
+        isubstep = isubstep + 1
+        if (isubstep > sd_ch(jrch)%msk%substeps) then
+          irtstep = irtstep + 1
+          isubstep = 1
+        end if
+        inflo = ob(icmd)%tsin(irtstep) / sd_ch(jrch)%msk%substeps
+        inflo_rate = inflo / dts 
 
-        !! update volume of water in reach
-        vol = vol + inflo
-        vol = Max(vol, 1.e-14)
-
-        !! Find average flowrate in a subdaily time interval
-        volrt = vol / (86400. / nn)
-
-        !! Find maximum flow capacity of the channel at bank full
-        c = ch_hyd(jhyd)%side
-	    p = sd_ch_vel(jrch)%wid_btm + 2. * sd_ch(jrch)%chd * Sqrt(1. + c * c)
-	    rh = sd_ch_vel(jrch)%area / p
-	    maxrt = Qman(ch_vel(jrch)%area, rh, ch_hyd(jhyd)%n, sd_ch(jrch)%chs)
-
-        sdti = 0.
-	    rchdep = 0.
-	    p = 0.
-	    rh = 0.
-	    vc = 0.
-
-        !! If average flowrate is greater than than the channel capacity at bank full
-        !! then simulate flood plain flow else simulate the regular channel flow
-        if (volrt > maxrt) then
-	      rcharea = sd_ch_vel(jrch)%area
-	      rchdep = sd_ch(jrch)%chd
-	      p = sd_ch_vel(jrch)%wid_btm + 2. * sd_ch(jrch)%chd * Sqrt(1. + c * c)
-	      rh = sd_ch_vel(jrch)%area / p
-	      sdti = maxrt
-	      adddep = 0
-	      !! find the crossectional area and depth for volrt by iteration method at 1cm interval depth
-	      !! find the depth until the discharge rate is equal to volrt
-	      Do While (sdti < volrt)
-            adddep = adddep + 0.01
-            addarea = rcharea + ((sd_ch(jrch)%chw * 5) + 4 * adddep) * adddep
-            addp = p + (sd_ch(jrch)%chw * 4) + 2. * adddep * Sqrt(1. + 4 * 4)
-	        rh = addarea / addp
-            sdti = Qman(addarea, rh, ch_hyd(jhyd)%n, sd_ch(jrch)%chs)
-	      end do
-	      rcharea = addarea
-	      rchdep = sd_ch(jrch)%chd + adddep
-	      p = addp
-	      sdti = volrt
-          !! store floodplain water that can be used by riparian HRU"s [Ann van Griensven]       
-          ch(jrch)%chfloodvol = (volrt - maxrt)* 86400 * rt_delt
-	    else
-	      !! find the crossectional area and depth for volrt
-	      !! by iteration method at 1cm interval depth
-	      !! find the depth until the discharge rate is equal to volrt
-	      Do While (sdti < volrt)
-	        rchdep = rchdep + 0.01
-	        rcharea = (sd_ch_vel(jrch)%wid_btm + c * rchdep) * rchdep
-	        p = sd_ch_vel(jrch)%wid_btm + 2. * rchdep * Sqrt(1. + c * c)
-	        rh = rcharea / p
-	        sdti = Qman(rcharea, rh, ch_hyd(jhyd)%n, sd_ch(jrch)%chs)
-	      end do
-	      sdti = volrt
-	    end if
-
-        !! calculate top width of channel at water level
-        if (rchdep <= sd_ch(jrch)%chd) then
-          topw = sd_ch_vel(jrch)%wid_btm + 2. * rchdep * c
-        else
-          topw = 5 * sd_ch(jhyd)%chw + 2. *(rchdep - sd_ch(jrch)%chd) * 4.
+        !! interpolate rating curve using inflow rates
+        icha = jrch
+        call rcurv_interp_flo (icha, inflo_rate)
+        ch_rcurv(jrch)%in2 = rcurv
+        
+        !! save variables at each routing time step for sediment routing
+        if (isubstep == 0) then
+          hyd_rad(irtstep) = rcurv%xsec_area / rcurv%wet_perim
+          trav_time(irtstep) = rcurv%ttime
+          flo_dep(irtstep) = rcurv%dep
         end if
 
-        if (sdti > 0) then
+        !! add inflow volume of water - in channel and flood plain
+        vol = vol + inflo
+        vol = Max(vol, 1.e-14)
+        
+        !! if no water in channel - skip routing and set rating curves to zero
+        if (vol < 1.e-6) then
+          ch_rcurv(jrch)%in1 = rcz
+          ch_rcurv(jrch)%out1 = rcz
+          sd_ch(jrch)%in1_vol = 0.
+          sd_ch(jrch)%out1_vol = 0.
+        else
+        
+        !! sum flood plain wetland storage to get total flood plain storage
+        fp_stor(jrch) = hz
+        do ihru = 1, sd_ch(jrch)%fp%hru_tot
+          if (wet(ihru)%flo > wet_ob(ihru)%pvol .and. wet(ihru)%flo > 1.e-6) then
+            above_prin_fr = (wet(ihru)%flo - wet_ob(ihru)%pvol) / wet(ihru)%flo
+            fp_stor(jrch) = fp_stor(jrch) + above_prin_fr * wet(ihru)
+          end if
+        end do
+        
+        !! use flow ratio (time step/total day) to get hyd for time step (assume uniform conc during day)
+        if (ob(icmd)%hin%flo > 1.e-6) then
+          rto = inflo / ob(icmd)%hin%flo
+          rto = Min (rto, 1.)
+        else
+          rto = 0.
+        end if
+        ht1 = rto * ob(icmd)%hin
+        
+        !! partition inflow between channel and flood plain storage
+        if (inflo > 1.e-6) then
+          rto = rcurv%vol_fp / rcurv%vol
+          fp_stor(jrch) = fp_stor(jrch) + rto * ht1
+          do ihru = 1, sd_ch(jrch)%fp%hru_tot
+            rto_w = rto * sd_ch(jrch)%fp%hru_fr(ihru)
+            wet(ihru) = wet(ihru) + rto_w * ht1
+          end do
+          rto = rcurv%vol_ch / rcurv%vol
+          ch_stor(jrch) = ch_stor(jrch) + rto * ht1
+        end if
 
-        !! calculate velocity and travel time
-        vc = sdti / rcharea
-	    rttime = sd_ch(jrch)%chl * 1000. / (3600. * vc)
+        !! Muskingum method
+        outflo = sd_ch(jrch)%msk%c1 * inflo + sd_ch(jrch)%msk%c2 * sd_ch(jrch)%in1_vol +     &
+                                                sd_ch(jrch)%msk%c3 * sd_ch(jrch)%out1_vol
+               
+        !! save inflow/outflow volumes for next day for Muskingum
+        sd_ch(jrch)%in1_vol = inflo
+        sd_ch(jrch)%out1_vol = outflo
 
-        !! Compute coefficients
-        yy = 2. * xkm * (1. - bsn_prm%msk_x) + det
-        c1 = (det - 2. * xkm * bsn_prm%msk_x) / yy
-        c2 = (det + 2. * xkm * bsn_prm%msk_x) / yy
-        c3 = (2. * xkm * (1. - bsn_prm%msk_x) - det) / yy
-        c4 = 0.
-
-   ! ***    outflo = c1 * wtrin + c2 * ch(jrch)%flwin + c3 * ch(jrch)%flwout
-	    outflo = Min(outflo, (vol))
-
-          ttime = Min(24., ttime)
+        !! VSC method - sc=2*dt/(2*ttime+dt) - ttime=(in2+out1)/2
+        scoef = 2. * dthr / (ch_rcurv(jrch)%in2%ttime + ch_rcurv(jrch)%out1%ttime + dthr)
+        scoef = Min (scoef, 1.)
+        !! outflo = scoef * (inflo + storage) --> inflow already added to storage
+        !outflo = scoef * (ch_stor(jrch)%flo + fp_stor(jrch)%flo)
+        
+	    outflo = Min (outflo, vol)
+        outflo = Max (outflo, 0.)
+ 
+        !! compute outflow rating curve for next time step
+        outflo_rate = outflo / dts      !convert to cms
+        call rcurv_interp_flo (jrch, outflo_rate)
+        ch_rcurv(jrch)%out2 = rcurv
+        
+        !! subtract outflow volume of water from channel and then adjust flood plain
+        out_decr_fr = 0.
+        ch_st = ch_stor(jrch)%flo - outflo
+        if (ch_st < 0.) then
+          fp_st = fp_stor(jrch)%flo - abs(ch_st)
+          ch_out_fr = 1.
+          if (fp_st < 0.) then
+            fp_out_fr = 1.
+            out_decr_fr = abs(fp_st) / outflo
+          else
+            fp_out_fr = 1. - (fp_st / fp_stor(jrch)%flo)
+          end if
+        else
+          ch_out_fr = outflo / ch_stor(jrch)%flo
+          fp_out_fr = 0.
+        end if
+          ht1 = ch_out_fr * ch_stor(jrch)
+          ht2 = fp_out_fr * fp_stor(jrch)
+          ch_stor(jrch) = ch_stor(jrch) - ht1
+          fp_stor(jrch) = fp_stor(jrch) - ht2
+          do ihru = 1, sd_ch(jrch)%fp%hru_tot
+            wet(ihru) = wet(ihru) - sd_ch(jrch)%fp%hru_fr(ihru) * ht2
+          end do
+        
+        !! move water from channel or flood plain to get ratio in the rating curve
+        !! use average volumes from in/out rating curves and channel storage at start/end
+        vol_fp_av = (rcurv%vol_fp + ch_rcurv(jrch)%out1%vol_fp) / 2.
+        vol_ch_av = (rcurv%vol_ch + ch_rcurv(jrch)%out1%vol_ch) / 2.
+        vol_tot_av = (rcurv%vol + ch_rcurv(jrch)%out1%vol) / 2.
+        ch_st = (sd_ch(jrch)%stor + ch_stor(jrch)%flo) / 2. !! could try rating curve from ave total storage
+        
+        if (vol_tot_av > 1.e-6) then
+          rto = vol_ch_av / vol_tot_av
+          rto = Min (rto, 1.)
+        else
+          rto = 1.
+        end if
+        ch_st = rto * (ch_stor(jrch)%flo + fp_stor(jrch)%flo)
+        ch_fp_fr = 0.
+        fp_ch_fr = 0.
+        if (ch_stor(jrch)%flo - ch_st > 1.e-6) then
+          !! move fraction of water from channel to flood plain
+          ch_fp_fr = (ch_stor(jrch)%flo - ch_st) / ch_stor(jrch)%flo
+          fp_ch_fr = 0.
+        end if
+        if (ch_st - ch_stor(jrch)%flo > 1.e-6) then
+          !! move fraction of water from flood plain to channel
+          fp_ch_fr = (ch_st - ch_stor(jrch)%flo) / fp_stor(jrch)%flo
+          ch_fp_fr = 0.
+        end if
+        
+          if (fp_ch_fr > 1.e-6) then
+            !! move water from flood plain to channel
+            do ihru = 1, sd_ch(jrch)%fp%hru_tot
+              ht1 = fp_ch_fr * fp_stor(jrch)
+              wet_st = sd_ch(jrch)%fp%hru_fr(ihru) * ht1%flo
+              if (wet(ihru)%flo - wet_ob(ihru)%pvol > wet_st) then
+                !! can take all from above principal storage
+                ht2 = sd_ch(jrch)%fp%hru_fr(ihru) * ht1
+                wet(ihru) = wet(ihru) - ht2
+                fp_stor(jrch) = fp_stor(jrch) - ht2
+                ch_stor(jrch) = ch_stor(jrch) + ht2
+              else
+                !! just take what is above principal storage - none if below
+                if (wet(ihru)%flo > wet_ob(ihru)%pvol .and. wet(ihru)%flo > 1.e-6) then
+                  above_prin_fr = (wet(ihru)%flo - wet_ob(ihru)%pvol) / wet(ihru)%flo
+                  ht1 = above_prin_fr * wet(ihru)
+                  fp_stor(jrch) = fp_stor(jrch) - ht1
+                  ch_stor(jrch) = ch_stor(jrch) + ht1
+                  wet(ihru) = (1. - above_prin_fr) * wet(ihru)
+                end if
+              end if
+            end do
+          end if
+          if (ch_fp_fr > 1.e-6) then
+            !! move water from channel to flood plain
+            ht2 = ch_stor(jrch)
+            do ihru = 1, sd_ch(jrch)%fp%hru_tot
+              rto = ch_fp_fr * sd_ch(jrch)%fp%hru_fr(ihru)
+              ht1 =  rto * ht2
+              wet(ihru) = wet(ihru) + ht1
+              fp_stor(jrch) = fp_stor(jrch) + ht1
+              ch_stor(jrch) = ch_stor(jrch) - ht1
+            end do
+          end if
+        
+        !! set rating curve for next time step
+        ch_rcurv(jrch)%in1 = ch_rcurv(jrch)%in2
+        ch_rcurv(jrch)%out1 = ch_rcurv(jrch)%out2
+            
+        !! add channel (ht1) and flood plain (ht2) flow to daily flow
+        ob(icmd)%hd(1) = ob(icmd)%hd(1) + ht1 + ht2
+          
           !! calculate transmission losses
-          tl = sd_chd(jhyd)%chk * sd_ch(jrch)%chl * perim_wet * ttime   !mm/hr * km * mm * hr = m3       
+          ttime = Min(24., rcurv%ttime)
+          tl = sd_ch(jrch)%chk * sd_ch(jrch)%chl * wet_perim * ttime   !mm/hr * km * mm * hr = m3       
           tl = Min(tl, outflo)
           outflo = outflo - tl
           trans_loss = trans_loss + tl
 
           !! calculate evaporation
           if (outflo > 0.) then
-            !! calculate width of channel at water level
+            !! calculate width of channel at water level - flood plain evap calculated in wetlands
             if (dep_flo <= sd_ch(jrch)%chd) then
-              topw = sd_ch_vel(jrch)%wid_btm + 2. * dep_flo * sd_chd(jhyd)%chss
+              topw = ch_rcurv(jrch)%out2%surf_area
             else
-              topw = 5. * sd_ch(jrch)%chw + 8. * (dep_flo - sd_ch(jrch)%chd)
+              topw = 1000. * sd_ch(jrch)%chl * sd_ch(jrch)%chw
             end if
             
-            iwst = 1
-            ev = bsn_prm%evrch * wst(iwst)%weat%pet * sd_ch(jrch)%chl * topw * ttime
+            iwst = ob(icmd)%wst
+            !! mm * m2 / (1000. * sd_ch(jrch)%msk%nsteps)
+            ev = bsn_prm%evrch * wst(iwst)%weat%pet * topw / (1000. * sd_ch(jrch)%msk%nsteps)
             if (ev < 0.) ev = 0.
             ev = Min(ev, outflo)
             outflo = outflo - ev
@@ -286,15 +368,14 @@
           end if
 
           !! set volume of water in channel at end of hour
-          vol = vol - outflo - tl - ev
-          ob(icmd)%hyd_flo(1,ii) = outflo
+          vol = vol - outflo
+          !! volume at start of day
+          sd_ch(jrch)%stor = ch_stor(jrch)%flo + fp_stor(jrch)%flo
+          ob(icmd)%hyd_flo(1,irtstep) = ob(icmd)%hyd_flo(1,irtstep) + outflo
           
-        end if          !! rate_flo > 0. 
+        end if          !! vol < 1.e-6 loop
 
       end do            !! end of sub-daily loop
-
-      !! save storage volume for next day
-      sd_ch(jrch)%stor = vol
 
       return
       end subroutine ch_rtmusk

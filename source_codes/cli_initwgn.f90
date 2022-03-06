@@ -214,6 +214,15 @@
         summm_pet = summm_pet + wgn_pms(iwgn)%pet(mon)
       end do
 
+      !! idewpt=0 if dew point or 1 if relative humidity
+      wgn_pms(iwgn)%idewpt = 1
+      do mon = 1, 12
+        if (wgn(iwgn)%dewpt(mon) > 1. .or. wgn(iwgn)%dewpt(mon) < 0.) then
+          wgn_pms(iwgn)%idewpt = 0
+          exit
+        end if
+      end do
+              
       !! initialize arrays for precip divided by pet moving sum
       ppet_ndays = 30
       allocate (wgn_pms(iwgn)%mne_ppet(ppet_ndays))

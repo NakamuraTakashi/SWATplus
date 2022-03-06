@@ -55,13 +55,12 @@
                                  !!  = 0 Static soil carbon (old mineralization routines)
                                  !!  = 1 C-FARM one carbon pool model 
                                  !!  = 2 Century model
-        integer :: bf_flg = 0    !! baseflow distribution factor during the day for subdaily runs
-                                 !!   0 = baseflow evenly distributed to each time step during the day
-                                 !!   0.5 = even weights between even distribution and rainfall pattern
-                                 !!   1 = profile of baseflow in a day follows rainfall pattern
+        integer :: lapse = 0     !! precip and temperature lapse rate control
+                                 !!   0 = do not adjust for elevation
+                                 !!   1 = adjust for elevation
         integer :: uhyd = 1      !! Unit hydrograph method: 
-                                 !!   1 = triangular UH
-                                 !!   2 = gamma function UH
+                                 !!   0 = triangular UH
+                                 !!   1 = gamma function UH
         integer :: sed_ch = 0    !! Instream sediment model
                                  !!   0 = Bagnold model
                                  !!   1 = Brownlie model
@@ -83,7 +82,7 @@
                                  !!          roughness and rain intensity
                                  !!   0 = static stmaxd read from .bsn for the global value or .sdr
                                  !! for specific hrus 
-        integer :: i_subhw = 0   !! ***not used - headwater code (0=do not route; 1=route) 
+        integer :: i_fpwet = 0   !! 
       end type basin_control_codes
       type (basin_control_codes) :: bsn_cc
 
@@ -126,13 +125,13 @@
         real :: tb_adj = 0.         !! adjustment factor for subdaily unit hydrograph basetime
         real :: cn_froz = 0.000862  !! parameter for frozen soil adjustment on infiltraion/runoff
         real :: dorm_hr = -1.       !! time threshold used to define dormant (hrs)
-        real :: open_var2           !! variable not used
-        real :: fixco = 0.50        !! nitrogen fixation coeff
+        real :: plaps = 0.          !! mm/km        |precipitation lapse rate: mm per km of elevation difference
+        real :: tlaps = 0.0         !! deg C/km     |temperature lapse rate: deg C per km of elevation difference
         real :: nfixmx = 20.0       !! max daily n-fixation (kg/ha)
         real :: decr_min = 0.01     !! minimum daily residue decay
         real :: rsd_covco = 0.30    !! residue cover factor for computing frac of cover         
         real :: vcrit = 0.          !! critical velocity
-        real :: res_stlr_co = 0.184 !! reservoir sediment settling coeff
+        real :: petco_pmpt = 1.0    !! PET adjustment (%) for Penman-Montieth and Preiestly-Taylor methods
         real :: uhalpha = 1.0       !! alpha coeff for est unit hydrograph using gamma func
         real :: eros_spl = 0.       !! coeff of splash erosion varing 0.9-3.1 
         real :: rill_mult = 0.      !! rill erosion coefficient
@@ -141,9 +140,9 @@
                                     !!  overland flow erosion
         real :: ch_d50 = 0.         !! median particle diameter of main channel (mm)
         real :: sig_g = 0.          !! geometric std dev of part sizes for the main channel
-        integer :: day_lag_mx = 0.  !! max days to lag hydrographs for hru, ru and channels
+        integer :: day_lag_mx = 0   !! max days to lag hydrographs for hru, ru and channels
                                     !!  non-draining soils
-        integer :: igen = 0         !!  random generator code: 
+        integer :: igen = 5         !!  random generator code: 
                                     !!   0 = use default numbers
                                     !!   1 = generate new numbers in every simulation 
       end type basin_parms
@@ -288,9 +287,52 @@
           character (len=15) :: var7 =      "            ---"  
       end type mgt_header_unit1
       type(mgt_header_unit1) :: mgt_hdr_unt1
+  
+      type snutc_header      
+          character (len=12) :: day        =  "        jday"
+          character (len=12) :: mo         =  "         mon"
+          character (len=12) :: day_mo     =  "         day"
+          character (len=12) :: yrc        =  "          yr"
+          character (len=12) :: isd        =  "         hru"  
+          character (len=12) :: id         =  "      gis_id"         
+          character (len=12) :: name       =  "      name  "           
+          character (len=16) :: soil_mn =   "         soil_mn"
+          character (len=16) :: soil_mp =   "         soil_mp"
+          character (len=16) :: soil_orgc = "       soil_orgc"  
+          character (len=16) :: soil_orgn = "       soil_orgn"
+          character (len=16) :: soil_orgp = "       soil_orgp"
+          character (len=16) :: pl_orgc  =  "         pl_orgc"
+          character (len=16) :: pl_orgn =   "         pl_orgn"
+          character (len=16) :: pl_orgp =   "         pl_orgp"
+          character (len=16) :: res_orgc =  "        res_orgc"
+          character (len=16) :: res_orgn =  "        res_orgn"
+          character (len=16) :: res_orgp  = "        res_orgp"   
+      end type snutc_header
+      type(snutc_header) :: snutc_hdr
       
-     
-      type snutc_header                              
+      type snutc_header_unit                              
+          character (len=12) :: day =   "            "
+          character (len=12) :: mo =    "            "
+          character (len=12) :: day_mo= "            "  
+          character (len=12) :: yrc =   "            "
+          character (len=12) :: isd =   "            "
+          character (len=12) :: id =    "            " 
+          character (len=12) :: name =  "            " 
+          character (len=16) :: soil_mn =   "           kg/ha"
+          character (len=16) :: soil_mp =   "           kg/ha"
+          character (len=16) :: soil_orgc = "           kg/ha"  
+          character (len=16) :: soil_orgn = "           kg/ha"
+          character (len=16) :: soil_orgp = "           kg/ha"
+          character (len=16) :: pl_orgc  =  "           kg/ha"
+          character (len=16) :: pl_orgn =   "           kg/ha"
+          character (len=16) :: pl_orgp =   "           kg/ha"
+          character (len=16) :: res_orgc =  "           kg/ha"
+          character (len=16) :: res_orgn =  "           kg/ha"
+          character (len=16) :: res_orgp  = "           kg/ha"   
+      end type snutc_header_unit
+      type(snutc_header_unit) :: snutc_hdr_unit
+      
+      type snutc_old_header                              
           character (len=12) :: day =           "         day"
           character (len=12) :: year =          "        year"
           character (len=12) :: hru =           "         hru"                                                       
@@ -336,8 +378,8 @@
           character (len=16) :: soil_water_c =  "   soil_water_c "
           character (len=16) :: soil_water_n =  "   soil_water_n "
           character (len=16) :: soil_water_p  = "   soil_water_p "  
-      end type snutc_header
-      type(snutc_header) :: snutc_hdr
+      end type snutc_old_header
+      type(snutc_old_header) :: snutc_old_hdr
       
       type basin_yld_header                              
           character (len=10) :: year =       "      year "                                                     

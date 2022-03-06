@@ -42,6 +42,8 @@
       use soil_module
       use plant_module
       use climate_module
+      use hydrograph_module
+      use water_body_module
       
       implicit none
 
@@ -78,6 +80,7 @@
       real :: sev_st             !mm H2O        |evaporation / soil water for no3 flux from layer 1 -> 2
       real :: expo               !              |
       real :: cover              !kg/ha         |soil cover
+      real :: wetvol_mm          !mm            |wetland water volume - average depth over hru
       integer :: ly              !none          |counter                               
 
       j = ihru
@@ -85,7 +88,7 @@
 !!    added statements for test of real statement above
 	esd = 500.  !soil(j)%zmx
 	etco = 0.80
-	effnup = 0.1
+	effnup = 0.05
 
 !! evaporate canopy storage first
 !! canopy storage is calculated by the model only if the Green & Ampt
@@ -127,7 +130,7 @@
         else
           eaj = Exp(cej * (cover + 0.1))
         end if
-        es_max = pet * eaj * (1. - hru(j)%water_fr)
+        es_max = pet * eaj
         eos1 = pet / (es_max + ep_max + 1.e-10)
         eos1 = es_max * eos1
         es_max = Min(es_max, eos1)
@@ -164,6 +167,25 @@
           endif
         endif
 
+        !! compute evaporation from ponded water
+        wet_wat_d(j)%evap = 0.
+        if (wet(j)%flo > 0.) then
+          wetvol_mm = wet(j)%flo / (10. *  hru(j)%area_ha)    !mm*ha*10.=m3
+          if (wetvol_mm >= esleft) then
+            !! take all soil evap from snow cover
+            wetvol_mm = wetvol_mm - esleft
+            wet_wat_d(j)%evap = esleft * (10. *  hru(j)%area_ha)
+            esleft = 0.
+          else
+            !! take all soil evap from snow cover then start taking from soil
+            esleft = esleft - wetvol_mm
+            wet_wat_d(j)%evap = wetvol_mm * (10. *  hru(j)%area_ha)
+            wetvol_mm = 0.
+          endif
+          wet(j)%flo = 10. * wetvol_mm * hru(j)%area_ha
+          hru(j)%water_evap = wet_wat_d(j)%evap / (10. * hru(j)%area_ha)  !mm=m3/(10*ha)
+        endif
+
 !! take soil evap from each soil layer
       evzp = 0.
       eosl = esleft
@@ -178,7 +200,6 @@
         endif
         
         if (dep < esd) then
-          !hru(j)%hyd%esco = 1.  !***jga
           !! calculate evaporation from soil layer
           evz = eosl * soil(j)%phys(ly)%d / (soil(j)%phys(ly)%d +        &
              Exp(2.374 - .00713 * soil(j)%phys(ly)%d))
@@ -207,7 +228,11 @@
 
         !! compute no3 flux from layer 2 to 1 by soil evaporation
         if (ly == 2) then
-          sev_st = sev / (soil(j)%phys(2)%st + 1.e-6)
+          if (soil(j)%phys(2)%st > 1.e-3) then
+            sev_st = sev / (soil(j)%phys(2)%st)
+          else
+            sev_st = 0.
+          end if
           sev_st = amin1 (1., sev_st)
           no3up = effnup * sev_st * soil1(j)%mn(2)%no3
           no3up = Min(no3up, soil1(j)%mn(2)%no3)

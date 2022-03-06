@@ -33,6 +33,7 @@
       imax = 0
             
       !! allocate sd channel variables
+      allocate (gully(0:0))
       allocate (sd_ch(0:sp_ob%chandeg))
       allocate (ch_rcurv(0:sp_ob%chandeg))
       allocate (sd_ch_vel(0:sp_ob%chandeg))
@@ -43,6 +44,7 @@
       allocate (ch_water(0:sp_ob%chandeg))
       allocate (ch_benthic(0:sp_ob%chandeg))
       allocate (ch_stor(0:sp_ob%chandeg))
+      allocate (fp_stor(0:sp_ob%chandeg))
       allocate (ch_stor_m(0:sp_ob%chandeg))
       allocate (ch_stor_y(0:sp_ob%chandeg))
       allocate (ch_stor_a(0:sp_ob%chandeg))
@@ -59,6 +61,7 @@
       allocate (ch_out_y(0:sp_ob%chandeg))
       allocate (ch_out_a(0:sp_ob%chandeg))
       allocate (ch_om_water_init(0:sp_ob%chandeg))
+      allocate (fp_om_water_init(0:sp_ob%chandeg))
       allocate (chpst_d(0:sp_ob%chandeg))
       allocate (chpst_m(0:sp_ob%chandeg))
       allocate (chpst_y(0:sp_ob%chandeg))

@@ -49,6 +49,7 @@
       real :: conv                    !              |
       real :: frac_in                 !              |
       integer dum
+      integer :: ts1, ts2
       integer :: i_mfl !rtb gwflow; counter
       real :: sum
             
@@ -152,8 +153,9 @@
               obcs(icmd)%hcsin_d(in) = hcs1   !for constituent hydrograph output
             end if
             
-            !sum subdaily hydrographs
+            !sum subdaily inflow hydrographs
             if (time%step > 0) then
+              iday = ob(iob)%day_cur
               if (ob(icmd)%typ == "hru" .or. ob(icmd)%typ == "ru") then
                 select case (ob(icmd)%htyp_in(in))
                 case ("tot")   ! total flow
@@ -161,36 +163,26 @@
                 case ("sur")   ! surface runoff
                   hyd_flo(:) = ob(iob)%hyd_flo(iday,:)
                 case ("lat")   ! lateral soil flow
-                  hyd_flo(:) = ob(iob)%hd(ihyd)%flo / time%step
+                  hyd_flo(:) = ob(iob)%hd(4)%flo / time%step
                 case ("til")   ! tile flow
-                  hyd_flo(:) = ob(iob)%hd(ihyd)%flo / time%step
-                case ("aqu")   ! aquifer inflow
-                  hyd_flo(:) = ob(iob)%hd(ihyd)%flo / time%step
+                  hyd_flo(:) = ob(iob)%hd(5)%flo / time%step
                 end select
               end if
-              if (ob(icmd)%typ == "res" .or. ob(icmd)%typ == "sdc") then
+              select case (ob(icmd)%typ)
+              case ("aqu")      ! aquifer inflow
+                hyd_flo(:) = ob(iob)%hd(ihyd)%flo / time%step
+              case ("chandeg")  ! channel inflow
+                hyd_flo(:) = ob(iob)%hyd_flo(iday,:)
+              case ("res")      ! reservoir inflow
+                hyd_flo(:) = ob(iob)%hd(ihyd)%flo / time%step
+              end select
                 
-              end if
+              !! multiply inflow hyd by the fraction of incoming
+              hyd_flo = frac_in * hyd_flo
+              !! add flow hydrographs for each incoming object
+              ob(icmd)%tsin = ob(icmd)%tsin + hyd_flo
+              
             end if
-            !  iday = ob(iob)%day_cur
-            !  !! iob = inflow object number
-            !  if (ob(icmd)%frac_in(ihyd) < .999) then
-            !    if (ob(icmd)%obtyp_in(ihyd) == "hru" .or. ob(icmd)%obtyp_in(ihyd) == "ru") then
-            !      !! if fraction of an hru/ru - need to calc the flow hydrograph each day
-            !      call flow_hyd_ru_hru (ob(iob)%day_cur, ob(iob)%hd(3)%flo, ob(iob)%hd(4)%flo,     &
-            !            ob(iob)%hd(5)%flo, ob(icmd)%hin_uh(ihyd)%uh, ob(icmd)%hin_uh(ihyd)%hyd_flo)
-            !      hyd_flo = ob(icmd)%hin_uh(ihyd)%hyd_flo(iday,:)
-            !    else
-            !      !! if entire hru/ru or other object - use the flow hydrograph of the entire object
-            !      hyd_flo = ob(iob)%hyd_flo(iday,:)
-            !    end if
-            !  else
-            !    !! if fraction in is 1.0 - always use the flow hydrograph of the entire object
-            !    hyd_flo = ob(iob)%hyd_flo(iday,:)
-            !  end if
-            !  !! add flow hydrographs for each incoming object
-            !  ob(icmd)%tsin = ob(icmd)%tsin + hyd_flo
-            !end if
 
           end do    ! in = 1, ob(icmd)%rcv_tot
 
@@ -211,7 +203,6 @@
         end if
 
         ! select the next command type
-
         select case (ob(icmd)%typ)
             
           case ("hru")   ! hru
@@ -258,7 +249,10 @@
             irec = ob(icmd)%num
             select case (recall(irec)%typ)
               case (0)    !subdaily
-                ob(icmd)%hyd_flo(ob(icmd)%day_cur,:) = recall(irec)%hyd_flo(1:time%step,time%yrs)
+                ts1 = (time%day - 1) * time%step + 1
+                ts2 = time%day * time%step
+                ob(icmd)%hyd_flo(ob(icmd)%day_cur,:) = recall(irec)%hyd_flo(ts1:ts2,time%yrs)
+                ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
               case (1)    !daily
                 if (time%yrc >= recall(irec)%start_yr .and. time%yrc <= recall(irec)%end_yr) then 
                     ob(icmd)%hd(1) = recall(irec)%hd(time%day,time%yrs)
@@ -304,7 +298,11 @@
             isdch = ob(icmd)%num
             isd_chsur = ob(icmd)%props2
             if (sd_ch(isdch)%chl > 1.e-3) then
-              call sd_channel_control
+              if (bsn_cc%i_fpwet == 0) then
+                call sd_channel_control
+              else
+                call sd_channel_control2
+              end if
             else
                 !! artificial channel - length=0 - no transformations
                 ob(icmd)%hd(1) = ob(icmd)%hin
@@ -363,7 +361,7 @@
         wro(iwro)%demand = 0.
         do iob = 1, wro(iwro)%num_objs
           ob_num = wro(iwro)%field(iob)%ob_num
-          wro(iwro)%demand = irrig(ob_num)%demand
+          wro(iwro)%demand = irrig(ob_num)%demand + wro(iwro)%demand   
         end do
       end do
     

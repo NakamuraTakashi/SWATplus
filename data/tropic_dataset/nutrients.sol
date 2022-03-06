@@ -1,3 +1,3 @@
-nutrients.sol: Soil nutrient parameters - Water_LS2_Take2
-   SNUT_NAME     EXP_CO    TOTAL_N       MINN       ORGN    TOTAL_P       MINP       ORGP   WAT_SOLP      H3A_P  MEHLICH_P BRAY_STRONG_P
-  soilnut001      0.001     13.000      6.850      3.340      3.220      3.660      0.390      0.160      0.260      1.220         0.850
+nutrients.sol
+NAME           EXP_CO     LAB_P     NITRATE   FR_HUM_ACT     HUM_C_N     HUM_C_P     INORGP   WATERSOL_P     H3A_P   MEHLICH_P   BRAY_STRONG_P
+soilnut001      0.001       5.0         7.0         0.02        10.0        80.0       3.50         0.15      0.25        1.20            0.85

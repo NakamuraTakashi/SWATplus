@@ -213,7 +213,7 @@
         bwb_a = hwbz
       end if
       if (time%end_sim == 1 .and. pco%nb_bsn%a == "y") then
-        bnb_a = bnb_a / time%days_prt
+        bnb_a = bnb_a / time%yrs_prt
         write (2063,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_a
         if (pco%csvout == "y") then 
           write (2067,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_a

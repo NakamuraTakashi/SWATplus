@@ -71,11 +71,11 @@
         if (bsn_cc%cswat == 0) then
         soil1(j)%tot(l)%n = soil1(j)%tot(l)%n + rtof * xx * frt_kg *   &
                        fertdb(ifrt)%forgn
-        soil1(j)%hs(l)%n = soil1(j)%hs(l)%n + (1. - rtof) * xx * &
+        soil1(j)%hact(l)%n = soil1(j)%hact(l)%n + (1. - rtof) * xx * &
             frt_kg * fertdb(ifrt)%forgn
         soil1(j)%tot(l)%p = soil1(j)%tot(l)%p + rtof * xx * frt_kg *   &
                        fertdb(ifrt)%forgp
-        soil1(j)%hp(l)%p = soil1(j)%hp(l)%p + (1. - rtof)*xx*frt_kg *  &
+        soil1(j)%hsta(l)%p = soil1(j)%hsta(l)%p + (1. - rtof)*xx*frt_kg *  &
                        fertdb(ifrt)%forgp
         end if
 	  if (bsn_cc%cswat == 1) then
@@ -92,13 +92,12 @@
 	  if (bsn_cc%cswat == 2) then
         soil1(j)%tot(l)%p = soil1(j)%tot(l)%p + rtof * xx *           &
             frt_kg * fertdb(ifrt)%forgp
-        soil1(j)%hp(l)%p = soil1(j)%hp(l)%p + (1. - rtof) * xx *  &
+        soil1(j)%hsta(l)%p = soil1(j)%hsta(l)%p + (1. - rtof) * xx *  &
             frt_kg * fertdb(ifrt)%forgp
         
         !!Allocate organic fertilizer to Slow (SWAT_active) N pool;
-          soil1(j)%hs(l)%n = soil1(j)%hs(l)%n + (1. - rtof) * xx *  &
+          soil1(j)%hact(l)%n = soil1(j)%hact(l)%n + (1. - rtof) * xx *  &
                         frt_kg * fertdb(ifrt)%forgn
-          soil1(j)%hs(l)%n = soil1(j)%hs(l)%n    !!!same name
         
           !orgc_f is the fraction of organic carbon in fertilizer
           !for most fertilziers this value is set to 0.

@@ -126,31 +126,32 @@
             idp = pcom(j)%plcur(ipl)%idplt
             decr = pldb(idp)%rsdco_pl * ca * csf
           else
-            decr = 0.05
+            decr = 0.05 * ca * csf
           end if
           decr = Max(bsn_prm%decr_min, decr)
           decr = Min(decr, 1.)
+          
+          !! mineralization of mass and carbon
           rsd1(j)%tot(ipl)%m = Max(1.e-6, rsd1(j)%tot(ipl)%m)
           rdc = decr * rsd1(j)%tot(ipl)%m
           rsd1(j)%tot(ipl)%m = rsd1(j)%tot(ipl)%m - rdc
           if (rsd1(j)%tot(ipl)%m < 0.) rsd1(j)%tot(ipl)%m = 0.
           rsd1(j)%tot(ipl)%c = (1. - decr) * rsd1(j)%tot(ipl)%c
           if (rsd1(j)%tot(ipl)%c < 0.) rsd1(j)%tot(ipl)%c = 0.
-          soil1(j)%hs(1)%c = soil1(j)%hs(1)%c + decr * rsd1(j)%tot(ipl)%c
+          soil1(j)%hact(1)%c = soil1(j)%hact(1)%c + decr * rsd1(j)%tot(ipl)%c
+          
+          !! mineralization of n and p
           rmn1 = decr * rsd1(j)%tot(ipl)%n 
+          rsd1(j)%tot(ipl)%n  = Max(1.e-6, rsd1(j)%tot(ipl)%n)
+          rsd1(j)%tot(ipl)%n  = rsd1(j)%tot(ipl)%n  - rmn1
+          soil1(j)%mn%no3 = soil1(j)%mn%no3 + .8 * rmn1
+          soil1(j)%hact(1)%n = soil1(j)%hact(1)%n + .2 * rmn1
+          
           rsd1(j)%tot(ipl)%p = Max(1.e-6, rsd1(j)%tot(ipl)%p)
           rmp = decr * rsd1(j)%tot(ipl)%p
-
           rsd1(j)%tot(ipl)%p = rsd1(j)%tot(ipl)%p - rmp
-          rsd1(j)%tot(ipl)%n  = Max(1.e-6, rsd1(j)%tot(ipl)%n)
-          if (j==1 .and. rsd1(j)%tot(ipl)%n > 100) then
-            decr = 0.05
-          end if
-          rsd1(j)%tot(ipl)%n  = rsd1(j)%tot(ipl)%n  - rmn1
-          rsd1(j)%mn%no3 = rsd1(j)%mn%no3 + .8 * rmn1
-          soil1(j)%hs(1)%n = soil1(j)%hs(1)%n + .2 * rmn1
           rsd1(j)%mp%lab = rsd1(j)%mp%lab + .8 * rmp
-          soil1(j)%hp(1)%p = soil1(j)%hp(1)%p + .2 * rmp
+          soil1(j)%hsta(1)%p = soil1(j)%hsta(1)%p + .2 * rmp
           
           hnb_d(j)%rsd_nitorg_n = hnb_d(j)%rsd_nitorg_n + rmn1
           hnb_d(j)%rsd_laborg_p = hnb_d(j)%rsd_laborg_p + rmp
@@ -188,33 +189,32 @@
           if (xx > 1.e6) xx = 1.e6
           csf = Sqrt(xx)
 
-          !! compute flow from active to stable pools
-          !rwn = .1e-4 * (soil1(j)%hs(k)%n * (1. / nactfr - 1.) - soil1(j)%hp(k)%n)
-          rwn = .1e-4 * (soil1(j)%hs(k)%n - soil1(j)%hp(k)%n)
+          !! compute flow from active to stable pools- maintain fraction of active (nactfr)
+          rwn = .1e-4 * ((soil1(j)%hact(k)%n * (1. / nactfr - 1.) - soil1(j)%hsta(k)%n))
           if (rwn > 0.) then
-            rwn = Min(rwn, soil1(j)%hs(k)%n)
+            rwn = Min(rwn, soil1(j)%hact(k)%n)
           else
-            rwn = -(Min(Abs(rwn), soil1(j)%hp(k)%n))
+            rwn = -(Min(Abs(rwn), soil1(j)%hsta(k)%n))
           endif
-          soil1(j)%hp(k)%n = Max(1.e-6, soil1(j)%hp(k)%n + rwn)
-          soil1(j)%hs(k)%n = Max(1.e-6, soil1(j)%hs(k)%n - rwn)
+          soil1(j)%hsta(k)%n = Max(1.e-6, soil1(j)%hsta(k)%n + rwn)
+          soil1(j)%hact(k)%n = Max(1.e-6, soil1(j)%hact(k)%n - rwn)
           hnb_d(j)%act_sta_n = hnb_d(j)%act_sta_n + rwn
 
           !! compute humus mineralization on active organic n
-          hmn = bsn_prm%cmn * csf * soil1(j)%hs(k)%n
-          hmn = Min(hmn, soil1(j)%hs(k)%n)
+          hmn = bsn_prm%cmn * csf * soil1(j)%hact(k)%n
+          hmn = Min(hmn, soil1(j)%hact(k)%n)
           !! compute humus mineralization on active organic p
-          xx = soil1(j)%hp(k)%n + soil1(j)%hs(k)%n
+          xx = soil1(j)%hsta(k)%n + soil1(j)%hact(k)%n
           if (xx > 1.e-6) then
-            hmp = 1.4 * hmn * soil1(j)%hp(k)%p / xx
+            hmp = 1.4 * hmn * soil1(j)%hsta(k)%p / xx
           else
             hmp = 0.
           end if
-          hmp = Min(hmp, soil1(j)%hp(k)%p)
+          hmp = Min(hmp, soil1(j)%hsta(k)%p)
           !! move mineralized nutrients between pools
-          soil1(j)%hs(k)%n = Max(1.e-6, soil1(j)%hs(k)%n - hmn)
+          soil1(j)%hact(k)%n = Max(1.e-6, soil1(j)%hact(k)%n - hmn)
           soil1(j)%mn(k)%no3 = soil1(j)%mn(k)%no3 + hmn
-          soil1(j)%hp(k)%p = soil1(j)%hp(k)%p - hmp
+          soil1(j)%hsta(k)%p = soil1(j)%hsta(k)%p - hmp
           soil1(j)%mp(k)%lab = soil1(j)%mp(k)%lab + hmp
           
           hnb_d(j)%act_nit_n = hnb_d(j)%act_nit_n + hmn
@@ -245,7 +245,6 @@
             ca = Min(cnrf, cprf, 1.)
             
             !! compute residue decomp and mineralization for each plant
-            decr = .05
             !do ipl = 1, pcom(j)%npl        !! we need to decomp each plant**
               
             if (pcom(j)%npl > 0) then
@@ -266,9 +265,9 @@
             soil1(j)%meta(k)%p = soil1(j)%meta(k)%p * (1. - decr)
 
             soil1(j)%mn(k)%no3 = soil1(j)%mn(k)%no3 + .8 * rmn1
-            soil1(j)%hs(k)%n = soil1(j)%hs(k)%n + .2 * rmn1
+            soil1(j)%hact(k)%n = soil1(j)%hact(k)%n + .2 * rmn1
             soil1(j)%mp(k)%lab = soil1(j)%mp(k)%lab + .8 * rmp
-            soil1(j)%hp(k)%p = soil1(j)%hp(k)%p + .2 * rmp
+            soil1(j)%hsta(k)%p = soil1(j)%hsta(k)%p + .2 * rmp
             
             hnb_d(j)%rsd_nitorg_n = hnb_d(j)%rsd_nitorg_n + rmn1
             hnb_d(j)%rsd_laborg_p = hnb_d(j)%rsd_laborg_p + rmp

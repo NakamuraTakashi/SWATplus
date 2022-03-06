@@ -85,6 +85,8 @@
       
       w = wst(iwst)%weat
       precip_eff = w%precip
+      !! adjust precip and temperature for elevation using lapse rates
+      if (bsn_cc%lapse == 1) call cli_lapse (iob, iwst)
       
       hru(ihru)%water_seep = 0.
       irrig(j)%demand = 0.
@@ -156,7 +158,7 @@
             call conditions (jj, iauto)
             call actions (jj, iob, iauto)
             
-            !! if end of year, reset the one time fert application per year
+            !! if end of year, reset the one time operation per year
             if (time%end_yr == 1) then
               do iac = 1, d_tbl%acts
                 pcom(j)%dtbl(iauto)%num_actions(iac) = 1
@@ -199,8 +201,30 @@
         !! calculate soil temperature for soil layers
         call stmp_solt
         
+        !!compute canopy interception
+        call sq_canopyint
+
+        !! compute snow melt
+        call sq_snom
+
+        !! compute crack volume
+        if (bsn_cc%crk == 1) call sq_crackvol
+
+        !if (time%step > 0) then
+        !  do ii = 1, time%step
+        !    wst(iwst)%weat%ts(ii) = wst(iwst)%weat%ts(ii) ! + ovrlnd_dt(j,ii)
+        !  end do
+        !end if
+
         !! compute surface runoff processes
-        call surface
+        if (ires == 0) then
+          call surface
+        else
+          !! if wetland - no runoff or sediment yield - all constituents
+          !! transported in surface runoff and sediment will be zero
+          surfq(j) = 0.
+          sedyld(j) = 0.
+        end if
                   
         !! compute evapotranspiration
         call et_pot
@@ -210,8 +234,8 @@
         sedyld(j) = sedyld(j) + ht2%sed
 
         !! compute effective rainfall (amount that percs into soil)
-        !! add infiltration from surface runon
-        inflpcp = (precip_eff - surfq(j)) * (1.-hru(j)%water_fr) + hru(j)%water_seep /(10.* hru(j)%area_ha)
+        !! add infiltration wetland seepage - and from surface runon
+        inflpcp = (precip_eff - surfq(j)) + hru(j)%water_seep /(10.* hru(j)%area_ha)
         inflpcp = Max(0., inflpcp)
          
         !! perform management operations
@@ -221,7 +245,6 @@
         call swr_percmain
 
         !! wetland processes
-        hru(j)%water_fr = 0.
         if (ires > 0) then
           call wetland_control
         else
@@ -328,11 +351,11 @@
 	    end if
 
         call nut_nitvol
-        if (bsn_cc%sol_P_model == 0) then
+        !if (bsn_cc%sol_P_model == 0) then    ***jga
             call nut_pminrl
-        else
-            call nut_pminrl2
-        end if
+        !else
+        !    call nut_pminrl2
+        !end if
 
         !! compute biozone processes in septic HRUs
         !! if 1) current is septic hru and 2) soil temperature is above zero

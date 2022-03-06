@@ -1,4 +1,4 @@
-        subroutine sd_channel_surf_link (isdc, ics)
+        subroutine sd_channel_surf_link (ics)
                  
         use hydrograph_module
         use sd_channel_module
@@ -8,69 +8,63 @@
       
         implicit none 
       
-        character (len=3) :: iobtyp   !none          |object type
-        integer :: isdc               !none          |counter
-        integer :: ics                !none          |counter 
-        integer :: ii                 !none          |counter 
-        integer :: i                  !              |
-        integer :: iob                !              |   
-        integer :: ith                !              |   
+        integer, intent (in) :: ics     !none          |counter
+        character (len=3) :: iobtyp     !none          |object type
+        integer :: ii                   !none          |counter 
+        integer :: i                    !              |
+        integer :: iihru                !none          |hru counter 
+        integer :: ihru_tot             !none          |total number of hru in the flood plain   
 
-        ii = 0
-        ch_sur(ics)%dep(ii) = sd_chd(isdc)%chd
-        ch_sur(ics)%wid(ii) = sd_chd(isdc)%chw
-        ch_sur(ics)%flood_volmx(ii) = sd_chd(isdc)%chw *                  & 
-                             sd_chd(isdc)%chd * sd_chd(isdc)%chl * 1000.
-        do ii = 1, ch_sur(ics)%num
-          iobtyp = ch_sur(ics)%obtyp(ii)     !object type
+        ihru_tot = 0
+        
+        !! determine number of hru's
+        do ii = 1, sd_ch(ics)%fp%obj_tot
+          iobtyp = sd_ch(ics)%fp%obtyp(ii)     !object type
           select case (iobtyp)
           case ("hru")   !hru
-            ob(i)%obj_out(ii) = sp_ob1%hru + ob(i)%obtypno_out(ii) - 1
-            iob = ob(i)%obj_out(ii)
-            ob(iob)%flood_ch_lnk = ics   !pointer back to channel-hru link
-            ob(iob)%flood_ch_elem = ii   !pointer to landscape element - 1 nearest to channel
+            ihru_tot = ihru_tot + 1
+          case ("ru")   !flood plain routing unit
+            iru = sd_ch(ics)%fp%obtypno(ii)
+            ihru_tot = ihru_tot + ru_def(iru)%num_tot
+          end select
+        end do
+        
+        allocate (sd_ch(ics)%fp%hru(ihru_tot))
+        allocate (sd_ch(ics)%fp%hru_fr(ihru_tot))
+   
+        !! calculate total flood plain area and set hru numbers
+        ihru_tot = 0
+        sd_ch(ics)%fp%ha = 0.
+        do ii = 1, sd_ch(ics)%fp%obj_tot
+          iobtyp = sd_ch(ics)%fp%obtyp(ii)     !object type
+          select case (iobtyp)
+          case ("hru")   !hru
+            ihru_tot = ihru_tot + 1
+            ihru = sd_ch(ics)%fp%obtypno(ii)
+            sd_ch(ics)%fp%hru(ihru_tot) = ihru
+            sd_ch(ics)%fp%ha = sd_ch(ics)%fp%ha + hru(ihru)%area_ha
             
-            ihru = ch_sur(ics)%obtypno(ii)
+          case ("ru")   !flood plain routing unit
+            iru = sd_ch(ics)%fp%obtypno(ii)
 
-            !set depth, width, flood volume max
-            ch_sur(ics)%dep(ii) = ch_sur(ics)%dep(ii-1) +                 &
-                              hru(ihru)%field%wid * hru(ihru)%topo%slope
-            ch_sur(ics)%wid(ii) = ch_sur(ics)%wid(ii-1) +                 &
-                                                2. * hru(ihru)%field%wid
-            ch_sur(ics)%flood_volmx(ii)= ch_sur(ics)%flood_volmx(ii-1) +  &
-              (ch_sur(ics)%wid(ii-1) * (ch_sur(ics)%dep(ii) -             & 
-              ch_sur(ics)%dep(ii-1)) + (2. * ch_sur(ics)%wid(ii) ** 2 *   &
-              hru(ihru)%topo%slope)) * sd_chd(ics)%chl * 1000.
-          case ("hlt")   !hru_lte
-            !
-          case ("ru")   !subbasin
-            ob(i)%obj_out(ii) = sp_ob1%ru + ob(i)%obtypno_out(ii) - 1
-            iob = ob(i)%obj_out(ii)
-            
-            iru = ch_sur(ics)%obtypno(ii)
-
-            !set depth, width, flood volume max
-            ch_sur(ics)%dep(ii) = ch_sur(ics)%dep(ii-1) + ru(iru)%field%wid * topo_db(ith)%slope
-            ch_sur(ics)%wid(ii) = ch_sur(ics)%wid(ii-1) + 2. * ru(iru)%field%length
-            ch_sur(ics)%flood_volmx(ii)= ch_sur(ics)%flood_volmx(ii-1) +        &
-                    (ch_sur(ics)%wid(ii-1) * (ch_sur(ics)%dep(ii) -             & 
-                    ch_sur(ics)%dep(ii-1)) + (2. * ch_sur(ics)%wid(ii) ** 2 *   &
-                    topo_db(ith)%slope)) * sd_chd(ics)%chl * 1000.
-            
             !set flood plain link and landscape element (1==closest to river)
-            do ihru = 1, ru_def(iru)%num_tot
-              iob = sp_ob1%hru + ob(i)%obtypno_out(ii) - 1
-              ob(iob)%flood_ch_lnk = ics   !pointer back to channel-ru link
-              ob(iob)%flood_ch_elem = ii   !pointer to landscape element - 1 nearest to channel
+            do iihru = 1, ru_def(iru)%num_tot
+              ihru_tot = ihru_tot + 1
+              ihru = ru_def(iru)%num(iihru)
+              sd_ch(ics)%fp%hru(ihru_tot) = ihru
+              sd_ch(ics)%fp%ha = sd_ch(ics)%fp%ha + hru(ihru)%area_ha
             end do
-            
-          case ("cha")   !channel
-            !
-          case ("sdc")   !swat-deg channel
-            !
+      
           end select
         end do
    
+        !set hru flood plain area fractions
+        sd_ch(ics)%fp%hru_tot = ihru_tot
+        do ihru = 1, sd_ch(ics)%fp%hru_tot
+          sd_ch(ics)%fp%hru_fr(ihru) = hru(ihru)%area_ha / sd_ch(ics)%fp%ha
+        end do
+            
+            
         return
 
       end subroutine sd_channel_surf_link

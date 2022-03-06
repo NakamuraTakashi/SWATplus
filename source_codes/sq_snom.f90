@@ -88,9 +88,9 @@
           if (snomlt > hru(j)%sno_mm) snomlt = hru(j)%sno_mm
           hru(j)%sno_mm = hru(j)%sno_mm - snomlt
           precip_eff = precip_eff + snomlt
-          if (time%step > 0) then
+          if (wst(iwst)%pcp_ts > 0) then
             do ii = 1, time%step
-             wst(iwst)%weat%ts(ii+1) = wst(iwst)%weat%ts(ii+1) + snomlt / time%step
+             wst(iwst)%weat%ts(ii) = wst(iwst)%weat%ts(ii) + snomlt / time%step
             end do
           end if
           if (precip_eff < 0.) precip_eff = 0.

@@ -86,9 +86,9 @@
 		   xx = qvol / hru(j)%area_ha / 1000.
            rsd1(j)%mn%no3 = rsd1(j)%mn%no3 + xx * (sepdb(sep(isep)%typ)%no3concs + sepdb(sep(isep)%typ)%no2concs)  
            rsd1(j)%mn%nh4 = rsd1(j)%mn%nh4 + xx * sepdb(sep(isep)%typ)%nh4concs                  
-           soil1(j)%hp(1)%n = soil1(j)%hp(1)%n + xx * sepdb(sep(isep)%typ)%orgnconcs * rtof
+           soil1(j)%hsta(1)%n = soil1(j)%hsta(1)%n + xx * sepdb(sep(isep)%typ)%orgnconcs * rtof
            rsd1(j)%tot(1)%n = rsd1(j)%tot(1)%n + xx * sepdb(sep(isep)%typ)%orgnconcs * (1.-rtof)
-           soil1(j)%hp(1)%p = soil1(j)%hp(1)%p + xx * sepdb(sep(isep)%typ)%orgps * rtof
+           soil1(j)%hsta(1)%p = soil1(j)%hsta(1)%p + xx * sepdb(sep(isep)%typ)%orgps * rtof
            rsd1(j)%tot(1)%p = rsd1(j)%tot(1)%p + xx * sepdb(sep(isep)%typ)%orgps*(1.-rtof)
            rsd1(j)%mp%lab = rsd1(j)%mp%lab + xx * sepdb(sep(isep)%typ)%minps  
 		 endif
@@ -100,9 +100,9 @@
 		 xx = qvol / hru(j)%area_ha / 1000.
          soil1(j)%mn(ii)%no3 = soil1(j)%mn(ii)%no3 + xx * sepdb(sep(isep)%typ)%no3concs + sepdb(sep(isep)%typ)%no2concs
 	   soil1(j)%mn(ii)%nh4 = soil1(j)%mn(ii)%nh4 + xx * sepdb(sep(isep)%typ)%nh4concs
-	   soil1(j)%hp(ii)%n = soil1(j)%hp(ii)%n + xx * sepdb(sep(isep)%typ)%orgnconcs*rtof
+	   soil1(j)%hsta(ii)%n = soil1(j)%hsta(ii)%n + xx * sepdb(sep(isep)%typ)%orgnconcs*rtof
        soil1(j)%tot(ii)%n = soil1(j)%tot(ii)%n + xx * sepdb(sep(isep)%typ)%orgnconcs * (1.-rtof)
-       soil1(j)%hp(ii)%p = soil1(j)%hp(ii)%p + xx * sepdb(sep(isep)%typ)%orgps * rtof
+       soil1(j)%hsta(ii)%p = soil1(j)%hsta(ii)%p + xx * sepdb(sep(isep)%typ)%orgps * rtof
 	   soil1(j)%tot(ii)%p = soil1(j)%tot(ii)%p + xx * sepdb(sep(isep)%typ)%orgps*(1.-rtof)
        soil1(j)%mp(ii)%lab = soil1(jj)%mp(l)%lab + xx * sepdb(sep(isep)%typ)%minps
 

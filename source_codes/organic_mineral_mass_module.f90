@@ -37,12 +37,17 @@
       
       type soil_profile_mass1
         character (len=16) :: name
+        real :: tot_mn                                              !       |total mineral n pool (no3+nh4) in soil profile
+        real :: tot_mp                                              !       |mineral p pool (wsol+lab+act+sta) in soil profile
+        type (organic_mass) :: tot_org                              !       |total organics in soil profile
         real, dimension(:), allocatable :: sw                       !mm     |soil water dimensioned by layer
         real, dimension(:), allocatable :: cbn                      !%      |percent carbon
         type (sediment), dimension(:), allocatable :: sed           !       |sediment dimensioned by layer
         type (mineral_nitrogen), dimension(:), allocatable :: mn    !       |mineral n pool dimensioned by layer
         type (mineral_phosphorus), dimension(:), allocatable :: mp  !       |mineral p humus pool dimensioned by layer
         type (organic_mass), dimension(:), allocatable :: tot       !       |total organic pool dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hact      !       |active humus for old mineralization model
+        type (organic_mass), dimension(:), allocatable :: hsta      !       |stable humus for old mineralization model
         type (organic_mass), dimension(:), allocatable :: hs        !       |slow humus
         type (organic_mass), dimension(:), allocatable :: hp        !       |passive humus
         type (organic_mass), dimension(:), allocatable :: microb    !       |microbial biomass
@@ -57,7 +62,6 @@
       type (soil_profile_mass1), dimension(:), allocatable, target :: soil1
       type (soil_profile_mass1), dimension(:), allocatable :: soil1_init
       type (soil_profile_mass1), pointer :: s1
-      type (soil_profile_mass1), dimension(:), allocatable :: sol1
       type (organic_mass) :: soil_prof_tot                          !       |total litter pool
       type (organic_mass) :: soil_prof_str                          !       |total litter pool
       type (organic_mass) :: soil_prof_lig                          !       |total litter pool
@@ -72,6 +76,11 @@
       type (mineral_phosphorus) :: soil_prof_mp                     !       |active humus pool
       type (mineral_nitrogen) :: soil_mn_z
       type (mineral_phosphorus) :: soil_mp_z
+      type (organic_mass) :: bsn_org_soil                           !       |total soil organics in basin
+      type (organic_mass) :: bsn_org_pl                             !       |total plant organics in basin
+      type (organic_mass) :: bsn_org_rsd                            !       |total residue organics in basin
+      real :: bsn_mn                                                !       |total mineral n pool (no3+nh4) in soil profile
+      real :: bsn_mp                                                !       |mineral p pool (wsol+lab+act+sta) in soil profile
 
       type residue_mass1
         character (len=16) :: name

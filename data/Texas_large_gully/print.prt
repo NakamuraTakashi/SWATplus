@@ -34,7 +34,7 @@ hru_wb                                n                   n                   n 
 hru_nb                                n                   n                   n                   n
 hru_ls                                n                   n                   n                   n
 hru_pw                                n                   n                   n                   n
-hru-lte_wb                            y                   n                   y                   n
+hru-lte_wb                            n                   n                   y                   n
 hru-lte_nb                            n                   n                   y                   n
 hru-lte_ls                            n                   n                   y                   n
 hru-lte_pw                            n                   n                   y                   n

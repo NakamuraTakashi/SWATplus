@@ -11,7 +11,7 @@
       do isdc = 1, sp_ob%chandeg
         i = sp_ob1%chandeg + isdc - 1
         if (ob(i)%props2 > 0) then
-          call sd_channel_surf_link (ob(i)%props, ob(i)%props2)
+          call sd_channel_surf_link (ob(i)%props2)
         end if
       end do
       return

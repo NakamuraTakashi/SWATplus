@@ -47,7 +47,7 @@
       
       type hydrology
            character(len=13) :: name
-           real :: lat_ttime = 0.   !! lat_ttime(:)  |none          |Exponential of the lateral flow travel time
+           real :: lat_ttime = 0.   !! lat_ttime(:)  |days          |days of lateral soil flow across the hillslope
            real :: lat_sed = 0.     !! lat_sed(:)    |g/L           |sediment concentration in lateral flow
            real :: canmx = 0.       !! canmx(:)      |mm H2O        |maximum canopy storage
            real :: esco = 0.        !! esco(:)       |none          |soil evaporation compensation factor
@@ -83,7 +83,7 @@
       type (snow_parameters), dimension (:), allocatable :: snodb
       
       type subsurface_drainage_parameters
-        character(len=13) :: name = "default"
+        character(len=13) :: name = "null"
         real :: depth = 0.    !! |mm            |depth of drain tube from the soil surface
         real :: time = 0.     !! |hrs           |time to drain soil to field capacity
         real :: lag = 0.      !! |hours         |drain tile lag time
@@ -116,7 +116,7 @@
         character(len=16) :: pathc = ""
         character(len=16) :: saltc = ""
         character(len=16) :: hmetc = ""
-        integer :: nut = 1
+        integer :: nut = 0
         integer :: pest = 1
         integer :: path = 1
         integer :: salt = 1
@@ -222,11 +222,10 @@
         type (snow_parameters) :: sno
         integer :: cur_op = 1
         real :: sno_mm                          !mm H2O        |amount of water in snow on current day
-        real :: water_fr
         real :: water_seep
         real :: water_evap
+        character(len=1) :: wet_fp = "n"
         real :: strsa
-        integer :: ich_flood
       end type hydrologic_response_unit
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru_init

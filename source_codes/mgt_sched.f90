@@ -296,14 +296,14 @@
             ndeat(j) = 0
             igrz(j) = 1
             ipl = Max(1, mgt%op2)
-            grz_days(j) = mgt%op3
+            grz_days(j) = Int(mgt%op3)
             graze = grazeop_db(mgt%op1)
 
-            !if (pco%mgtout == "y") then
-            !  write (2612, *) j, time%yrc, time%mo, time%day_mo, "         ", "    GRAZE ",         &
-            !    phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m,        &
-            !    rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), grazeop_db(mgt%op1)%eat, grazeop_db(mgt%op1)%manure
-            !endif
+            if (pco%mgtout == "y") then
+              write (2612, *) j, time%yrc, time%mo, time%day_mo, "         ", "    GRAZE ",         &
+                phubase(j), pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m,        &
+                rsd1(j)%tot(ipl)%m, sol_sumno3(j), sol_sumsolp(j), grazeop_db(mgt%op1)%eat, grazeop_db(mgt%op1)%manure
+            endif
  
           case ("cnup")   !! fertilizer operation
             ipl = 1

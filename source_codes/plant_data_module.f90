@@ -79,6 +79,7 @@
         real :: wind_stl = 0.            !                  |wind erosion factor for standing live biomass
         real :: wind_std = 0.            !                  |wind erosion factor for standing dead residue
         real :: wind_flat = 0.           !                  |wind erosion factor for flat residue
+        !!character(len=45) :: desc = "unknown"
       end type plant_db
       type (plant_db), dimension(:),allocatable, target, save :: pldb
       type (plant_db), pointer :: pl_db

@@ -38,7 +38,8 @@
       implicit none 
 
       integer :: j         !none          |HRU number
-      integer :: jj        !none          |counter   
+      integer :: jj        !none          |counter 
+      integer :: jlo       !none          |counter for taking tile no3 from lower layers
       real :: sro          !mm H2O        |surface runoff 
       real :: ssfnlyr      !kg N/ha       |nitrate transported in lateral flow from layer
       real :: percnlyr     !kg N/ha       |nitrate leached to next lower layer with
@@ -49,7 +50,8 @@
       real :: cosurf       !kg N/mm       |concentration of nitrate in surface runoff 
       real :: nloss        !frac          |nloss based on half life
       real :: ww           !varies        |variable to hold intermediate calculation
-                           !              |result
+      real :: ul_sum       !mm            |sum of porosity in tile layer to lowest layer
+      real :: no3_sum      !kg/ha         |sum of no3 in tile layer to lowest layer
 
       j = ihru
 
@@ -59,7 +61,7 @@
 
         !! add nitrate leached from layer above
         soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 + percnlyr
-	  if (soil1(j)%mn(jj)%no3 < 1.e-6) soil1(j)%mn(jj)%no3 = 0.0
+	    if (soil1(j)%mn(jj)%no3 < 1.e-6) soil1(j)%mn(jj)%no3 = 0.0
 
         !! determine concentration of nitrate in mobile water
         if (jj == 1) then
@@ -80,15 +82,23 @@
           surqno3(j) = Min(surqno3(j), soil1(j)%mn(jj)%no3)
           soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - surqno3(j)
         endif
-        !Daniel 1/2012    
+
         !! calculate nitrate in tile flow 
-        if (hru(j)%lumv%ldrain == jj) then
-           ! tileno3(j) = bsn_prm%nperco * co * qtile     !Daniel 1/2012
-           tileno3(j) = co * qtile     !Daniel 1/2012
-          tileno3(j) = Min(tileno3(j), soil1(j)%mn(jj)%no3)
-          soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - tileno3(j)
+        if (hru(j)%lumv%ldrain == jj .and. qtile > 0.) then
+          !! take no3 from tile layer and all lower layers
+          !! assume rising water table will move nitrates up
+          ul_sum = 0.
+          no3_sum = 0.
+          do jlo = jj, soil(j)%nly
+            ul_sum = ul_sum + soil(j)%phys(jj)%ul
+            no3_sum = no3_sum + soil1(j)%mn(jj)%no3
+          end do
+          vv = qtile
+          ww = -vv / ((1. - soil(j)%anion_excl) * ul_sum)
+          vno3 = no3_sum * (1. - Exp(ww))
+          co = Max(vno3 / vv, 0.)     !kg/ha/mm (if * 100 = ppm)
+          tileno3(j) = co * qtile
         end if
-        !Daniel 1/2012                  
 
         !! calculate nitrate in lateral flow
         if (jj == 1) then
@@ -101,7 +111,7 @@
         soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - ssfnlyr
 
         !! calculate nitrate in percolate
-        percnlyr = co * soil(j)%ly(jj)%prk
+        percnlyr = soil(j)%ly(jj)%prk
         percnlyr = Min(percnlyr, soil1(j)%mn(jj)%no3)
         soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - percnlyr
       end do
