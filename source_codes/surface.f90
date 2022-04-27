@@ -24,7 +24,7 @@
       use hydrograph_module
       use climate_module, only:  wst
       use hru_module, only : hru, surfq, ovrlnd_dt, ihru, &
-        qp_cms, precip_eff, qday
+        qp_cms, precip_eff, qday, satexq !rtb gwflow
       use soil_module
       use urban_data_module
       use output_landscape_module

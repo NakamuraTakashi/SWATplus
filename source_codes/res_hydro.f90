@@ -20,11 +20,13 @@
       integer,  intent (in) :: id               !none      |hru number
       integer :: ial              !none      |counter
       integer :: irel             !          |
+      integer :: iob              !none      |hru or wro number
       integer,  intent (in) :: ihyd             !          |
       real :: vol                 !          |
       real :: b_lo                !          |
       character(len=1) :: action  !          |
       real :: res_h               !          |
+      real :: demand              !m3        |irrigation demand by hru or wro
 
       
       !! store initial values
@@ -52,6 +54,9 @@
             select case (dtbl_res(id)%act(iac)%option)
             case ("rate")
               ht2%flo = dtbl_res(id)%act(iac)%const * 86400.
+              
+            case ("inflo_rate")
+              ht2%flo = amax1 (ht1%flo, dtbl_res(id)%act(iac)%const * 86400.)
               
             case ("days")
               select case (dtbl_res(id)%act(iac)%file_pointer)
@@ -92,6 +97,17 @@
               ht2%flo = (wbody%flo - b_lo) / dtbl_res(id)%act(iac)%const +          &
                                       dtbl_res(id)%act(iac)%const2 * pvol_m3 / 100.
               
+            case ("irrig_dmd")
+              iob = Int(dtbl_res(id)%act(iac)%const2)
+              select case (dtbl_res(id)%act(iac)%file_pointer)
+              case ("wro")    !demand from water resource object
+                demand = wro(iob)%demand
+              case ("hru")    !demand from single hru
+                demand = irrig(iob)%demand
+              end select
+              !! const allows a fraction (usually > 1.0) of the demand (m3) released
+              ht2%flo = demand * dtbl_res(id)%act(iac)%const
+                 
             case ("weir")
               ht2%flo = res_weir(ihyd)%c * res_weir(ihyd)%k * res_weir(ihyd)%w * (res_h ** 1.5)
               

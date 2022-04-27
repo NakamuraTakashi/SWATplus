@@ -22,7 +22,7 @@ lum               landuse.lum       management.sch    cntable.lum       cons_pra
 chg               cal_parms.cal     calibration.cal   null   null   null   null   null   null   null              
 init              plant.ini         soil_plant.ini    om_water.ini  null   null   null   null   null   null   null   null                
 soils             soils.sol         nutrients.sol     null
-decision_table    null              res_rel.dtl       null          null      
+decision_table    null              res_rel_std.dtl   null          null      
 regions           ls_unit.ele       ls_unit.def       null   null   null   null   null   null              aqu_catunit.ele    null   null   null   null    null   null   null   null              
 pcp_path          weather\\              
 tmp_path          weather\\             

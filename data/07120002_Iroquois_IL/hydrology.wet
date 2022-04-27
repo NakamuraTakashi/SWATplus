@@ -1,5 +1,5 @@
 hyd_wet Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:16 PM
-               NAME HRU_PS DP_PS HRU_ES DP_ES     K  EVAP VOL_AREA_CO VOL_DP_A VOL_DP_B HRU_FRAC
+               NAME HRU_PS  PDEP HRU_ES DP_ES     K  EVAP VOL_AREA_CO VOL_DP_A VOL_DP_B HRU_FRAC
  wet_071200020101_1    0.9   0.8      1     1  0.01   0.7           1        1        1        1
  wet_071200020102_1    0.9   0.8      1     1  0.01   0.7           1        1        1        1
  wet_071200020103_1    0.9   0.8      1     1  0.01   0.7           1        1        1        1

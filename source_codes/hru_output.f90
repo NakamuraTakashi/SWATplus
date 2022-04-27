@@ -72,7 +72,7 @@
               end if 
           end if
         end if
-
+         
         !! check end of month
         if (time%end_mo == 1) then
           hwb_y(j) = hwb_y(j) + hwb_m(j)
@@ -173,18 +173,21 @@
         end if
         
 !!!!! average annual print
-         if (time%end_sim == 1 .and. pco%wb_hru%a == "y") then
+         if (time%end_sim == 1) then
            sw_init = hwb_a(j)%sw_init
            sno_init = hwb_a(j)%sno_init
            hwb_a(j) = hwb_a(j) / time%yrs_prt
            hwb_a(j) = hwb_a(j) // time%days_prt
+           hru(j)%precip_aa = hwb_a(j)%precip
            hwb_a(j)%sw_init = sw_init
            hwb_a(j)%sw_final = hwb_d(j)%sw_final
            hwb_a(j)%sno_init = sno_init
            hwb_a(j)%sno_final = hwb_d(j)%sno_final
-           write (2003,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
-           if (pco%csvout == "y") then
-             write (2007,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
+           if (pco%wb_hru%a == "y") then
+             write (2003,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
+             if (pco%csvout == "y") then
+               write (2007,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
+             end if
            end if
            sw_init = hwb_d(j)%sw_final
            sno_init = hwb_d(j)%sno_final
@@ -240,7 +243,7 @@
          end if
       return
       
-100   format (4i6,2i8,2x,a,32f12.3)
+100   format (4i6,2i8,2x,a,39f12.3)
 101   format (4i6,2i8,2x,a,24f12.3)
 102   format (4i6,2i8,2x,a,24f12.3)
 103   format (4i6,i8,4x,a,5x,4f12.3)

@@ -89,8 +89,7 @@
       tk = w%tave + 273.15
 
       !! calculate mean barometric pressure
-      pb = 101.3 - hru(j)%topo%elev *                                   &                
-                        (0.01152 - 0.544e-6 * hru(j)%topo%elev)
+      pb = 101.3 - hru(j)%topo%elev * (0.01152 - 0.544e-6 * hru(j)%topo%elev)
 
       !! calculate latent heat of vaporization
       xl = 2.501 - 2.361e-3 * w%tave
@@ -182,9 +181,8 @@
 
            !! potential ET: reference crop alfalfa at 40 cm height
            rv = 114. / (w%windsp * (170./1000.)**0.2)
-           rc = 49. / (1.4 - 0.4 * hru(j)%parms%co2 / 330.)
-           pet_day = (dlt * rn_pet + gma * rho * vpd / rv) /            &           
-                                  (xl * (dlt + gma * (1. + rc / rv)))
+           rc = 49. / (1.4 - 0.4 * bsn_prm%co2 / 330.)
+           pet_day = (dlt * rn_pet + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))
 
            pet_day = Max(0., pet_day)
            pet_day = bsn_prm%petco_pmpt * pet_day
@@ -249,7 +247,7 @@
           
             !! calculate canopy resistance
             rc = 1. / (gsi_adj + 0.01)           !single leaf resistance
-            rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * hru(j)%parms%co2 / 330.))
+            rc = rc / (0.5 * (pcom(j)%lai_sum + 0.01) * (1.4 - 0.4 * bsn_prm%co2 / 330.))
 
             !! calculate maximum plant ET
             ep_max = (dlt * rn + gma * rho * vpd / rv) / (xl * (dlt + gma * (1. + rc / rv)))
@@ -265,8 +263,7 @@
         ramm = w%solradmx  * 37.59 / 30. 
 
         if (w%tmax > w%tmin) then
-         pet_day = hru(j)%hyd%harg_pet * (ramm / xl) * (w%tave +      &
-                                  17.8) * (w%tmax - w%tmin)**0.5
+         pet_day = hru(j)%hyd%harg_pet * (ramm / xl) * (w%tave + 17.8) * (w%tmax - w%tmin)**0.5
          pet_day = Max(0., pet_day)
         else
           pet_day = 0.

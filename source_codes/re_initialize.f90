@@ -33,6 +33,7 @@
       if (sp_ob%chandeg > 0) then
         sd_ch = sdch_init
         ch_stor = ch_om_water_init
+        fp_stor = fp_om_water_init
       end if
       
       !! re-initialize reservoir storage

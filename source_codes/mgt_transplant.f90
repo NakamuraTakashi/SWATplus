@@ -36,9 +36,9 @@
           pcom(j)%plcur(ipl)%phuacc))) + pldb(idp)%pltnfr3
           
       !! initialize plant mass
-      call pl_root_gro
-      call pl_seed_gro
-      call pl_partition
+      call pl_root_gro(j)
+      call pl_seed_gro(j)
+      call pl_partition(j)
 
       return
       end subroutine mgt_transplant

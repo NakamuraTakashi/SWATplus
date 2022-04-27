@@ -15,7 +15,7 @@
       imax = 0
       
       !read all delivery ratio data
-      inquire (file=in_delr%pest, exist=i_exist)
+      inquire (file=in_delr%path, exist=i_exist)
       if (i_exist .or. in_delr%path /= "null") then
         do
           open (107,file=in_delr%path)

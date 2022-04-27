@@ -592,7 +592,7 @@
       end if  
       
 !!!  Water Balance
-      if (db_mx%lsu_out > 0 .and. time%step == 0) then   !! Water Balance  
+      if (db_mx%lsu_out > 0) then   !! Water Balance  
         if (pco%wb_lsu%d == "y") then
           open (2140,file="lsunit_wb_day.txt",recl = 1500)
           write (2140,*) bsn%name, prog
@@ -624,7 +624,7 @@
           end if
         end if 
 
-     if (sp_ob%ru > 0 .and. time%step == 0) then   
+     if (sp_ob%ru > 0) then   
         if (pco%wb_lsu%y == "y") then
           open (2142,file="lsunit_wb_yr.txt",recl = 1500)
           write (2142,*) bsn%name, prog
@@ -842,7 +842,6 @@
       end if
       
 !!!  BASIN - Water balance 
-      if (time%step == 0) then
         if (pco%wb_bsn%d == "y") then
           open (2050,file="basin_wb_day.txt",recl = 1500)
           write (2050,*) bsn%name, prog
@@ -873,7 +872,6 @@
         end if
        end if 
 
-      if (time%step == 0) then
         if (pco%wb_bsn%y == "y") then
           open (2052,file="basin_wb_yr.txt",recl = 1500)
           write (2052,*) bsn%name, prog
@@ -888,7 +886,6 @@
             write (9000,*) "BASIN                    basin_wb_yr.csv"
           end if 
         endif
-      end if
         
        if (pco%wb_bsn%a == "y") then 
         open (2053,file="basin_wb_aa.txt",recl = 1500)
@@ -1086,8 +1083,8 @@
           write (2087,'(*(G0.3,:,","))') pw_hdr_units
           write (9000,*) "BASIN                     basin_pw_aa.csv"
        end if
-      end if
-      end if
+       end if
+       
 !!! CROP YIELDS
       if (sp_ob%hru > 0) then
         open (4008,file="crop_yld_aa.txt")

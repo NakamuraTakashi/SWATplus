@@ -107,11 +107,11 @@
           read (108,*,iostat=eof) jday, mo, day_mo, iyr
           if (eof < 0) exit
         
-        recall(i)%end_yr = iyr
         rewind (108)
         read (108,*,iostat=eof) titldum
         if (eof < 0) exit
         read (108,*,iostat=eof) nbyr
+        recall(i)%end_yr = iyr + nbyr - 1
         if (eof < 0) exit
         read (108,*,iostat=eof) header
         if (eof < 0) exit 

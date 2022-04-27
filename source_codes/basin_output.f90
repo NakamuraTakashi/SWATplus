@@ -75,8 +75,8 @@
             bwb_d%sw_init = bwb_d%sw_final
             bwb_d%sno_init = bwb_d%sno_final
           end if 
-          if (pco%nb_bsn%d == "y") then
-            write (2060,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_d  !! nutrient bal
+          if (pco%nb_bsn%d == "y") then 
+            write (2060,104) time%day, time%mo, time%day_mo, time%yrc, "        1", "       1", bsn%name, bnb_d  !! nutrient bal
             if (pco%csvout == "y") then 
               write (2064,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_d  !! nutrient bal
             end if
@@ -116,9 +116,9 @@
             bwb_m%sno_init = bwb_m%sno_final
           end if
           if (pco%nb_bsn%m == "y") then 
-            write (2061,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_m
+            write (2061,104) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_m 
             if (pco%csvout == "y") then 
-              write (2065,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_m
+              write (2065,104) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_m
             end if 
           end if
           if (pco%ls_bsn%m == "y") then  
@@ -166,7 +166,7 @@
              bwb_y%sno_init = bwb_y%sno_final
            end if
            if (pco%nb_bsn%y == "y") then
-             write (2062,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_y
+             write (2062,104) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_y
              if (pco%csvout == "y") then 
                write (2066,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_y
              end if
@@ -213,8 +213,8 @@
         bwb_a = hwbz
       end if
       if (time%end_sim == 1 .and. pco%nb_bsn%a == "y") then
-        bnb_a = bnb_a / time%yrs_prt
-        write (2063,100) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_a
+        bnb_a = bnb_a / time%yrs_prt  
+        write (2063,104) time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_a
         if (pco%csvout == "y") then 
           write (2067,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, "       1", "       1", bsn%name, bnb_a
         end if 
@@ -240,7 +240,8 @@
       
       return
 
-100   format (4i6,2a,2x,a16,32f12.3) 
-103   format (4i6,2x,2a,2x,a16,32f12.3,a)
+100   format (4i6,2a,2x,a16,39f12.3) 
+103   format (4i6,2x,2a,2x,a16,39f12.3,a)
+104   format (4i6,2a,2x,a16,4f12.3,23f17.3)
        
       end subroutine basin_output

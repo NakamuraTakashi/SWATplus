@@ -1,5 +1,16 @@
-scen_lu.dtl: written by SWAT+ editor v2.0.4 on 2021-04-28 10:44
- 12
+scen_lu_std.dtl: written by SWAT+ editor v2.0.4 on 2021-04-28 10:44  (JEFFS)
+ 13
+
+name                     conds      alts      acts  
+lu_change_hru_fr           4         2         2  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2  
+jday                      null         0              null                 -       1.00000         =         -
+year_cal                  null         0              null                 -    1990.00000         =         - 
+jday                      null         0              null                 -     180.00000         -         =
+year_cal                  null         0              null                 -    1995.00000         -         =
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+hru_fr_update             null         0    lu_change_1-90  ls_unit_upd1.ele       0.00000       0.00000  ru_unit_upd1.ele  y   n   
+hru_fr_update             null         0  lu_change_180-90  ls_unit_upd2.ele       0.00000       0.00000  ru_unit_upd2.ele  n   y   
 
 name                     conds      alts      acts 	!changing all forest to corn on January 1, 2005
 forest_to_corn               2         1         1  
@@ -52,7 +63,7 @@ p_factor                   hru         0              null                 -    
 land_use                   hru         0              corn                 -       0.00000         			= 		!corn in rotation (in plant.ini)
 land_use                   hru         0              soyb                 -       0.00000         			= 		!soybean in rotation (plant.ini)
 act_typ                    obj   obj_num              name            option         const        const2     fp  	outcome           
-p_factor                   hru         0           p_factor_change       null       0.00000       0.00000    null	y   
+p_factor                   hru         0           p_factor_change       null       0.20000       0.00000    null	y   
 
 name                     conds      alts      acts  
 install_tile               2         1         1  	!install tile (mw24_1000 from tiledrain.str) on all corn/soybean land with < 2% slope, soil group D, and not tiled between 1991 and 2000 (randomly)
@@ -67,7 +78,7 @@ tile_drained               hru         0              null                 -    
 land_use                   hru         0              corn                 -       0.00000         			= 		!corn in rotation (in plant.ini)
 land_use                   hru         0              corn                 -       0.00000         			= 		!soybean in rotation (plant.ini)
 act_typ                    obj   obj_num              name            option         const        const2     fp  	outcome           
-install_tile               hru         0           drain_tile           null       0.00000       0.00000    mw24_1000	y   
+tile_install               hru         0           drain_tile           null       0.00000       0.00000    mw24_1000	y   
 
 name                     conds      alts      acts  	!CEAP surface runoff vulnerability index - low, moderate, moderately high, high
 CEAP_surf_vuln_index         9        13         4  
@@ -167,3 +178,4 @@ ch_change                  cha         0             gully              null    
 ch_change                  cha         0         tributary              null       0.95000       0.00000         tributary  n   y   n   n   n   n   n   n   
 ch_change                  cha         0        main_upper              null       0.95000       0.00000        main_upper  n   n   y   n   n   n   y   n   
 ch_change                  cha         0        main_lower              null       0.95000       0.00000        main_lower  n   n   n   y   n   n   n   n   
+

@@ -44,6 +44,7 @@
             allocate (wst_n(imax))
             do iwst = 1, db_mx%wst
               allocate (wst(iwst)%weat%ts(time%step))
+              allocate (wst(iwst)%weat%ts_next(time%step))
               wst(iwst)%weat%precip_prior_day = "dry"
             end do
 

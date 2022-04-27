@@ -39,7 +39,7 @@ hru-lte_nb         n             n           n          n
 hru-lte_ls         n             n           n          n
 hru-lte_pw         n             n           n          n
 channel            n             n           n          n
-channel_sd         n             n           n          y
+channel_sd         y             y           y          y
 aquifer            n             n           n          y
 reservoir          n             n           n          y
 recall	           n             n           n          n

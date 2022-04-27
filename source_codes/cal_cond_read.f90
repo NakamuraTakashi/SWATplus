@@ -56,12 +56,12 @@
         if (eof < 0) exit
 
       do i = 1, num_dtls
-        read (107,*,iostat=eof) upd_cond(i)%max_hits, upd_cond(i)%name, upd_cond(i)%cond
+        read (107,*,iostat=eof) upd_cond(i)%max_hits, upd_cond(i)%typ, upd_cond(i)%dtbl
         if (eof < 0) exit
 
         !! crosswalk parameters with calibration parameter db
         do icond = 1, db_mx%dtbl_scen
-          if (upd_cond(i)%cond == dtbl_scen(icond)%name) then
+          if (upd_cond(i)%dtbl == dtbl_scen(icond)%name) then
             upd_cond(i)%cond_num = icond
             exit
           end if

@@ -95,6 +95,9 @@
       integer :: iaq_ch
       real :: det                     !hr            |time step
       real :: scoef                   !none          |Storage coefficient
+      integer :: dum                  !rtb gwflow
+
+      real :: channel_storage         !rtb gwflow
       real :: rchvol
       
       ich = isdch
@@ -119,10 +122,23 @@
         
       !! set ht1 to incoming hydrograph
       ht1 = ob(icmd)%hin
+      chsd_d(ich)%flo_in = ht1%flo / 86400.     !flow for morphology output
+      ch_in_d(ich) = ht1                        !set inflow om hydrograph
+      ch_in_d(ich)%flo = ht1%flo / 86400.       !flow for om output
+      
+      !rtb hydrograph separation
+      hdsep1%flo_surq = ob(icmd)%hdsep_in%flo_surq
+      hdsep1%flo_latq = ob(icmd)%hdsep_in%flo_latq
+      hdsep1%flo_gwsw = ob(icmd)%hdsep_in%flo_gwsw
+      hdsep1%flo_swgw = ob(icmd)%hdsep_in%flo_swgw
+      hdsep1%flo_satex = ob(icmd)%hdsep_in%flo_satex
+      hdsep1%flo_satexsw = ob(icmd)%hdsep_in%flo_satexsw
+      hdsep1%flo_tile = ob(icmd)%hdsep_in%flo_tile
+      !rtb hydrograph separation
       
       !! adjust precip and temperature for elevation using lapse rates
       w = wst(iwst)%weat
-      if (bsn_cc%lapse == 1) call cli_lapse (icmd, iwst)
+      if (bsn_cc%lapse == 1) call cli_lapse
       wst(iwst)%weat = w
       ht1%temp = 5.0 + 0.75 * wst(iwst)%weat%tave
       wtemp = 5.0 + 0.75 * wst(iwst)%weat%tave
@@ -171,6 +187,10 @@
   
           IF (peakrate > sd_ch_vel(ich)%vel_bf) THEN
           !! OVERBANK FLOOD
+            
+            !rtb floodplain
+            !flood_freq(ich) = 1 !flag to indicate the water is in the floodplain
+            
             sd_ch(ich)%overbank = "ob"
             rcharea = sd_ch_vel(ich)%area
             rchdep = sd_ch(ich)%chd
@@ -439,8 +459,15 @@
           call hyd_convert_mass_to_conc (ht3)
           jnut = sd_dat(ich)%nut
           ben_area = sd_ch(ich)%chw * sd_ch(ich)%chl
+          !! convert storage hyd - mass to concentration
+          if (ch_stor(ich)%flo > 0.001) then
+            call hyd_convert_mass_to_conc (ch_stor(ich))
+          else
+            ch_stor(ich) = hz
+          end if
+          
           call ch_watqual4
-          !! convert concentration to mass
+          !! convert outflow hydr - concentration to mass
           call hyd_convert_conc_to_mass (ht2)
          
           !! compute nutrient losses using 2-stage ditch model
@@ -512,65 +539,125 @@
         hcs2 = hcs2 + ch_water(ich)
         ch_water(ich) = frac * hcs1
       !end if
+      
+      !rtb hydrograph separation
+      if (rttime > det) then      ! ht1 = incoming + storage
+        !! travel time > timestep -- then all incoming is stored and frac of stored is routed
+        hdsep2%flo_surq = scoef * ch_stor_hdsep(ich)%flo_surq
+        hdsep2%flo_latq = scoef * ch_stor_hdsep(ich)%flo_latq
+        hdsep2%flo_gwsw = scoef * ch_stor_hdsep(ich)%flo_gwsw
+        hdsep2%flo_swgw = scoef * ch_stor_hdsep(ich)%flo_swgw
+        hdsep2%flo_satex = scoef * ch_stor_hdsep(ich)%flo_satex
+        hdsep2%flo_satexsw = scoef * ch_stor_hdsep(ich)%flo_satexsw
+        hdsep2%flo_tile = scoef * ch_stor_hdsep(ich)%flo_tile
+        ch_stor_hdsep(ich)%flo_surq = (frac*ch_stor_hdsep(ich)%flo_surq) + hdsep1%flo_surq
+        ch_stor_hdsep(ich)%flo_latq = (frac*ch_stor_hdsep(ich)%flo_latq) + hdsep1%flo_latq
+        ch_stor_hdsep(ich)%flo_gwsw = (frac*ch_stor_hdsep(ich)%flo_gwsw) + hdsep1%flo_gwsw
+        ch_stor_hdsep(ich)%flo_swgw = (frac*ch_stor_hdsep(ich)%flo_swgw) + hdsep1%flo_swgw
+        ch_stor_hdsep(ich)%flo_satex = (frac*ch_stor_hdsep(ich)%flo_satex) + hdsep1%flo_satex
+        ch_stor_hdsep(ich)%flo_satexsw = (frac*ch_stor_hdsep(ich)%flo_satexsw) + hdsep1%flo_satexsw
+        ch_stor_hdsep(ich)%flo_tile = (frac*ch_stor_hdsep(ich)%flo_tile) + hdsep1%flo_tile
+      else
+        !! travel time < timestep -- route all stored and frac of incoming
+        hdsep2%flo_surq = scoef * hdsep1%flo_surq
+        hdsep2%flo_latq = scoef * hdsep1%flo_latq
+        hdsep2%flo_gwsw = scoef * hdsep1%flo_gwsw
+        hdsep2%flo_swgw = scoef * hdsep1%flo_swgw
+        hdsep2%flo_satex = scoef * hdsep1%flo_satex
+        hdsep2%flo_satexsw = scoef * hdsep1%flo_satexsw
+        hdsep2%flo_tile = scoef * hdsep1%flo_tile
+        hdsep2%flo_surq = hdsep2%flo_surq + ch_stor_hdsep(ich)%flo_surq
+        hdsep2%flo_latq = hdsep2%flo_latq + ch_stor_hdsep(ich)%flo_latq
+        hdsep2%flo_gwsw = hdsep2%flo_gwsw + ch_stor_hdsep(ich)%flo_gwsw
+        hdsep2%flo_swgw = hdsep2%flo_swgw + ch_stor_hdsep(ich)%flo_swgw
+        hdsep2%flo_satex = hdsep2%flo_satex + ch_stor_hdsep(ich)%flo_satex
+        hdsep2%flo_satexsw = hdsep2%flo_satexsw + ch_stor_hdsep(ich)%flo_satexsw
+        hdsep2%flo_tile = hdsep2%flo_tile + ch_stor_hdsep(ich)%flo_tile
+        ch_stor_hdsep(ich)%flo_surq = frac * hdsep1%flo_surq
+        ch_stor_hdsep(ich)%flo_latq = frac * hdsep1%flo_latq
+        ch_stor_hdsep(ich)%flo_gwsw = frac * hdsep1%flo_gwsw
+        ch_stor_hdsep(ich)%flo_swgw = frac * hdsep1%flo_swgw
+        ch_stor_hdsep(ich)%flo_satex = frac * hdsep1%flo_satex
+        ch_stor_hdsep(ich)%flo_satexsw = frac * hdsep1%flo_satexsw
+        ch_stor_hdsep(ich)%flo_tile = frac * hdsep1%flo_tile
+      end if
+      ob(icmd)%hdsep%flo_surq = hdsep2%flo_surq
+      ob(icmd)%hdsep%flo_latq = hdsep2%flo_latq
+      ob(icmd)%hdsep%flo_gwsw = hdsep2%flo_gwsw
+      ob(icmd)%hdsep%flo_swgw = hdsep2%flo_swgw
+      ob(icmd)%hdsep%flo_satex = hdsep2%flo_satex
+      ob(icmd)%hdsep%flo_satexsw = hdsep2%flo_satexsw
+      ob(icmd)%hdsep%flo_tile = hdsep2%flo_tile
+      !store outflow components for writing (and convert from m3 --> m3/sec)
+      hyd_sep_array(ich,1) = hdsep2%flo_surq / 86400.
+      hyd_sep_array(ich,2) = hdsep2%flo_latq / 86400.
+      hyd_sep_array(ich,3) = hdsep2%flo_gwsw / 86400.
+      hyd_sep_array(ich,4) = hdsep2%flo_swgw / 86400.
+      hyd_sep_array(ich,5) = hdsep2%flo_satex / 86400.
+      hyd_sep_array(ich,6) = hdsep2%flo_satexsw / 86400.
+      hyd_sep_array(ich,7) = 0. !hdsep2%flo_tile / 86400.
+      !rtb hydrograph separation
+      !end if
 
+      ich = isdch
+      
+      !! set outflow hyd to ht2 before diverting water
+      ob(icmd)%hd(1) = ht2
       !! check decision table for flow control - water allocation
-      if (ob(icmd)%ruleset /= "null" .and. ob(icmd)%ruleset /= "0") then
-        id = ob(icmd)%flo_dtbl
-        d_tbl => dtbl_flo(id)
-        call conditions (ich, id)
-        call actions (ich, icmd, id)
+      if (sd_ch(isdch)%wallo > 0) then
+        call wallo_control (sd_ch(isdch)%wallo)
       end if
 
-      ob(icmd)%hd(1) = ht2
+      !ht2 = ob(icmd)%hd(1)  !! reset ht2 for printing
       ob(icmd)%hd(1)%temp = 5. + .75 * wst(iwst)%weat%tave
       ht2%temp = 5. + .75 * wst(iwst)%weat%tave
-      ch_stor(ich)%temp = 5. + .75 * wst(iwst)%weat%tave
+      ch_stor(isdch)%temp = 5. + .75 * wst(iwst)%weat%tave
       
       if (cs_db%num_pests > 0) then
         obcs(icmd)%hd(1)%pest = hcs2%pest
       end if
       
       !! output channel organic-mineral
-      ch_out_d(ich) = ht2                       !set outflow om hydrograph
-      ch_out_d(ich)%flo = ht2%flo / 86400.      !m3 -> m3/s
+      ch_out_d(isdch) = ob(icmd)%hd(1)                       !set outflow om hydrograph
+      ch_out_d(isdch)%flo = ob(icmd)%hd(1)%flo / 86400.      !m3 -> m3/s
       
       !! output channel morphology
-      chsd_d(ich)%flo = ht2%flo / 86400.        !adjust if overbank flooding is moved to landscape
-      chsd_d(ich)%flo_mm = ht2%flo / (10. * ob(icmd)%area_ha)   !flow out in mm
-      chsd_d(ich)%peakr = peakrate 
-      chsd_d(ich)%sed_in = ob(icmd)%hin%sed
-      chsd_d(ich)%sed_out = sedout
-      chsd_d(ich)%sed_stor = ch_stor(ich)%sed
+      chsd_d(isdch)%flo = ob(icmd)%hd(1)%flo / 86400.        !adjust if overbank flooding is moved to landscape
+      chsd_d(isdch)%flo_mm = ob(icmd)%hd(1)%flo / (10. * ob(icmd)%area_ha)   !flow out in mm
+      chsd_d(isdch)%peakr = peakrate 
+      chsd_d(isdch)%sed_in = ob(icmd)%hin%sed
+      chsd_d(isdch)%sed_out = sedout
+      chsd_d(isdch)%sed_stor = ch_stor(isdch)%sed
       if (sedout > 2000.) then      !***jga
         dep = bedld
       end if
-      chsd_d(ich)%washld = washld
-      chsd_d(ich)%bedld = bedld
-      chsd_d(ich)%dep = dep
-      chsd_d(ich)%deg_btm = deg_btm
-      chsd_d(ich)%deg_bank = deg_bank
-      chsd_d(ich)%hc_sed = hc_sed
-      chsd_d(ich)%width = sd_ch(ich)%chw
-      chsd_d(ich)%depth = sd_ch(ich)%chd
-      chsd_d(ich)%slope = sd_ch(ich)%chs
-      chsd_d(ich)%deg_btm_m = erode_btm
-      chsd_d(ich)%deg_bank_m = erode_bank
-      chsd_d(ich)%hc_m = hc
+      chsd_d(isdch)%washld = washld
+      chsd_d(isdch)%bedld = bedld
+      chsd_d(isdch)%dep = dep
+      chsd_d(isdch)%deg_btm = deg_btm
+      chsd_d(isdch)%deg_bank = deg_bank
+      chsd_d(isdch)%hc_sed = hc_sed
+      chsd_d(isdch)%width = sd_ch(isdch)%chw
+      chsd_d(isdch)%depth = sd_ch(isdch)%chd
+      chsd_d(isdch)%slope = sd_ch(isdch)%chs
+      chsd_d(isdch)%deg_btm_m = erode_btm
+      chsd_d(isdch)%deg_bank_m = erode_bank
+      chsd_d(isdch)%hc_m = hc
       
       !! set pesticide output variables
       do ipest = 1, cs_db%num_pests
-        chpst_d(ich)%pest(ipest)%tot_in = obcs(icmd)%hin%pest(ipest)
-        chpst_d(ich)%pest(ipest)%sol_out = frsol * obcs(icmd)%hd(1)%pest(ipest)
-        chpst_d(ich)%pest(ipest)%sor_out = frsrb * obcs(icmd)%hd(1)%pest(ipest)
-        chpst_d(ich)%pest(ipest)%react = chpst%pest(ipest)%react
-        chpst_d(ich)%pest(ipest)%volat = chpst%pest(ipest)%volat
-        chpst_d(ich)%pest(ipest)%settle = chpst%pest(ipest)%settle
-        chpst_d(ich)%pest(ipest)%resus = chpst%pest(ipest)%resus
-        chpst_d(ich)%pest(ipest)%difus = chpst%pest(ipest)%difus
-        chpst_d(ich)%pest(ipest)%react_bot = chpst%pest(ipest)%react_bot
-        chpst_d(ich)%pest(ipest)%bury = chpst%pest(ipest)%bury 
-        chpst_d(ich)%pest(ipest)%water = ch_water(ich)%pest(ipest)
-        chpst_d(ich)%pest(ipest)%benthic = ch_benthic(ich)%pest(ipest)
+        chpst_d(isdch)%pest(ipest)%tot_in = obcs(icmd)%hin%pest(ipest)
+        chpst_d(isdch)%pest(ipest)%sol_out = frsol * obcs(icmd)%hd(1)%pest(ipest)
+        chpst_d(isdch)%pest(ipest)%sor_out = frsrb * obcs(icmd)%hd(1)%pest(ipest)
+        chpst_d(isdch)%pest(ipest)%react = chpst%pest(ipest)%react
+        chpst_d(isdch)%pest(ipest)%volat = chpst%pest(ipest)%volat
+        chpst_d(isdch)%pest(ipest)%settle = chpst%pest(ipest)%settle
+        chpst_d(isdch)%pest(ipest)%resus = chpst%pest(ipest)%resus
+        chpst_d(isdch)%pest(ipest)%difus = chpst%pest(ipest)%difus
+        chpst_d(isdch)%pest(ipest)%react_bot = chpst%pest(ipest)%react_bot
+        chpst_d(isdch)%pest(ipest)%bury = chpst%pest(ipest)%bury 
+        chpst_d(isdch)%pest(ipest)%water = ch_water(ich)%pest(ipest)
+        chpst_d(isdch)%pest(ipest)%benthic = ch_benthic(ich)%pest(ipest)
       end do
         
       !! set values for recharge hydrograph - should be trans losses

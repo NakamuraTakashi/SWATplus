@@ -39,7 +39,7 @@ print Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:55
     hru-lte_ls         n         n         n         n
     hru-lte_pw         n         n         n         n
        channel         n         n         y         n
-    channel_sd         n         n         y         y
+    channel_sd         y         n         y         y
        aquifer         n         n         y         n
      reservoir         n         n         y         n
         recall         n         n         n         n

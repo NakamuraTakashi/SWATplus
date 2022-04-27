@@ -48,8 +48,7 @@
         integer :: harv_num = 0         !!              |number of harvest operations
         integer :: curyr_mat = 1        !! 
         integer :: curyr_gro = 1        !!
-        real :: pop_com = 0.            !! none 
-        integer :: monsoon_init = 0     !! julian day   |monsoon initiation period
+        real :: pop_com = 0.            !! none
         integer :: days_senes = 0.      !! mm           |days since scenesence began (for moisture growth perennials)
         real :: leaf_tov = 0.           !! none         |leaf turnover rate - decline in lai and leaf biomass
         real :: lai_pot = 0.            !! none         |potential leaf area index
@@ -85,16 +84,13 @@
       end type auto_operations
       
       type plant_community
-       character(len=4) :: name
+       character(len=35) :: name
        integer :: npl                   !! number of plants in community
        character(len=4), dimension(:), allocatable :: pl       !! N/A              |plant name
        integer :: pcomdb                !! current plant community database number
        integer :: rot_yr = 1            !! rotation year
        integer :: days_plant = 100000   !!               |days since last planting - for conditional scheduling planting
        integer :: days_harv = 100000    !!               |days since last harvest - for conditional scheduling planting
-       integer :: mseas = 0             !! none          |monsoon season to initiate tropical plant growth
-                                        !!               |   0 = outside monsoon period and during monsoon after growth is triggered
-                                        !!               |   1 = in monsoon period but new growth not triggered
        real :: cht_mx = 0.              !! m             |height of tallest plant in community for pet calculation
        real :: lai_sum = 0.             !! m/m           |sum of lai for each plant
        real :: laimx_sum = 0.           !! m/m           |sum of maximum lai for each plant - for canopy interception

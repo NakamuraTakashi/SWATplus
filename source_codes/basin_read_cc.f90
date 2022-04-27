@@ -26,7 +26,21 @@
          exit
        enddo
        endif
-          close(107)
+       
+       if (bsn_cc%pet == 3) then 
+        open (140,file = 'pet.cli')
+       do
+        read (140,*,iostat=eof) titldum
+        if (eof < 0) exit
+        read (140,*,iostat=eof) header
+        if (eof < 0) exit
+        read (140,*,iostat = eof) titldum
+        exit
+       end do
+       end if
+
+    
+       close(107)
        
        return
       end subroutine basin_read_cc

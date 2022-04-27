@@ -83,26 +83,7 @@
                 end if
               end if
             end do
-            
-          case ("mons")  !! begin and end monsoon initiation period
-            !!begin monsoon initiation period
-            if (int(mgt%op3) == 1) then
-              pcom(j)%mseas = 1
-              do ipl = 1, pcom(j)%npl
-                pcom(j)%plcur(ipl)%monsoon_init = 1
-              end do
-            else
-              pcom(j)%mseas = 0
-             do ipl = 1, pcom(j)%npl
-               if (pcom(j)%plcur(ipl)%monsoon_init == 1) then             
-                  pcom(j)%plcur(ipl)%gro = "y"
-                  pcom(j)%plcur(ipl)%phuacc = 0. 
-                  pcom(j)%plcur(ipl)%idorm = "n"
-                  pcom(j)%plcur(ipl)%monsoon_init = 0
-               endif
-            end do
-            end if
-            
+
           case ("harv")  !! harvest only operation
             iharvop = mgt%op1
 
@@ -245,7 +226,7 @@
 
           case ("irrm")  !! date scheduled irrigation operation
             ipl = 1
-            irrop = mgt%op4                        !irrigation amount (mm) from irr.ops data base
+            irrop = mgt%op1                        !irrigation amount (mm) from irr.ops data base
             irrig(j)%applied = irrop_db(irrop)%amt_mm * irrop_db(irrop)%eff * (1. - irrop_db(irrop)%surq)
             irrig(j)%runoff = irrop_db(irrop)%amt_mm * irrop_db(irrop)%surq
 

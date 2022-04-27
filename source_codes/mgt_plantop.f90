@@ -46,8 +46,7 @@
       real :: plt_zmx         !mm            |rooting depth of plant
       
       j = ihru
-      !idp = pcom(j)%plcur(1)%idplt
-
+      
       pcom(j)%plcur(ipl)%gro = "y"
       pcom(j)%plcur(ipl)%idorm = "n"
       pcom(j)%plcur(ipl)%phuacc = 0.
@@ -63,7 +62,7 @@
       pcom(j)%plstr(ipl) = plstrz 
 
       !! compare maximum depth in soil to maximum rooting depth of plant
-      plt_zmx = 1000. * pldb(ipl)%rdmx
+      plt_zmx = 1000. * pldb(pcom(j)%plcur(ipl)%idplt)%rdmx
       soil(ihru)%zmx = Min(soil(ihru)%zmx, plt_zmx)
 
       return

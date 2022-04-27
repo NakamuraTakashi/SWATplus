@@ -56,6 +56,7 @@
         iaqdb = ob(iob)%props
 
         !! initialize parameters
+        aqu_prm(iaq)%area_ha = ob(iob)%area_ha
         aqu_prm(iaq)%alpha = aqudb(iaqdb)%alpha
         aqu_prm(iaq)%flo_min = aqudb(iaqdb)%flo_min
         aqu_prm(iaq)%revap_co = aqudb(iaqdb)%revap_co

@@ -37,12 +37,7 @@
       
       !set parms for sd-channel-landscape linkage
       call overbank_read
-      do irch = 1, sp_ob%chandeg
-        i = sp_ob1%chandeg + irch - 1
-        if (ob(i)%props2 > 0) then
-          call sd_channel_surf_link (ob(i)%props2)
-        end if
-      end do
+      call sd_channel_surf_link
       
       call time_conc_init
 

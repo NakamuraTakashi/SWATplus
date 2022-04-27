@@ -1,6 +1,6 @@
-      subroutine plant_init (init)
+      subroutine plant_init (init, iihru)
 
-      use hru_module, only : cn2, cvm_com, hru, ihru, ipl, isol, rsdco_plcom
+      use hru_module, only : cn2, cvm_com, hru, ipl, isol, rsdco_plcom
       use soil_module
       use plant_module
       use hydrograph_module
@@ -18,6 +18,7 @@
       implicit none
       
       integer, intent (in) :: init   !           |
+      integer, intent (in) :: iihru  !none       |hru number to send to plant_init
       integer :: day_mo
       integer :: icom                !           |plant community counter
       integer :: idp                 !           |
@@ -38,6 +39,7 @@
       integer :: igrow               !none       |julian day growth begins
       integer :: iday_sum            !none       |day for southern hemisphere (182-181)
       integer :: iday_sh             !none       |julian day growth begins in souther hemisphere
+      integer :: jday_prev           !none       |julian day of previous operation
       real :: phutot                 !heat unit  |total potential heat units for year (used
                                      !           |when no crop is growing)
       real :: grow_start             !           |
@@ -56,7 +58,7 @@
       real :: daylength              !hours      |daylength
       real :: laimx_pop              !           |max lai given plant population
 
-      j = ihru
+      j = iihru
 
       !! allocate plants
         icom = hru(j)%plant_cov
@@ -113,7 +115,7 @@
           
           ! set heat units to maturity
           ! first compute base0 units for entire year
-          iob = hru(ihru)%obj_no
+          iob = hru(j)%obj_no
           iwst = ob(iob)%wst
           iwgn = wst(iwst)%wco%wgn
           phu0 = 0.
@@ -137,7 +139,7 @@
             end do
             pcom(j)%plcur(ipl)%phumat = .95 * phutot
           else
-            ! caculate planting day for summer annuals
+            ! calculate planting day for summer annuals
             if (pldb(idp)%typ == "warm_annual" .or. pldb(idp)%typ == "warm_annual_tuber") then
               iday_sum = 181
               phutot = 0.
@@ -160,7 +162,14 @@
                 if (phuday > 0.) then
                   phutot = phutot + phuday
                 end if
-                if (phutot > phu0) exit   ! exit on plant day at 0.15 base 0 heat units(iday)
+                if (phutot > phu0) then
+                  if (wgn(iwgn)%lat > 0.) then
+                    igrow = iday
+                  else
+                    igrow = iday_sh
+                  end if
+                  exit   ! exit on plant day at 0.15 base 0 heat units
+                end if
               end do
             end if
           
@@ -171,38 +180,20 @@
               else
                 igrow = 181
               end if
-              phutot = 0.
-              phu0 = 0.15 * phu0    !assume start accumulating hu at 0.15 base 0 heat units
               do iday = igrow, igrow + 180
                 call xmon (iday, mo, day_mo)
                 tave = (wgn(iwgn)%tmpmx(mo) + wgn(iwgn)%tmpmn(mo)) / 2.
-                phuday = tave
+                phuday = tave - pldb(idp)%t_base
                 if (phuday > 0.) then
-                  phutot = phutot + phuday
+                  !exit and assume start accumulating hu when temperature goes above base temp
+                  !could switch to end of dormancy (daylength)
+                  exit
                 end if
-                if (phutot > phu0) exit
-                !! calculate solar declination: equation 2.1.2 in SWAT manual
-                !sd = Asin(.4 * Sin((Real(iday) - 82.) / 58.09))  !!365/2pi = 58.09
-                !sdlat = -wgn_pms(iwgn)%latsin * Tan(sd) / wgn_pms(iwgn)%latcos
-                !if (sdlat > 1.) then    !! sdlat will be >= 1. if latitude exceeds +/- 66.5 deg in winter
-                !  h = 0.
-                !elseif (sdlat >= -1.) then
-                !  h = Acos(sdlat)
-                !else
-                !  h = 3.1416         !! latitude exceeds +/- 66.5 deg in summer
-                !endif 
-                !daylength = 7.6394 * h
-                !iday_sh = iday
-                !if (daylength - bsn_prm%dorm_hr > wgn_pms(iwgn)%daylmn) exit
               end do
+              igrow = iday
             end if
             
             ! calculate heat units from plant day (iday) to maturity (add days to maturity)
-            if (wgn(iwgn)%lat > 0.) then
-              igrow = iday
-            else
-              igrow = iday_sh
-            end if
             phutot = 0.
             do iday = igrow, igrow + pldb(idp)%days_mat
               if (wgn(iwgn)%lat > 0.) then
@@ -230,22 +221,26 @@
           if (sched(isched)%num_ops > 0) then
           if (sched(isched)%mgt_ops(1)%jday > 0) then
             irot = 1
+            jday_prev = sched(isched)%mgt_ops(1)%jday
             do iop = 1, sched(isched)%num_ops
               if (irot == pcomdb(icom)%rot_yr_ini .and. time%day_start <= sched(isched)%mgt_ops(iop)%jday) then
                 exit
               else
-                if (sched(isched)%mgt_ops(iop)%name == "skip") then
+                if (sched(isched)%mgt_ops(iop)%op == "skip" .or. sched(isched)%mgt_ops(iop)%jday < jday_prev) then
                   irot = irot + 1
                 end if
               end if
+              jday_prev = sched(isched)%mgt_ops(iop)%jday
             end do
-            sched(isched)%first_op = min (iop, sched(isched)%num_ops)
+            sched(isched)%first_op = min (iop-1, sched(isched)%num_ops)
+            sched(isched)%first_op = max (1, sched(isched)%first_op)
           else
             sched(isched)%first_op = 1
           end if
           end if
           hru(j)%cur_op = sched(isched)%first_op
 
+          pcom(j)%name = pcomdb(icom)%name
           ! set initial rotation year for dtable scheduling
           pcom(j)%rot_yr = pcomdb(icom)%rot_yr_ini
           
@@ -283,34 +278,34 @@
           pcom(j)%plcur(ipl)%lai_pot = laimx_pop
           
           !! initialize plant mass
-          call pl_root_gro
-          call pl_seed_gro
-          call pl_partition
+          call pl_root_gro(j)
+          call pl_seed_gro(j)
+          call pl_partition(j)
 
         end do   ! ipl loop
         end if   ! icom > 0
 
-        ilum = hru(ihru)%land_use_mgt
+        ilum = hru(iihru)%land_use_mgt
                  
         !! set epco parameter for each crop
-        do ipl = 1, pcom(ihru)%npl
-          pcom(ihru)%plcur(ipl)%epco = hru(ihru)%hyd%epco
+        do ipl = 1, pcom(iihru)%npl
+          pcom(iihru)%plcur(ipl)%epco = hru(iihru)%hyd%epco
         end do
         
         !! set p factor and slope length (ls factor)
         icp = lum_str(ilum)%cons_prac
-        xm = .6 * (1. - Exp(-35.835 * hru(ihru)%topo%slope))
-        sin_sl = Sin(Atan(hru(ihru)%topo%slope))
-        sl_len = amin1 (hru(ihru)%topo%slope_len, cons_prac(icp)%sl_len_mx)
-        hru(ihru)%lumv%usle_ls = (hru(ihru)%topo%slope_len / 22.128) ** xm *          & 
+        xm = .6 * (1. - Exp(-35.835 * hru(iihru)%topo%slope))
+        sin_sl = Sin(Atan(hru(iihru)%topo%slope))
+        sl_len = amin1 (hru(iihru)%topo%slope_len, cons_prac(icp)%sl_len_mx)
+        hru(iihru)%lumv%usle_ls = (hru(iihru)%topo%slope_len / 22.128) ** xm *          & 
                       (65.41 * sin_sl * sin_sl + 4.56 * sin_sl + .065)
-        hru(ihru)%lumv%usle_p = cons_prac(icp)%pfac
+        hru(iihru)%lumv%usle_p = cons_prac(icp)%pfac
         
         !! xwalk urban land use type with urban name in urban.urb
-        hru(ihru)%luse%urb_ro = lum(ilum)%urb_ro
+        hru(iihru)%luse%urb_ro = lum(ilum)%urb_ro
         do idb = 1, db_mx%urban
           if (lum(ilum)%urb_lu == urbdb(idb)%urbnm) then
-            hru(ihru)%luse%urb_lu = idb
+            hru(iihru)%luse%urb_lu = idb
             exit
           endif
         end do
@@ -318,7 +313,7 @@
         !! xwalk overland n with name in ovn_table.lum
         do idb = 1, db_mx%ovn
           if (lum(ilum)%ovn == overland_n(idb)%name) then
-            hru(ihru)%luse%ovn = overland_n(idb)%ovn
+            hru(iihru)%luse%ovn = overland_n(idb)%ovn
             exit
           endif
         end do

@@ -109,12 +109,12 @@
           
       type reservoir_weir_outflow
         character(len=25) :: name
-        real :: num_steps = 24        !              |number of time steps in day for weir routing
-        real :: c = 1.                !              |weir discharge coefficient 
-        real :: k = 150000.           !m^1/2 d^-1    |energy coefficient (broad_crested=147,000" sharp crested=153,000)
-        real :: w = 2.                !(m)           |width
-        real :: bcoef = 1.75          !              |velocity exponent coefficient for bedding material
-        real :: ccoef = 1.            !              |depth exponent coefficient for bedding material
+        real :: num_steps = 24        !none          |number of time steps in day for weir routing
+        real :: c = 1.                !none          |weir discharge coefficient 
+        real :: k = 150000.           !m^0.5/d       |energy coefficient (broad_crested=147,000" sharp crested=153,000)
+        real :: w = 2.                !m             |width
+        real :: bcoef = 1.75          !none          |velocity exponent coefficient for bedding material
+        real :: ccoef = 1.            !none          |depth exponent coefficient for bedding material
       end type reservoir_weir_outflow
       type (reservoir_weir_outflow),dimension(:),allocatable :: res_weir    
     

@@ -1,5 +1,5 @@
-lum.dtl: new standard set of tables. JGA 4-6-2021
-32
+lum_std.dtl: new standard set of tables. JGA 2-17-22
+36
 
 name                     conds      alts      acts  	!plant and harv for continuous summer crop - set crop in management.sch
 pl_hv_summer1              6         5         3  	
@@ -74,7 +74,7 @@ var                        obj   obj_num           lim_var            lim_op    
 soil_water                 hru         0                fc                 -       0.50000         		<  	!soil water is below 0.5*field capacity
 plant_gro                  hru         0                 y                 -       0.00000         		=  	!only when plant is growing
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irr_demand                 hru         0         sprinkler     sprinkler_ilm      25.00000    20.00000   unlim  y   
+irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
 
 name                     conds      alts      acts  	!irrigate 25 mm when soil water is below 0.35*field capacity from unlimited source - max 20 times per year using sprinkler
 irr_reduc_sw_unlim         2         1         1  
@@ -82,42 +82,43 @@ var                        obj   obj_num           lim_var            lim_op    
 soil_water                 hru         0                fc                 -       0.35000         		<  	!soil water is below 0.35*field capacity
 plant_gro                  hru         0                 y                 -       0.00000         		=  	!only when plant is growing
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irr_demand                 hru         0         sprinkler     sprinkler_ilm      25.00000    20.00000   unlim  y   
+irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
 
 name                     conds      alts      acts 	!irrigate 25 mm when plant water stress < 0.9 from unlimited source - max 20 times per year using sprinkler 
 irr_str9_unlim             1         1         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
 w_stress                   hru         0              null                 -       0.90000         		<  	!plant water stress < 0.9
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irr_demand                 hru         0         sprinkler     sprinkler_ilm      25.00000    20.00000   unlim  y   
+irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
 
 name                     conds      alts      acts  	!irrigate 25 mm when plant water stress < 0.8 from unlimited source - max 20 times per year using sprinkler 
 irr_str8_unlim             1         1         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
 w_stress                   hru         0              null                 -       0.80000         		<  	!plant water stress < 0.8
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irr_demand                 hru         0         sprinkler     sprinkler_ilm      25.00000    20.00000   unlim  y   
+irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
 
 name                     conds      alts      acts  
 irr_str8_aqu               1         1         1  	!irrigate 25 mm when plant water stress < 0.8 from aquifer 1 - max 20 times per year using sprinkler 
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
 w_stress                   hru         0              null                 -       0.80000         		<  	!plant water stress < 0.8
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irrigate                   aqu         1         sprinkler     sprinkler_ilm      25.00000    20.00000   null   y   
+irrigate                   aqu         1         sprinkler     sprinkler_med      25.00000    20.00000   null   y   
 
 name                     conds      alts      acts  	!irrigate 25 mm when plant water stress < 0.8 from reservoir 1 - max 20 times per year using sprinkler 
 irr_str8_res               1         1         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
 w_stress                   hru         0              null                 -       0.80000         		<  	!plant water stress < 0.8
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irrigate                   res         1         sprinkler     sprinkler_ilm      25.00000    20.00000   null   y   
+irrigate                   res         1         sprinkler     sprinkler_med      25.00000    20.00000   null   y   
 
 name                     conds      alts      acts  	!irrigate 25 mm when plant water stress < 0.8 from channel 1 - max 20 times per year using sprinkler 
-irr_str8_cha               1         1         1  
+irr_str8_cha               1         1         2  
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
 w_stress                   hru         0              null                 -       0.80000         		<  	!plant water stress < 0.8
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irrigate                   cha         1         sprinkler     sprinkler_ilm      25.00000    20.00000   null   y   
+irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
+irrigate                   cha         1         sprinkler     sprinkler_med      25.00000    20.00000   null   y   
 
 name                     conds      alts      acts  
 irr_str8_res_aqu           3         3         3  	!check reservoir level, then check aquifer depth, then unlimited source
@@ -126,9 +127,9 @@ w_stress                   hru         0              null                 -    
 vol                        res         1              pvol                 *       0.75000                      >	<	<	!res volume > 0.75*principle volume
 aqu_dep			   aqu         1              null                 -       50.0000                      -	<	>	!aquifer depth < 50m below surface
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
-irrigate                   res         1         sprinkler     sprinkler_ilm      25.00000    20.00000   null   y	n   	n
-irrigate                   aqu         1         sprinkler     sprinkler_ilm      25.00000    20.00000   null   n	y   	n
-irrigate                   unlim       0         sprinkler     sprinkler_ilm      25.00000    20.00000   null   n	n   	y
+irrigate                   res         1         sprinkler     sprinkler_med      25.00000    20.00000   null   y	n   	n
+irrigate                   aqu         1         sprinkler     sprinkler_med      25.00000    20.00000   null   n	y   	n
+irrigate                   unlim       0         sprinkler     sprinkler_med      25.00000    20.00000   null   n	n   	y
 
 name                     conds      alts      acts  	!open drains in spring and close after harvest - close in summer if low soil water and plant hu > 0.5
 control_drainage             6         4         4  
@@ -181,11 +182,10 @@ act_typ                    obj   obj_num              name            option    
 graze                      hru         0       summer_high         beef_high       0.00000       0.00000    null  	y   
 
 name                     conds      alts      acts  	!160 kg/ha anh- ammonia in spring with max 2 50 kg/ha urea side dressings; 30 kg/ha phosphorus (once) when stress < 0.9
-fert_sprg_side               6         3         3  
+fert_sprg_side               5         3         3  
 var                        obj   obj_num           lim_var            lim_op     lim_const      			alt1      alt2	alt3
 phu_base0                  hru         0              null                 -       0.12000         			>         -  	-	!base0 heat units > 0.12 - just before planting
 year_rot                   hru         0              null                 -       1.00000         			=         =  	-	!rotation year 1 - needed if corn-soyb rotation
-n_stress                   hru         0              null                 -       0.90000         			-         <  	-	!nitrogen stress < 0.9
 p_stress                   hru         0              null                 -       0.90000         			-         -  	<	!phosphorus stress < 0.9
 plant_gro                  hru         0                 y                 -       0.00000         			-         =  	=	!plant is growing
 phu_plant                  hru         0           phu_mat                 -       1.05000         			-         <  	<	!don't fertilize after plant reaches maturity
@@ -258,6 +258,44 @@ phu_base0                  hru         0              null                 -    
 act_typ                    obj   obj_num              name            option         const        const2      fp  	outcome 
 tillage                    hru         0          planting          zerotill       0.00000       1.00000     null  	y
 
+name                     conds      alts      acts  
+cn2_update                   2         2         2  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1	alt2 
+phu_plant                  hru         0           phu_mat                 -       0.10000         >   	-
+days_harv                  hru         0              null                 -       1.00000         -    =
+act_typ                    obj   obj_num              name            option         const        const2         fp   outcome           
+cn_update                  hru         0     lower_cn_grow            abschg      -3.00000       1.00000        null  y   n 
+cn_update                  hru         0  increase_cn_harv            abschg       6.00000       1.00000        null  n   y 
+
+DTBL_NAME      CONDS       ALTS       ACTS
+irrig_rel          3          3          3
+ COND_VAR     OBJ   OBJ_NUMB LIM_VAR LIM_OP LIM_CONST  				ALT1   ALT2    ALT3
+   vol        res     0    	evol      *         1     			<        >        -                                                
+   vol        res     0    	pvol      *         1     			>        -        -
+irr_dmd_wro   wro     1		null	  -	    0				-        -        >                                        
+ ACT_TYP        OBJ OBJ_NUM       ACT_NAME 	      ACT_OPTION CONST CONST2   FILE_POINTER  	      OUT1  OUT2    OUT3
+ release        res       0  over_emergency             days     5      0          	evol     	n       y      n                                                
+ release        res       0  over_principal             days    15      0         	pvol     	y     	n      n                                             
+ release        res       0  irrig_release           irr_dmd   1.2      1          	wro     	n      	n      y                                             
+
+DTBL_NAME            CONDS          ALTS          ACTS	 
+irr_str8_dmd             1             1             1  
+COND_VAR         OBJ    OBJ_NUMB    LIM_VAR     LIM_OP       LIM_CONST  	ALT1
+w_stress         hru           0       null         -             0.80        	<  
+ACT_TYP          OBJ     OBJ_NUM       ACT_NAME     ACT_OPTION         CONST   CONST2     FILE_POINTER  	OUT1
+irr_demand       hru           0      sprinkler     sprinkler_med       25.0       20             null  	   y   
+
+DTBL_NAME           CONDS       ALTS       ACTS
+irrig_rel              3           3          3
+ COND_VAR     OBJ   OBJ_NUMB LIM_VAR   LIM_OP    LIM_CONST  			ALT1   ALT2    ALT3
+   vol        res        0    	evol        *            1     			<        >        -                                                
+   vol        res        0      pvol        *            1     			>        -        -
+irr_dmd_wro   wro        1	null	    -	         0			-        -        >                                        
+ ACT_TYP      OBJ OBJ_NUM       ACT_NAME 	      ACT_OPTION   CONST   CONST2   FILE_POINTER  OUT1  OUT2    OUT3
+ release      res       0 	over_emergency         days          5        0         evol      n      y   	n                                                
+ release      res       0       over_principal         days         15        0         pvol      y      n     	n                                             
+allocate_wro  wro       1       direct_irrig            res	     1        0	        null	  n      n    	y     
+
 name                     conds      alts      acts  	!plant and harv for continuous summer crop - set crop in management.sch
 pl_hv_summer1_corn           6         5         3  	
 var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4 	alt5 
@@ -289,15 +327,15 @@ harvest_kill               hru         0        grain_harv             corn     
 harvest_kill               hru         0        grain_harv             soyb        0.00000       0.00000              null  n   n   n   y   n   y   n   n   n
 rot_reset                  hru         0           reset_2              null       1.00000       1.00000              null  n   n   n   n   n   n   y   n   n
 
- NAME   	   CONDS  ALTS	ACTS
+ NAME      	   CONDS  ALTS	ACTS
 EnlistDuo_app        3	   2	 2	!apply 2,4-D and roundup for preplant
- VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	      	ALT1	ALT2
-phu_base0 	hru	  0	  null		  -	          0.10		        >	 - 
-prob		null	  0	  null		  -	           .07		 	<	 -
-phu_base0 	hru	  0	  null		  -	          0.15		        -	 >
+ VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	      	ALT1 ALT2
+phu_base0 	hru	  0	    null		  -	          0.10		        >	 - 
+prob		null  0	    null		  -	           .07		 	    <	 -
+phu_base0 	hru	  0	    null		  -	          0.15		        -	 >
  ACT_TYP       OBJ     OBJ_NUM   NAME          OPTION      CONST    CONST2   FP         OUTCOMES
-pest_apply      hru	  0	 preplant	dacamine    1.0	      1     broadcast	y	 y
-pest_apply      hru	  0	 preplant	roundup     2.0	      1     broadcast	y	 y
+pest_apply      hru	    0	     preplant	 dacamine     1.0	      1     broadcast	y	 y
+pest_apply      hru	    0	     preplant	  roundup     2.0	      1     broadcast	y	 y
 
  NAME   	   CONDS  ALTS	ACTS
 no_tile_drain        1	    1	 1
@@ -308,29 +346,31 @@ drain_control   hru	  0	 close_always	 null	    0.0	      1      null	y
 
  NAME   	CONDS	ALTS	ACTS
  pl_grow_sum	  2	 2	 1
- VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	                                    ALT1  ALT2
-  phu_base0 	hlt	  0	    null		  -	  	     0.15		                                >	  <
- phu_base0 	hlt	  0	    null		  -	  	     0.2		<	 -
- ACT_TYP    OBJ OBJ_NUM   NAME                OPTION        CONST         CONST2      FP        OUTCOMES
- grow_init	hlt	  0	      start_growth	      file	        0	          0         null		y	  n
+ VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	         ALT1  ALT2
+ phu_base0 	hlt	  0	    null	  -	  	     0.15		    >	  <
+ phu_base0 	hlt	  0	    null	  -	  	     0.2		    <	  -
+ ACT_TYP        OBJ OBJ_NUM     NAME              OPTION        CONST       CONST2      FP        OUTCOMES
+ grow_init	hlt	  0	start_growth	   file	           0	      0         null	  y	  n
 
  NAME   	CONDS	ALTS	ACTS
  pl_end_sum	  2	 3	 1
- VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	                                    ALT1  ALT2  ALT3
- phu_base0 	hlt	  0	    null		  -	  	     0.5		                                    >	  <	    -
- jday	 	hlt	  0	    null		  -	  	     330		                                    -	  -	    =
- ACT_TYP    OBJ OBJ_NUM   NAME                OPTION        CONST         CONST2      FP        OUTCOMES
- grow_end	hlt	  0	      end_growth	      file	        0             0	          null		y	  n	    y
+ VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	          ALT1  ALT2  ALT3
+ phu_base0 	hlt	  0	    null	     -	  	     0.5	           >     <	 -
+ jday	 	hlt	  0	    null	     -	  	     330		   -	  -	 =
+ ACT_TYP         OBJ OBJ_NUM   NAME            OPTION        CONST       CONST2      FP       OUTCOMES
+ grow_end	hlt	   0   end_growth	 file	        0        0	     null     y	     n	    y
 
  NAME   	     CONDS	ALTS	ACTS
 fert_rot_1	      5          2	  2
- VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP	LIM_CONST		               ALT1   ALT2
-phu_base0 	hru	  0	    null		  -	    0.12		 	>	-
-year_rot 	hru	  0	    null		  -	    1		 		=	=
-n_stress 	hru	  0	    null		  -	    0.9		 		-	<
-plant_gro 	hru	  0	    y   		  -	    1		        	-	=
-phu_plant 	hru	  0	    phu_mat		  -	    1.05		 	-       <
- ACT_TYP        OBJ  OBJ_NUM   NAME             OPTION      CONST   CONST2      FP         OUTCOMES
+ VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP	LIM_CONST		        ALT1   ALT2
+phu_base0 	hru	  0	    null	   -	    0.12		 	>	-
+year_rot 	hru	  0	    null	   -	    1		 		=	=
+n_stress 	hru	  0	    null	   -	    0.9		 		-	<
+plant_gro 	hru	  0	    y   	   -	    1		        	-	=
+phu_plant 	hru	  0	    phu_mat	   -	    1.05		 	-       <
+ ACT_TYP        OBJ  OBJ_NUM   NAME             OPTION      CONST   CONST2      FP             OUTCOMES
 fertilize	hru	  0  ammonia_spring   anh_nh3	    160.       1      inject      	y     	 n
 fertilize	hru	  0  side_dress	      urea	     50.       2      broadcast	  	n	 y
+ 
+
  

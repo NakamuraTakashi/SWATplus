@@ -112,7 +112,7 @@
       do
         if (pt >= Int(rtp)) exit
         rx = pkrain - pkrr * xkp1 * (1. - Exp((Real(pt) - rtp) / (60. * xkp1)))
-        wst(iwst)%weat%ts(itime) = rx - sumrain
+        wst(iwst)%weat%ts_next(itime) = rx - sumrain
         pt = pt + time%dtm
         itime = itime + 1
         if (itime > time%step) exit
@@ -123,7 +123,7 @@
       do
         if (pt >= Int(dur * 60.)) exit
         rx = pkrain + pkrr * xkp2 * (1. - Exp((rtp - Real(pt)) / (60. * xkp2)))
-        wst(iwst)%weat%ts(itime) = rx - sumrain
+        wst(iwst)%weat%ts_next(itime) = rx - sumrain
         pt = pt + time%dtm
         itime = itime + 1
         if (itime > time%step) exit
@@ -132,7 +132,7 @@
 
       !! at end of storm
       if (wst(iwst)%weat%precip > sumrain .and. itime <= time%step) then
-        wst(iwst)%weat%ts(itime-1) = wst(iwst)%weat%ts(itime-1) + (wst(iwst)%weat%precip - sumrain)
+        wst(iwst)%weat%ts_next(itime-1) = wst(iwst)%weat%ts_next(itime-1) + (wst(iwst)%weat%precip - sumrain)
       end if
 
       return

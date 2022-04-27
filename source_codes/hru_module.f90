@@ -46,7 +46,7 @@
       end type field
       
       type hydrology
-           character(len=13) :: name
+           character(len=16) :: name
            real :: lat_ttime = 0.   !! lat_ttime(:)  |days          |days of lateral soil flow across the hillslope
            real :: lat_sed = 0.     !! lat_sed(:)    |g/L           |sediment concentration in lateral flow
            real :: canmx = 0.       !! canmx(:)      |mm H2O        |maximum canopy storage
@@ -76,8 +76,8 @@
          real :: meltmx = 4.5     !mm/deg C/day  |Max melt rate for snow during year (June 21)
          real :: meltmn = 0.5     !mm/deg C/day  |Min melt rate for snow during year (Dec 21)
          real :: timp = 0.8       !none          |snow pack temp lag factor (0-1)
-         real :: covmx = 25.0     !mm H20        |Min snow water content
-         real :: cov50 = 0.5      !none          |frac of COVMX
+         real :: covmx = 25.0     !mm H20        |snow water content at full ground cover
+         real :: cov50 = 0.5      !none          |frac of covmx at 50% snow cover
          real :: init_mm = 0.     !mm H20        |initial snow water content at start of simulation
       end type snow_parameters
       type (snow_parameters), dimension (:), allocatable :: snodb
@@ -147,16 +147,11 @@
         character(len=25) :: snow = ""
         character(len=25) :: field = ""
       end type hru_databases_char
-        
-      type hru_parms_db
-        real :: co2 = 350.
-      end type hru_parms_db
-      
+
       type hydrologic_response_unit_db
         character(len=13) :: name = "default"
         type (hru_databases) :: dbs
         type (hru_databases_char) :: dbsc
-        type (hru_parms_db) :: parms
       end type hydrologic_response_unit_db
       type (hydrologic_response_unit_db), dimension(:),allocatable :: hru_db
       
@@ -197,7 +192,6 @@
         integer :: surf_stor                    !points to res() for surface storage
         type (hru_databases) :: dbs             !database pointers
         type (hru_databases_char) :: dbsc       !database pointers
-        type (hru_parms_db) :: parms            !calibration parameters
         integer :: land_use_mgt
         character(len=16) :: land_use_mgt_c
         integer :: lum_group
@@ -220,10 +214,13 @@
         type (land_use_mgt_variables) :: lumv
         type (subsurface_drainage_parameters) :: sdr
         type (snow_parameters) :: sno
+        real :: snocov1, snocov2
         integer :: cur_op = 1
+        integer :: irr_dmd_dtbl = 0
         real :: sno_mm                          !mm H2O        |amount of water in snow on current day
         real :: water_seep
         real :: water_evap
+        real :: precip_aa
         character(len=1) :: wet_fp = "n"
         real :: strsa
       end type hydrologic_response_unit
@@ -233,7 +230,9 @@
       
       real :: precip_eff        !! mm   |daily effective precip for runoff calculations = precipday + ls_overq + snomlt - canstor
                                 !!      |precip_eff = precipday + ls_overq - snofall + snomlt - canstor
-      real :: qday              !! mm   |surface runoff that reaches main channel during day in HRU                               
+      real :: qday              !! mm   |surface runoff that reaches main channel during day in HRU
+      real :: satexq_chan       !! mm   |saturation excess runoff that reaches main channel during day in HRU
+
 
 !!    new/modified arrays for plant competition
       integer :: ipl, isol
@@ -251,7 +250,7 @@
       real :: qp_cms, sw_excess, albday
       real :: wt_shall
       real :: sq_rto
-      real :: tloss, snomlt, snofall, fixn, qtile
+      real :: snomlt, snofall, fixn, qtile
       real :: latlyr                 !!mm            |lateral flow in soil layer for the day
       real :: inflpcp                !!mm            |amount of precipitation that infiltrates
       real :: fertn, sepday, bioday
@@ -281,8 +280,7 @@
       character(len=8) :: date
 
 !! septic change added iseptic 1/28/09 gsm
-      integer :: isep_ly
-      real, dimension (:), allocatable :: percp    
+      integer :: isep_ly   
       real, dimension (:), allocatable :: qstemm
 !! septic changes added 1/28/09 gsm
       real, dimension (:), allocatable :: bio_bod, biom,rbiom
@@ -331,7 +329,7 @@
 !    Drainmod tile equations  08/2006
       real, dimension (:), allocatable :: surqsolp
       real, dimension (:), allocatable :: cklsp
-      real, dimension (:), allocatable :: pplnt,snotmp
+      real, dimension (:), allocatable :: pplnt
       real, dimension (:), allocatable :: brt
 
       real, dimension (:), allocatable :: twash,doxq
@@ -347,9 +345,16 @@
       real, dimension (:,:), allocatable :: wrt
       real, dimension (:,:), allocatable :: bss,surf_bs  
       integer, dimension (:), allocatable :: swtrg
+      real, dimension (:), allocatable :: rateinf_prev
+      real, dimension (:), allocatable :: urb_abstinit
       !! burn
       integer, dimension (:), allocatable :: grz_days
       integer, dimension (:), allocatable :: igrz,ndeat
+
+      real, dimension (:), allocatable :: gwtranq,satexq !rtb gwflow
+      real, dimension (:,:), allocatable :: bss_ex !rtb gwflow
+      real, dimension (:), allocatable :: gwtrann,gwtranp,satexn !rtb gwflow
+      
 
 !!     gsm added for sdr (drainage) 7/24/08
       integer, dimension (:,:), allocatable :: mgt_ops

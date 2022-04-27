@@ -41,8 +41,6 @@
 !!                               |HRU
 !!    sw_excess   |mm H2O        |amount of water in soil that exceeds field 
 !!                               |capacity (gravity drained water)
-!!    tloss       |mm H2O        |amount of water removed from surface runoff
-!!                               |via transmission losses on day in HRU
 !!    uno3d       |kg N/ha       |plant nitrogen deficiency for day in HRU
 !!    usle_ei     |none          |USLE erodibility index on day for HRU
 !!    vpd         |kPa           |vapor pressure deficit
@@ -61,7 +59,7 @@
         bioday, bsprev, canev, ep_day, ep_max, es_day, fertn, fertp, grazn, grazp,      &
         hhsedy, inflpcp, latqrunon, ls_overq, lyrtile, qp_cms,                          &
         pet_day, qday, qtile, sepday, snoev, snofall, snomlt,                           &
-        sw_excess, tloss, ubnrunoff, ubntss, uno3d, usle, usle_ei, voltot, vpd, fixn 
+        sw_excess, ubnrunoff, ubntss, uno3d, usle, usle_ei, voltot, vpd, fixn 
       use soil_module
       
       implicit none
@@ -115,7 +113,6 @@
         snofall = 0.
         snomlt = 0.
         sw_excess = 0.
-        tloss = 0.
         uno3d = 0.
         usle = 0.
         usle_ei = 0.

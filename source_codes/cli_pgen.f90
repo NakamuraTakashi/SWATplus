@@ -8,12 +8,6 @@
 !!    name        |units         |definition
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
 !!    j           |none          |HRU number
-!!    pcp_stat(:,1,:)|mm/day     |average amount of precipitation falling in
-!!                               |one day for the month
-!!    pcp_stat(:,2,:)|mm/day     |standard deviation for the average daily
-!!                               |precipitation
-!!    pcp_stat(:,3,:)|none       |skew coefficient for the average daily
-!!                               |precipitation
 !!    pr_w(1,:,:) |none          |probability of wet day after dry day in month
 !!    pr_w(2,:,:) |none          |probability of wet day after wet day in month
 !!    rnd3(:)     |none          |random number between 0.0 and 1.0

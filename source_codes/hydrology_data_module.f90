@@ -2,7 +2,7 @@
     
       implicit none
      
-      !!/ input hydrology.hyd
+      !! hydrology.hyd
       type hydrology_db
         character(len=16) :: name  !!none      |0          |0      |name
         real :: lat_ttime = 0.     !!days      |0-120      |0      |Exponential of the lateral flow travel time

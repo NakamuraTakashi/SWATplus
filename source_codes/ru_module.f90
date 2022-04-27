@@ -5,8 +5,7 @@
       integer :: iru                               !none            |counter
       integer :: mru_db                            !                |
       real, dimension (:), allocatable :: ru_tc    !                |    
-      real, dimension (:), allocatable :: ru_n     !                | 
-      !real, dimension (:), allocatable :: hyd_flo  !                |
+      real, dimension (:), allocatable :: ru_n     !                |
       integer, dimension (:), allocatable :: itsb  !none            |end of loop
    
       type ru_databases_char

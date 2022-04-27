@@ -49,6 +49,9 @@
         !! set hru snow paramters
         isno_db = hru(ihru)%dbs%snow
         hru(ihru)%sno = snodb(isno_db)
+        !! shape parameters to describes area of snow cover as a function of amount of snow
+        call ascrv(.5, .95, hru(ihru)%sno%cov50, .95, hru(ihru)%snocov1, hru(ihru)%snocov2)
+
 
         !! try setting for tile
         if (hru(ihru)%tiledrain > 0) then

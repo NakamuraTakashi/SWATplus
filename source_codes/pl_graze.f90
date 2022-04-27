@@ -104,7 +104,7 @@
         
         !! apply manure
         it = graze%manure_id
-        manure_kg = graze%manure * graze%eat
+        manure_kg = graze%manure
         if (manure_kg > 0.) then 
           l = 1
           if (bsn_cc%cswat == 0) then

@@ -1,4 +1,4 @@
 tmp.cli: Temperature file names - LREW
      filename
- lrewnoaa.tmp
-  lrewuga.tmp
+ lrewnoaa.tem
+  lrewuga.tem

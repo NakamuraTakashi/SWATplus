@@ -37,8 +37,12 @@
 
       !calibrate hydrology for hru
       if (cal_codes%hyd_hru == "y") then
-        !call calsoft_hyd
-        call calsoft_hyd_bfr
+        if (bsn_cc%cn == 0) then
+          call calsoft_hyd_bfr    !CEAP
+        else
+          call calsoft_hyd        !original
+        end if
+ 
         !print calibrated hydrology for hru_lte
 		do ireg = 1, db_mx%lsu_reg
            do ilum = 1, region(ireg)%nlum

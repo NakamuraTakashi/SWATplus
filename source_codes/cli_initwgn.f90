@@ -27,12 +27,6 @@
 !!                               |  3 precipitation > 1016 mm/yr
 !!    latcos(:)   |none          |Cos(Latitude)
 !!    latsin(:)   |none          |Sin(Latitude)
-!!    pcp_stat(:,1,:)|mm/day     |average amount of precipitation falling in
-!!                               |one day for the month
-!!    pcp_stat(:,2,:)|mm/day     |standard deviation for the average daily
-!!                               |precipitation
-!!    pcp_stat(:,3,:)|none       |skew coefficient for the average daily 
-!!                               |precipitation
 !!    phutot(:)   |heat unit     |total potential heat units for year (used
 !!                               |when no crop is growing)
 !!    pr_w(1,:,:) |none          |probability of wet day after dry day in month

@@ -5,7 +5,7 @@
 
       use hru_module, only : clayld,   &
        hru,lagyld,ndeat,ovrlnd,par,sagyld,sanyld,  &
-       sedyld,silyld,smx,snotmp,surf_bs,twash,wrt
+       sedyld,silyld,smx,surf_bs,twash,wrt,bss_ex
 
       implicit none
 
@@ -24,11 +24,12 @@
 	  sagyld = 0.
 	  lagyld = 0.
       smx = 0.
-      snotmp = 0.
       surf_bs = 0.
       twash = 0.
       wrt = 0.
       zdb = 0.
+      bss_ex = 0. !rtb gwflow
+      
 
       return
       end

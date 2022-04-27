@@ -27,7 +27,7 @@
       
       !! adjust precip and temperature for elevation using lapse rates
       w = wst(iwst)%weat
-      if (bsn_cc%lapse == 1) call cli_lapse (iob, iwst)
+      if (bsn_cc%lapse == 1) call cli_lapse
       wst(iwst)%weat = w
       
       !! set water body pointer to res

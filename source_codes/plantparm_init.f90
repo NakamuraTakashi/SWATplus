@@ -15,7 +15,7 @@
       do ic = 1, db_mx%plantparm
         if (pldb(ic)%bm_dieoff <= 1.e-6) pldb(ic)%bm_dieoff = 1.00
 
-        !! set default value
+        !! set default values
         if (pldb(ic)%ext_coef < 1.e-6) pldb(ic)%ext_coef = 0.65
         if (pldb(ic)%rsdco_pl < 1.e-6) pldb(ic)%rsdco_pl = bsn_prm%rsdco
         if (pldb(ic)%usle_c <= 0.0) pldb(ic)%usle_c = 0.0
@@ -24,6 +24,7 @@
         if (pldb(ic)%blai >= 10.0) pldb(ic)%blai = 10.0
 	    if (pldb(ic)%rsr1 <= 0.0) pldb(ic)%rsr1 = 0.4
 	    if (pldb(ic)%rsr2 <= 0.0) pldb(ic)%rsr2 = 0.2
+        if (pldb(ic)%aeration <= 0.0) pldb(ic)%aeration = 0.2
 
         if (pldb(ic)%bio_e > 0. .and. pldb(ic)%plantnm /= "WATR") then
 

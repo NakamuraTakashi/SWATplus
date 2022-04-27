@@ -21,7 +21,7 @@
       eof = 0
       imax = 0
       
-      !! read harvest only operations
+      !! read water rights file
       inquire (file=in_watrts%water_rights, exist=i_exist)
       if (.not. i_exist .or. in_watrts%water_rights == "null") then
         allocate (wro(0:0))

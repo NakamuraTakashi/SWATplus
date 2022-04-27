@@ -24,8 +24,8 @@ INIT              plant.ini         soil_plant.ini    om_water.ini   pest_hru.in
 SOILS             soils.sol         nutrients.sol     null
 DECISION_TABLE    lum_std.dtl       null   null   null
 REGIONS           ls_unit.ele       ls_unit.def    null     null     null     null     null     null     null     null     null     null     null     null     null     null     null
-PATH_PCP          null
-PATH_TMP          null
-PATH_SLR          null
-PATH_HMD          null
-PATH_WND          null
+pcp_path          null              
+tmp_path          null             
+slr_path          null              
+hmd_path          null              
+wnd_path          null  

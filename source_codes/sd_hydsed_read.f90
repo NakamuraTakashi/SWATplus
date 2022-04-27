@@ -86,7 +86,6 @@
         
         do idb = 1, db_mx%ch_lte
           read (1,*,iostat=eof) sd_chd(idb)
-          if (sd_chd(idb)%wd_rto < 1.e-6) sd_chd(idb)%wd_rto = 4.
           if (eof < 0) exit
         end do
 

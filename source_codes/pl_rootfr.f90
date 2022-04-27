@@ -67,7 +67,7 @@
            if (xx2 > 20.) xx2 = 20.
 	     soil(jj)%ly(l)%rtfr = (a/b*(Exp(xx1) - Exp(xx2)) + c *(x2 - x1))/d
            xx = cum_rf
-	  cum_rf = cum_rf + soil(jj)%ly(l)%rtfr
+	       cum_rf = cum_rf + soil(jj)%ly(l)%rtfr
            if (cum_rf > 1.) then
 	       soil(jj)%ly(l)%rtfr = 1. - xx
              cum_rf = 1.0

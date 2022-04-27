@@ -2,6 +2,7 @@
       
        use input_file_module
        use aquifer_module
+       use gwflow_module !rtb gwflow
        use maximum_data_module
        
        implicit none
@@ -57,6 +58,8 @@
 
           close (107)
           exit
+          
+          gwflow_flag = 0 ! rtbset gwflow module flag to 0
        enddo
        endif
           

@@ -1,3 +1,4 @@
 time.sim: Simulation period and time step - LREW
 day_start  yrc_start   day_end   yrc_end      step
-        0       1972         0      1976         0
+        0       1988         0      1992         0
+

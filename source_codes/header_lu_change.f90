@@ -3,8 +3,7 @@
      use basin_module
      
      implicit none 
-      
-!!   open lu_change output file
+!!   open lu_change output file 
         open (3612,file="lu_change_out.txt",recl=800)
         write (3612,*) bsn%name, prog
         write (3612,100) 

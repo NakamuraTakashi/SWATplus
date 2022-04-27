@@ -241,9 +241,7 @@
 
 !! add transmission losses to bank storage/deep aquifer in subbasin
       if (rttlc > 0.) then
-        ch(jrch)%bankst = ch(jrch)%bankst + rttlc * (1.-bsn_prm%trnsrch)
-!!!! Jeff add to hydrograph -----------------------------
-        rchsep(jrch) = rttlc * bsn_prm%trnsrch
+        ch(jrch)%bankst = ch(jrch)%bankst + rttlc
       end if
  
 !! compute revap from bank storage

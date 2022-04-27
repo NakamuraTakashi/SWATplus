@@ -22,11 +22,12 @@
       real :: dep                   !               |
       real :: a_bf                  !               |
       real :: p_bf                  !               |
+      real :: vol_bf
       real :: vel                   !               |
       real :: frac_abov
 
       b = sd_ch(i)%chw - 2. * sd_ch(i)%chd * sd_ch(i)%chss
-      !! check IF bottom width (b) is < 0
+      !! check if bottom width (b) is < 0
       if (b <= 0.) then
         b = .5 * sd_ch(i)%chw
         b = Max(0., b)
@@ -44,13 +45,8 @@
         ch_rcurv(i)%elev(i_dep)%dep = dep
         ch_rcurv(i)%elev(i_dep)%wet_perim = p
         ch_rcurv(i)%elev(i_dep)%xsec_area = a
-        !! save bankfull depth and area for flood plain calculations
-        if (i_dep == 2) then
-          p_bf = p
-          a_bf = a
-        end if
         
-        ch_rcurv(i)%elev(i_dep)%top_wid = b + 2. * dep / sd_ch(i)%chss
+        ch_rcurv(i)%elev(i_dep)%top_wid = b + 2. * dep * sd_ch(i)%chss
         ch_rcurv(i)%elev(i_dep)%surf_area = ch_rcurv(i)%elev(i_dep)%top_wid * sd_ch(i)%chl
         ch_rcurv(i)%elev(i_dep)%vol = a * sd_ch(i)%chl * 1000.
         ch_rcurv(i)%elev(i_dep)%vol_ch = ch_rcurv(i)%elev(i_dep)%vol
@@ -59,6 +55,13 @@
         ch_rcurv(i)%elev(i_dep)%flo_rate = Qman(a, rh, sd_ch(i)%chn, sd_ch(i)%chs)
         vel = Qman(1., rh, sd_ch(i)%chn, sd_ch(i)%chs)
         ch_rcurv(i)%elev(i_dep)%ttime = sd_ch(i)%chl / (3.6 * vel)
+        
+        !! save bankfull depth and area for flood plain calculations
+        if (i_dep == 2) then
+          p_bf = p
+          a_bf = a
+          vol_bf = ch_rcurv(i)%elev(i_dep)%vol_ch
+        end if
       end do
         
       !! compute rating curve at 1.2 and 2.0 times bankfull depth (flood plain)
@@ -78,9 +81,9 @@
         ch_rcurv(i)%elev(ifp_dep)%xsec_area = a
         ch_rcurv(i)%elev(ifp_dep)%top_wid = sd_ch(i)%chw + 2. * dep / sd_ch(i)%fps
         ch_rcurv(i)%elev(ifp_dep)%surf_area = ch_rcurv(i)%elev(ifp_dep)%top_wid * sd_ch(i)%chl
-        ch_rcurv(i)%elev(ifp_dep)%vol = a * sd_ch(i)%chl * 1000.
-        ch_rcurv(i)%elev(ifp_dep)%vol_ch = (a_bf + b * dep) * sd_ch(i)%chl * 1000.
-        ch_rcurv(i)%elev(ifp_dep)%vol_fp = (dep ** 2 / sd_ch(i)%fps) * sd_ch(i)%chl * 1000.
+        ch_rcurv(i)%elev(ifp_dep)%vol_ch = vol_bf
+        ch_rcurv(i)%elev(ifp_dep)%vol_fp = ch_rcurv(i)%elev(ifp_dep)%top_wid * dep * sd_ch(i)%chl * 1000.
+        ch_rcurv(i)%elev(ifp_dep)%vol = vol_bf + ch_rcurv(i)%elev(ifp_dep)%vol_fp
         ch_rcurv(i)%elev(ifp_dep)%flo_rate = Qman(a, rh, sd_ch(i)%fpn, sd_ch(i)%chs)
         vel = Qman(1., rh, sd_ch(i)%fpn, sd_ch(i)%chs)
         ch_rcurv(i)%elev(ifp_dep)%ttime = sd_ch(i)%chl / (3.6 * vel)

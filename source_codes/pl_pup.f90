@@ -32,6 +32,7 @@
       use hru_module, only : uapd, up2, pplnt, ihru, ipl, rto_solp, uptake
       use soil_module
       use plant_module
+      use output_landscape_module
 
       implicit none
 
@@ -53,6 +54,7 @@
       j = ihru
 
       pcom(j)%plstr(ipl)%strsp = 1.
+      hnb_d(j)%puptake = 0.
       if (uapd(ipl) < 1.e-6) return
 
       do l = 1, soil(j)%nly
@@ -72,6 +74,7 @@
 
       pl_mass(j)%tot(ipl)%p = pl_mass(j)%tot(ipl)%p + pplnt(j)
       pl_mass_up%p = pplnt(j)
+      hnb_d(j)%puptake = hnb_d(j)%puptake + pplnt(j)
 
       !! compute phosphorus stress
       call nuts(pl_mass(j)%tot(ipl)%p, up2(ipl), pcom(j)%plstr(ipl)%strsp)

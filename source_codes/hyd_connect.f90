@@ -32,7 +32,7 @@
       integer :: ob1                  !none       |beginning of loop
       integer :: ob2                  !none       |ending of loop
       integer :: iobj_tot             !           |
-      real ::mexco_sp                 !           |
+      real :: mexco_sp                !           |
       integer :: i                    !none       |counter
       integer :: ii                   !none       |counter
       integer :: ielem                !none       |counter 
@@ -197,6 +197,7 @@
       
       !read connect file for gwflow
       if (sp_ob%gwflow > 0) then
+        call gwflow_riv !first, read in river cell information
         call hyd_read_connect(in_con%gwflow_con, "gwflow  ", sp_ob1%gwflow, sp_ob%gwflow, hd_tot%gwflow, 1)
         call gwflow_read
       end if
@@ -537,9 +538,15 @@
       
       !! write calculated and input drainage areas for all objects except hru's
       !! the following file is for debugging purposes
-      open (9002,file="drareas.out",recl = 1500)
+      open (9002,file="drareas.out",recl = 8000)
       do iob = 1, sp_ob%objs
         if (ob(iob)%typ /= "hru" .and. ob(iob)%typ /= "ru") then
+        !!! write to diagnostics.out file
+          write (9001, *) iob, ob(iob)%typ, ob(iob)%num, ob(iob)%area_ha, ob(iob)%area_ha_calc,             &
+            ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj), ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj),             &
+            ob(iob)%frac_in(jj), &
+            ob(ob(iob)%obj_in(jj))%area_ha, ob(ob(iob)%obj_in(jj))%area_ha_calc, jj = 1, ob(iob)%rcv_tot)
+        !!! write to drareas.out file
           write (9002, *) iob, ob(iob)%typ, ob(iob)%num, ob(iob)%area_ha, ob(iob)%area_ha_calc,             &
             ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj), ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj),             &
             ob(iob)%frac_in(jj), &

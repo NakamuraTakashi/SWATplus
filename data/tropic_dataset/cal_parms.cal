@@ -1,5 +1,5 @@
 cal_parms.cal: written by SWAT+ Toolbox
-185
+186
 name                       obj_typ       abs_min       abs_max                    units 
 cn2                            hru      35.00000      95.00000                     null
 cn3_swf                        hru       0.00000       1.00000                     null
@@ -55,6 +55,8 @@ usle_k                         sol       0.00000       0.65000                  
 ec                             sol       0.00000     100.00000                     dS/m
 cal                            sol       0.00000      65.00000                        %
 ph                             sol       3.00000      10.00000                     null
+plaps                          bsn       0.00000     200.00000              null
+tlaps                          bsn     -10.00000      10.00000              null
 surlag                         bsn       0.05000      24.00000                     days
 adj_pkr                        bsn       0.50000       2.00000                     null
 prf                            bsn       0.00000       2.00000                     null
@@ -73,7 +75,6 @@ percop                         bsn       0.00000       1.00000                  
 msk_co1                        bsn       0.00000      10.00000                     null
 msk_co2                        bsn       0.00000      10.00000                     null
 msk_x                          bsn       0.00000       0.30000                     null
-trnsrch                        bsn       0.00000       1.00000                 fraction
 cdn                            bsn       0.00000       3.00000                     null
 tb_adj                         bsn       0.00000       1.00000                     null
 sdnco                          bsn       0.00000       1.00000                     null

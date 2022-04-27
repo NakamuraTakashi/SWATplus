@@ -31,8 +31,8 @@
         real :: ch_bd = 0.      !t/m3       |dry bulk density
         real :: chss = 0.       !           |channel side slope
         real :: bedldcoef = 0.  !           |percent of sediment entering the channel that is bed material
-        real :: fps = 0.        !           |flood plain slope
-        real :: fpn = 0.        !           |flood plain Manning's n
+        real :: fps = 0.000001  !m/m        |flood plain slope
+        real :: fpn = 0.1       !           |flood plain Manning's n
         real :: n_conc = 0.     !mg/kg      |nitrogen concentration in channel bank
         real :: p_conc = 0.     !mg/kg      |phosphorus concentration in channel bank
         real :: p_bio = 0.      !frac       |fraction of p in bank that is bioavailable
@@ -93,6 +93,7 @@
         character(len=25) :: name = "default"
         integer :: props
         integer :: obj_no
+        integer :: wallo                    !water allocation object number
         integer :: aqu_link = 0             !aquifer the channel is linked to
         integer :: aqu_link_ch = 0          !sequential channel number in the aquifer
         character(len=25) :: region
@@ -114,17 +115,16 @@
         real :: bedldcoef
         real :: fps
         real :: fpn
-        real :: hc_kh
-        real :: hc_hgt          !m          |headcut height
-        real :: hc_ini
-        real :: cherod          !           |channel erodibility
-        real :: shear_bnk       !0-1        |bank shear coefficient - fraction of bottom shear
-        real :: hc_erod         !           |headcut erodibility
+        real :: hc_kh = 0.
+        real :: hc_hgt = 0.     !m          |headcut height
+        real :: hc_ini = 0.
+        real :: cherod = 0.     !           |channel erodibility
+        real :: shear_bnk = 0.  !0-1        |bank shear coefficient - fraction of bottom shear
+        real :: hc_erod = 0.    !           |headcut erodibility
         real :: hc_co = 0.      !m/m        |proportionality coefficient for head cut
         real :: hc_len = 0.     !m          |length of head cut
-        real :: stor = 0.       !m3         |storage at end of previous routing time step 
-        real :: in1_vol         !m3         |inflow during previous time step for Muskingum
-        real :: out1_vol        !m3         |outflow during previous time step for Muskingum
+        real :: in1_vol = 0.    !m3         |inflow during previous time step for Muskingum
+        real :: out1_vol = 0.   !m3         |outflow during previous time step for Muskingum
         real :: stor_dis_01bf = 0.      !hr         |storage time constant at 0.1*bankfull
         real :: stor_dis_bf = 0.        !hr         |storage time constant at bankfull
         type (muskingum_parameters) :: msk
@@ -165,7 +165,7 @@
            
       type sd_ch_output
         real :: flo_in = 0.             !(m^3/s)       |average daily inflow rate during time step
-        real :: aqu_in = 0.             !(m^3/s)       |aveerage daily aquifer inflow rate during timestep
+        real :: aqu_in = 0.             !(m^3/s)       |geomorphic aquifer flow into channel/aquifer inflow using geomorphic baseflow method
         real :: flo = 0.                !(m^3/s)       |average daily outflow rate during timestep
         real :: peakr = 0.              !(m^3/s)       |average peak runoff rate during timestep
         real :: sed_in = 0.             !(tons)        |sediment in
@@ -209,9 +209,9 @@
           character (len=6) :: yrc        =  "    yr"
           character (len=8) :: isd        =  "   unit "
           character (len=8) :: id         =  " gis_id "           
-          character (len=16) :: name      =  " name          "        
+          character (len=16) :: name      =  " name          "         
           character(len=16) :: flo_in     =  "         flo_in"        ! (m^3/s)
-          character(len=16) :: aqu_in     =  "         aqu_in"        ! (m^3/s)
+          character(len=16) :: aqu_in     =  "         geo_bf"        ! (m^3/s)
           character(len=16) :: flo        =  "        flo_out"        ! (m^3/s)
           character(len=15) :: peakr      =  "          peakr"        ! (m^3/s)
           character(len=15) :: sed_in     =  "         sed_in"        ! (tons)
@@ -231,6 +231,7 @@
           character(len=16) :: flo_in_mm  =  "      flo_in_mm"        ! (mm)
           character(len=16) :: aqu_in_mm  =  "      aqu_in_mm"        ! (mm)
           character(len=16) :: flo_mm     =  "     flo_out_mm"        ! (mm)
+          character(len=16) :: sed_stor   =  "       sed_stor"        ! (tons)
       end type sdch_header
       type (sdch_header) :: sdch_hdr
       
@@ -263,6 +264,7 @@
           character(len=16) :: flo_in_mm  =  "             mm"        ! (mm)
           character(len=16) :: aqu_in_mm  =  "             mm"        ! (mm)      
           character(len=16) :: flo_mm     =  "             mm"        ! (mm) 
+          character(len=16) :: sed_stor   =  "           tons"        ! (tons)
       end type sdch_header_units
       type (sdch_header_units) :: sdch_hdr_units
      

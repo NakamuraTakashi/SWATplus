@@ -61,6 +61,7 @@
         integer :: pathcom = 0
         integer :: hmetcom = 0
         integer :: saltcom = 0
+        integer :: ru_elem = 0
         integer :: lsu_elem = 0
         integer :: lsu_out = 0        !! none     |max number of landscape regions for output
         integer :: reg_elem = 0

@@ -75,7 +75,6 @@
       real :: y1                 !mm            |dummy variable for dtwt 
       integer :: isdr            !              |
       real :: above              !mm            |depth of top layer considered
-      integer :: nlayer          !none          |number of layers to be used to determine cone 
       real :: x                  !              |
       real :: sum                !              | 
       real :: deep               !mm            |total thickness of saturated zone
@@ -102,13 +101,8 @@
       pi = 22./7.
       gee1 =0.
 
-!! find number of soil layers 
-      do j1 = 1, mlyr
-        if(soil(j)%phys(j1)%d > 0.) nlayer = j1	    
-      end do
-
 !! find effective lateral hydraulic conductivity for the profile in hru j
-      do j1 = 1, nlayer
+      do j1 = 1, soil(j)%nly
         if(y1 > soil(j)%phys(j1)%d) then  
           wnan(j1) = 0.
         else
@@ -120,7 +114,7 @@
       end do
       sum = 0.
       deep = 0.
-      do j1=1,nlayer
+      do j1=1,soil(j)%nly
         soil(j)%ly(j1)%conk = soil(j)%phys(j1)%k * hru(j)%sdr%latksat !Daniel 2/26/09
         sum = sum + wnan(j1) * soil(j)%ly(j1)%conk
         deep = deep + wnan(j1)
@@ -128,7 +122,7 @@
       if((deep <= 0.001).or.(sum <= 0.001)) then
         sum = 0.
         deep = 0.001
-        do j1=1,nlayer
+        do j1=1,soil(j)%nly
 		  sum = sum + soil(j)%ly(j1)%conk * soil(j)%phys(j1)%thick !Daniel 10/09/07
 		  deep = deep + dg   !Daniel 10/09/07
         end do

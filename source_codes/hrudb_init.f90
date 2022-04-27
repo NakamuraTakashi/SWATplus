@@ -18,7 +18,6 @@
         ihru_db = ob(iob)%props    !points to hru.dat
         hru(ihru)%dbs = hru_db(ihru_db)%dbs
         hru(ihru)%dbsc = hru_db(ihru_db)%dbsc
-        hru(ihru)%parms = hru_db(ihru_db)%parms
         hru(ihru)%obj_no = sp_ob1%hru + ihru - 1
         hru(ihru)%area_ha = ob(iob)%area_ha
         hru(ihru)%km = ob(iob)%area_ha / 100.

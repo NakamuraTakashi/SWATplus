@@ -28,9 +28,9 @@
       
       type wetland
         real :: psa = 0.                    !ha     |res surface area when res is filled to princ spillway
-        real :: pvol = 0.                   !ha-m   |vol of water needed to fill the res to the princ spillway (read in as ha-m and converted to m^3)
+        real :: pvol = 0.                   !m^3    |vol of water needed to fill the res to the princ spillway (read in as ha-m and converted to m^3)
         real :: esa = 0.                    !ha     |res surface area when res is filled to emerg spillway 
-        real :: evol = 0.                   !ha-m   |vol of water needed to fill the res to the emerg spillway (read in as ha-m and converted to m^3)
+        real :: evol = 0.                   !m^3    |vol of water needed to fill the res to the emerg spillway (read in as ha-m and converted to m^3)
         real :: area_ha = 0                 !ha     !reservoir surface area
         real :: seci = 0                    !m      !seci depth
       end type wetland          

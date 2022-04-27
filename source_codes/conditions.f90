@@ -43,12 +43,13 @@
       real :: targ                            !          |
       integer :: pl_sum                       !none      |number of plants growing
       integer :: days_tot                     !none      |
-      integer :: iwgn          !units         |
+      integer :: iwgn                         !units     |
       real :: strs_sum                        !none      |sum of stress (water or n) of all growing plants
       real :: prob_cum                        !          |
       real :: prob_apply                      !          |
       real :: hru_exp_left                    !          |number of hru's expected to still be applied (uniform or normal distr)
       real :: hru_act_left                    !          |number of hru's actually still to be applied
+      real :: flo_m3
       character(len=1) :: pl_chk
       
       d_tbl%act_hit = "y"
@@ -383,7 +384,15 @@
               end if
             end if
           end do
-                                                                                                                
+                                                          
+        !precip/pet ratio
+        case ("p_pet")
+          ob_num = d_tbl%cond(ic)%ob_num
+          if (ob_num == 0) ob_num = ob_cur
+          iwst = ob(ob_num)%wst
+          iwgn = wst(iwst)%wco%wgn
+          call cond_real (ic, wgn_pms(iwgn)%p_pet_rto, d_tbl%cond(ic)%lim_const, idtbl)
+                                                                                                           
         !soil organic carbon of first layer
         case ("soil_carbon")
           ob_num = d_tbl%cond(ic)%ob_num
@@ -552,6 +561,15 @@
             d_tbl%hru_ha_cur = 0.
           end if
 
+        !channel flow
+        case ("channel_flo")
+          ob_num = ob_cur   !the dtbl ob_num is the sequential hyd number in the con file
+          if (ob_num == 0) ob_num = ob_cur
+          !ob_num is channel number - need object number
+          iob = sp_ob1%chandeg + ob_num - 1
+          flo_m3 = ob(iob)%hd(1)%flo / 86400. 
+          call cond_real (ic, flo_m3, d_tbl%cond(ic)%lim_const, idtbl)
+                
         !tile flow
         case ("tile_flo")
           ob_num = ob_cur   !the dtbl ob_num is the sequential hyd number in the con file

@@ -95,6 +95,7 @@
 !! method is used to calculate surface runoff. The curve number methods
 !! take canopy effects into account in the equations. For either of the
 !! CN methods, canstor will always equal zero.
+      canev = 0.
       pet = pet - canstor(j)
       if (pet < 0.) then
         canstor(j) = -pet
@@ -160,7 +161,7 @@
             snoev = snoev + esleft
             esleft = 0.
           else
-            !! take all soil evap from snow cover then start taking from soil
+            !! take all soil evap from snow cover before taking from soil
             esleft = esleft - hru(j)%sno_mm
             snoev = snoev + hru(j)%sno_mm
             hru(j)%sno_mm = 0.
@@ -171,13 +172,12 @@
         wet_wat_d(j)%evap = 0.
         if (wet(j)%flo > 0.) then
           wetvol_mm = wet(j)%flo / (10. *  hru(j)%area_ha)    !mm*ha*10.=m3
+          !! take all soil evap from wetland storage before taking from soil
           if (wetvol_mm >= esleft) then
-            !! take all soil evap from snow cover
             wetvol_mm = wetvol_mm - esleft
             wet_wat_d(j)%evap = esleft * (10. *  hru(j)%area_ha)
             esleft = 0.
           else
-            !! take all soil evap from snow cover then start taking from soil
             esleft = esleft - wetvol_mm
             wet_wat_d(j)%evap = wetvol_mm * (10. *  hru(j)%area_ha)
             wetvol_mm = 0.

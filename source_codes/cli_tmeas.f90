@@ -20,7 +20,10 @@
       real :: tempn                   !           |
       integer :: iyr_prev             !none       |previous year
       integer :: iyrs                 !           |
-       
+      integer, dimension(12) :: num_tot           !total number of days in a month - to compute average monthly max/min
+      integer :: day_mo
+      integer :: mo
+      
        mtmp = 0
        eof = 0
        imax = 0
@@ -113,11 +116,24 @@
        backspace (108)
        iyr_prev = iyr
        iyrs = 1
+       !! check for leap year
+       if (Mod(iyr,4) == 0) then
+         ndays = ndays_leap
+       else 
+         ndays = ndays_noleap
+       end if
        
        do 
          read (108,*,iostat=eof) iyr, istep, tmp(i)%ts(istep,iyrs),      &
                              tmp(i)%ts2(istep,iyrs)
          if (eof < 0) exit
+         
+         !! sum for average monthly max and min temperature
+         call xmon (istep, mo, day_mo)
+         num_tot(mo) = num_tot(mo) + 1
+         tmp(i)%max_mon(mo) = tmp(i)%max_mon(mo) + tmp(i)%ts(istep,iyrs)
+         tmp(i)%min_mon(mo) = tmp(i)%min_mon(mo) + tmp(i)%ts2(istep,iyrs)
+         
          if (istep == 365 .or. istep == 366) then
            read (108,*,iostat=eof) iyr, istep
            if (eof < 0) exit
@@ -125,14 +141,23 @@
            if (iyr /= iyr_prev) then
              iyr_prev = iyr
              iyrs = iyrs + 1
+             !! check for leap year             
+             if (Mod(iyr,4) == 0) then
+               ndays = ndays_leap
+             else 
+               ndays = ndays_noleap
+             end if
            end if
          end if
        end do
        close (108)
               
-       ! save end jd and year
+       !! save end jd and year
        tmp(i)%end_day = istep
        tmp(i)%end_yr = iyr
+       !! compute average max and min monthly temperatures
+       tmp(i)%max_mon = tmp(i)%max_mon / num_tot(mo)
+       tmp(i)%min_mon = tmp(i)%min_mon / num_tot(mo)
        
       end do
       close (107)

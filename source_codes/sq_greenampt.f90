@@ -34,7 +34,8 @@
       use climate_module
       use basin_module
       use hydrograph_module
-      use hru_module, only : hru, swtrg, hhqday, ubnrunoff, hhsurfq, surfq, cnday, wfsh, ihru
+      use hru_module, only : hru, swtrg, hhqday, ubnrunoff, hhsurfq, surfq, cnday, wfsh, &
+          ihru, urb_abstinit, rateinf_prev, pet_day
       use soil_module
       use time_module
       
@@ -73,22 +74,22 @@
        rintns = 0.
 
        !! calculate effective hydraulic conductivity
-       adj_hc = (56.82 * soil(j)%phys(1)%k ** 0.286)                 &         
-                       / (1. + 0.051 * Exp(0.062 * cnday(j))) - 2.
+       adj_hc = (56.82 * soil(j)%phys(1)%k ** 0.286) / (1. + 0.051 * Exp(0.062 * cnday(j))) - 2.
        if (adj_hc <= 0.) adj_hc = 0.001
 
        dthet = 0.
        if (swtrg(j) == 1) then
          swtrg(j) = 0
          dthet = 0.001 * soil(j)%phys(1)%por * 0.95
+         rateinf(1) = rateinf_prev(j)
+         rateinf_prev(j) = 0.
        else
          if (soil(j)%sw >= soil(j)%sumfc) then
            soilw = 0.999 * soil(j)%sumfc
          else
            soilw = soil(j)%sw
          end if
-         dthet = (1. - soilw / soil(j)%sumfc) *                  & 
-                                      soil(j)%phys(1)%por * 0.95
+         dthet = (1. - soilw / soil(j)%sumfc) * soil(j)%phys(1)%por * 0.95
          rateinf(1) = 2000.
        end if
 
@@ -97,22 +98,22 @@
        do k = 1, time%step
          !! calculate total amount of rainfall during day for time step
          if (k == 1) then
-           cumr(k) = wst(iwst)%weat%ts(k)
+           cumr(k) = w%ts(k)
          else
-           cumr(k) = cumr(k-1) + wst(iwst)%weat%ts(k)
+           cumr(k) = cumr(k-1) + w%ts(k)
          end if
          
          !! and rainfall intensity for time step
-         rintns(k) = 60. * wst(iwst)%weat%ts(k) / Real(time%dtm) !!urban 60./idt NK Feb 4,08 
+         rintns(k) = 60. * w%ts(k) / Real(time%dtm) !!urban 60./idt NK Feb 4,08 
 
          !! if rainfall intensity is less than infiltration rate everything will infiltrate
          if (rateinf(k) >= rintns(k)) then
            if (k == 1) then
-             cuminf(k) = wst(iwst)%weat%ts(k)
+             cuminf(k) = w%ts(k)
              excum(k) = 0.
              exinc(k) = 0.
            else
-             cuminf(k) = cuminf(k-1) + wst(iwst)%weat%ts(k)
+             cuminf(k) = cuminf(k-1) + w%ts(k)
              if (excum(k-1) > 0.) then
                excum(k) = excum(k-1)
                exinc(k) = 0.
@@ -145,27 +146,38 @@
            end do
          end if  
 
-	   !! Urban Impervious cover 
-	   if (hru(j)%luse%urb_lu > 0) then
-	      !runoff from pervious area
-	      hhqday(j,k-1) = hhqday(j,k-1) * (1. - urbdb(ulu)%fcimp) 
+      !! Urban Impervious cover 
+      if (ulu > 0) then
+        if(rintns(k) > 0.017) then 
+          !! effective pcp is > 0.017 mm/min (or 4/100 inches/hr)
+          !! the potential for initial dabstraction from paved surface is less than the user input initial dabstraction
+          urb_abstinit(j) = max(0., urb_abstinit(j) - w%ts(k))
+        else
+          !! the potential for initial dabstraction from paved surface increases based on evaporation
+          urb_abstinit(j) = min(bsn_prm%urb_init_abst, urb_abstinit(j) + pet_day / time%step)
+        end if
+        !runoff from pervious area
+        hhqday(j,k) = hhqday(j,k) * (1. - urbdb(ulu)%fcimp) 
            
-           !runoff from impervious area with initial abstraction
-            ubnrunoff(k-1) = (wst(iwst)%weat%ts(k) - abstinit) * urbdb(ulu)%fcimp
-            if ( ubnrunoff(k-1)<0)  ubnrunoff(k-1) = 0.
-         end if
+        !runoff from impervious area with initial abstraction
+        ubnrunoff(k) = (wst(iwst)%weat%ts(k) - urb_abstinit(j)) * urbdb(ulu)%fcimp
+        if (ubnrunoff(k)<0) ubnrunoff(k) = 0.
+      end if
 
-	   !! daily total runoff
-	   hhsurfq(j,k) = hhqday(j,k) + ubnrunoff(k)
-       surfq(j) = surfq(j) + hhsurfq(j,k) 
+      !! daily total runoff
+      hhsurfq(j,k) = hhqday(j,k) + ubnrunoff(k)
+      surfq(j) = surfq(j) + hhsurfq(j,k) 
 
-         !! calculate new rate of infiltration
-         rateinf(k) = adj_hc * (psidt / (cuminf(k) + 1.e-6) + 1.)
+      !! calculate new rate of infiltration
+      if (k < time%step) then
+        rateinf(k+1) = adj_hc * (psidt / (cuminf(k) + 1.e-6) + 1.)
+      end if
         
-      end do
+      end do    !end of time%step loop
        
-      if (Sum(wst(iwst)%weat%ts) > 12.) then
+      if (Sum(w%ts) > -12.) then
         swtrg(j) = 1
+        rateinf_prev(j) = rateinf(time%step)
       end if
 
       return

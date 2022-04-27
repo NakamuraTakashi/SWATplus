@@ -100,9 +100,14 @@
       end if
  
       !! output channel organic-mineral
-      ch_out_d(ich) = ht2                       !set outflow om hydrograph
-      ch_out_d(ich)%flo = ht2%flo / 86400.      !m3 -> m3/s
-
+      ch_out_d(ich) = ob(icmd)%hd(1)                       !set outflow om hydrograph
+      ch_out_d(ich)%flo = ob(icmd)%hd(1)%flo / 86400.      !m3 -> m3/s
+   
+      !! output flow to channel morphology
+      chsd_d(ich)%flo = ob(icmd)%hd(1)%flo / 86400.        !adjust if overbank flooding is moved to landscape
+      chsd_d(ich)%flo_mm = ob(icmd)%hd(1)%flo / (10. * ob(icmd)%area_ha)   !flow out in mm
+      chsd_d(ich)%peakr = peakrate
+      
       !! set pesticide output variables
       do ipest = 1, cs_db%num_pests
         chpst_d(ich)%pest(ipest)%tot_in = obcs(icmd)%hin%pest(ipest)

@@ -20,6 +20,9 @@
       integer :: iyr_prev             !none       |previous year
       integer :: iyrs                 !           |
       integer :: iss                  !none       |counter
+      integer :: mo
+      integer :: day_mo
+      integer :: ihr
             
        mpcp = 0
        eof = 0
@@ -85,7 +88,7 @@
           ! the precip time step has to be the same as time%step
           allocate (pcp(i)%tss(time%step,366,pcp(i)%nbyr))
         else
-          allocate (pcp(i)%ts(366,pcp(i)%nbyr))
+         allocate (pcp(i)%ts(366,pcp(i)%nbyr))
         end if
 
         ! read and save start jd and yr
@@ -112,11 +115,14 @@
        backspace (108)
        iyr_prev = iyr
        iyrs = 1
+       iss = 1
 
        do
          if (pcp(i)%tstep > 0) then
-             read (108,*,iostat=eof)iyr, istep, (pcp(i)%tss(iss,istep,iyrs), iss = 1, pcp(i)%tstep)
-             if (eof < 0) exit
+           read (108,*,iostat=eof)iyr, istep, mo, day_mo, ihr, pcp(i)%tss(iss,istep,iyrs)
+           iss = iss + 1
+           if (iss > time%step) iss = 1
+           if (eof < 0) exit
          else    
            read (108,*,iostat=eof)iyr, istep, pcp(i)%ts(istep,iyrs)
            if (eof < 0) exit

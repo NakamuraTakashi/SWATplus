@@ -48,8 +48,8 @@
           read (107,*,iostat=eof) ii
           if (eof < 0) exit
           backspace (107)
-          read (107,*,iostat=eof) k, ob_out(i)%obtyp,                    &
-             ob_out(i)%obtypno, ob_out(i)%hydtyp, ob_out(i)%filename
+          read (107,*,iostat=eof) k, ob_out(ii)%obtyp,                    &
+             ob_out(ii)%obtypno, ob_out(ii)%hydtyp, ob_out(ii)%filename
           if (eof < 0) exit
           
           select case (ob_out(i)%obtyp)

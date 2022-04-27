@@ -1,5 +1,5 @@
 hyd-sed-lte.cha
-          NAME   ORDER     CHW     CHD     CHS     CHL     CHN     CHK  CHEROD   CHCOV  WD_RTO   CHSEQ     D50    CLAY  CARBON      BD    CHSS   BEDLD     FPS     FPN  N_CONC  P_CONC   P_BIO
+          NAME   ORDER     CHW     CHD     CHS     CHL     CHN     CHK  CHEROD   CHCOV  WD_RTO   CHSEQ     D50    CLAY  CARBON      BD    CHSS   BEDLD     FPS     FPN  N_CONC    HC_HT   HC_LEN
 hydcha001      first       3.29   0.338   0.002   0.794   0.075       0    0.01   0.005   0.005   0.001      12      30     0.4     1.5     0.5     0.5   0.005     0.2    10.0     1.0    0.05
 hydcha002      first      2.719   0.301   0.008   0.474   0.075       0    0.01   0.005   0.005   0.001      12      30     0.4     1.5     0.5     0.5   0.005     0.2    10.0     1.0    0.05
 hydcha003      first      4.286   0.397   0.004   3.042   0.075       0    0.01   0.005   0.005   0.001      12      30     0.4     1.5     0.5     0.5   0.005     0.2    10.0     1.0    0.05

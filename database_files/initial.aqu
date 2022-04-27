@@ -1,0 +1,4 @@
+initial.aqu
+  NAME         org_min      pest        path        hmet       salt
+ low_init     low_init      no_ini      no_ini      null       null
+ high_init    high_init     low_ini     low_ini     null       null

@@ -14,6 +14,7 @@
       integer :: nlyr          
       integer :: nly
       integer :: j
+      integer :: ii
 
       j = ihru
       
@@ -25,7 +26,14 @@
           
           if (iob <= sp_ob%objs) then
             if (ob_out(itot)%hydno /= 6) then
-              write (iunit+itot,*) time%day, time%mo, time%day_mo, time%yrc, ob(iob)%typ, ob(iob)%name, ob(iob)%hd(ihd)
+              if (ob_out(itot)%hydtyp == "subday") then
+                do ii = 1, time%step 
+                  !write (iunit+itot,*) iob, time%yrc,time%day, ii, ob(iob)%hyd_flo(1,ii)
+                  write (iunit+itot,*) time%day, time%mo, time%day_mo, time%yrc, ob(iob)%typ, ob(iob)%name, iob, ii, ob(iob)%hyd_flo(1,ii)
+	            end do
+              else  
+                write (iunit+itot,*) time%day, time%mo, time%day_mo, time%yrc, ob(iob)%typ, ob(iob)%name, ob(iob)%hd(ihd)
+              end if
             else
               if (iob == 0) then
                 do j = 1, sp_ob%hru

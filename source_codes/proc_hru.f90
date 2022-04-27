@@ -17,8 +17,8 @@
         call hrudb_init
         call hru_lum_init_all
         call topohyd_init
-        call soils_init
         call hru_output_allo
+        call soils_init
         if (cs_db%num_pests > 0) call pesticide_init
         if (cs_db%num_paths > 0) call pathogen_init
         if (cs_db%num_salts > 0) call salt_hru_init

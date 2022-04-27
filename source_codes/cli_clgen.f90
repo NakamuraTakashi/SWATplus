@@ -65,19 +65,16 @@
         wst(iwst)%weat%precip_prior_day = "dry"
       end if
 
-      !! Calculate Daylength !!
+      !! Calculate Daylength
       !! calculate solar declination: equation 2.1.2 in SWAT manual
       sd = Asin(.4 * Sin((Real(time%day) - 82.) / 58.09))  !!365/2pi = 58.09
 
-      !! calculate the relative distance of the earth from the sun
-      !! the eccentricity of the orbit
-      !! equation 2.1.1 in SWAT manual
+      !! calculate the relative distance of the earth from the sun the eccentricity of the orbit
       dd = 1.0 + 0.033 * Cos(Real(time%day) / 58.09)
 
       !!daylength = 2 * Acos(-Tan(sd) * Tan(lat)) / omega
       !!where the angular velocity of the earth"s rotation, omega, is equal
       !! to 15 deg/hr or 0.2618 rad/hr and 2/0.2618 = 7.6374
-      !! equation 2.1.6 in SWAT manual
 
       sdlat = -wgn_pms(iwgn)%latsin * Tan(sd) / wgn_pms(iwgn)%latcos
       

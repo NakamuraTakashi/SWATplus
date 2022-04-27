@@ -11,7 +11,7 @@
         real :: wateryld = 0.         !mm H2O        |water yield - sum of surface runoff, lateral soil flow and tile flow
         real :: perc = 0.             !mm H2O        |amt of water perc out of the soil profile & into the vadose zone
         real :: et = 0.               !mm H2O        |actual evapotranspiration from the soil
-        real :: tloss = 0.            !mm H2O        |not reported
+        real :: ecanopy = 0.          !mm H2O        |not reported
         real :: eplant = 0.           !mm H2O        |plant transpiration
         real :: esoil = 0.            !mm H2O        |soil evaporation
         real :: surq_cont = 0.        !mm H2O        |surface runoff leaving the landscape
@@ -35,6 +35,13 @@
         real :: latq_cha = 0.         !mm H2O        |lateral soil flow into channels
         real :: latq_res = 0.         !mm H2O        |lateral soil flow into reservoirs
         real :: latq_ls = 0.          !mm H2O        |lateral soil flow into a landscape element
+        real :: gwtran = 0.           !mm H2O        |groundwater transferred to soil profile (when water table is in soil profile) !rtb gwflow
+        real :: satex = 0.            !mm H2O        |saturation excess flow developed from high water table !rtb gwflow
+        real :: satex_chan = 0.       !mm H2O        |saturation excess flow reaching main channel !rtb gwflow
+        real :: delsw = 0.            !mm H2O        |change in soil water volume !rtb gwflow
+        real :: lagsurf = 0.		  !mm H2O        |surface runoff in transit to channel
+        real :: laglatq = 0.          !mm H2O	     |lateral flow in transit to channel
+        real :: lagsatex = 0.         !mm H2O	     |saturation excess flow in transit to channel
       end type output_waterbal
        
       type (output_waterbal), pointer :: h
@@ -75,7 +82,7 @@
         real :: act_sta_p = 0.          !kg P/ha        |phosphorus moving from the active mineral pool to the stable mineral pool
         real :: fertn = 0.              !kg N/ha        |total nitrogen applied to soil
         real :: fertp = 0.              !kg P/ha        |total phosphorus applied to soil
-        real :: fixn = 0.               !kg N/ha        |anitrogen added to plant biomass via fixation
+        real :: fixn = 0.               !kg N/ha        |nitrogen added to plant biomass via fixation
         real :: denit = 0.              !kg N/ha        |nitrogen lost from nitrate pool by denitrification
         real :: act_nit_n = 0.          !kg N/ha        |nitrogen moving from active organic pool to nitrate pool
         real :: act_sta_n = 0.          !kg N/ha        |nitrogen moving from active organic pool to stable pool
@@ -86,6 +93,10 @@
                                         !                   and org (20%) pools
         real :: no3atmo = 0.            !kg N/ha        |nitrate added to the soil from atmospheric deposition
         real :: nh4atmo = 0.            !kg N/ha        |ammonia added to the soil from atmospheric deposition
+        real :: nuptake = 0.            !kg N/ha        |plant nitrogen uptake
+        real :: puptake = 0.            !kg N/ha        |plant phosphorus uptake
+        real :: gwtrann = 0.            !kg N/ha        |nitrate added to the soil from the aquifer (rtb gwflow)
+        real :: gwtranp = 0.            !kg P/ha        |Phos added to the soil from the aquifer (rtb gwflow)
       end type output_nutbal
 
       type (output_nutbal), dimension (:), allocatable :: hnb_d
@@ -172,15 +183,18 @@
       type (output_nutcarb_gain_loss) :: hgl_z
 
       type output_losses
-        real :: sedyld = 0.          !metric tons/ha |sediment yield leaving the landscape caused by water erosion
-        real :: sedorgn = 0.         !kg N/ha        |organic nitrogen transported in surface runoff
-        real :: sedorgp = 0.         !kg P/ha        |organic phosphorus transported in surface runoff
-        real :: surqno3 = 0.         !kg N/ha        |nitrate NO3-N transported in surface runoff
-        real :: latno3 = 0.          !kg N/ha        |nitrate NO3-N transported in lateral runoff
-        real :: surqsolp = 0.        !kg P/ha        |soluble phosphorus transported in surface runoff
-        real :: usle = 0.            !metric tons/ha |sediment erosion predicted with the USLE equation
-        real :: sedmin = 0.          !kg P/ha        |mineral phosphorus leaving the landscape transported in sediment
-        real :: tileno3 = 0.         !kg N/ha        |nitrate NO3 in tile flow
+        real :: sedyld = 0.         !metric tons/ha |sediment yield leaving the landscape caused by water erosion
+        real :: sedorgn = 0.        !kg N/ha        |organic nitrogen transported in surface runoff
+        real :: sedorgp = 0.        !kg P/ha        |organic phosphorus transported in surface runoff
+        real :: surqno3 = 0.        !kg N/ha        |nitrate NO3-N transported in surface runoff
+        real :: latno3 = 0.         !kg N/ha        |nitrate NO3-N transported in lateral runoff
+        real :: surqsolp = 0.       !kg P/ha        |soluble phosphorus transported in surface runoff
+        real :: usle = 0.           !metric tons/ha |sediment erosion predicted with the USLE equation
+        real :: sedmin = 0.         !kg P/ha        |mineral phosphorus leaving the landscape transported in sediment
+        real :: tileno3 = 0.        !kg N/ha        |nitrate NO3 in tile flow
+        real :: lchlabp = 0.        !kg P/ha        |soluble P (labile) leaching past bottom soil layer
+        real :: tilelabp = 0.       !kg N/ha        |soluble P (labile) NO3 in tile flow
+        real :: satexn = 0.          !kg N/ha		  | amt of NO3-N in saturation excess surface runoff in HRU for the day
       end type output_losses
       
       type (output_losses), dimension (:), allocatable :: hls_d
@@ -284,7 +298,7 @@
         character (len=12) :: wateryld   =  "    wateryld"
         character (len=12) :: perc       =  "        perc"   
         character (len=12) :: et         =  "          et"
-        character (len=12) :: tloss      =  "       tloss"
+        character (len=12) :: ecanopy    =  "     ecanopy"
         character (len=12) :: eplant     =  "      eplant"
         character (len=12) :: esoil      =  "       esoil"
         character (len=12) :: surq_cont  =  "   surq_cont"
@@ -308,6 +322,13 @@
         character (len=12) :: latq_cha   =  "    latq_cha"
         character (len=12) :: latq_res   =  "    latq_res"
         character (len=12) :: latq_ls    =  "     latq_ls"
+        character (len=12) :: gwtranq    =  "     gwtranq"
+        character (len=12) :: satex      =  "       satex"
+        character (len=12) :: satex_chan =  "  satex_chan"
+        character (len=12) :: sw_change  =  "   sw_change"
+        character (len=12) :: lagsurf    =  "     lagsurf"
+        character (len=12) :: laglatq    =  "     laglatq"
+        character (len=12) :: lagsatex    =  "   lagsatex"
       end type output_waterbal_header      
       type (output_waterbal_header) :: wb_hdr
       
@@ -327,7 +348,7 @@
         character (len=12) :: wateryld   =  "          mm"
         character (len=12) :: perc       =  "          mm"   
         character (len=12) :: et         =  "          mm"
-        character (len=12) :: tloss      =  "          mm"
+        character (len=12) :: ecanopy    =  "          mm"
         character (len=12) :: eplant     =  "          mm"
         character (len=12) :: esoil      =  "          mm"
         character (len=12) :: surq_cont  =  "          mm"
@@ -351,6 +372,13 @@
         character (len=12) :: latq_cha   =  "          mm"
         character (len=12) :: latq_res   =  "          mm"
         character (len=12) :: latq_ls    =  "          mm"
+        character (len=12) :: gwtranq    =  "          mm"
+        character (len=12) :: satex      =  "          mm"
+        character (len=12) :: satex_chan =  "          mm"
+        character (len=12) :: sw_change  =  "          mm"
+        character (len=12) :: lagsurf    =  "          mm"
+        character (len=12) :: laglatq    =  "          mm"
+        character (len=12) :: lagsatex   =  "          mm"
       end type output_waterbal_header_units      
       type (output_waterbal_header_units) :: wb_hdr_units
          
@@ -360,12 +388,12 @@
          character (len=6) :: day_mo        =    "   day"
          character (len=6) :: yrc           =    "    yr"
          character (len=9) :: isd           =    "    unit " 
-         character (len=8) :: id            =    " gis_id "        
-         character (len=9) :: name          =    "    name "         
+         character (len=8) :: id            =    " gis_id "                
+         character (len=16) :: name         =    " name           "        
          character(len=12) :: grazn         =    "        grzn"
-         character(len=12) :: grazp         =    "        grzp"          
-         character(len=17) :: lab_min_p     =    "        lab_min_p"     
-         character(len=17) :: act_sta_p     =    "        act_sta_p"
+         character(len=12) :: grazp         =    "        grzp"        
+         character(len=12) :: lab_min_p     =    "   lab_min_p"     
+         character(len=12) :: act_sta_p     =    "   act_sta_p"
          character(len=17) :: fertn         =    "            fertn"       
          character(len=17) :: fertp         =    "            fertp"       
          character(len=17) :: fixn          =    "             fixn"       
@@ -377,6 +405,10 @@
          character(len=17) :: rsd_laborg_p  =    "     rsd_laborg_p"      
          character(len=17) :: no3atmo =    "          no3atmo" 
          character(len=17) :: nh4atmo =    "          nh4atmo"
+         character(len=17) :: nuptake =    "          nuptake" 
+         character(len=17) :: puptake =    "          puptake"		 
+         character(len=17) :: gwtrann =    "          gwtrann"
+         character(len=17) :: gwtranp =    "          gwtranp"
       end type output_nutbal_header         
       type (output_nutbal_header) :: nb_hdr
       
@@ -387,11 +419,11 @@
          character (len=6) :: yrc           =    "      "
          character (len=9) :: isd           =    "         " 
          character (len=8) :: id            =    "        "        
-         character (len=9) :: name          =    "         "         
+         character (len=16) :: name         =    "                "        
          character(len=12) :: grazn         =    "        kgha"
          character(len=12) :: grazp         =    "        kgha"         
-         character(len=17) :: lab_min_p     =    "             kgha"     
-         character(len=17) :: act_sta_p     =    "             kgha" 
+         character(len=12) :: lab_min_p     =    "        kgha"     
+         character(len=12) :: act_sta_p     =    "        kgha" 
          character(len=17) :: fertn         =    "             kgha"        
          character(len=17) :: fertp         =    "             kgha"        
          character(len=17) :: fixn          =    "             kgha"        
@@ -402,7 +434,11 @@
          character(len=17) :: rsd_nitorg_n  =    "             kgha"       
          character(len=17) :: rsd_laborg_p  =    "             kgha"       
          character(len=17) :: no3atmo       =    "             kgha"  
-         character(len=17) :: nh4atmo       =    "             kgha" 
+         character(len=17) :: nh4atmo       =    "             kgha"
+         character(len=17) :: nuptake       =    "             kgha"  
+         character(len=17) :: puptake       =    "             kgha" 
+         character(len=17) :: gwtrann       =    "             kgha"
+         character(len=17) :: gwtranp       =    "             kgha"
       end type output_nutbal_header_units         
       type (output_nutbal_header_units) :: nb_hdr_units
       
@@ -423,6 +459,9 @@
         character (len=12)  :: usle     =  "        usle"     
         character (len=12)  :: sedmin   =  "      sedmin"
         character (len=12)  :: tileno3  =  "     tileno3"
+        character (len=12)  :: lchlabp  =  "     lchlabp"
+        character (len=12)  :: tilelabp =  "    tilelabp"
+        character (len=12)  :: satexn   =  "      satexn"
       end type output_losses_header      
       type (output_losses_header) :: ls_hdr
       
@@ -433,19 +472,22 @@
         character (len=6) :: yrc        =  "      "
         character (len=8) :: isd        =  "        "
         character (len=8) :: id         =  "        "        
-        character (len=16) :: name      =  "                    "        
-        character (len=12) :: sedyld    =  "         tha"
-        character (len=12)  :: sedorgn  =  "        kgha"
-        character (len=12)  :: sedorgp  =  "        kgha"
-        character (len=12)  :: surqno3  =  "        kgha"
-        character (len=12)  :: latno3   =  "        kgha"            
-        character (len=12)  :: surqsolp =  "        kgha"
-        character (len=12)  :: usle     =  "        tons"     
-        character (len=12)  :: sedmin   =  "        ----"
-        character (len=12)  :: tileno3  =  "        ----"
+        character (len=16) :: name      =   "                    "      
+        character (len=12)  :: sedyld    =  "         tha"
+        character (len=12)  :: sedorgn   =  "        kgha"
+        character (len=12)  :: sedorgp   =  "        kgha"
+        character (len=12)  :: surqno3   =  "        kgha"
+        character (len=12)  :: latno3    =  "        kgha"            
+        character (len=12)  :: surqsolp  =  "        kgha"
+        character (len=12)  :: usle      =  "        tons"     
+        character (len=12)  :: sedmin    =  "        kgha"
+        character (len=12)  :: tileno3   =  "        kgha"
+        character (len=12)  :: lchlabp   =  "        kgha"
+        character (len=12)  :: tilelabp  =  "        kgha"
+        character (len=12)  :: satexn    =  "        kgha"
       end type output_losses_header_units      
       type (output_losses_header_units) :: ls_hdr_units
-      
+   
 !********************************new headers
       type output_nutcarb_cycling_header
          character (len=5) :: day           =    " jday"
@@ -543,7 +585,7 @@
         character (len=17)  :: surqsolp =  "             kgha"
         character (len=17)  :: sedmin   =  "             ----"
         character (len=17)  :: tileno3  =  "             kgha"
-        character (len=17)   :: no3atmo  = "          no3atmo"
+        character (len=17)   :: no3atmo =  "          no3atmo"
         character (len=17)  :: nh4atmo  =  "             kgha"
         character (len=17)  :: manurec  =  "             kgha"
         character (len=17)  :: manuren  =  "             kgha"
@@ -551,21 +593,19 @@
         character (len=17)  :: fertc    =  "             kgha"
         character (len=17)  :: fertn    =  "             kgha"
         character (len=17)  :: fertp    =  "             kgha"
-        character (len=17) :: grazc_eat=  "              kgha"
-        character (len=17) :: gracn_eat=  "              kgha"
-        character (len=17) :: gracp_eat=  "              kgha"
-        character (len=17) :: grazc_man=  "              kgha"
-        character (len=17) :: gracn_man=  "              kgha"
-        character (len=17) :: gracp_man=  "              kgha"
-        character (len=17) :: fixn     =  "              kgha"
-        character (len=17) :: denit    =  "              kgha"
-        character (len=17) :: yieldc   =  "              kgha"
-        character (len=17) :: yieldn   =  "              kgha"
-        character (len=17) :: yieldp   =  "              kgha"
+        character (len=17)  :: grazc_eat=  "             kgha"
+        character (len=17)  :: gracn_eat=  "             kgha"
+        character (len=17)  :: gracp_eat=  "             kgha"
+        character (len=17)  :: grazc_man=  "             kgha"
+        character (len=17)  :: gracn_man=  "             kgha"
+        character (len=17)  :: gracp_man=  "             kgha"
+        character (len=17)  :: fixn     =  "             kgha"
+        character (len=17)  :: denit    =  "             kgha"
+        character (len=17)  :: yieldc   =  "             kgha"
+        character (len=17)  :: yieldn   =  "             kgha"
+        character (len=17)  :: yieldp   =  "             kgha"
       end type output_losses_header_units1      
-      type (output_losses_header_units1) :: ls_hdr_units1
-
-!********************************new headers      
+      type (output_losses_header_units1) :: ls_hdr_units1   
      
       type output_plantweather_header
         character (len=6) :: day        =  "  jday"
@@ -734,7 +774,7 @@
         hru3%wateryld = hru1%wateryld + hru2%wateryld
         hru3%perc = hru1%perc + hru2%perc
         hru3%et = hru1%et + hru2%et
-        hru3%tloss = hru1%tloss + hru2%tloss
+        hru3%ecanopy = hru1%ecanopy + hru2%ecanopy
         hru3%eplant = hru1%eplant + hru2%eplant
         hru3%esoil = hru1%esoil + hru2%esoil
         hru3%surq_cont = hru1%surq_cont + hru2%surq_cont
@@ -758,6 +798,13 @@
         hru3%latq_cha = hru1%latq_cha + hru2%latq_cha
         hru3%latq_res = hru1%latq_res + hru2%latq_res
         hru3%latq_ls = hru1%latq_ls + hru2%latq_ls
+        hru3%gwtran = hru1%gwtran + hru2%gwtran
+        hru3%satex = hru1%satex + hru2%satex
+        hru3%satex_chan = hru1%satex_chan + hru2%satex_chan
+        hru3%delsw = hru1%delsw + hru2%delsw
+        hru3%lagsurf = hru1%lagsurf + hru2%lagsurf
+        hru3%laglatq = hru1%laglatq + hru2%laglatq
+        hru3%lagsatex = hru1%lagsatex + hru2%lagsatex
       end function hruout_waterbal_add
       
       function hruout_nutbal_add (hru1, hru2) result (hru3)
@@ -779,6 +826,10 @@
         hru3%rsd_laborg_p = hru1%rsd_laborg_p + hru2%rsd_laborg_p
         hru3%no3atmo = hru1%no3atmo + hru2%no3atmo
         hru3%nh4atmo = hru1%nh4atmo + hru2%nh4atmo
+        hru3%nuptake = hru1%nuptake + hru2%nuptake
+        hru3%puptake = hru1%puptake + hru2%puptake
+        hru3%gwtrann = hru1%gwtrann + hru2%gwtrann
+        hru3%gwtranp = hru1%gwtranp + hru2%gwtranp
       end function hruout_nutbal_add
 
       function hruout_losses_add (hru1, hru2) result (hru3)
@@ -794,8 +845,11 @@
         hru3%usle = hru1%usle + hru2%usle
         hru3%sedmin = hru1%sedmin + hru2%sedmin
         hru3%tileno3 = hru1%tileno3 + hru2%tileno3
+        hru3%lchlabp = hru1%lchlabp + hru2%lchlabp
+        hru3%tilelabp = hru1%tilelabp + hru2%tilelabp
+        hru3%satexn = hru1%satexn + hru2%satexn !rtb gwflow
       end function hruout_losses_add
-      
+ 
 !***************************new
       function hruout_nut_cycling_add (hru1, hru2) result (hru3)
         type (output_nutcarb_cycling), intent (in) :: hru1
@@ -983,7 +1037,7 @@
         hru2%wateryld = hru1%wateryld / const
         hru2%perc = hru1%perc / const
         hru2%et = hru1%et / const
-        hru2%tloss = hru1%tloss / const
+        hru2%ecanopy = hru1%ecanopy / const
         hru2%eplant = hru1%eplant / const
         hru2%esoil = hru1%esoil / const
         hru2%surq_cont = hru1%surq_cont / const 
@@ -1003,6 +1057,13 @@
         hru2%latq_cha = hru1%latq_cha / const 
         hru2%latq_res = hru1%latq_res / const 
         hru2%latq_ls = hru1%latq_ls / const
+        hru2%gwtran = hru1%gwtran / const
+        hru2%satex = hru1%satex / const
+        hru2%satex_chan = hru1%satex_chan / const
+        hru2%delsw = hru1%delsw / const
+        hru2%lagsurf = hru1%lagsurf / const
+        hru2%laglatq = hru1%laglatq / const
+        hru2%lagsatex = hru1%lagsatex / const
       end function hruout_waterbal_div
       
       function hruout_waterbal_ave (hru1,const) result (hru2)
@@ -1017,7 +1078,7 @@
         hru2%wateryld = hru1%wateryld
         hru2%perc = hru1%perc
         hru2%et = hru1%et
-        hru2%tloss = hru1%tloss
+        hru2%ecanopy = hru1%ecanopy
         hru2%eplant = hru1%eplant
         hru2%esoil = hru1%esoil
         hru2%surq_cont = hru1%surq_cont
@@ -1041,6 +1102,13 @@
         hru2%latq_cha = hru1%latq_cha
         hru2%latq_res = hru1%latq_res
         hru2%latq_ls = hru1%latq_ls
+        hru2%gwtran = hru1%gwtran
+        hru2%satex = hru1%satex
+        hru2%satex_chan = hru1%satex_chan
+        hru2%delsw = hru1%delsw
+        hru2%lagsurf = hru1%lagsurf
+        hru2%laglatq = hru1%laglatq
+        hru2%lagsatex = hru1%lagsatex
       end function hruout_waterbal_ave
 
       function hruout_waterbal_mult (hru1,const) result (hru2)
@@ -1055,7 +1123,7 @@
         hru2%wateryld = hru1%wateryld * const
         hru2%perc = hru1%perc * const
         hru2%et = hru1%et * const
-        hru2%tloss = hru1%tloss * const
+        hru2%ecanopy = hru1%ecanopy * const
         hru2%eplant = hru1%eplant * const
         hru2%esoil = hru1%esoil * const
         hru2%surq_cont = hru1%surq_cont * const 
@@ -1075,8 +1143,14 @@
         hru2%latq_cha = hru1%latq_cha * const 
         hru2%latq_res = hru1%latq_res * const 
         hru2%latq_ls = hru1%latq_ls * const
+        hru2%gwtran = hru1%gwtran * const
+        hru2%satex = hru1%satex * const
+        hru2%satex_chan = hru1%satex_chan * const
+        hru2%delsw = hru1%delsw * const
+        hru2%lagsurf = hru1%lagsurf * const
+        hru2%laglatq = hru1%laglatq * const
+        hru2%lagsatex = hru1%lagsatex * const
       end function hruout_waterbal_mult
-      
       
       function hruout_nutbal_div (hru1,const) result (hru2)
         type (output_nutbal), intent (in) :: hru1
@@ -1097,6 +1171,10 @@
         hru2%rsd_laborg_p = hru1%rsd_laborg_p / const
         hru2%no3atmo = hru1%no3atmo / const
         hru2%nh4atmo = hru1%nh4atmo / const
+        hru2%nuptake = hru1%nuptake / const
+        hru2%puptake = hru1%puptake / const
+        hru2%gwtrann = hru1%gwtrann / const
+        hru2%gwtranp = hru1%gwtranp / const
       end function hruout_nutbal_div
             
       function hruout_nutbal_mult (hru1,const) result (hru2)
@@ -1118,6 +1196,10 @@
         hru2%rsd_laborg_p = hru1%rsd_laborg_p * const
         hru2%no3atmo = hru1%no3atmo * const
         hru2%nh4atmo = hru1%nh4atmo * const
+        hru2%nuptake = hru1%nuptake * const
+        hru2%puptake = hru1%puptake * const
+        hru2%gwtrann = hru1%gwtrann * const
+        hru2%gwtranp = hru1%gwtranp * const
       end function hruout_nutbal_mult
       
       function hruout_losses_div (hru1,const) result (hru2)
@@ -1133,6 +1215,9 @@
         hru2%usle = hru1%usle / const        
         hru2%sedmin = hru1%sedmin / const
         hru2%tileno3 = hru1%tileno3 / const
+        hru2%lchlabp = hru1%lchlabp / const
+        hru2%tilelabp = hru1%tilelabp / const
+        hru2%satexn = hru1%satexn / const !rtb gwflow
       end function hruout_losses_div
             
       function hruout_losses_mult (hru1,const) result (hru2)
@@ -1148,6 +1233,9 @@
         hru2%usle = hru1%usle * const        
         hru2%sedmin = hru1%sedmin * const
         hru2%tileno3 = hru1%tileno3 * const
+        hru2%lchlabp = hru1%lchlabp * const
+        hru2%tilelabp = hru1%tilelabp * const
+        hru2%satexn = hru1%satexn * const
       end function hruout_losses_mult
       
       function hruout_plantweather_div (hru1,const) result (hru2)

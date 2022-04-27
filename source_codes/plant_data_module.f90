@@ -76,10 +76,10 @@
                                          !                     point on the leaf area development curve
         real :: frsw_gro = .5            !frac              |30 day sum of P-PET to initiate growth of tropical 
                                          !                     plants during monsoon season - pcom()%plcur()%iseason
-        real :: wind_stl = 0.            !                  |wind erosion factor for standing live biomass
+        real :: aeration = 0.2           !                  |aeration stress factor
         real :: wind_std = 0.            !                  |wind erosion factor for standing dead residue
         real :: wind_flat = 0.           !                  |wind erosion factor for flat residue
-        !!character(len=45) :: desc = "unknown"
+        !character(len=45) :: desc = "unknown"
       end type plant_db
       type (plant_db), dimension(:),allocatable, target, save :: pldb
       type (plant_db), pointer :: pl_db

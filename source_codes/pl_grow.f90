@@ -35,15 +35,15 @@
 
           call pl_biomass_gro
 
-          call pl_root_gro
+          call pl_root_gro(j)
 
           call pl_leaf_gro
           
           call pl_leaf_senes         
 
-          call pl_seed_gro
+          call pl_seed_gro(j)
           
-          call pl_partition
+          call pl_partition(j)
 
         end if
         

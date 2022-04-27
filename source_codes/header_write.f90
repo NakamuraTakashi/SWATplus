@@ -167,13 +167,13 @@
         write (2103,*) bsn%name, prog
         write (2103,*) ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
         write (2103,*) ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1
-        write (9000,*) "BASIN_RESERVOIR           basin_res_aa.txt"
+        write (9000,*) "BASIN_RESERVOIR        basin_res_aa.txt"
        if (pco%csvout == "y") then 
           open (2107,file="basin_res_aa.csv",recl = 1500)
           write (2107,*) bsn%name, prog
           write (2107,'(*(G0.3,:","))') ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
           write (2107,'(*(G0.3,:","))') ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1
-          write (9000,*) "BASIN_RESERVOIR              basin_res_aa.csv"
+          write (9000,*) "BASIN_RESERVOIR        basin_res_aa.csv"
        end if
       end if
 !! BASIN RESERVOIR OUTPUT
@@ -310,16 +310,12 @@
           write (4900,*) bsn%name, prog
           write (4900,*) ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
           write (4900,*) ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-          !write (4900,*) ch_wbod_hdr, sd_hyd_hdr
-          !write (4900,*) ch_wbod_hdr_units, sd_hyd_hdr_units
           write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_day.txt"
           if (pco%csvout == "y") then 
             open (4904,file="basin_sd_cha_day.csv", recl = 1500)
             write (4904,*) bsn%name, prog
             write (4904,'(*(G0.3,:","))') ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
             write (4904,'(*(G0.3,:","))') ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-            !write (4904,'(*(G0.3,:","))') ch_wbod_hdr, sd_hyd_hdr
-            !write (4904,'(*(G0.3,:","))') ch_wbod_hdr_units, sd_hyd_hdr_units
             write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_day.csv"
           end if
         endif
@@ -329,16 +325,12 @@
         write (4901,*) bsn%name, prog
         write (4901,*) ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
         write (4901,*) ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-        !write (4901,*) ch_wbod_hdr, sd_hyd_hdr
-        !write (4901,*) ch_wbod_hdr_units, sd_hyd_hdr_units
         write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_mon.txt"
          if (pco%csvout == "y") then 
            open (4905,file="basin_sd_cha_mon.csv",recl = 1500)
            write (4905,*) bsn%name, prog
            write (4905,'(*(G0.3,:","))') ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
            write (4905,'(*(G0.3,:","))') ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-           !write (4905,'(*(G0.3,:","))') ch_wbod_hdr, sd_hyd_hdr 
-           !write (4905,'(*(G0.3,:","))') ch_wbod_hdr_units, sd_hyd_hdr_units
            write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_mon.csv"
          end if
         end if
@@ -348,16 +340,12 @@
           write (4902,*) bsn%name, prog
           write (4902,*) ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
           write (4902,*) ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-          !write (4902,*) ch_wbod_hdr, sd_hyd_hdr
-          !write (4902,*) ch_wbod_hdr_units, sd_hyd_hdr_units
           write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_yr.txt"
           if (pco%csvout == "y") then 
             open (4906,file="basin_sd_cha_yr.csv", recl = 1500)
             write (4906,*) bsn%name, prog
             write (4906,'(*(G0.3,:","))') ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
             write (4906,'(*(G0.3,:","))') ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-            !write (4906,'(*(G0.3,:","))') ch_wbod_hdr, sd_hyd_hdr
-            !write (4906,'(*(G0.3,:","))') ch_wbod_hdr_units, sd_hyd_hdr_units
             write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_yr.csv"
           end if
         endif
@@ -367,16 +355,12 @@
           write (4903,*) bsn%name, prog
           write (4903,*) ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
           write (4903,*) ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-          !write (4903,*) ch_wbod_hdr, sd_hyd_hdr
-          !write (4903,*) ch_wbod_hdr_units, sd_hyd_hdr_units
           write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_aa.txt"
           if (pco%csvout == "y") then 
             open (4907,file="basin_sd_cha_aa.csv",recl = 1500)
             write (4907,*) bsn%name, prog
             write (4907,'(*(G0.3,:","))') ch_wbod_hdr, hyd_stor_hdr, hyd_in_hdr, hyd_out_hdr
             write (4907,'(*(G0.3,:","))') ch_wbod_hdr_units, hyd_hdr_units1, hyd_hdr_units1, hyd_hdr_units1 
-            !write (4907,'(*(G0.3,:","))') ch_wbod_hdr, sd_hyd_hdr
-            !write (4907,'(*(G0.3,:","))') ch_wbod_hdr_units, sd_hyd_hdr_units
             write (9000,*) "BASIN_SWAT_DEG_CHANNEL    basin_sd_cha_aa.csv"
           end if
         end if

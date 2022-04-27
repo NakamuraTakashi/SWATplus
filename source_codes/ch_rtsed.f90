@@ -123,7 +123,7 @@
       cych = bsn_prm%spcon * vc ** bsn_prm%spexp
       depnet = qdin * (cych - cyin)
 	if(abs(depnet) < 1.e-6) depnet = 0.
-      if (vc < bsn_prm%vcrit) depnet = 0.
+      if (vc < 0.) depnet = 0.
 
 !!  tbase is multiplied so that erosion is proportional to the traveltime, 
 !!  which is directly related to the length of the channel

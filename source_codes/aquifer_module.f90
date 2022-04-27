@@ -24,6 +24,7 @@
       type (aquifer_database), dimension(:), allocatable :: aqudb 
       
       type aquifer_data_parameters
+        real :: area_ha = 0.     !ha         |surface area of aquifer
         real :: alpha = 0.       !1/days     |lag factor for groundwater recession curve
         real :: bf_max = 0.      !m          |maximum daily baseflow - when all channels are contributing
         real :: flo_min          !m          |water table depth for flow to occur

@@ -1,9 +1,41 @@
-plant_parms.sft 
- 1
-NAME          PLANTS       PARMS      NSPU
-basin              2           2         0
-VAR         NAME       INIT    CHG_TYP		NEG	    POS	   LO	UP
-lai_pot     corn        5.0  	abschg		-3.      3.    3.    6.
-lai_pot     toma        2.5     abschg      -2.      2.    2.    4. 
-harv_idx    corn        0.5     abschg     -.15     .15   .45    .6
-harv_idx    toma        0.3     abschg     -.15     .15   .25    .4
+plant_parms.sft
+1
+name                plants     parms      nspu                  
+crops                    9         4         0  
+ var             name              init          chg_typ           neg            pos            lo             up  
+ pest_stress     wwht              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     rye               5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     wbar              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     bars              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     trit              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     rape              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     pota              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     sgbt              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000    
+ pest_stress     csil              5.0000001E-02 abschg           -0.1000000      0.1000000      9.9999998E-03  0.1000000        
+ epco      	     wwht              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000    
+ epco      	     rye               1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000  
+ epco      	     wbar              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000    
+ epco      	     bars              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000   
+ epco      	     trit              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000    
+ epco      	     rape              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000    
+ epco      	     pota              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000  
+ epco      	     sgbt              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000   
+ epco      	     csil              1.0000000     abschg           -1.0000000      1.0000000       0.000000      1.0000000    
+ lai_pot         wwht               4.000000     abschg            -2.000000       2.000000       3.000000       5.000000    
+ lai_pot         rye                4.000000     abschg            -2.000000       2.000000       3.000000       5.000000    
+ lai_pot         wbar               4.000000     abschg            -2.000000       2.000000       3.000000       5.000000    
+ lai_pot         bars               6.000000     abschg            -2.000000       2.000000       5.000000       7.000000    
+ lai_pot         trit               4.000000     abschg            -2.000000       2.000000       3.000000       5.000000    
+ lai_pot         rape               4.500000     abschg            -2.000000       2.000000       3.500000       5.500000    
+ lai_pot         pota               4.000000     abschg            -2.000000       2.000000       3.000000       5.000000    
+ lai_pot         sgbt               5.000000     abschg            -2.000000       2.000000       4.000000       6.000000    
+ lai_pot         csil               4.000000     abschg            -2.000000       2.000000       2.000000       4.000000 
+ harv_idx        wwht              0.4000000     abschg           -0.1500000      0.1500000      0.3250000      0.4750000    
+ harv_idx        rye               0.4000000     abschg           -0.1500000      0.1500000      0.3250000      0.4750000    
+ harv_idx        wbar              0.4000000     abschg           -0.1500000      0.1500000      0.3250000      0.4750000    
+ harv_idx        bars              0.4200000     abschg           -0.1500000      0.1500000      0.3500000      0.5000000
+ harv_idx        trit              0.4000000     abschg           -0.1500000      0.1500000      0.3250000      0.4750000    
+ harv_idx        rape              0.3000000     abschg           -0.1500000      0.1500000      0.2250000      0.3750000    
+ harv_idx        pota              0.9500000     abschg           -0.1500000      0.1500000      0.8000000      1.1000000       
+ harv_idx        sgbt              2.0000000     abschg           -0.5000000      0.5000000       1.500000      2.5000000    
+ harv_idx        csil              0.9000000     abschg           -0.1500000      0.1500000      0.7500000      1.0500000    

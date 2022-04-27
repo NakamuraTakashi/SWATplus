@@ -41,7 +41,7 @@
     use pathogen_data_module
     use organic_mineral_mass_module
     use hru_module, only : hru, ihru, i_sep, iseptic, qstemm, bz_perc, isep, sep_tsincefail,    &
-       biom, plqm, bio_bod, fcoli, rbiom, percp, isep
+       biom, plqm, bio_bod, fcoli, rbiom, isep
     use soil_module
     use time_module
       
@@ -103,6 +103,7 @@
     real*8 svolp               !              |
     real*8 totalp              !              |
     real*8 ctmp                !              |
+    real*8 percp               !              |
 
 	j = ihru
 	nly = soil(j)%nly
@@ -292,9 +293,9 @@
       soil1(j)%mp(bz_lyr)%lab = solp_end
       endif	     
       solpconc = soil1(j)%mp(bz_lyr)%lab * bza / qi * 1000. !mg/l
-	percp(j) = 0.01*solpconc * qout / bza * 1.e-3
-	soil1(j)%mp(bz_lyr)%lab = soil1(j)%mp(bz_lyr)%lab - percp(j) !kg/ha
-      soil1(j)%mp(bz_lyr+1)%lab = soil1(j)%mp(bz_lyr+1)%lab + percp(j) !kg/ha	     
+	percp = 0.01*solpconc * qout / bza * 1.e-3
+	soil1(j)%mp(bz_lyr)%lab = soil1(j)%mp(bz_lyr)%lab - percp !kg/ha
+      soil1(j)%mp(bz_lyr+1)%lab = soil1(j)%mp(bz_lyr+1)%lab + percp !kg/ha	     
       nh3_end = soil1(j)%mn(bz_lyr)%nh4
 	no3_end = soil1(j)%mn(bz_lyr)%no3
       solp_end = soil1(j)%mp(bz_lyr)%lab  

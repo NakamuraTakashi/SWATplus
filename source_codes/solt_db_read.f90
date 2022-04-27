@@ -46,8 +46,9 @@
           if (eof < 0) exit
                 
           do isolt = 1, imax
-            read (107,*,iostat=eof) solt_db(isolt)       
+            read (107,*,iostat=eof) solt_db(isolt)
             if (eof < 0) exit
+            if (solt_db(isolt)%exp_co > 0.005) solt_db(isolt)%exp_co = 0.001
           end do 
           exit
         enddo

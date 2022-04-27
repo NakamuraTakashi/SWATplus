@@ -32,7 +32,8 @@
 
       use basin_module
       use organic_mineral_mass_module
-      use hru_module, only : hru, latno3, percn, surqno3, tileno3, surfq, ihru, qtile
+      use hru_module, only : hru, latno3, percn, surqno3, tileno3, surfq, ihru, qtile, gwtrann
+      use gwflow_module, only : gw_transfer_flag,gw_transport_flag,hru_ntran
       use soil_module
       
       implicit none 
@@ -52,8 +53,21 @@
       real :: ww           !varies        |variable to hold intermediate calculation
       real :: ul_sum       !mm            |sum of porosity in tile layer to lowest layer
       real :: no3_sum      !kg/ha         |sum of no3 in tile layer to lowest layer
+      real :: tileno3_left !kg/ha         |remaining no3 if not available from layers below tile
+      real :: st_sum
 
       j = ihru
+
+      
+      !rtb gwflow: add nitrate mass transferred to soil profile from the aquifer
+      if(gw_transfer_flag.eq.1 .and. gw_transport_flag.eq.1) then
+        do jj = 1, soil(j)%nly
+          soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 + hru_ntran(j,jj) !kg/ha
+          gwtrann(j) = gwtrann(j) + hru_ntran(j,jj) !HRU total
+        enddo
+      endif
+      
+      
 
       percnlyr = 0.
 
@@ -76,9 +90,8 @@
         co = Max(vno3 / vv, 0.)     !kg/ha/mm (if * 100 = ppm)
 
         !! calculate nitrate in surface runoff
-        co = bsn_prm%nperco * co
         if (jj == 1) then
-          surqno3(j) = surfq(j) * co
+          surqno3(j) = surfq(j) * bsn_prm%nperco * co
           surqno3(j) = Min(surqno3(j), soil1(j)%mn(jj)%no3)
           soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - surqno3(j)
         endif
@@ -89,15 +102,29 @@
           !! assume rising water table will move nitrates up
           ul_sum = 0.
           no3_sum = 0.
+          st_sum = 0.
           do jlo = jj, soil(j)%nly
-            ul_sum = ul_sum + soil(j)%phys(jj)%ul
-            no3_sum = no3_sum + soil1(j)%mn(jj)%no3
+            ul_sum = ul_sum + soil(j)%phys(jlo)%ul
+            no3_sum = no3_sum + soil1(j)%mn(jlo)%no3
+            st_sum = st_sum + soil(j)%phys(jlo)%st
           end do
           vv = qtile
           ww = -vv / ((1. - soil(j)%anion_excl) * ul_sum)
           vno3 = no3_sum * (1. - Exp(ww))
           co = Max(vno3 / vv, 0.)     !kg/ha/mm (if * 100 = ppm)
-          tileno3(j) = co * qtile
+          tileno3(j) = co * bsn_prm%nperco_lchtile  * qtile
+          !! subtract tile no3 from soil layers
+          tileno3_left = tileno3(j)
+          do jlo = jj, soil(j)%nly
+            soil1(j)%mn(jlo)%no3 = soil1(j)%mn(jlo)%no3 - tileno3_left
+            if (soil1(j)%mn(jlo)%no3 < 0.) then
+              tileno3_left = - soil1(j)%mn(jlo)%no3
+              soil1(j)%mn(jlo)%no3 = 0.
+            else
+              tileno3_left = 0.
+            end if
+          end do
+          tileno3(j) = tileno3(j) - tileno3_left 
         end if
 
         !! calculate nitrate in lateral flow
@@ -111,15 +138,16 @@
         soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - ssfnlyr
 
         !! calculate nitrate in percolate
-        percnlyr = soil(j)%ly(jj)%prk
+        percnlyr = co * soil(j)%ly(jj)%prk
         percnlyr = Min(percnlyr, soil1(j)%mn(jj)%no3)
         soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - percnlyr
+        
+        !! last layer leaches from soil profile
+        if (jj == soil(j)%nly) then
+          percn(j) = percnlyr
+        end if
       end do
-
-      !! calculate nitrate leaching from soil profile
-      percn(j) = percnlyr
-
-
+      
       nloss = (2.18 * hru(j)%topo%dis_stream - 8.63) / 100.
       nloss = Max(0.,nloss)
       nloss = Amin1(1.,nloss)

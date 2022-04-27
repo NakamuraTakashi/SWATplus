@@ -46,10 +46,12 @@
         type (mineral_nitrogen), dimension(:), allocatable :: mn    !       |mineral n pool dimensioned by layer
         type (mineral_phosphorus), dimension(:), allocatable :: mp  !       |mineral p humus pool dimensioned by layer
         type (organic_mass), dimension(:), allocatable :: tot       !       |total organic pool dimensioned by layer
-        type (organic_mass), dimension(:), allocatable :: hact      !       |active humus for old mineralization model
-        type (organic_mass), dimension(:), allocatable :: hsta      !       |stable humus for old mineralization model
-        type (organic_mass), dimension(:), allocatable :: hs        !       |slow humus
-        type (organic_mass), dimension(:), allocatable :: hp        !       |passive humus
+        type (organic_mass), dimension(:), allocatable :: hact      !       |active humus for old mineralization model dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hsta      !       |stable humus for old mineralization model dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hs        !       |slow humus dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hp        !       |passive humus dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: rsd       !       |fresh residue-all plants in one pool by layer
+        !! rest are used in CENTURY model
         type (organic_mass), dimension(:), allocatable :: microb    !       |microbial biomass
         type (organic_mass), dimension(:), allocatable :: str       !       |structural litter pool dimensioned by layer
         type (organic_mass), dimension(:), allocatable :: lig       !       |lignin pool dimensioned by layer
@@ -63,6 +65,8 @@
       type (soil_profile_mass1), dimension(:), allocatable :: soil1_init
       type (soil_profile_mass1), pointer :: s1
       type (organic_mass) :: soil_prof_tot                          !       |total litter pool
+      type (organic_mass) :: soil_prof_hact                         !       |total litter pool
+      type (organic_mass) :: soil_prof_hsta                         !       |total litter pool
       type (organic_mass) :: soil_prof_str                          !       |total litter pool
       type (organic_mass) :: soil_prof_lig                          !       |total litter pool
       type (organic_mass) :: soil_prof_meta                         !       |total litter pool
@@ -94,8 +98,6 @@
         type (organic_mass) :: lig                                  !       |
         type (organic_mass) :: bm                                   !       |microbial biomass pool
         type (organic_mass) :: man                                  !       |manure pool
-        type (mineral_nitrogen) :: mn
-        type (mineral_phosphorus) :: mp
       end type residue_mass1
       !soil profile object - dimensioned to number of hrus, using the hru pointer
       type (residue_mass1), dimension(:), allocatable :: rsd1

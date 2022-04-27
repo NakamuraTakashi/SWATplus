@@ -57,11 +57,10 @@
                             !              |nitrogen pool to nitrate pool in layer
       real :: hmp           !kg P/ha       |amount of phosphorus moving from the organic
                             !              |pool to the labile pool in layer
-      real :: r4            !              |
-      real :: cnr           !              |
-      real :: cnrf          !              | 
-      real :: cpr           !              |
-      real :: cprf          !              | 
+      real :: cnr           !              |carbon nitrogen ratio
+      real :: cnrf          !              |carbon nitrogen ratio factor 
+      real :: cpr           !              |carbon phosphorus ratio
+      real :: cprf          !              |carbon phosphorus ratio factor
       real :: ca            !              |
       real :: decr          !              |
       real :: rdc           !              |
@@ -88,17 +87,16 @@
         do ipl = 1, pcom(j)%npl        !! we need to decompose each plant
           rmn1 = 0.
           rmp = 0.
-          r4 = .58 * rsd1(j)%tot(ipl)%m
-          if (rsd1(j)%tot(ipl)%n + rsd1(j)%mn%no3 > 1.e-4) then
-            cnr = r4 / (rsd1(j)%tot(ipl)%n  + rsd1(j)%mn%no3)
+          if (rsd1(j)%tot(ipl)%n > 1.e-4) then
+            cnr = rsd1(j)%tot(ipl)%c / rsd1(j)%tot(ipl)%n
             if (cnr > 500.) cnr = 500.
             cnrf = Exp(-.693 * (cnr - 25.) / 25.)
           else
             cnrf = 1.
           end if
             
-          if (rsd1(j)%tot(ipl)%p + rsd1(j)%mp%lab > 1.e-4) then
-            cpr = r4 / (rsd1(j)%tot(ipl)%p + rsd1(j)%mp%lab)
+          if (rsd1(j)%tot(ipl)%p > 1.e-4) then
+            cpr = rsd1(j)%tot(ipl)%c / rsd1(j)%tot(ipl)%p
             if (cpr > 5000.) cpr = 5000.
             cprf = Exp(-.693 * (cpr - 200.) / 200.)
           else
@@ -140,27 +138,26 @@
           if (rsd1(j)%tot(ipl)%c < 0.) rsd1(j)%tot(ipl)%c = 0.
           soil1(j)%hact(1)%c = soil1(j)%hact(1)%c + decr * rsd1(j)%tot(ipl)%c
           
-          !! mineralization of n and p
+          !! mineralization of residue n and p
           rmn1 = decr * rsd1(j)%tot(ipl)%n 
-          rsd1(j)%tot(ipl)%n  = Max(1.e-6, rsd1(j)%tot(ipl)%n)
-          rsd1(j)%tot(ipl)%n  = rsd1(j)%tot(ipl)%n  - rmn1
-          soil1(j)%mn%no3 = soil1(j)%mn%no3 + .8 * rmn1
+          rsd1(j)%tot(ipl)%n = Max(1.e-6, rsd1(j)%tot(ipl)%n)
+          rsd1(j)%tot(ipl)%n = rsd1(j)%tot(ipl)%n - rmn1
+          soil1(j)%mn(1)%no3 = soil1(j)%mn(1)%no3 + .8 * rmn1
           soil1(j)%hact(1)%n = soil1(j)%hact(1)%n + .2 * rmn1
           
           rsd1(j)%tot(ipl)%p = Max(1.e-6, rsd1(j)%tot(ipl)%p)
           rmp = decr * rsd1(j)%tot(ipl)%p
           rsd1(j)%tot(ipl)%p = rsd1(j)%tot(ipl)%p - rmp
-          rsd1(j)%mp%lab = rsd1(j)%mp%lab + .8 * rmp
-          soil1(j)%hsta(1)%p = soil1(j)%hsta(1)%p + .2 * rmp
+          soil1(j)%mp(1)%lab = soil1(j)%mp(1)%lab + .8 * rmp
+          soil1(j)%hact(1)%p = soil1(j)%hact(1)%p + .2 * rmp
           
-          hnb_d(j)%rsd_nitorg_n = hnb_d(j)%rsd_nitorg_n + rmn1
-          hnb_d(j)%rsd_laborg_p = hnb_d(j)%rsd_laborg_p + rmp
+          hnb_d(j)%rsd_nitorg_n = hnb_d(j)%rsd_nitorg_n + .8 * rmn1
+          hnb_d(j)%rsd_laborg_p = hnb_d(j)%rsd_laborg_p + .8 * rmp
           
         end do      ! ipl = 1, pcom(j)%npl
       end if
           
-      !! compute residue decomp and mineralization of fresh organic n and p
-      !! root and incorporated residue 
+      !! compute humus mineralization of organic soil pools 
       do k = 1, soil(j)%nly
 
         if (k == 1) then
@@ -224,18 +221,16 @@
           !! fresh organic n and p (upper two layers only)
           rmn1 = 0.
           rmp = 0.
-          if (k <= 2) then
-            r4 = .58 * soil1(j)%tot(k)%m
-            if (soil1(j)%tot(k)%n + soil1(j)%mn(k)%no3 > 1.e-4) then
-              cnr = r4 / (soil1(j)%tot(k)%n  + soil1(j)%mn(k)%no3)
-              if (cnr > 500.) cnr = 500.
-              cnrf = Exp(-.693 * (cnr - 25.) / 25.)
-            else
-              cnrf = 1.
-            end if
+          if (soil1(j)%rsd(k)%n > 1.e-4) then
+            cnr = soil1(j)%rsd(k)%c / soil1(j)%rsd(k)%n
+            if (cnr > 500.) cnr = 500.
+            cnrf = Exp(-.693 * (cnr - 25.) / 25.)
+          else
+            cnrf = 1.
+          end if
             
-            if (soil1(j)%tot(k)%p + soil1(j)%mp(k)%lab > 1.e-4) then
-              cpr = r4 / (soil1(j)%tot(k)%p + soil1(j)%mp(k)%lab)
+            if (soil1(j)%rsd(k)%p > 1.e-4) then
+              cpr = soil1(j)%rsd(k)%c / soil1(j)%rsd(k)%p
               if (cpr > 5000.) cpr = 5000.
               cprf = Exp(-.693 * (cpr - 200.) / 200.)
             else
@@ -244,11 +239,11 @@
 
             ca = Min(cnrf, cprf, 1.)
             
-            !! compute residue decomp and mineralization for each plant
-            !do ipl = 1, pcom(j)%npl        !! we need to decomp each plant**
+            !! compute root and incorporated residue decomposition
+            !! all plant residue in soil is mixed - don't track individual plant residue in soil
               
             if (pcom(j)%npl > 0) then
-              decr = rsdco_plcom(j) * ca * csf
+              decr = rsdco_plcom(j) / pcom(j)%npl * ca * csf
             else
               decr = 0.05
             end if
@@ -264,14 +259,13 @@
             soil1(j)%lig(k)%p = soil1(j)%lig(k)%p * (1. - decr)
             soil1(j)%meta(k)%p = soil1(j)%meta(k)%p * (1. - decr)
 
-            soil1(j)%mn(k)%no3 = soil1(j)%mn(k)%no3 + .8 * rmn1
-            soil1(j)%hact(k)%n = soil1(j)%hact(k)%n + .2 * rmn1
-            soil1(j)%mp(k)%lab = soil1(j)%mp(k)%lab + .8 * rmp
-            soil1(j)%hsta(k)%p = soil1(j)%hsta(k)%p + .2 * rmp
+         !   soil1(j)%mn(k)%no3 = soil1(j)%mn(k)%no3 + .8 * rmn1
+         !   soil1(j)%hact(k)%n = soil1(j)%hact(k)%n + .2 * rmn1
+         !   soil1(j)%mp(k)%lab = soil1(j)%mp(k)%lab + .8 * rmp
+         !   soil1(j)%hsta(k)%p = soil1(j)%hsta(k)%p + .2 * rmp
             
-            hnb_d(j)%rsd_nitorg_n = hnb_d(j)%rsd_nitorg_n + rmn1
-            hnb_d(j)%rsd_laborg_p = hnb_d(j)%rsd_laborg_p + rmp
-          end if
+         !   hnb_d(j)%rsd_nitorg_n = hnb_d(j)%rsd_nitorg_n + rmn1
+         !   hnb_d(j)%rsd_laborg_p = hnb_d(j)%rsd_laborg_p + rmp
 
           !!  compute denitrification
           wdn = 0.   

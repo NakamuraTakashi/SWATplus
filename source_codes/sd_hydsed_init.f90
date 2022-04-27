@@ -60,6 +60,8 @@
       real :: xkm          !hr                |storage time constant for the reach
       real :: det          !hr                |time step
       real :: denom        !none              |variable to hold intermediate calculation
+      real :: rto          !none              |ratio of channel volume to total volume
+      real :: rto1         !none              |ratio of flood plain volume to total volume
       
       do i = 1, sp_ob%chandeg
         icmd = sp_ob1%chandeg + i - 1
@@ -70,13 +72,17 @@
         sd_ch(i)%chw = sd_chd(idb)%chw
         sd_ch(i)%chd = sd_chd(idb)%chd
         sd_ch(i)%chs = sd_chd(idb)%chs
+        if (sd_ch(i)%chs < 1.e-9) sd_ch(i)%chs = .000001
         sd_ch(i)%chl = sd_chd(idb)%chl
         sd_ch(i)%chn = sd_chd(idb)%chn
+        if (sd_ch(i)%chn < 1.e-9) sd_ch(i)%chn = .05
         sd_ch(i)%chk = sd_chd(idb)%chk      
         sd_ch(i)%cherod = sd_chd(idb)%cherod
         sd_ch(i)%cov = sd_chd(idb)%cov
         sd_ch(i)%wd_rto = sd_chd(idb)%wd_rto
+        if (sd_ch(i)%wd_rto < 1.e-6) sd_ch(i)%wd_rto = 4.
         sd_ch(i)%chseq = sd_chd(idb)%chseq
+        if (sd_ch(i)%chseq < 1.e-9) sd_ch(i)%chseq = .000001
         sd_ch(i)%d50 = sd_chd(idb)%d50
         sd_ch(i)%ch_clay = sd_chd(idb)%ch_clay
         sd_ch(i)%carbon = sd_chd(idb)%carbon
@@ -84,6 +90,8 @@
         sd_ch(i)%chss = sd_chd(idb)%chss
         sd_ch(i)%bedldcoef = sd_chd(idb)%bedldcoef
         sd_ch(i)%fps = sd_chd(idb)%fps
+        if (sd_ch(i)%fps > sd_ch(i)%chs) sd_ch(i)%fps = sd_ch(i)%chs
+        if (sd_ch(i)%fps <= 1.e-6) sd_ch(i)%fps = .00001       !!! nbs 1/24/22
         sd_ch(i)%fpn = sd_chd(idb)%fpn
         sd_ch(i)%hc_kh = gully(0)%hc_kh
         sd_ch(i)%hc_hgt = gully(0)%hc_hgt
@@ -178,16 +186,8 @@
           ichdat = ob(iob)%props
           ich_ini = sd_dat(ichdat)%init
           iom_ini = sd_init(ich_ini)%org_min
-          ch_stor(ich) = om_init_water(iom_ini)
-          sd_ch(ich)%stor = ch_stor(ich)%flo
-          
-          !! initial volume is frac of flow depth - frac*m*m*km*1000. = m3
-          ch_stor(ich)%flo = om_init_water(iom_ini)%flo * sd_ch(ich)%chd * sd_ch(ich)%chw * sd_ch(ich)%chl * 1000.
-          
-          !! convert concentration to mass
-          call hyd_convert_conc_to_mass (ch_stor(ich))
-          ch_om_water_init(ich) = ch_stor(ich)
-          
+          tot_stor(ich) = om_init_water(iom_ini)
+                    
           !! intialize rating curves - inflow and outflow at current time step
           flow_dep = om_init_water(iom_ini)%flo * sd_ch(ich)%chd
           icha = ich
@@ -195,9 +195,32 @@
           ch_rcurv(ich)%in1 = rcurv
           ch_rcurv(ich)%out1 = rcurv
           
+          !! initial volume is frac of flow depth - frac*m*m*km*1000. = m3
+          !tot_stor(ich)%flo = om_init_water(iom_ini)%flo * sd_ch(ich)%chd * sd_ch(ich)%chw * sd_ch(ich)%chl * 1000.
+          tot_stor(ich)%flo = rcurv%vol
+          
+          !! convert concentration to mass
+          call hyd_convert_conc_to_mass (tot_stor(ich))
+          
+          !! partition water between channel and flood plain
+          if (om_init_water(iom_ini)%flo <= 1.0) then
+            !! depth below bankfull
+            ch_stor(ich) = tot_stor(ich)
+            fp_stor(ich) = hz
+          else
+            !! depth above bankfull
+            rto = rcurv%vol_ch / rcurv%vol
+            ch_stor(ich) = rto * tot_stor(ich)
+            rto1 = 1. - rto
+            fp_stor(ich) = rto1 * tot_stor(ich)
+          end if
         else
           ch_stor(ich) = hz
+          fp_stor(ich) = hz
         end if
+        !! save initial water if calibrating and rerunning
+        ch_om_water_init(ich) = ch_stor(ich)
+        fp_om_water_init(ich) = fp_stor(ich)
       end do
       
       ! initialize pesticides in channel water and benthic from input data

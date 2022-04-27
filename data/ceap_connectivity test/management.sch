@@ -7,7 +7,7 @@ corn_sb_rot     0      4
                     EnlistDuo_app
 con_corn_rot    0      2 
                     pl_hv_summer1_corn		
-		            fert_sprg_side
+		    fert_sprg_side
 canary_nomgt    0      1
                     no_tile_drain
   

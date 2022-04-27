@@ -1,22 +1,24 @@
-        subroutine sd_channel_surf_link (ics)
+      subroutine sd_channel_surf_link
                  
-        use hydrograph_module
-        use sd_channel_module
-        use ru_module
-        use hru_module, only : hru, ihru 
-        use topography_data_module
+      use hydrograph_module
+      use sd_channel_module
+      use ru_module
+      use hru_module, only : hru, ihru 
+      use topography_data_module
       
-        implicit none 
+      implicit none 
       
-        integer, intent (in) :: ics     !none          |counter
-        character (len=3) :: iobtyp     !none          |object type
-        integer :: ii                   !none          |counter 
-        integer :: i                    !              |
-        integer :: iihru                !none          |hru counter 
-        integer :: ihru_tot             !none          |total number of hru in the flood plain   
+      integer :: ics                  !none          |counter
+      character (len=3) :: iobtyp     !none          |object type
+      integer :: ii                   !none          |counter 
+      integer :: i                    !              |
+      integer :: iihru                !none          |hru counter 
+      integer :: ihru_tot             !none          |total number of hru in the flood plain   
 
-        ihru_tot = 0
+      ihru_tot = 0
         
+      do ics = 1, sp_ob%chandeg
+        if (sd_ch(ics)%fp%obj_tot > 0) then
         !! determine number of hru's
         do ii = 1, sd_ch(ics)%fp%obj_tot
           iobtyp = sd_ch(ics)%fp%obtyp(ii)     !object type
@@ -56,15 +58,18 @@
             end do
       
           end select
-        end do
+        end do      ! ii = 1, sd_ch(ics)%fp%obj_tot
    
         !set hru flood plain area fractions
         sd_ch(ics)%fp%hru_tot = ihru_tot
         do ihru = 1, sd_ch(ics)%fp%hru_tot
-          sd_ch(ics)%fp%hru_fr(ihru) = hru(ihru)%area_ha / sd_ch(ics)%fp%ha
+          iihru = sd_ch(ics)%fp%hru(ihru)
+          sd_ch(ics)%fp%hru_fr(ihru) = hru(iihru)%area_ha / sd_ch(ics)%fp%ha
         end do
             
-            
-        return
+      end if    ! sd_ch(ics)%fp%obj_tot > 0
+      end do    ! ics = 1, sp_ob%chandeg
+        
+      return
 
       end subroutine sd_channel_surf_link

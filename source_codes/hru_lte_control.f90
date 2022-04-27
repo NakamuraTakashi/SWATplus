@@ -374,7 +374,7 @@
         hltwb_d(isd)%wateryld = chflow
         hltwb_d(isd)%perc = perc                
         hltwb_d(isd)%et = aet                   
-        hltwb_d(isd)%tloss = 0.                  
+        hltwb_d(isd)%ecanopy = 0.                  
         hltwb_d(isd)%eplant = 0.                
         hltwb_d(isd)%esoil = 0.                
         hltwb_d(isd)%surq_cont = 0.

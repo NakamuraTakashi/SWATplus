@@ -176,7 +176,6 @@
         else
           hru(j)%hyd%lat_ttime = 1. - Exp(-1. / hru(j)%hyd%lat_ttime)
         end if
-        hru(j)%hyd%lat_ttime = .295     !***jga
 
         isdr = hru(j)%tiledrain
         if (hru(j)%lumv%ldrain > 0 .and. sdr(isdr)%lag > 0.01) then

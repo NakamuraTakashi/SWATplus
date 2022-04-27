@@ -14,7 +14,7 @@
       
       implicit none
      
-      real :: bypass                  !              | 
+      real :: bypass = 1.             !              | 
       real :: fracwet                 !              | 
       integer :: j                    !none          |counter
       integer :: iprop                !              |  
@@ -66,7 +66,7 @@
       !! save hru(ihru)%water_seep to add to infiltration on next day
       wet_wat_d(ihru)%seep = wet_wat_d(ihru)%area_ha * wet_hyd(ihyd)%k * 10.* 24.
       wet_wat_d(ihru)%seep = min(wet(ihru)%flo, wet_wat_d(ihru)%seep)
-      wet(ihru)%flo = wet(ihru)%flo - hru(ihru)%water_seep
+      wet(ihru)%flo = wet(ihru)%flo - wet_wat_d(ihru)%seep
       hru(ihru)%water_seep = wet_wat_d(ihru)%seep / (10. * hru(ihru)%area_ha)
         
       !! if not a floodplain wetland
@@ -79,7 +79,6 @@
         evol_m3 = wet_ob(ihru)%evol
         call conditions (ihru, irel)
         call res_hydro (ihru, irel, ihyd, pvol_m3, evol_m3)
-        call res_sediment (ihru, ihyd, ised)
       
         !! subtract outflow from storage
         wet(ihru)%flo =  wet(ihru)%flo - ht2%flo
@@ -100,6 +99,9 @@
         wet_wat_d(ihru)%area_ha = hru(ihru)%area_ha * wet_fr
       end if 
  
+      !! compute sediment deposition
+      call res_sediment (ihru, ihyd, ised)
+      
       !! subtract sediment leaving from reservoir
       wet(ihru)%sed = wet(ihru)%sed - ht2%sed
       wet(ihru)%sil = wet(ihru)%sil - ht2%sil

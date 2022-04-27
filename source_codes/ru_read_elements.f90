@@ -49,6 +49,7 @@
               imax = Max(i,imax)
           end do
 
+        db_mx%ru_elem = imax
         allocate (ru_def(imax))
         allocate (ru_elem(imax))
         allocate (ielem_ru(imax))

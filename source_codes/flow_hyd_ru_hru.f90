@@ -9,12 +9,12 @@
       
       implicit none
   
-      integer, intent (in) :: iday_start   !           |current start day in hydrograph
-      real, intent (in) :: surfq           !m3         |surface runoff
-      real, intent (in) :: latq            !m3         |lateral soil flow
-      real, intent (in) :: tileq           !m3         |tile flow
+      integer, intent (in) :: iday_start    !           |current start day in hydrograph
+      real, intent (in) :: surfq            !m3         |surface runoff
+      real, intent (in) :: latq             !m3         |lateral soil flow
+      real, intent (in) :: tileq            !m3         |tile flow
       real, intent (in), dimension(bsn_prm%day_lag_mx,time%step) :: uh              !unit hydrograph
-      real, intent (in out), dimension(bsn_prm%day_lag_mx,time%step) :: hyd_flo     !flow hydrograph
+      real, intent (in out), dimension(bsn_prm%day_lag_mx,time%step) :: hyd_flo     !surface runoff hydrograph
       integer :: istep                      !none       |counter  
       integer :: iday                       !           | 
       integer :: iday_prev                  !           |
@@ -44,7 +44,7 @@
         if (iday > 1) ssq = 0.
         do istep = 1, time%step
           sq = uh(iday,istep) * surfq
-          hyd_flo(iday_cur,istep) = hyd_flo(iday_cur,istep) + sq + ssq
+          hyd_flo(iday_cur,istep) = hyd_flo(iday_cur,istep) + sq
         end do
         
         !! set current and previous days

@@ -44,7 +44,7 @@
       pl_mass(j)%tot(ipl)%p = pl_mass(j)%tot(ipl)%p - pburn
       rsd1(j)%tot_com%m = rsd1(j)%tot_com%m * fr_burn
       rsd1(j)%tot(1)%n = rsd1(j)%tot(1)%n * fr_burn
-      soil1(jj)%hact(1)%n = soil1(jj)%hact(1)%n * fr_burn
+      soil1(j)%hact(1)%n = soil1(j)%hact(1)%n * fr_burn
       soil1(j)%hsta(1)%n = soil1(j)%hsta(1)%n* fr_burn
 
       !!insert new biomss by zhang	  

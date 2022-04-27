@@ -43,8 +43,8 @@
       type update_conditional
         integer :: max_hits = 0         !! maximum number of times the table will be executed
         integer :: num_hits = 0         !! current number of times the table will be executed
-        character(len=25) :: name       !! name of update schedule
-        character(len=25) :: cond       !! points to ruleset in conditional.ctl for scheduling the update
+        character(len=25) :: typ        !! type of table- "lu_change" checks all hru; "hru_fr_change" sets all hru fractions
+        character(len=25) :: dtbl       !! points to ruleset in conditional.ctl for scheduling the update
         integer :: cond_num             !! integer pointer to d_table in conditional.ctl
       end type update_conditional
       type (update_conditional), dimension (:), allocatable :: upd_cond
@@ -198,7 +198,7 @@
       
       type landscape_region_elements
         character(len=16) :: name
-        real :: ha                      !area of reegion element -hectares
+        real :: ha                      !area of region element -hectares
         integer :: obj = 1              !object number
         character (len=3) :: obtyp      !object type- hru, hru_lte, lsu, etc
         integer :: obtypno = 0          !2-number of hru_lte"s or 1st hru_lte command

@@ -3,28 +3,22 @@
       implicit none
      
       type land_use_management
-        character (len=16) :: name = " "
-        character (len=16) :: cal_group = " "
-        character (len=35) :: plant_cov = ""
-        character (len=35) :: mgt_ops = ""
-        character (len=16) :: cn_lu      !! none     | land use for curve number table (cntable.lum)
-        character (len=16) :: cons_prac  !! none     | conservation practice from table (cons_practice.lum)
-        character (len=16) :: urb_lu     !! none     | type of urban land use- ie. residential, industrial, etc (urban.urb)
-        character (len=16) :: urb_ro     !! none     | urban runoff model
-                                         !!          | "usgs_reg", simulate using USGS regression eqs
-                                         !!          | "buildup_washoff", simulate using build up/wash off alg       
-        character (len=16) :: ovn        !! none     | Manning"s "n" land use type for overland flow (ovn_table.lum)
-        !integer :: urb_lu = 0           !! none     | urban land type identification number
-        !integer :: iurban = 0           !! none     | urban simulation code 
-        !                                !!          | 0  no urban sections in HRU
-        !                                !!          | 1  urban sections in HRU, simulate using USGS regression eqs
-        !                                !!          | 2  urban sections in HRU, simulate using build up/wash off alg
-        !real :: ovn = 0.1               !! none     | Manning"s "n" value for overland flow
-        character (len=25) :: tiledrain
-        character (len=25) :: septic
-        character (len=25) :: fstrip
-        character (len=25) :: grassww
-        character (len=25) :: bmpuser
+        character (len=16) :: name          !! name of the land use and management (from hru-data.hru pointer) 
+        character (len=16) :: cal_group     !! calibration group (not currently used)
+        character (len=35) :: plant_cov     !! plant community initialization (pointer to plants.ini) 
+        character (len=35) :: mgt_ops       !! management operations (pointer to management.sch)
+        character (len=16) :: cn_lu         !! land use for curve number table (pointer to cntable.lum)
+        character (len=16) :: cons_prac     !! conservation practice from table (cons_practice.lum)
+        character (len=16) :: urb_lu        !! type of urban land use- ie. residential, industrial, etc (urban.urb)
+        character (len=16) :: urb_ro        !! urban runoff model
+                                            !! "usgs_reg", simulate using USGS regression eqs
+                                            !! "buildup_washoff", simulate using build up/wash off alg       
+        character (len=16) :: ovn           !! Manning"s "n" land use type for overland flow (ovn_table.lum)
+        character (len=25) :: tiledrain     !! tile drainage (pointer to tiledrain.str
+        character (len=25) :: septic        !! septic tanks (pointer to septic.str)
+        character (len=25) :: fstrip        !! filter strips (pointer to filterstrip.str)
+        character (len=25) :: grassww       !! grass waterways (pointer to grassedww.str)
+        character (len=25) :: bmpuser       !! user specified removal efficiency (pointer to bmpuser.str)
       end type land_use_management
       type (land_use_management), dimension (:), allocatable :: lum
       

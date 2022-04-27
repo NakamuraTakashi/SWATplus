@@ -64,7 +64,6 @@
                              !          |may be removed
       real :: wuse           !mm H2O    |water uptake by plants in each soil layer
       real :: satco          !          | 
-      real :: pl_aerfac      !          |
       real :: scparm         !          |  
       real :: uobw           !none      |water uptake normalization parameter
                              !          |This variable normalizes the water uptake so
@@ -80,8 +79,7 @@
       !! compute aeration stress
       if (soil(j)%sw > soil(j)%sumfc) then
         satco = (soil(j)%sw - soil(j)%sumfc) / (soil(j)%sumul - soil(j)%sumfc)
-        pl_aerfac = .1  !.05
-        scparm = 100. * (satco - pl_aerfac) / (1.0001 - pl_aerfac)
+        scparm = 100. * (satco - pldb(idp)%aeration) / (1.0001 - pldb(idp)%aeration)
         if (scparm > 0.) then
           pcom(j)%plstr(ipl)%strsa = 1. - (scparm / (scparm + Exp(2.9014 - .03867 * scparm)))
         else

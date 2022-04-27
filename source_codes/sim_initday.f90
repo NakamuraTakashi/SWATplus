@@ -19,10 +19,11 @@
 !!    ~ ~ ~ ~ ~ ~ END SPECIFICATIONS ~ ~ ~ ~ ~ ~
      
       use hru_module, only : cbodu,chl_a,clayld,cnday,doxq,etday,grayld,hhsedy,         &
-         hhsurfq,hru,lagyld,latno3,latq,nplnt,                             &
-         par,percn,pplnt,qdr,rcn,sagyld,sanyld,sedminpa,                           &
-         sedminps,sedorgn,sedorgp,sedyld,sepbtm,silyld,sol_sumno3,sol_sumsolp, surfq,       &
-         surqno3,surqsolp,tileno3,ubnrunoff,ubntss
+         hhsurfq,hru,lagyld,latno3,latq,nplnt,                                          &
+         par,percn,pplnt,qdr,rcn,sagyld,sanyld,sedminpa,                                &
+         sedminps,sedorgn,sedorgp,sedyld,sepbtm,silyld,sol_sumno3,sol_sumsolp, surfq,   &
+         surqno3,surqsolp,tileno3,ubnrunoff,ubntss,                                     &
+         gwtranq, satexq, gwtrann, gwtranp, satexn !rtb gwflow
       use soil_module
             
       use organic_mineral_mass_module
@@ -75,6 +76,13 @@
       surqno3 = 0.
       surqsolp = 0.
       tileno3 = 0.    !CB 8/24/09
+      
+      gwtranq = 0. !rtb gwflow
+      gwtrann = 0. !rtb gwflow
+      gwtranp = 0. !rtb gwflow
+      satexq = 0.
+
+      satexn = 0.
 
 !----------------------------------------------------        
 ! added by J.Jeong for urban modeling 4/29/2008

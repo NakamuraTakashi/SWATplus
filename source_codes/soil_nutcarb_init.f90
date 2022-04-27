@@ -112,6 +112,7 @@
         soil1(ihru)%tot(ly)%p = soil1(ihru)%tot(ly)%c / 100.    !assume 100:1 C:P ratio
                
         !set active humus fraction for original SWAT model
+        if (solt_db(isolt)%fr_hum_act < 1.e-9) solt_db(isolt)%fr_hum_act = .02
         frac_hum_active = solt_db(isolt)%fr_hum_act
         
         !initialize oringinal SWAT active and stable organic pools (from EPIC)
@@ -126,6 +127,9 @@
         soil1(ihru)%hsta(ly)%c = (1. - frac_hum_active) * soil1(ihru)%tot(ly)%c
         soil1(ihru)%hsta(ly)%n = soil1(ihru)%hsta(ly)%c / 10.   !solt_db(isolt)%hum_c_n        !assume 10:1 C:N ratio
         soil1(ihru)%hsta(ly)%p = soil1(ihru)%hsta(ly)%c / 80.   !solt_db(isolt)%hum_c_p        !assume 80:1 C:P ratio
+        
+        !set root and incorporated residue pool to zero
+        soil1(ihru)%rsd(ly) = orgz
  
         !initialize CENTURY organic pools
         !set soil humus fractions for CENTURY from DSSAT

@@ -105,8 +105,9 @@
       
       ts_hr = 24. / float (ts_int)
       
-        !! adjust peak rate for headcut advance -also adjusts CEAP gully from
-        !! edge-of-field to trib (assuming rectangular shape and constant tc)
+      !! adjust peak rate for headcut advance -also adjusts CEAP gully from
+      !! edge-of-field to trib (assuming rectangular shape and constant tc)
+      if (sd_ch(ich)%hc_erod > 1.e-6) then
         pr_ratio = (sd_ch(ich)%chl - sd_ch(ich)%hc_len / 1000.) / sd_ch(ich)%chl
         pr_ratio = Max(pr_ratio, 0.)
         
@@ -126,6 +127,7 @@
           !! assume channel dimensions are same as data file
           hc_sed = hc * sd_ch(ich)%chw * sd_ch(ich)%chd * 1.2
         end if
+      end if
         
         !! break hydrograph into maxint segments and compute deg at each flow increment
         do ihval = 1, ts_int
@@ -197,9 +199,6 @@
           sd_ch(ich)%chs = amax1 (sd_ch(ich)%chseq, sd_ch(ich)%chs)
       
       !! output channel morphology
-      chsd_d(ich)%flo = ht2%flo / 86400.        !adjust if overbank flooding is moved to landscape
-      chsd_d(ich)%flo_mm = ht2%flo / (10. * ob(icmd)%area_ha)   !flow out in mm
-      chsd_d(ich)%peakr = peakrate 
       chsd_d(ich)%sed_in = ob(icmd)%hin%sed
       chsd_d(ich)%sed_out = sedout
       chsd_d(ich)%sed_stor = ch_stor(ich)%sed

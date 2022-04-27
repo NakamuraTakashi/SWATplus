@@ -78,28 +78,34 @@
                   
         !! set current day to next day (that was previously calculated)
         wst(iwst)%weat%precip = wst(iwst)%weat%precip_next
+        wst(iwst)%weat%precip_next = 0.
+        wst(iwst)%weat%ts = wst(iwst)%weat%ts_next
         
         iwgn = wst(iwst)%wco%wgn
         ipg = wst(iwst)%wco%pgage
         if (wst(iwst)%wco_c%pgage == "sim") then
           !! simulated precip
           call cli_pgen(iwgn)
-          if (time%step > 0) call cli_pgenhr(iwgn)
+          if (time%step > 0) then
+            call cli_pgenhr(iwgn)
+            wst(iwst)%weat%precip_next = sum (wst(iwst)%weat%ts(:))
+          end if
         else
           !! measured precip
           if (pcp(ipg)%tstep > 0) then
           !! subdaily precip
             wst(iwst)%weat%precip_next = 0.
             do ist = 1, time%step
-              wst(iwst)%weat%ts(ist) = pcp(ipg)%tss(ist,time%day,time%yrs)
-              if (wst(iwst)%weat%ts(ist) <= -97.) then
+              wst(iwst)%weat%ts_next(ist) = pcp(ipg)%tss(ist,time%day,time%yrs)
+              if (wst(iwst)%weat%ts_next(ist) <= -97.) then
 				!! simulate missing data
 				call cli_pgen(iwgn)
 				call cli_pgenhr(iwgn)
 				exit
 			  end if
-			  wst(iwst)%weat%precip_next = wst(iwst)%weat%precip_next + wst(iwst)%weat%ts(ist)
+			  wst(iwst)%weat%precip_next = wst(iwst)%weat%precip_next + wst(iwst)%weat%ts_next(ist)
             end do
+            wst(iwst)%weat%precip_next = sum (pcp(ipg)%tss(:,time%day,time%yrs))
           else
 		  !! daily precip
             out_bounds = "n"

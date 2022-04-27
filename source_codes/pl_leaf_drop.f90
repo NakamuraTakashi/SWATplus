@@ -95,7 +95,7 @@
                 EXP(BLG1-BLG2*pcom(j)%plcur(ipl)%phuacc))
 
           sf = 0.05	
-          sol_min_n = (rsd1(j)%mn%no3 + rsd1(j)%mn%nh4)  	    
+          sol_min_n = (soil1(j)%mn(1)%no3 + soil1(j)%mn(1)%nh4)  	    
           resnew_ne = resnew_n + sf * sol_min_n
 
           RLN = (resnew * CLG/(resnew_n+1.E-5))
@@ -135,8 +135,8 @@
           rsd1(j)%meta%c = rsd1(j)%meta%c + 0.42 * LMF * resnew
 
           !update no3 and nh3 in soil
-          rsd1(j)%mn%no3 = rsd1(j)%mn%no3 * (1-sf)
-          rsd1(j)%mn%nh4 = rsd1(j)%mn%nh4 * (1-sf)
+          soil1(j)%mn(1)%no3 = soil1(j)%mn(1)%no3 * (1-sf)
+          soil1(j)%mn(1)%nh4 = soil1(j)%mn(1)%nh4 * (1-sf)
         end if
 
         rsd1(j)%tot(ipl)%m = rsd1(j)%tot(ipl)%m + resnew
