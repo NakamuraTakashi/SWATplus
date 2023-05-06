@@ -111,7 +111,8 @@
        type (organic_mass), dimension(:), allocatable :: stem       !kg/ha      |wood/stalk mass for individual plant in community
        type (organic_mass), dimension(:), allocatable :: root       !kg/ha      |root mass for individual plant in community (by soil layer)
        type (organic_mass), dimension(:), allocatable :: seed       !kg/ha      |seed (grain) mass for individual plant in community
-       type (organic_mass), dimension(:), allocatable :: yield_tot  !kg/ha      |running sum of yield at harvest
+       type (organic_mass), dimension(:), allocatable :: yield_tot  !kg/ha      |running total sum of yield at harvest -  ave annual print
+       type (organic_mass), dimension(:), allocatable :: yield_yr   !kg/ha      |running yearly sum of yield at harvest - yearly print
        type (organic_mass) :: tot_com                               !kg/ha      |total biomass for entire community
        type (organic_mass) :: ab_gr_com                             !kg/ha      |above ground mass for entire community
        type (organic_mass) :: leaf_com                              !kg/ha      |leaf mass for entire community

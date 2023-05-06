@@ -1,7 +1,7 @@
       subroutine proc_date_time
      
       implicit none
-      
+     
       integer :: date_time(8)           !              |
       character*10 b(3)                 !              |
   

@@ -77,7 +77,7 @@
                 read (107,*,iostat=eof) lscal(ireg)%lum(ilum)%meas
                 if (eof < 0) exit
                 !! when using wyr and bfr to calibrate
-                if (lscal(ireg)%lum(ilum)%meas%bfr > 0.) then
+                if (cal_codes%hyd_hru /= "a") then
                   !! convert baseflow ratio from frac of water yield to frac of precip
                   lscal(ireg)%lum(ilum)%meas%srr = lscal(ireg)%lum(ilum)%meas%wyr * (1. - lscal(ireg)%lum(ilum)%meas%bfr)
                   lscal(ireg)%lum(ilum)%meas%bfr = lscal(ireg)%lum(ilum)%meas%wyr * lscal(ireg)%lum(ilum)%meas%bfr

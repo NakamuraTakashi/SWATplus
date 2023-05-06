@@ -47,6 +47,7 @@
         real :: wp = 0.          !! mm H20/mm      soil water content of soil at -1.5 MPa (wilting point)
         real :: wpmm = 0.        !! mm H20         water content of soil at -1.5 MPa (wilting point)
       end type soil_physical_properties
+      type (soil_physical_properties),dimension (:), allocatable:: phys1
 
       type soil_profile
         character(len=16) :: snam = ""     !! NA            soil series name  

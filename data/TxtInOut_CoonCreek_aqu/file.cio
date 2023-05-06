@@ -1,4 +1,4 @@
-file.cio: Filenames (input/output) - Coon Creek
+file.cio
 SIMULATION        time.sim          print.prt         object.prt        object.cnt        null        
 BASIN             codes.bsn         parameters.bsn 
 CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           null     null     null     null           

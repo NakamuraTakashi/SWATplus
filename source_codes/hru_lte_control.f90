@@ -397,7 +397,7 @@
         hltls_d(isd)%latno3 = 0.    !! latno3(isd)
         hltls_d(isd)%surqsolp = 0.  !! surqsolp(isd)
         hltls_d(isd)%usle = 0.      !! usle
-        hltls_d(isd)%sedmin = 0.    !! sedminpa(isd) + sedminps(isd)
+        hltls_d(isd)%sedminp = 0.    !! sedminpa(isd) + sedminps(isd)
         hltls_d(isd)%tileno3 = 0.   !! tileno3(isd)
         
 !    output_plantweather - SWAT-DEG

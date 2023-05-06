@@ -103,6 +103,7 @@
         integer :: exco_salt = 0
         integer :: dr = 0
         integer :: dr_om = 0
+        integer :: trt_om = 0
         integer :: dr_pest = 0
         integer :: dr_path = 0
         integer :: dr_hmet = 0 
@@ -122,10 +123,12 @@
         integer :: sdc_dat = 0
         integer :: aqudb = 0
         integer :: aqu2d = 0
-        integer :: wro_db = 0
         integer :: wallo_db = 0
-        integer :: transplant
-        integer :: recall_max
+        integer :: mallo_db = 0
+        integer :: transplant = 0
+        integer :: pudl_db = 0
+        integer :: recall_max = 0
+        integer :: object_prt = 0
       end type data_files_max_elements
       type (data_files_max_elements), save :: db_mx
                                  

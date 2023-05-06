@@ -31,7 +31,7 @@
           const = float (ndays(time%mo + 1) - ndays(time%mo))
           aqu_m(iaq)%stor = aqu_m(iaq)%stor / const 
           aqu_m(iaq)%dep_wt = aqu_m(iaq)%dep_wt / const
-          aqu_m(iaq)%no3 = aqu_m(iaq)%no3 / const
+          aqu_m(iaq)%no3_st = aqu_m(iaq)%no3_st / const
           aqu_y(iaq) = aqu_y(iaq) + aqu_m(iaq)
           if (pco%aqu%m == "y") then
             write (2521,100)  time%day, time%mo, time%day_mo, time%yrc, iaq, ob(iob)%gis_id, ob(iob)%name, aqu_m(iaq)
@@ -46,7 +46,7 @@
         if (time%end_yr == 1) then
           aqu_y(iaq)%stor = aqu_y(iaq)%stor / 12.
           aqu_y(iaq)%dep_wt = aqu_y(iaq)%dep_wt / 12.
-          aqu_y(iaq)%no3 = aqu_y(iaq)%no3 / 12.
+          aqu_y(iaq)%no3_st = aqu_y(iaq)%no3_st / 12.
           aqu_a(iaq) = aqu_a(iaq) + aqu_y(iaq)
           if (pco%aqu%y == "y") then
             write (2522,102) time%day, time%mo, time%day_mo, time%yrc, iaq, ob(iob)%gis_id, ob(iob)%name, aqu_y(iaq)

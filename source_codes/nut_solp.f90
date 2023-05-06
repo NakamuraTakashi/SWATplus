@@ -22,6 +22,7 @@
       use hru_module, only : hru, surqsolp, surfq, i_sep, ihru, qtile, gwtranp 
       use soil_module
       use output_landscape_module
+      use hydrograph_module, only : ht1
       
       implicit none 
 
@@ -47,6 +48,9 @@
       hls_d(j)%surqsolp = 0.
       hls_d(j)%lchlabp = 0.
       hls_d(j)%tilelabp = 0.
+      
+      !Add solp into hru from surface runon to calculations HAK/KDW 7/14/22
+      soil1(j)%mp(1)%lab = soil1(j)%mp(1)%lab + ht1%solp !HAK/KDW
       
       !! compute soluble P lost in surface runoff
       xx = soil(j)%phys(1)%bd * soil(j)%phys(1)%d * bsn_prm%phoskd

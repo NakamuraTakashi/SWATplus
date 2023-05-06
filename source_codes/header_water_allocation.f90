@@ -8,7 +8,7 @@
 
 !!!  SWAT-DEG CHANNEL
       if (db_mx%wallo_db > 0) then
-        if (pco%wb_hru%d == "y") then
+        if (pco%water_allo%d == "y") then
           open (3110,file="water_allo_day.txt",recl = 1500)
           write (3110,*) bsn%name, prog
           write (3110,*) wallo_hdr
@@ -25,7 +25,7 @@
       endif
       
         if (db_mx%wallo_db > 0) then
-          if (pco%wb_hru%m == "y") then  
+          if (pco%water_allo%m == "y") then  
           open (3111,file="water_allo_mon.txt",recl = 1500)
           write (3111,*) bsn%name, prog
           write (3111,*) wallo_hdr
@@ -42,7 +42,7 @@
          end if 
         
       if (db_mx%wallo_db > 0) then
-        if (pco%wb_hru%y == "y") then
+        if (pco%water_allo%y == "y") then
           open (3112,file="water_allo_yr.txt",recl = 1500)
           write (3112,*) bsn%name, prog
           write (3112,*) wallo_hdr
@@ -59,7 +59,7 @@
       endif
       
         if (db_mx%wallo_db > 0) then
-          if (pco%wb_hru%a == "y") then
+          if (pco%water_allo%a == "y") then
           open (3113,file="water_allo_aa.txt",recl = 1500)
           write (3113,*) bsn%name, prog
           write (3113,*) wallo_hdr

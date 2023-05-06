@@ -25,6 +25,7 @@
       integer :: idb
       integer :: idb_irr
       integer :: ihru
+      integer :: isrc_wallo
       
       eof = 0
       imax = 0
@@ -86,10 +87,12 @@
             wallo(iwro)%dmd(i)%num = i
             if (eof < 0) exit
             backspace (107)
-            read (107,*,iostat=eof) k, wallo(iwro)%dmd(i)%ob_typ, wallo(iwro)%dmd(i)%ob_num,    &
-              wallo(iwro)%dmd(i)%withdr, wallo(iwro)%dmd(i)%amount, wallo(iwro)%dmd(i)%right,   &
-              num_objs
+            read (107,*,iostat=eof) k, wallo(iwro)%dmd(i)%ob_typ, wallo(iwro)%dmd(i)%ob_num,            &
+              wallo(iwro)%dmd(i)%withdr, wallo(iwro)%dmd(i)%amount, wallo(iwro)%dmd(i)%right,           &
+              wallo(iwro)%dmd(i)%treat_typ, wallo(iwro)%dmd(i)%treatment,  wallo(iwro)%dmd(i)%rcv_ob,   &
+              wallo(iwro)%dmd(i)%rcv_num, wallo(iwro)%dmd(i)%rcv_dtl, num_objs
             allocate (wallo(iwro)%dmd(i)%src(num_objs))
+            allocate (wallo(iwro)%dmd(i)%src_ob(num_objs))
             allocate (wallod_out(iwro)%dmd(i)%src(num_objs))
             allocate (wallom_out(iwro)%dmd(i)%src(num_objs))
             allocate (walloy_out(iwro)%dmd(i)%src(num_objs))
@@ -97,7 +100,7 @@
             
             !! for hru irrigtion, need to xwalk with irrigation demand decision table
             if (wallo(iwro)%dmd(i)%ob_typ == "hru") then
-              !! xwalk with recall database
+              !! xwalk with lum decision table
               do idb = 1, db_mx%dtbl_lum
                 if (wallo(iwro)%dmd(i)%withdr == dtbl_lum(idb)%name) then
                   ihru = wallo(iwro)%dmd(i)%ob_num
@@ -126,12 +129,42 @@
               end if
             end if
           
+            !! for municipal treatment - recall option for daily, monthly, or annual mass
+            if (wallo(iwro)%dmd(i)%treat_typ == "recall") then
+              !! xwalk with recall database
+              do idb = 1, db_mx%recall_max
+                if (wallo(iwro)%dmd(i)%treatment == recall(idb)%name) then
+                  wallo(iwro)%dmd(i)%trt_num = idb
+                  exit
+                end if
+              end do
+            end if
+          
+            !! for municipal treatment - treatment option for fraction of flow and ppm
+            if (wallo(iwro)%dmd(i)%treat_typ == "treat") then
+              !! xwalk with recall database
+              do idb = 1, db_mx%trt_om
+                if (wallo(iwro)%dmd(idmd)%treatment == trt_om_name(idb)) then
+                  wallo(iwro)%dmd(i)%trt_num = idb
+                  exit
+                end if
+              end do
+            end if
+            
             backspace (107)
             read (107,*,iostat=eof) k, wallo(iwro)%dmd(i)%ob_typ, wallo(iwro)%dmd(i)%ob_num,    &
               wallo(iwro)%dmd(i)%withdr, wallo(iwro)%dmd(i)%amount, wallo(iwro)%dmd(i)%right,   &
-              !wallo(iwro)%dmd(i)%dmd_src_obs, wallo(iwro)%dmd(i)%src(1)
+              wallo(iwro)%dmd(i)%treat_typ, wallo(iwro)%dmd(i)%treatment,  wallo(iwro)%dmd(i)%rcv_ob,   &
+              wallo(iwro)%dmd(i)%rcv_num, wallo(iwro)%dmd(i)%rcv_dtl,                           &
               wallo(iwro)%dmd(i)%dmd_src_obs, (wallo(iwro)%dmd(i)%src(isrc), isrc = 1, num_objs)
 
+            !! set object name and number for each source for each demand object
+            do isrc = 1, num_objs
+              isrc_wallo = wallo(iwro)%dmd(i)%src(isrc)%src
+              wallo(iwro)%dmd(i)%src_ob(isrc)%ob_typ = wallo(iwro)%src(isrc_wallo)%ob_typ
+              wallo(iwro)%dmd(i)%src_ob(isrc)%ob_num = wallo(iwro)%src(isrc_wallo)%ob_num
+            end do
+            
             !! zero output variables for summing
             do isrc = 1, num_objs
               wallod_out(iwro)%dmd(i)%src(isrc) = walloz

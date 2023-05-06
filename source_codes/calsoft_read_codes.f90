@@ -44,7 +44,7 @@
            exit
          enddo
 
-         if (cal_codes%hyd_hru == "y" .or. cal_codes%hyd_hrul == "y".or.    &
+         if (cal_codes%hyd_hru /= "n" .or. cal_codes%hyd_hrul == "y".or.    &
              cal_codes%plt == "y" .or. cal_codes%sed == "y" .or.            &
              cal_codes%nut == "y" .or. cal_codes%chsed == "y" .or.          &
              cal_codes%chnut == "y" .or. cal_codes%res == "y") cal_soft = "y"

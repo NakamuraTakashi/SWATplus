@@ -27,7 +27,7 @@
         
       do iterall = 1, iter_all
 
-        ! calibrate harg_pet for potentail ET
+        ! calibrate pet_co for potential ET
         call calsoft_hyd_bfr_et
 
         ! calibrate cn3_swf for surface runoff

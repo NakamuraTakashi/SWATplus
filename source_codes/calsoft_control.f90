@@ -36,11 +36,11 @@
       !pco%sd_chan%a = "y"
 
       !calibrate hydrology for hru
-      if (cal_codes%hyd_hru == "y") then
-        if (bsn_cc%cn == 0) then
-          call calsoft_hyd_bfr    !CEAP
+      if (cal_codes%hyd_hru /= "n") then
+        if (cal_codes%hyd_hru == "a") then
+          call calsoft_hyd        !calibrate all components
         else
-          call calsoft_hyd        !original
+          call calsoft_hyd_bfr    !calibrate total and baseflow
         end if
  
         !print calibrated hydrology for hru_lte
@@ -125,10 +125,10 @@
       end if
            
       !! write output to hydrology-cal.hyd   
-      if (cal_codes%hyd_hru == "y") then
+      if (cal_codes%hyd_hru /= "n") then
         write (5001,*) " hydrology-cal.hyd developed from soft data calibration"
         write (5001,*) " NAME LAT_TTIME LAT_SED CAN_MAX  ESCO  EPCO ORGN_ENRICH ORGP_ENRICH CN3_SWF &
-                                               BIO_MIX PERCO LAT_ORGN LAT_ORGP HARG_PET LATQ_CO"
+                                        BIO_MIX PERCO LAT_ORGN LAT_ORGP PET_CO LATQ_CO NOT_USED"
         do ihru = 1, sp_ob%hru
           write (5001,*) hru(ihru)%hyd
         end do
@@ -141,7 +141,7 @@
         !! write perco to hydrology-cal.hyd
         write (5001,*) " hydrology-cal.hyd developed from soft data calibration"
         write (5001,*) " NAME LAT_TTIME LAT_SED CAN_MAX  ESCO  EPCO ORGN_ENRICH ORGP_ENRICH CN3_SWF &
-                                               BIO_MIX PERCO LAT_ORGN LAT_ORGP HARG_PET LATQ_CO"
+                                        BIO_MIX PERCO LAT_ORGN LAT_ORGP PET_CO LATQ_CO NOT_USED"
         do ihru = 1, sp_ob%hru
           write (5001,*) hru(ihru)%hyd
         end do

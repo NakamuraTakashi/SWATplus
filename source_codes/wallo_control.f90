@@ -18,10 +18,14 @@
       real :: dmd_m3                        !m3     |demand
       real :: irr_mm                        !mm     |irrigation applied
 
+      !! zero demand, withdrawal, and unmet for entire allocation object
+      wallo(iwallo)%tot = walloz
+      
+      !!loop through each demand object
       do idmd = 1, wallo(iwallo)%dmd_obs
                
         !! zero demand, withdrawal, and unmet for each source
-        do isrc = 1, wallo(iwallo)%src_obs
+        do isrc = 1, wallo(iwallo)%dmd(idmd)%dmd_src_obs
           wallod_out(iwallo)%dmd(idmd)%src(isrc) = walloz
         end do
   
@@ -74,7 +78,27 @@
             end if
           end select
         
-        end if      !if there is demand loop 
+        end if      !if there is demand 
+        
+        !! treatment of withdrawn water
+        if (wallo(iwallo)%dmd(idmd)%treat_typ == "null") then
+          !! no treatment - treated = withdrawal
+          wallo(iwallo)%dmd(idmd)%trt = wallo(iwallo)%dmd(idmd)%hd
+        else
+          !! compute treatment by inputting the mass or concentrations
+          call wallo_treatment (iwallo, idmd, isrc, dmd_m3)
+        end if
+        
+        !! transfer (diversion) of withdrawn and possibly treated water
+        if (wallo(iwallo)%dmd(idmd)%rcv_ob  /= "null") then
+          call wallo_transfer (iwallo, idmd, isrc, dmd_m3)
+        end if
+        
+        !! sum demand, withdrawal, and unmet for entire allocation object
+        wallo(iwallo)%tot%demand = wallo(iwallo)%tot%demand + wallod_out(iwallo)%dmd(idmd)%dmd_tot
+        wallo(iwallo)%tot%withdr = wallo(iwallo)%tot%withdr + wallo(iwallo)%dmd(idmd)%withdr_tot
+        wallo(iwallo)%tot%unmet = wallo(iwallo)%tot%unmet + wallo(iwallo)%dmd(idmd)%unmet_m3
+        
       end do        !demand object loop
         
       return

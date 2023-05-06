@@ -21,6 +21,7 @@
       call mgt_read_sweepops
       call mgt_read_fireops
       call mgt_read_mgtops
+      call mgt_read_puddle
       
       !! read structural operations files
       call sdr_read

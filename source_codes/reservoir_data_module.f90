@@ -8,7 +8,7 @@
         character (len=25) :: hyd                   !points to hydrology.res for hydrology inputs
         character (len=25) :: release               !0=simulated; 1=measured outflow
         character (len=25) :: sed                   !sediment inputs-points to sediment.res
-        character (len=25) :: nut                   !nutrient inputs-points to nutrient.res    
+        character (len=25) :: nut                   !nutrient inputs-points to nutrient.res  
       end type reservoir_data_char_input
       type (reservoir_data_char_input), dimension(:), allocatable :: res_dat_c
       type (reservoir_data_char_input), dimension(:), allocatable :: wet_dat_c
@@ -19,8 +19,7 @@
         integer :: hyd = 0                    !points to hydrology.res for hydrology inputs
         integer :: release = 0                !0=simulated; 1=measured outflow
         integer :: sed = 0                    !sediment inputs-points to sediment.res
-        integer :: nut = 0                    !nutrient inputs-points to nutrient.res
-        integer :: pst = 0                    !pesticide inputs-points to pesticide.res
+        integer :: nut = 0                    !nutrient inputs-points to nutrient.res 
       end type reservoir_data
       type (reservoir_data), dimension(:), allocatable :: res_dat
       type (reservoir_data), dimension(:), allocatable :: wet_dat
@@ -107,14 +106,12 @@
       end type reservoir_nut_data
       type (reservoir_nut_data), dimension(:), allocatable :: res_nut
           
-      type reservoir_weir_outflow
+      type reservoir_weir_outflow   !updated by Jaehak 2022
         character(len=25) :: name
-        real :: num_steps = 24        !none          |number of time steps in day for weir routing
-        real :: c = 1.                !none          |weir discharge coefficient 
-        real :: k = 150000.           !m^0.5/d       |energy coefficient (broad_crested=147,000" sharp crested=153,000)
-        real :: w = 2.                !m             |width
-        real :: bcoef = 1.75          !none          |velocity exponent coefficient for bedding material
-        real :: ccoef = 1.            !none          |depth exponent coefficient for bedding material
+        real :: c = 1.84              !none          |weir discharge linear coefficient 
+        real :: k = 2.6               !none          |weir discharge exponential coefficient
+        real :: w = 2.5               !m             |width
+        real :: h = 0.0               !m             |height of weir above bottoom of impoundment
       end type reservoir_weir_outflow
       type (reservoir_weir_outflow),dimension(:),allocatable :: res_weir    
     

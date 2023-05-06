@@ -5,8 +5,8 @@ AA_NUMINT
 0
 CSV                 DB                  NETCDF
 n                   n                   n
-SOIL                MGT                 HYDCON              FDC	
-n                   n                   n                   n	
+CROP_YLD            MGT                 HYDCON              FDC	
+a                   n                   n                   n	
 OBJECTS                           DAILY             MONTHLY              YEARLY               AVANN
 basin_wb                              n                   n                   n                   y
 basin_nb                              n                   n                   n                   n
@@ -23,9 +23,9 @@ region_ls                             n                   n                   n 
 region_pw                             n                   n                   n                   n
 region_aqu                            n                   n                   n                   n
 region_res                            n                   n                   n                   n 
-region_cha                            n                   n                   n                   n
 region_sd_cha                         n                   n                   n                   n
 region_psc                            n                   n                   n                   n
+water_allo                            n                   n                   n                   n
 lsunit_wb                             n                   n                   n                   n
 lsunit_nb                             n                   n                   n                   n
 lsunit_ls                             n                   n                   n                   n

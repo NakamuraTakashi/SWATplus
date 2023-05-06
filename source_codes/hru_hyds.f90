@@ -38,7 +38,18 @@
       !! assign reach loadings for subbasin
       !! zero out hydrograph storage locations
       iob = icmd 
+      ob(icmd)%hd(1) = hz
+      ob(icmd)%hd(2) = hz
       ob(icmd)%hd(3) = hz
+      ob(icmd)%hd(4) = hz
+      ob(icmd)%hd(5) = hz
+      if (cs_db%num_tot > 0) then
+        obcs(icmd)%hd(1) = hin_csz
+        obcs(icmd)%hd(2) = hin_csz
+        obcs(icmd)%hd(3) = hin_csz
+        obcs(icmd)%hd(4) = hin_csz
+        obcs(icmd)%hd(5) = hin_csz
+      end if
 
       !! surface runoff hydrograph (3)
       ob(icmd)%hdsep%flo_surq = qday * cnv_m3            !!rtb gwflow - hydrograph separation (surface runoff)
@@ -107,7 +118,6 @@
       end do
       
       !sum to obtain the total outflow hydrograph (1)
-      ob(icmd)%hd(1) = hz
       do ihyd = 3, 5
         ob(icmd)%hd(1) = ob(icmd)%hd(1) + ob(icmd)%hd(ihyd)
       end do
@@ -129,7 +139,7 @@
         if (day_next > ob(icmd)%day_max) day_next = 1
           
         if (bsn_cc%gampt == 1) then
-          !! hhsurf1 from sq_greenampt - mm
+          !! hhsurfq from sq_greenampt - mm
           ob(icmd)%hyd_flo(day_cur,:) = ob(icmd)%hyd_flo(day_cur,:) + hhsurfq(j,:) * cnv_m3
           
           !! translate the hydrogrpah by time of concentration - no attenuation
@@ -152,6 +162,7 @@
             end do
           end if  
         else
+          !! use unit hydrograph and daily runoff
           call flow_hyd_ru_hru (ob(icmd)%day_cur, ob(icmd)%hd(3)%flo, ob(icmd)%hd(4)%flo,     &
                                         ob(icmd)%hd(5)%flo, ob(icmd)%uh, ob(icmd)%hyd_flo)
         end if

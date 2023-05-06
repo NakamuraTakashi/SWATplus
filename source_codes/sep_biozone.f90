@@ -116,8 +116,9 @@
 	qsrf = 0
 	
 	!temperature correction factor for bacteria growth/dieoff (Eppley, 1972)
-    ibac = 1        !there should be a loop for all pathogens in this hru
-	ctmp = path_db(ibac)%t_adj ** (soil(j)%phys(bz_lyr)%tmp- 20.) 
+    !ibac = 1        !there should be a loop for all pathogens in this hru
+	!ctmp = path_db(ibac)%t_adj ** (soil(j)%phys(bz_lyr)%tmp- 20.) 
+    ctmp = 1.
 
 	! initial water volume
 	qi = (soil(j)%phys(bz_lyr)%st + soil(j)%ly(bz_lyr-1)%prk + qstemm(j)) *   &

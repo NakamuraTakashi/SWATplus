@@ -3,10 +3,10 @@ print Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:55
           0        0         0      0       0        1
  aa_int_cnt
           0
- CSVOUT DBOUT CDFOUT
-      n     n      n
- SOILOUT MGTOUT HYDCON FDCOUT
-       n      n      n      n
+  CSVOUT  DBOUT CDFOUT
+       n      n      n
+ CROPYLD MGTOUT HYDCON FDCOUT
+       a      n      n      n
        OBJECTS     DAILY   MONTHLY    YEARLY     AVANN
       basin_wb         n         n         y         y
       basin_nb         n         n         y         y
@@ -23,9 +23,9 @@ print Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:55
      region_pw         n         n         n         n
     region_aqu         n         n         n         n
     region_res         n         n         n         n
-    region_cha         n         n         n         n
  region_sd_cha         n         n         y         y
     region_psc         n         n         n         n
+    water_allo         n         n         n         n
      lsunit_wb         n         n         y         n
      lsunit_nb         n         n         y         n
      lsunit_ls         n         n         y         n

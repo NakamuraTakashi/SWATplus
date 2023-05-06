@@ -92,11 +92,26 @@
           end if
         else
           !! measured precip
+          !! check to see if out of bounds (simulation starts before or ends after precip data)
+          out_bounds = "n"
+          cur_day = time%day + istart
+          yrs_to_start = time%yrs - pcp(ipg)%yrs_start
+          if (cur_day > time%day_end_yr) then
+            cur_day = 1
+            yrs_to_start = yrs_to_start + 1
+          end if
+          call cli_bounds_check (cur_day, pcp(ipg)%start_day, pcp(ipg)%start_yr,       &
+                                pcp(ipg)%end_day, pcp(ipg)%end_yr, out_bounds)
+          if (yrs_to_start > pcp(ipg)%end_yr - pcp(ipg)%start_yr + 1) out_bounds = "y"
+            
           if (pcp(ipg)%tstep > 0) then
-          !! subdaily precip
+            !! subdaily precip
+            if (out_bounds == "y") then 
+              wst(iwst)%weat%ts_next = -98.
+            end if
             wst(iwst)%weat%precip_next = 0.
             do ist = 1, time%step
-              wst(iwst)%weat%ts_next(ist) = pcp(ipg)%tss(ist,time%day,time%yrs)
+              wst(iwst)%weat%ts_next(ist) = pcp(ipg)%tss(ist,cur_day,time%yrs)
               if (wst(iwst)%weat%ts_next(ist) <= -97.) then
 				!! simulate missing data
 				call cli_pgen(iwgn)
@@ -105,19 +120,9 @@
 			  end if
 			  wst(iwst)%weat%precip_next = wst(iwst)%weat%precip_next + wst(iwst)%weat%ts_next(ist)
             end do
-            wst(iwst)%weat%precip_next = sum (pcp(ipg)%tss(:,time%day,time%yrs))
+            wst(iwst)%weat%precip_next = sum (pcp(ipg)%tss(:,cur_day,time%yrs))
           else
 		  !! daily precip
-            out_bounds = "n"
-            cur_day = time%day + istart
-            yrs_to_start = time%yrs - pcp(ipg)%yrs_start
-            if (cur_day > time%day_end_yr) then
-              cur_day = 1
-              yrs_to_start = yrs_to_start + 1
-            end if
-            call cli_bounds_check (cur_day, pcp(ipg)%start_day, pcp(ipg)%start_yr,       &
-                                pcp(ipg)%end_day, pcp(ipg)%end_yr, out_bounds)
-            if (yrs_to_start > pcp(ipg)%end_yr - pcp(ipg)%start_yr + 1) out_bounds = "y"
             if (out_bounds == "y") then 
               wst(iwst)%weat%precip_next = -98.
             else
@@ -132,6 +137,10 @@
           end if
         end if
 
+        !! sum to get ave annual precip for SWIFT input
+        wst(iwst)%precip_aa = wst(iwst)%precip_aa + wst(iwst)%weat%precip
+        wst(iwst)%pet_aa = wst(iwst)%pet_aa + wst(iwst)%weat%pet
+        
       end do
       
       return

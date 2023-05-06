@@ -53,7 +53,7 @@
             allocate (dtbl_res(i)%cond(dtbl_res(i)%conds))
             allocate (dtbl_res(i)%alt(dtbl_res(i)%conds,dtbl_res(i)%alts))
             allocate (dtbl_res(i)%act(dtbl_res(i)%acts))
-            allocate (dtbl_res(i)%act_hit(0:dtbl_res(i)%alts))
+            allocate (dtbl_res(i)%act_hit(dtbl_res(i)%alts))
             allocate (dtbl_res(i)%act_typ(dtbl_res(i)%acts))
             allocate (dtbl_res(i)%act_app(dtbl_res(i)%acts))
             allocate (dtbl_res(i)%act_outcomes(dtbl_res(i)%acts,dtbl_res(i)%alts))

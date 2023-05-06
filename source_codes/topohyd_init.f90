@@ -40,6 +40,7 @@
         if (hru(ihru)%topo%lat_len < 1.e-6) hru(ihru)%topo%lat_len = 50.
         hru(ihru)%hyd%canmx = hyd_db(ihyd_db)%canmx
         hru(ihru)%hyd%esco = hyd_db(ihyd_db)%esco
+        !hru(ihru)%hyd%esco = 0.05
         hru(ihru)%hyd%epco = hyd_db(ihyd_db)%epco
         hru(ihru)%hyd%erorgn = hyd_db(ihyd_db)%erorgn
         hru(ihru)%hyd%erorgp = hyd_db(ihyd_db)%erorgp
@@ -72,8 +73,15 @@
         hru(ihru)%hyd%lat_orgn = hyd_db(ihyd_db)%lat_orgn
         hru(ihru)%hyd%lat_orgp = hyd_db(ihyd_db)%lat_orgp
         hru(ihru)%hyd%latq_co = hyd_db(ihyd_db)%latq_co
-        hru(ihru)%hyd%harg_pet = hyd_db(ihyd_db)%harg_pet
-        if (hru(ihru)%hyd%harg_pet < 1.e-6) hru(ihru)%hyd%harg_pet = .0023
+        hru(ihru)%hyd%pet_co = hyd_db(ihyd_db)%pet_co
+        !! changing hrg_pet to pet_co - works for old harg_pet input and new pet_co 
+        if (hru(ihru)%hyd%pet_co < 1.e-6) then
+          hru(ihru)%hyd%pet_co = 1.
+        else
+          if (hru(ihru)%hyd%pet_co < 0.01) then
+            hru(ihru)%hyd%pet_co = hru(ihru)%hyd%pet_co / .0023
+          end if
+        end if
         
         ! set field data
         hru(ihru)%field%length = field_db(ifield_db)%length

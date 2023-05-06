@@ -13,7 +13,7 @@
 
       
       type swatdeg_hydsed_data
-        character(len=16) :: name
+        character(len=25) :: name
         character(len=16) :: order
         real :: chw = 0.        !m          |channel width
         real :: chd = 0.        !m          |channel depth
@@ -23,7 +23,7 @@
         real :: chk = 0.        !mm/h       |channel bottom conductivity
         real :: cherod = 0.     !           |channel erodibility
         real :: cov = 0.        !0-1        |channel cover factor
-        real :: wd_rto = 0.     !0.5-100    |width depth ratio
+        real :: sinu            !none       |sinuousity - ratio of channel length and straight line length
         real :: chseq = 0.      !m/m        |equilibrium channel slope
         real :: d50 = 0.        !mm         |channel median sediment size
         real :: ch_clay = 0.    !%          |clay percent of bank and bed
@@ -105,7 +105,7 @@
         real :: chn             !           |channel Manning's n
         real :: chk             !mm/h       |channel bottom conductivity
         real :: cov             !0-1        |channel cover factor
-        real :: wd_rto          !0.5-100    |width depth ratio
+        real :: sinu            !none       |sinuousity - ratio of channel length and straight line length
         real :: chseq           !m/m        |equilibrium channel slope
         real :: d50
         real :: ch_clay
@@ -307,9 +307,9 @@
        cho3%deg_btm = cho1%deg_btm + cho2%deg_btm
        cho3%deg_bank = cho1%deg_bank + cho2%deg_bank
        cho3%hc_sed = cho1%hc_sed + cho2%hc_sed
-       cho3%width = cho1%width + cho2%width
-       cho3%depth = cho1%depth + cho2%depth
-       cho3%slope = cho1%slope + cho2%slope
+       cho3%width = cho2%width
+       cho3%depth = cho2%depth
+       cho3%slope = cho2%slope
        cho3%deg_btm_m = cho1%deg_btm_m + cho2%deg_btm_m
        cho3%deg_bank_m = cho1%deg_bank_m + cho2%deg_bank_m
        cho3%hc_m = cho1%hc_m + cho2%hc_m
@@ -318,8 +318,36 @@
        cho3%flo_mm = cho1%flo_mm + cho2%flo_mm
        cho3%sed_stor = cho1%sed_stor + cho2%sed_stor
       end function
-      
+       
       function chsd_div (ch1,const) result (ch2)
+        type (sd_ch_output), intent (in) :: ch1
+        real, intent (in) :: const
+        type (sd_ch_output) :: ch2
+        ch2%flo_in = ch1%flo_in / const
+        ch2%aqu_in = ch1%aqu_in / const
+        ch2%flo = ch1%flo / const
+        ch2%peakr = ch1%peakr / const
+        ch2%sed_in = ch1%sed_in
+        ch2%sed_out = ch1%sed_out
+        ch2%washld = ch1%washld
+        ch2%bedld = ch1%bedld
+        ch2%dep = ch1%dep
+        ch2%deg_btm = ch1%deg_btm
+        ch2%deg_bank = ch1%deg_bank
+        ch2%hc_sed = ch1%hc_sed
+        ch2%width = ch1%width
+        ch2%depth = ch1%depth
+        ch2%slope = ch1%slope
+        ch2%deg_btm_m = ch1%deg_btm_m
+        ch2%deg_bank_m = ch1%deg_bank_m
+        ch2%hc_m = ch1%hc_m
+        ch2%flo_in_mm = ch1%flo_in_mm
+        ch2%aqu_in_mm = ch1%aqu_in_mm
+        ch2%flo_mm = ch1%flo_mm
+        ch2%sed_stor = ch1%sed_stor / const
+      end function chsd_div
+      
+      function chsd_ave (ch1,const) result (ch2)
         type (sd_ch_output), intent (in) :: ch1
         real, intent (in) :: const
         type (sd_ch_output) :: ch2
@@ -338,43 +366,15 @@
         ch2%width = ch1%width
         ch2%depth = ch1%depth
         ch2%slope = ch1%slope
-        ch2%deg_btm_m = ch1%deg_btm_m
-        ch2%deg_bank_m = ch1%deg_bank_m
-        ch2%hc_m = ch1%hc_m
-        ch2%flo_in_mm = ch1%flo_in_mm / const
-        ch2%aqu_in_mm = ch1%aqu_in_mm / const
-        ch2%flo_mm = ch1%flo_mm / const
-        ch2%sed_stor = ch1%sed_stor / const
-      end function chsd_div
-            
-      function chsd_ave (ch1,const) result (ch2)
-        type (sd_ch_output), intent (in) :: ch1
-        real, intent (in) :: const
-        type (sd_ch_output) :: ch2
-        ch2%flo_in = ch1%flo_in / const
-        ch2%aqu_in = ch1%aqu_in / const
-        ch2%flo = ch1%flo / const
-        ch2%peakr = ch1%peakr / const
-        ch2%sed_in = ch1%sed_in
-        ch2%sed_out = ch1%sed_out
-        ch2%washld = ch1%washld
-        ch2%bedld = ch1%bedld
-        ch2%dep = ch1%dep
-        ch2%deg_btm = ch1%deg_btm
-        ch2%deg_bank = ch1%deg_bank
-        ch2%hc_sed = ch1%hc_sed
-        ch2%width = ch1%width / const
-        ch2%depth = ch1%depth / const
-        ch2%slope = ch1%slope / const
         ch2%deg_btm_m = ch1%deg_btm_m / const
         ch2%deg_bank_m = ch1%deg_bank_m / const
         ch2%hc_m = ch1%hc_m / const
-        ch2%flo_in_mm = ch1%flo_in_mm
-        ch2%aqu_in_mm = ch1%aqu_in_mm
-        ch2%flo_mm = ch1%flo_mm
+        ch2%flo_in_mm = ch1%flo_in_mm / const
+        ch2%aqu_in_mm = ch1%aqu_in_mm / const
+        ch2%flo_mm = ch1%flo_mm / const
         ch2%sed_stor = ch1%sed_stor
       end function chsd_ave
-      
+           
       function chsd_mult (const, chn1) result (chn2)
         type (sd_ch_output), intent (in) :: chn1
         real, intent (in) :: const

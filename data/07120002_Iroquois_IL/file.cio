@@ -1,10 +1,10 @@
-file_cio Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:43 PM
+file.cio
            SIMULATION             time.sim            print.prt           object.prt           object.cnt      constituents.cs
                 BASIN            codes.bsn       parameters.bsn
               CLIMATE      weather-sta.cli      weather-wgn.cli         wind-dir.cli              pcp.cli              tmp.cli              slr.cli              hmd.cli              wnd.cli             atmo.cli          cli_chg.cli
               CONNECT              hru.con          hru-lte.con        rout_unit.con          modflow.con          aquifer.con        aquifer2d.con          channel.con        reservoir.con         null    null   null   outlet.con          chandeg.con
               CHANNEL          initial.cha          channel.cha        hydrology.cha         sediment.cha        nutrients.cha      channel-lte.cha      hyd-sed-lte.cha      temperature.cha
-            RESERVOIR          initial.res        reservoir.res        hydrology.res         sediment.res        nutrients.res             weir.res          wetland.wet        hydrology.wet
+            RESERVOIR          initial.res        reservoir.res        hydrology.res         sediment.res        nutrients.res                 null          wetland.wet        hydrology.wet
             ROUT_UNIT        rout_unit.def        rout_unit.ele        rout_unit.rtu         rout_unit.dr
                   HRU         hru-data.hru          hru-lte.hru
                  EXCO                 null      null      null      null      null      null
@@ -12,14 +12,14 @@ file_cio Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23
                    DR                 null      null      null      null      null      null
               AQUIFER          initial.aqu          aquifer.aqu
                  HERD           animal.hrd             herd.hrd            ranch.hrd
-         WATER_RIGHTS           define.wro          element.wro     water_rights.wro
+         WATER_RIGHTS                 null                 null                 null
                  LINK                 null          aqu_cha.lin
             HYDROLOGY        hydrology.hyd       topography.hyd            field.fld
            STRUCTURAL        tiledrain.str           septic.str      filterstrip.str        grassedww.str          bmpuser.str
           HRU_PARM_DB           plants.plt       fertilizer.frt          tillage.til        pesticide.pst        pathogens.pth           metals.mtl             salt.slt            urban.urb           septic.sep             snow.sno
                   OPS             harv.ops            graze.ops              irr.ops         chem_app.ops             fire.ops            sweep.ops
                   LUM          landuse.lum       management.sch          cntable.lum        cons_prac.lum        ovn_table.lum
-                  CHG        null    null    null    null    null    null    null    null    null
+                  CHG        lum_std.dtl    null    null    null    null    null    null    null    null
                  INIT            plant.ini       soil_plant.ini         om_water.ini   null   null   null   null   null   null   null   null
                 SOILS            soils.sol        nutrients.sol        soils-lte.sol
        DECISION_TABLE                 null          res_rel.dtl        null     null 

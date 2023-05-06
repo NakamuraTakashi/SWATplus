@@ -11,7 +11,8 @@
          surqsolp, sedminpa, sedminps, fertn, fertp, fixn, grazn, grazp, ipl, qp_cms, qtile,            &
          snofall, snomlt, usle, canev, ep_day, es_day, etday, inflpcp, isep, iwgen, ls_overq,           &
          nd_30, pet_day, precip_eff, qday, latqrunon, gwtranq, satexq, surf_bs, bss, bss_ex, brt,       &
-         gwtrann, gwtranp, satexn, satexq_chan !rtb gwflow
+         gwtrann, gwtranp, satexn, satexq_chan,                                                         & !rtb gwflow
+         sanyld, silyld, clayld, sagyld, lagyld                                                          !HAK 7/11/22                                                                                  !HAK 7/27/22
       use soil_module 
       use plant_module
       use basin_module
@@ -68,7 +69,7 @@
       real :: strsp_av
       real :: strstmp_av
       real :: wet_outflow           !mm             |outflow from wetland
-      integer dum
+      integer :: ifrt
       real :: sw_volume_begin
       real :: soil_prof_labp
       
@@ -103,10 +104,11 @@
       end if
       precip_eff = w%precip
       
-      hru(ihru)%water_seep = 0.
+      hru(j)%water_seep = 0.
       irrig(j)%demand = 0.
       hnb_d(j)%nuptake = 0.
       hnb_d(j)%puptake = 0.
+      hwb_d(j)%wet_out = 0.
 
       if (bsn_cc%cswat == 2) then
         if (tillage_switch(ihru) .eq. 1) then
@@ -138,10 +140,12 @@
         ht2 = hz
 
         !! check irrigation demand decision table for water allocation
-        if (hru(ihru)%irr_dmd_dtbl > 0) then
-          id = hru(ihru)%irr_dmd_dtbl
+        if (hru(j)%irr_dmd_dtbl > 0) then
+          id = hru(j)%irr_dmd_dtbl
           jj = j
           d_tbl => dtbl_lum(id)
+          !! iauto points to pcom(j)%dtbl(iauto) for days between operation
+          iauto = hru(j)%irr_dmd_iauto
           call conditions (jj, iauto)
           call actions (jj, iob, iauto)
         end if
@@ -155,6 +159,17 @@
             call conditions (jj, iauto)
             call actions (jj, iob, iauto)
             
+            !! check day of future fertilizer application
+            if (pcom(ihru)%fert_fut_num > 0) then
+              do ifrt = 1, pcom(ihru)%fert_fut_num
+                if (pcom(ihru)%fert_fut(ifrt)%day_fert == time%day) then
+                  call pl_fert (ihru, pcom(ihru)%fert_fut(ifrt)%fertnum,                       &
+                      pcom(ihru)%fert_fut(ifrt)%fert_kg, pcom(ihru)%fert_fut(ifrt)%appnum)
+                  pcom(ihru)%fert_fut(ifrt)%day_fert = 0
+                end if
+              end do
+            end if
+            
             !! if end of year, reset the one time operation per year
             if (time%end_yr == 1) then
               do iac = 1, d_tbl%acts
@@ -166,8 +181,8 @@
             pcom(j)%rot_yr = pcom(j)%rot_yr + 1
           end if
           !! increment days since last plant and harvest
-          pcom(j)%days_plant = pcom(j)%days_plant + 1
-          pcom(j)%days_harv = pcom(j)%days_harv + 1
+          if (pcom(j)%days_plant > 0) pcom(j)%days_plant = pcom(j)%days_plant + 1
+          if (pcom(j)%days_harv > 0) pcom(j)%days_harv = pcom(j)%days_harv + 1
           do iauto = 1, sched(isched)%num_autos
             id = sched(isched)%num_db(iauto)
             do iac = 1, dtbl_lum(id)%acts
@@ -240,6 +255,9 @@
         call et_pot
         call et_act
 
+        !! perform management operations
+        if (yr_skip(j) == 0) call mgt_operatn
+        
         !! compute surface runoff processes
         if (ires == 0) then
           call surface
@@ -253,7 +271,7 @@
         !! ht2%sed==sediment routed across hru from surface runon
         sedyld(j) = sedyld(j) + ht2%sed
       
-        !! wetland processes
+        !! wetland/paddy processes
         if (ires > 0) then
           call wetland_control
         else
@@ -264,16 +282,13 @@
         !! compute effective rainfall (amount that percs into soil)
         if (ires > 0) then
           !! for wetland use seepage into soil from ponded water
-          inflpcp = hru(j)%water_seep /(10.* hru(j)%area_ha)
+          inflpcp = hru(j)%water_seep
         else
           !! no wetland (no ponded water)
           inflpcp = precip_eff - surfq(j)
         end if
         inflpcp = Max(0., inflpcp)
          
-        !! perform management operations
-        if (yr_skip(j) == 0) call mgt_operatn   
-        
         !! add irrigation to subdaily effective precip
         if (time%step > 0) then
           w%ts(:) = w%ts(:) + irrig(j)%applied / time%step
@@ -332,9 +347,21 @@
         do ly = 1, soil(j)%nly
           soil_prof_labp = soil_prof_labp + soil1(j)%mp(ly)%lab
         end do
+        
+        !if (pl_mass(j)%stem(1)%n < 0.) then
+        !    soil1(j)%mn(1)%no3 = 0.
+        !end if
         !! compute plant biomass, leaf, root and seed growth
         call pl_grow
 
+        !! reset harvested biomass and number of harvests for yearly yield output
+        if (time%end_yr == 1) then
+          do ipl = 1, pcom(j)%npl
+            pl_mass(j)%yield_yr(ipl) = plt_mass_z
+            pcom(j)%plcur(ipl)%harv_num_yr = 0
+          end do
+        end if
+        
         !! compute total parms for all plants in the community
         strsw_av = 0.; strsa_av = 0.; strsn_av = 0.; strsp_av = 0.; strstmp_av = 0.
         npl_gro = 0
@@ -432,6 +459,11 @@
         !! compute nitrate movement leaching
         call nut_nlch
 
+       !write(100100,'(4(I6,","),14(f10.1,","))') time%yrc,time%mo,time%day_mo,j,w%precip,irrig(j)%applied,hru(j)%water_seep,&
+       ! pet_day,etday,wet_ob(j)%weir_hgt*1000,wet_ob(j)%depth*1000.,ht2%flo/(hru(j)%area_ha * 10.),soil(j)%sw,wet(j)%sed,ht2%sed*1000,wet(j)%no3,ht2%no3,&
+       ! pcom(j)%lai_sum
+      !write(*,'(3(I6),14(f10.1))') time%yrc,time%mo,time%day_mo,w%precip,irrig(j)%applied,hru(j)%water_seep,&
+      !  pet_day,etday,wet_ob(j)%weir_hgt*1000,wet(j)%flo/(hru(j)%area_ha * 10.),ht2%flo/(hru(j)%area_ha * 10.),soil(j)%sw,wet(j)%sed,ht2%sed*1000,wet(j)%no3,ht2%no3,&    
         !! compute phosphorus movement
         call nut_solp
 
@@ -599,7 +631,7 @@
         ! hwb_d(j)%overbank = over_flow     !overbank is not added yet
 
         hwb_d(j)%gwtran = gwtranq(j) !rtb gwflow - groundwater transferred to soil profile
-        hwb_d(j)%satex = satexq(j) !rtb gwflow - saturation excess generated from high water table
+        if (ires<1) hwb_d(j)%satex = satexq(j) !rtb gwflow - saturation excess generated from high water table
         hwb_d(j)%satex_chan = satexq_chan !rtb gwflow - saturation excess generated from high water table
         hwb_d(j)%delsw = soil(j)%sw - sw_volume_begin
         hwb_d(j)%lagsurf = surf_bs(1,j)
@@ -629,31 +661,30 @@
         hpw_d(j)%strstmp = strstmp_av
         hpw_d(j)%strsn = strsn_av      
         hpw_d(j)%strsp = strsp_av
-        hpw_d(j)%nplnt = nplnt(j)
+        hpw_d(j)%nplnt = pl_mass(j)%tot_com%n
         hpw_d(j)%percn = percn(j)
         !rtb gwflow: store nitrate leaching concentration for gwflow module
         if(gwflow_flag .and. gw_transport_flag) then
           gwflow_percn(j) = percn(j)
         endif
-        hpw_d(j)%pplnt = pplnt(j)
+        hpw_d(j)%pplnt = pl_mass(j)%tot_com%p
         hpw_d(j)%tmx = w%tmax
         hpw_d(j)%tmn = w%tmin
         hpw_d(j)%tmpav = w%tave
         hpw_d(j)%solrad = w%solrad
+        hpw_d(j)%wndspd = w%windsp
+        hpw_d(j)%rhum = w%rhum
         hpw_d(j)%phubase0 = phubase(j)
 
       ! output_losses
-        hls_d(j)%sedyld = sedyld(j) !/ hru(j)%area_ha
-        if (j == 1087 .and. time%day == 165) then
-          jj = 1
-        end if
+        hls_d(j)%sedyld = sedyld(j) / hru(j)%area_ha
         hls_d(j)%sedorgn = sedorgn(j)
         hls_d(j)%sedorgp = sedorgp(j)
         hls_d(j)%surqno3 = surqno3(j)
         hls_d(j)%latno3 = latno3(j)
         hls_d(j)%surqsolp = surqsolp(j)
         hls_d(j)%usle = usle
-        hls_d(j)%sedmin = sedminpa(j) + sedminps(j)
+        hls_d(j)%sedminp = sedminpa(j) + sedminps(j)
         hls_d(j)%tileno3 = tileno3(j)
 
       !! set hydrographs for direct routing or landscape unit

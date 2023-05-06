@@ -1,4 +1,4 @@
-file.cio: File names
+file.cio:
 simulation        time.sim          print.prt         null              object.cnt        null              
 basin             codes.bsn         parameters.bsn    
 climate           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli           null              

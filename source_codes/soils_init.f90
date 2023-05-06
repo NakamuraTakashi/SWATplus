@@ -1,6 +1,6 @@
       subroutine soils_init
       
-      use hru_module, only : hru, wfsh, ihru
+      use hru_module, only : hru, wfsh, ihru, isep, isep_ly, iseptic, i_sep
       use soil_module
       use plant_module
       use maximum_data_module
@@ -10,6 +10,7 @@
       use hydrograph_module, only : sp_ob
       use time_module
       use basin_module
+      use septic_data_module
       
       implicit none  
       
@@ -19,6 +20,8 @@
       integer :: j                !none          |counter
       integer :: nly              !              |end of loop
       integer :: ly               !none          |counter
+      real :: dep_new1            !mm            |depth of top of septic layer
+      real :: dep_new2            !mm            |depth of bottom of septic layer
       
       !!Section 1
       !!this section sets, allocates, and initializes the original soil database
@@ -95,7 +98,6 @@
            
       do isol = 1, msoils
         call soil_phys_init(isol)          !! initialize soil physical parameters
-        !call soil_nutcarb_init(isol)       !! initialize soil chemical parameters
       end do
       
       !!Section 2
@@ -117,8 +119,51 @@
         soil(ihru) = sol(isol)%s
         nly = soil(ihru)%nly
         allocate (soil(ihru)%ly(nly))
-        allocate (cs_soil(ihru)%ly(nly))
         allocate (soil(ihru)%phys(nly))
+        
+        !! set hru soils to appropriate database soil layers
+        do ly = 1, nly
+          soil(ihru)%phys(ly) = sol(isol)%phys(ly)
+          soil(ihru)%ly(ly) = sol(isol)%ly(ly)
+        end do
+        
+        !! create a biozone layer in septic HRUs
+        isep = iseptic(ihru)
+        dep_new1 = 0.
+        dep_new2 = 0.
+        if (sep(isep)%opt /= 0) then 
+          dep_new1 = 0.
+          dep_new2 = 0.
+	      if (sep(isep)%z + sep(isep)%thk > soil(ihru)%phys(nly)%d) then
+            i_sep(ihru) = nly + 1
+            dep_new1 = sep(isep)%z - sep(isep)%thk
+            dep_new2 = 0.
+          else
+            do ly = 2, nly
+              if (sep(isep)%z < soil(ihru)%phys(ly)%d) then
+                i_sep(ihru) = ly + 1
+                if (abs(sep(isep)%z - soil(ihru)%phys(ly)%d) > 25.4) then
+                  dep_new1 = sep(isep)%z
+                  dep_new2 = sep(isep)%z + sep(isep)%thk
+                else
+                  dep_new1 = 0.
+                  soil(ihru)%phys(ly)%d = sep(isep)%z
+                end if
+                if (abs(sep(isep)%z - soil(ihru)%phys(ly-1)%d) < 25.4) then
+                  dep_new1 = sep(isep)%z + sep(isep)%thk
+                  dep_new2 = 0.
+                end if
+                exit
+              end if
+            end do
+          end if
+          if (dep_new1 > 1.e-6) call layersplit (dep_new1)
+          if (dep_new2 > 1.e-6) call layersplit (dep_new2)
+        end if       ! sep(isep)%opt /= 0
+   
+        !! allocate soil1 arrays - carbon/nutrients
+        nly = soil(ihru)%nly
+        allocate (cs_soil(ihru)%ly(nly))
         allocate (soil1(ihru)%sw(nly))
         allocate (soil1(ihru)%cbn(nly))
         allocate (soil1(ihru)%sed(nly))
@@ -154,14 +199,6 @@
         allocate (soil1_init(ihru)%microb(nly))
         allocate (soil1_init(ihru)%man(nly))
         allocate (soil1_init(ihru)%water(nly))
-        
-        !! set hru soils to appropriate database soil layers
-        do ly = 1, nly
-          soil(ihru)%phys(ly) = sol(isol)%phys(ly)
-          soil(ihru)%ly(ly) = sol(isol)%ly(ly)
-          !! set arrays that are layer and plant dependent - residue and roots
-          !allocate (soil(ihru)%ly(ly)%rs(pcom(ihru)%npl))
-        end do
         
         !! initialize carbon and nutrient contents for each hru
         call soil_nutcarb_init(isol)

@@ -1,6 +1,6 @@
 tgage2.tmp		
- NBYR    LAT     LONG      ELEV
-   16   -0.8     35.6      2311.
+ NBYR    TSTEP    LAT     LONG      ELEV
+   16        0   -0.8     35.6      2311.
     1998       1      18    12.2
     1998       2    17.9      11
     1998       3    18.8    11.8

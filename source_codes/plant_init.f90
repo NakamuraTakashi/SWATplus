@@ -57,6 +57,8 @@
       real :: h                      !none       |Acos(-Tan(sd)*Tan(lat))
       real :: daylength              !hours      |daylength
       real :: laimx_pop              !           |max lai given plant population
+      real :: matur_frac             !frac       |fraction to maturity - use hu for annuals and years to maturity for perennials
+      real :: f                      !none       |fraction of plant's maximum lai corresponding to a given fraction of phu 
 
       j = iihru
 
@@ -76,6 +78,7 @@
             deallocate (pl_mass(j)%seed)
             deallocate (pl_mass(j)%root)
             deallocate (pl_mass(j)%yield_tot)
+            deallocate (pl_mass(j)%yield_yr)
             deallocate (pcom(j)%plstr) 
             deallocate (pcom(j)%plcur) 
             deallocate (rsd1(j)%tot)
@@ -93,10 +96,12 @@
         allocate (pl_mass(j)%seed(ipl))
         allocate (pl_mass(j)%root(ipl))
         allocate (pl_mass(j)%yield_tot(ipl))
+        allocate (pl_mass(j)%yield_yr(ipl))
         allocate (pcom(j)%plstr(ipl)) 
         allocate (pcom(j)%plcur(ipl)) 
         allocate (rsd1(j)%tot(ipl))
 
+        pcom(j)%rsd_covfac = 0.
         cvm_com(j) = 0.
         rsdco_plcom(j) = 0.
         pcom(j)%pcomdb = icom
@@ -174,7 +179,7 @@
             end if
           
             ! caculate planting day for winter annuals at end of dormancy
-            if (pldb(idp)%typ == "cold_annual") then
+            if (pldb(idp)%typ == "test") then   !"cold_annual" .or. pldb(idp)%typ == "cold_annual_tuber") then
               if (wgn(iwgn)%lat > 0.) then
                 igrow = 1
               else
@@ -244,29 +249,40 @@
           ! set initial rotation year for dtable scheduling
           pcom(j)%rot_yr = pcomdb(icom)%rot_yr_ini
           
-          ! set initial heat units and other data
           pcom(j)%plcur(ipl)%phuacc = pcomdb(icom)%pl(ipl)%phuacc
-          pcom(j)%plg(ipl)%laimxfr = pcom(j)%plcur(ipl)%phuacc / (pcom(j)%plcur(ipl)%phuacc +     &
+          !! set fraction to maturity and initial canopy height for annuals and perennials
+          if (pldb(idp)%typ == "perennial") then
+            matur_frac = pcomdb(icom)%pl(ipl)%fr_yrmat
+            pcom(j)%plg(ipl)%cht = matur_frac * pldb(idp)%chtmx
+          else  !annuals
+            matur_frac = pcomdb(icom)%pl(ipl)%phuacc
+            f = pcom(j)%plcur(ipl)%phuacc / (pcom(j)%plcur(ipl)%phuacc +     &
               Exp(plcp(idp)%leaf1 - plcp(idp)%leaf2 * pcom(j)%plcur(ipl)%phuacc))
+            pcom(j)%plg(ipl)%cht = pldb(idp)%chtmx * Sqrt(f)
+          end if
+          
+          pcom(j)%plg(ipl)%laimxfr = matur_frac / (matur_frac +     &
+              Exp(plcp(idp)%leaf1 - plcp(idp)%leaf2 * matur_frac))
           pcom(j)%plg(ipl)%lai = pcomdb(icom)%pl(ipl)%lai
           pcom(j)%laimx_sum = pcom(j)%laimx_sum + pldb(idp)%blai
           pl_mass(j)%tot(ipl)%m = pcomdb(icom)%pl(ipl)%bioms
           pcom(j)%plcur(ipl)%curyr_mat = int (pcomdb(icom)%pl(ipl)%fr_yrmat * float(pldb(idp)%mat_yrs))
           pcom(j)%plcur(ipl)%curyr_mat = max (1, pcom(j)%plcur(ipl)%curyr_mat)
           cvm_com(j) = plcp(idp)%cvm + cvm_com(j)
+          pcom(j)%rsd_covfac = pcom(j)%rsd_covfac + pldb(idp)%rsd_covfac
           rsdco_plcom(j) = rsdco_plcom(j) + pldb(idp)%rsdco_pl
           pcom(j)%plcur(ipl)%idplt = pcomdb(icom)%pl(ipl)%db_num
-          idp = pcom(j)%plcur(ipl)%idplt
-          pcom(j)%plm(ipl)%p_fr = (pldb(idp)%pltpfr1-pldb(idp)%pltpfr3)*        &
-          (1. - pcom(j)%plcur(ipl)%phuacc/(pcom(j)%plcur(ipl)%phuacc +          &
-           Exp(plcp(idp)%pup1 - plcp(idp)%pup2 *                                &
-           pcom(j)%plcur(ipl)%phuacc))) + pldb(idp)%pltpfr3
-          pl_mass(j)%tot(ipl)%n = pcom(j)%plm(ipl)%n_fr * pl_mass(j)%tot(ipl)%m                  
-          pcom(j)%plm(ipl)%n_fr = (pldb(idp)%pltnfr1- pldb(idp)%pltnfr3) *      &
-           (1.- pcom(j)%plcur(ipl)%phuacc/(pcom(j)%plcur(ipl)%phuacc +          &
-           Exp(plcp(idp)%nup1 - plcp(idp)%nup2 *                                &
-          pcom(j)%plcur(ipl)%phuacc))) + pldb(idp)%pltnfr3
-           pl_mass(j)%tot(ipl)%p = pcom(j)%plm(ipl)%p_fr * pl_mass(j)%tot(ipl)%m
+          
+          !! set intial n and p contents in total plant
+          pcom(j)%plm(ipl)%n_fr = (pldb(idp)%pltnfr1- pldb(idp)%pltnfr3) *              &
+             (1.- matur_frac /(matur_frac + Exp(plcp(idp)%nup1 - plcp(idp)%nup2 *       &
+             matur_frac))) + pldb(idp)%pltnfr3
+          pl_mass(j)%tot(ipl)%n = pcom(j)%plm(ipl)%n_fr * pl_mass(j)%tot(ipl)%m
+          pcom(j)%plm(ipl)%p_fr = (pldb(idp)%pltpfr1-pldb(idp)%pltpfr3)*                &
+             (1. - matur_frac / (matur_frac + Exp(plcp(idp)%pup1 - plcp(idp)%pup2 *     &
+             matur_frac))) + pldb(idp)%pltpfr3
+          pl_mass(j)%tot(ipl)%p = pcom(j)%plm(ipl)%p_fr * pl_mass(j)%tot(ipl)%m                  
+          
           if (pcom(j)%plcur(ipl)%pop_com < 1.e-6) then
             laimx_pop = pldb(idp)%blai
           else
@@ -283,6 +299,16 @@
           call pl_partition(j)
 
         end do   ! ipl loop
+        
+        !! get average residue cover factor for community
+        if (pcom(j)%npl > 0) then
+          pcom(j)%rsd_covfac = pcom(j)%rsd_covfac / pcom(j)%npl
+          cvm_com(j) = cvm_com(j) / pcom(j)%npl
+        else
+          pcom(j)%rsd_covfac = 0.
+          cvm_com(j) = 0.
+        end if
+        
         end if   ! icom > 0
 
         ilum = hru(iihru)%land_use_mgt
@@ -317,27 +343,6 @@
             exit
           endif
         end do
-        
-        !! set parameters for structural land use/managment
-        if (lum(ilum)%tiledrain /= "null") then
-          call structure_set_parms("tiledrain       ", lum_str(ilum)%tiledrain, j)
-        end if
-      
-        if (lum(ilum)%septic /= "null") then
-          call structure_set_parms("septic          ", lum_str(ilum)%septic, j)
-        end if
-        
-        if (lum(ilum)%fstrip /= "null") then
-          call structure_set_parms("fstrip          ", lum_str(ilum)%fstrip, j)
-        end if
-        
-        if (lum(ilum)%grassww /= "null") then
-          call structure_set_parms("grassww         ", lum_str(ilum)%grassww, j)
-        end if
-
-        if (lum(ilum)%bmpuser /= "null") then
-          call structure_set_parms("bmpuser         ", lum_str(ilum)%bmpuser, j)
-        end if
-
+ 
     return
     end subroutine plant_init

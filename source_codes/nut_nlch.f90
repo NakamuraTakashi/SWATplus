@@ -67,8 +67,6 @@
         enddo
       endif
       
-      
-
       percnlyr = 0.
 
       do jj = 1, soil(j)%nly
@@ -148,10 +146,10 @@
         end if
       end do
       
-      nloss = (2.18 * hru(j)%topo%dis_stream - 8.63) / 100.
-      nloss = Max(0.,nloss)
-      nloss = Amin1(1.,nloss)
-      latno3(j) = (1. - nloss) * latno3(j)
+      !nloss = (2.18 * hru(j)%topo%dis_stream - 8.63) / 100.
+      !nloss = Max(0.,nloss)
+      !nloss = Amin1(1.,nloss)
+      !latno3(j) = (1. - nloss) * latno3(j)
 
       return
       end subroutine nut_nlch

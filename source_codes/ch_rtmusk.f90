@@ -96,6 +96,7 @@
       real :: vol_fp_av
       real :: vol_tot_av
       real :: sum_inflo, sum_outflo
+      real :: dep
 
       jrch = isdch
       jhyd = sd_dat(jrch)%hyd
@@ -259,8 +260,13 @@
             d_tbl => dtbl_res(irel)
             wbody => wet(iihru)
             wbody_wb => wet_wat_d(iihru)
+            if (wet_ob(ihru)%area_ha > 1.e-6) then
+              dep = wbody%flo / wet_ob(ihru)%area_ha / 10000.     !m = m3 / ha / 10000m2/ha
+            else
+              dep = 0.
+            end if
             call conditions (iihru, irel)
-            call res_hydro (iihru, irel, ihyd, wet_ob(ihru)%pvol, wet_ob(ihru)%evol)
+            call res_hydro (iihru, irel, ihyd, wet_ob(ihru)%pvol, wet_ob(ihru)%evol, dep, wet_ob(ihru)%weir_hgt)
       
             !! subtract outflow from wetland and add to flood plain storage
             wet(iihru) =  wet(iihru) - ht2

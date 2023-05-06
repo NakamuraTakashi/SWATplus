@@ -323,22 +323,7 @@
 
         end do      ! region(icu)%nlum
       end do        ! db_mx%lsu_out
-         
-      !!this needs to be reworked for regional plant biomass and yield ****
-         if (time%end_aa_prt == 1) then
-           do ipl = 1, pcom(j)%npl
-             idp = pcom(j)%plcur(ipl)%idplt
-             if (pcom(j)%plcur(ipl)%harv_num > 0) then 
-               pl_mass(j)%yield_tot(ipl) = pl_mass(j)%yield_tot(ipl) / float(pcom(j)%plcur(ipl)%harv_num)
-             endif
-            write (4428,103) time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pcom(j)%plcur(ipl)
-            if (pco%csvout == "y") then
-              write (4429,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pcom(j)%plcur(ipl)
-            end if
-           end do
-         end if
-      !!this needs to be reworked for regional plant biomass and yield ****
-
+ 
       deallocate (iarea)
       return
       

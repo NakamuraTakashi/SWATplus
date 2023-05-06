@@ -28,7 +28,6 @@
         case ("D")
           cn2(j) = cn(icn)%cn(4)
         end select
-        
         call curno(cn2(j), j)
       
       return

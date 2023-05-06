@@ -192,7 +192,6 @@
       !read connect file for swat-deg channels
       if (sp_ob%chandeg > 0) then
         call hyd_read_connect(in_con%chandeg_con, "chandeg ", sp_ob1%chandeg, sp_ob%chandeg, hd_tot%chandeg, bsn_prm%day_lag_mx)
-        
       end if
       
       !read connect file for gwflow
@@ -202,8 +201,6 @@
         call gwflow_read
       end if
       
-      
-
       !! for each hru or defining unit, set all subbasins that contain it 
         do i = 1, sp_ob%objs
           nspu = ob(i)%ru_tot
@@ -415,21 +412,18 @@
     do while (idone == 0)
         do i = 1, sp_ob%objs
         
-        if (iord > 1000) then
-          if (ob(i)%fired == 0) then         
-
-            do iob = 1, sp_ob%objs
-              if (ob(iob)%fired == 0 .and. ob(iob)%rcv_tot > 0) then
-                  kk=1
-                write (9001, *) iob, ob(iob)%fired, ob(iob)%typ, ob(iob)%num, ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj),  &
-                                    ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj), jj = 1, ob(iob)%rcv_tot)
-              end if 
-            end do
-            write (*,1002)
-            !pause   !!! stop the simulation run (ob(i)%fired == 0)
-            !stop
-            call exit(1)
-          end if
+        if (iord > 1000) then        
+          open (9002,file="looping.con",recl = 8000)
+          write (9002, *) "LOOPING.CON CHECKING INFINITE LOOPS"
+          do iob = 1, sp_ob%objs
+            if (ob(iob)%fired == 0 .and. ob(iob)%rcv_tot > 0) then
+              kk=1
+              write (9002, *) ob(iob)%typ, ob(iob)%num, ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj),  &
+                                    ob(iob)%obtypno_in(jj), jj = 1, ob(iob)%rcv_tot)
+            end if 
+          end do
+          write (*,1002)
+          call exit(1)
         end if 
    
       
@@ -535,27 +529,18 @@
         end do
         iord = iord + 1
       end do
-      
-      !! write calculated and input drainage areas for all objects except hru's
-      !! the following file is for debugging purposes
-      open (9002,file="drareas.out",recl = 8000)
+
+    !! write calculated and input drainage areas for all objects except hru's
       do iob = 1, sp_ob%objs
         if (ob(iob)%typ /= "hru" .and. ob(iob)%typ /= "ru") then
-        !!! write to diagnostics.out file
-          write (9001, *) iob, ob(iob)%typ, ob(iob)%num, ob(iob)%area_ha, ob(iob)%area_ha_calc,             &
-            ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj), ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj),             &
-            ob(iob)%frac_in(jj), &
-            ob(ob(iob)%obj_in(jj))%area_ha, ob(ob(iob)%obj_in(jj))%area_ha_calc, jj = 1, ob(iob)%rcv_tot)
-        !!! write to drareas.out file
-          write (9002, *) iob, ob(iob)%typ, ob(iob)%num, ob(iob)%area_ha, ob(iob)%area_ha_calc,             &
+          write (9004,*) iob, ob(iob)%typ, ob(iob)%num, ob(iob)%area_ha, ob(iob)%area_ha_calc,             &
             ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj), ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj),             &
             ob(iob)%frac_in(jj), &
             ob(ob(iob)%obj_in(jj))%area_ha, ob(ob(iob)%obj_in(jj))%area_ha_calc, jj = 1, ob(iob)%rcv_tot)
         end if 
       end do
       
-      
 1002  format (5x,/,"ERROR - An infinite loop is detected in the connect file(s)",/, 15x, "the simulation will end",       &
-                       /, 9x, "(review diagnostics.out file for more info)",/)
+                       /, 9x, "(review looping.con file for more info)",/)
       return
       end subroutine hyd_connect

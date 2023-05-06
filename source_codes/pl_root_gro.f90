@@ -47,7 +47,7 @@
       else    !!annuals
         !! calculate fraction of total biomass that is in the roots for annuals
         phumax = amin1 (1., pcom(j)%plcur(ipl)%phuacc)
-        pcom(j)%plg(ipl)%root_frac = pldb(idp)%rsr1 - pldb(idp)%rsr2 * phumax
+        pcom(j)%plg(ipl)%root_frac = pldb(idp)%rsr1 - (pldb(idp)%rsr1 - pldb(idp)%rsr2) * phumax
       end if
       
       !! root mass

@@ -1,5 +1,5 @@
-lum_std.dtl: new standard set of tables. JGA 2-17-22
-36
+lum_std.dtl: new standard set of tables - updated 3-9-23
+44
 
 name                     conds      alts      acts  	!plant and harv for continuous summer crop - set crop in management.sch
 pl_hv_summer1              6         5         3  	
@@ -8,7 +8,7 @@ phu_base0                  hru         0              null                 -    
 phu_base0                  hru         0              null                 -       0.30000         -         -         -         -  	>	!plant even if soil water is high
 phu_plant                  hru         0           phu_mat                 -       1.15000         -         >         -         -  	-	!plant hu to trigger harvest
 soil_water                 hru         0                fc                 *       2.00000         <         <         -         -  	-	!don't schedule if too wet
-jday                       hru         0              null                 -     350.00000         -         -         =         -  	-	!harvest day even if too wet
+days_plant                 hru         0              null                 -     270.00000         -         -         =         -  	-	!harvest day even if too wet
 year_rot                   hru         0              null                 -       1.00000         -         -         -         >  	-	!reset rotation year
 act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
 plant                      hru         0             plant              crop       0.00000       1.00000              null  y   n   n   n   y
@@ -18,7 +18,7 @@ rot_reset                  hru         0           reset_1              null    
 name                     conds      alts      acts  	!plant and harv for 2  year summer crop rotation - set crops in management.sch
 pl_hv_summer2               7         9         5  
 var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5      alt6      alt7    alt8  alt9
-jday                       hru         0              null                 -     350.00000         -         -         -         -         =         =         -     -     -	!harvest day even if too wet
+days_plant                 hru         0              null                 -     270.00000         -         -         -         -         =         =         -     -     -	!harvest day even if too wet
 phu_base0                  hru         0              null                 -       0.15000         >         >         -         -         -         -         -     -     -	!base0 heat units to trigger plant
 phu_base0                  hru         0              null                 -       0.30000         -         -         -         -  	   -         -         -     >     >	!base0 heat units even if too wet
 phu_plant                  hru         0           phu_mat                 -       1.15000         -         -         >         >         -         -         -     -     -	!plant hu to trigger harvest
@@ -26,32 +26,32 @@ soil_water                 hru         0                fc                 *    
 year_rot                   hru         0              null                 -       1.00000         =         -         =         -         =         -         -     =     -  	!plant/harv crop 1 in rotation year 1
 year_rot                   hru         0              null                 -       2.00000         -         =         -         =         -         =         >     -     =  	!plant/harv crop 2 in rotation year 1 and reset
 act_typ                    obj   obj_num              name            option         const        const2                fp  outcome
-plant                      hru         0       plant_crop1             crop1       0.00000       0.00000              null  y   n   n   n   n   n   n   y   n
-plant                      hru         0       plant_crop2             crop2       0.00000       0.00000              null  n   y   n   n   n   n   n   n   y
-harvest_kill               hru         0        grain_harv             crop1       0.00000       0.00000              null  n   n   y   n   y   n   n   n   n
-harvest_kill               hru         0        grain_harv             crop2       0.00000       0.00000              null  n   n   n   y   n   y   n   n   n
+plant                      hru         0       plant_crop1             crop1       0.00000       1.00000              null  y   n   n   n   n   n   n   y   n
+plant                      hru         0       plant_crop2             crop2       0.00000       1.00000              null  n   y   n   n   n   n   n   n   y
+harvest_kill               hru         0        grain_harv             crop1       0.00000       1.00000             grain  n   n   y   n   y   n   n   n   n
+harvest_kill               hru         0        grain_harv             crop2       0.00000       1.00000             grain  n   n   n   y   n   y   n   n   n
 rot_reset                  hru         0           reset_2              null       1.00000       1.00000              null  n   n   n   n   n   n   y   n   n
 
 name                     conds      alts      acts  	!plant and harv for continuous summer crop - set crop in management.sch
 pl_hv_winter1              6         4         3  
 var                        obj   obj_num           lim_var       lim_op     lim_const      			alt1	alt2	alt3 	alt4  
-jday                       hru         0              null            -     200.00000         			-       -       =       -  	!harvest day even if too wet
+days_plant                 hru         0              null            -     350.00000         			-       -       =       -  	!harvest day even if too wet
 phu_base0                  hru         0              null            -       0.85000         			>       -       -       -  	!base0 heat units to trigger plant
 phu_plant                  hru         0           phu_mat            -       1.15000         			-       >       -       -  	!plant heat units to trigger harvest
 soil_water                 hru         0                fc            *       2.00000         			<       <       -       -  	!don't schedule if too wet
 year_rot                   hru         0              null            -       1.00000         			-       -       -       >  	!reset rotation year
 year_rot                   hru         0              null            -       1.00000         			=       =       =       -  	!plant/harv crop 1 in rotation year 1
 act_typ                    obj   obj_num              name       option         const        const2    fp 	outcome           
-harvest_kill               hru         0        grain_harv         crop       0.00000       0.00000  null  	n   	y   	y   	n   
-plant                      hru         0             plant         crop       0.00000       0.00000  null  	y   	n   	n   	n   
-rot_reset                  hru         0           reset_1         null       1.00000       1.00000  null  	n   	n   	n   	y   
+harvest_kill               hru         0        grain_harv         crop       0.00000       1.00000   grain  	n   	y   	y   	n   
+plant                      hru         0             plant         crop       0.00000       1.00000    null  	y   	n   	n   	n   
+rot_reset                  hru         0           reset_1         null       1.00000       1.00000    null  	n   	n   	n   	y   
 
 name                     conds      alts      acts  	!corn-corn-soybean-winter wheat-soybean rotation
-pl_hv_ccsws                 10        10         7  
+pl_hv_ccsws                10        10         7  
 var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5      alt6      alt7      alt8      alt9     alt10  
 days_harv                  hru         0              null                 -       7.00000         -         -         =         =         -         -         -         -         -         - 	!plant wwht and soyb 7 days after harvest
-jday                       hru         0              null                 -     150.00000         -         -         -         -         -         -         -         -         -         =	!harv wwht on day 150 even if too wet	  
-jday                       hru         0              null                 -     350.00000         -         -         -         -         -         -         -         =         =         - 	!harv corn and soyb on day 350 even if too wet 
+days_plant                 hru         0              null                 -     350.00000         -         -         -         -         -         -         -         -         -         =	!harv 270 days after planting even if too wet 
+days_plant                 hru         0              null                 -     270.00000         -         -         -         -         -         -         -         =         =         -	!harv 270 days after planting even if too wet 
 phu_base0                  hru         0              null                 -       0.15000         >         >         -         -         -         -         -         -         -         - 	!base0 heat units to plant corn and soyb	
 phu_plant                  hru         0           phu_mat                 -       1.15000         -         -         -         -         >         >         >         -         -         - 	!plant heat units to harv corn and soyb
 soil_water                 hru         0                fc                 *       2.00000         <         <         -         <         <         <         <         -         -         - 	!don't schedule if too wet
@@ -60,18 +60,18 @@ year_rot                   hru         0              null                 -    
 year_rot                   hru         0              null                 -       2.00000         -         -         -         -         -         >         -         -         >         - 	!rotation year > 2 (3 and 4) - harv soyb
 year_rot                   hru         0              null                 -       3.00000         <         -         -         -         <         -         -         <         -         - 	!rotation year < 3 (1 and 2) - plant/harv corn
 act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
-harvest_kill               hru         0        grain_harv              wwht       0.00000       0.00000              null  n   n   n   n   n   n   y   n   n   y   
-harvest_kill               hru         0        grain_harv              soyb       0.00000       0.00000              null  n   n   n   n   n   y   n   n   y   n   
-harvest_kill               hru         0        grain_harv              corn       0.00000       0.00000              null  n   n   n   n   y   n   n   y   n   n   
-plant                      hru         0        plant_wwht              wwht       0.00000       0.00000              null  n   n   n   y   n   n   n   n   n   n   
-plant                      hru         0        plant_soyb              soyb       0.00000       0.00000              null  n   y   y   n   n   n   n   n   n   n   
-plant                      hru         0        plant_corn              corn       0.00000       0.00000              null  y   n   n   n   n   n   n   n   n   n   
+harvest_kill               hru         0        grain_harv              wwht       0.00000       1.00000             grain  n   n   n   n   n   n   y   n   n   y   
+harvest_kill               hru         0        grain_harv              soyb       0.00000       1.00000             grain  n   n   n   n   n   y   n   n   y   n   
+harvest_kill               hru         0        grain_harv              corn       0.00000       1.00000             grain  n   n   n   n   y   n   n   y   n   n   
+plant                      hru         0        plant_wwht              wwht       0.00000       1.00000              null  n   n   n   y   n   n   n   n   n   n   
+plant                      hru         0        plant_soyb              soyb       0.00000       1.00000              null  n   y   y   n   n   n   n   n   n   n   
+plant                      hru         0        plant_corn              corn       0.00000       1.00000              null  y   n   n   n   n   n   n   n   n   n   
 rot_reset                  hru         0           reset_4              null       1.00000       1.00000              null  n   n   n   n   n   n   n   n   n   n   
 
 name                     conds      alts      acts  	!irrigate 25 mm when soil water is below 0.5*field capacity from unlimited source - max 20 times per year using sprinkler
 irr_opt_sw_unlim           2         1         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
-soil_water                 hru         0                fc                 -       0.50000         		<  	!soil water is below 0.5*field capacity
+soil_water                 hru         0                fc                 *       0.50000         		<  	!soil water is below 0.5*field capacity
 plant_gro                  hru         0                 y                 -       0.00000         		=  	!only when plant is growing
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
 irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
@@ -79,7 +79,7 @@ irr_demand                 hru         0         sprinkler     sprinkler_med    
 name                     conds      alts      acts  	!irrigate 25 mm when soil water is below 0.35*field capacity from unlimited source - max 20 times per year using sprinkler
 irr_reduc_sw_unlim         2         1         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1  
-soil_water                 hru         0                fc                 -       0.35000         		<  	!soil water is below 0.35*field capacity
+soil_water                 hru         0                fc                 *       0.35000         		<  	!soil water is below 0.35*field capacity
 plant_gro                  hru         0                 y                 -       0.00000         		=  	!only when plant is growing
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
 irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
@@ -97,6 +97,22 @@ var                        obj   obj_num           lim_var            lim_op    
 w_stress                   hru         0              null                 -       0.80000         		<  	!plant water stress < 0.8
 act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome           
 irr_demand                 hru         0         sprinkler     sprinkler_med      25.00000    20.00000   unlim  y   
+
+name                     conds      alts      acts
+irr_opt_sw                2          1         1
+var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1
+plant_gro                  hru         0                y                  -             0              =                                                      
+soil_water                 hru         0               fc                  *           0.5              <                                                      
+act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome 
+irr_demand                 hru         0 s        prinkler         sprinkler            25          20   null   y   
+
+name                     conds      alts      acts
+irr_reduc_sw              2          1         1
+var                        obj   obj_num           lim_var            lim_op     lim_const      		alt1
+plant_gro                  hru         0                y                  -             0              =                                                      
+soil_water                 hru         0               fc                  *          0.35              <                                                      
+act_typ                    obj   obj_num              name            option         const      const2    fp  	outcome 
+irr_demand                 hru         0         sprinkler         sprinkler            25          20  null    y                                                      
 
 name                     conds      alts      acts  
 irr_str8_aqu               1         1         1  	!irrigate 25 mm when plant water stress < 0.8 from aquifer 1 - max 20 times per year using sprinkler 
@@ -136,7 +152,7 @@ control_drainage             6         4         4
 var                        obj   obj_num           lim_var      lim_op     lim_const      		alt1    alt2    alt3    alt4  
 jday                       hru         0              null          -      65.00000         		=     	-       -       -  	!open drains on day 65
 days_harv                  hru         0              null          -      14.00000         		-       >       -       -  	!close drains 14 days after harvest
-jday                       hru         0              null          -     295.00000         		-       >       -       -  	!close drains on day 295
+jday                       hru         0              null          -     295.00000         		-       =       -       -  	!close drains on day 295
 phu_plant                  hru         0              null          -       0.50000         		-       -       >       -  	!plant heaat units > 0.5 - check for summer closing
 soil_water                 hru         0               fc           *       0.50000         		-       -       <       -  	!sw < 0.5*fc - check for summer closing
 phu_plant                  hru         0              null          -       1.00000         		-       -       -       >  	!open when plant heat units > 1.0
@@ -164,7 +180,7 @@ act_typ                    obj   obj_num              name            option    
 harvest                    hru         0         tree_harv              frsd       0.00000       0.00000    forest_cut  y   
 
 name                     conds      alts      acts	!graze after day 295 until day 85 when biomass > 3000 kg/ha - low beef cattle density from graze.ops 
-graze_winter                 3         2         1  
+graze_over_yr               3         2         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      			alt1      alt2  
 jday                       hru         0              null                 -     295.00000         			>         - 	!start grazing on day 295
 jday                       hru         0              null                 -      85.00000         			-         <	!end grazing on day 85
@@ -173,7 +189,7 @@ act_typ                    obj   obj_num              name            option    
 graze                      hru         0        winter_low          beef_low       0.00000       0.00000      null  	y   	  y   
 
 name                     conds      alts      acts  	!graze after day 120 until day 200 when biomass > 3000 kg/ha - high beef cattle density from graze.ops
-graze_summer                 3         1         1  
+graze_within_yr             3         1         1  
 var                        obj   obj_num           lim_var            lim_op     lim_const      			alt1  
 jday                       hru         0              null                 -     120.00000         			>  	!start grazing on day 120
 jday                       hru         0              null                 -     200.00000         			<  	!endgrazing on day 200
@@ -303,7 +319,7 @@ phu_base0                  hru         0              null                 -    
 phu_base0                  hru         0              null                 -       0.30000         -         -         -         -  	>	!plant even if soil water is high
 phu_plant                  hru         0           phu_mat                 -       1.15000         -         >         -         -  	-	!plant hu to trigger harvest
 soil_water                 hru         0                fc                 *       2.00000         <         <         -         -  	-	!don't schedule if too wet
-jday                       hru         0              null                 -     350.00000         -         -         =         -  	-	!harvest day even if too wet
+days_plant                 hru         0              null                 -     270.00000         -         -         =         -  	-	!harvest day even if too wet
 year_rot                   hru         0              null                 -       1.00000         -         -         -         >  	-	!reset rotation year
 act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
 plant                      hru         0        plant_corn              corn       0.00000       1.00000              null  y   n   n   n   y
@@ -313,7 +329,7 @@ rot_reset                  hru         0           reset_1              null    
 name                     conds      alts      acts  	!plant and harv for 2  year summer crop rotation - set crops in management.sch
 pl_hv_summer2_corn_soyb      7         9         5  
 var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5      alt6      alt7    alt8  alt9
-jday                       hru         0              null                 -     350.00000         -         -         -         -         =         =         -     -     -	!harvest day even if too wet
+days_plant                 hru         0              null                 -     270.00000         -         -         -         -         =         =         -     -     -	!harvest day even if too wet
 phu_base0                  hru         0              null                 -       0.15000         >         >         -         -         -         -         -     -     -	!base0 heat units to trigger plant
 phu_base0                  hru         0              null                 -       0.30000         -         -         -         -  	   -         -         -     >     >	!base0 heat units even if too wet
 phu_plant                  hru         0           phu_mat                 -       1.15000         -         -         >         >         -         -         -     -     -	!plant hu to trigger harvest
@@ -321,10 +337,10 @@ soil_water                 hru         0                fc                 *    
 year_rot                   hru         0              null                 -       1.00000         =         -         =         -         =         -         -     =     -  	!plant/harv crop 1 in rotation year 1
 year_rot                   hru         0              null                 -       2.00000         -         =         -         =         -         =         >     -     =  	!plant/harv crop 2 in rotation year 1 and reset
 act_typ                    obj   obj_num              name            option         const        const2                fp  outcome
-plant                      hru         0        plant_corn             corn        0.00000       0.00000              null  y   n   n   n   n   n   n   y   n
-plant                      hru         0        plant_soyb             soyb        0.00000       0.00000              null  n   y   n   n   n   n   n   n   y
-harvest_kill               hru         0        grain_harv             corn        0.00000       0.00000              null  n   n   y   n   y   n   n   n   n
-harvest_kill               hru         0        grain_harv             soyb        0.00000       0.00000              null  n   n   n   y   n   y   n   n   n
+plant                      hru         0        plant_corn             corn        0.00000       1.00000              null  y   n   n   n   n   n   n   y   n
+plant                      hru         0        plant_soyb             soyb        0.00000       1.00000              null  n   y   n   n   n   n   n   n   y
+harvest_kill               hru         0        grain_harv             corn        0.00000       1.00000             grain  n   n   y   n   y   n   n   n   n
+harvest_kill               hru         0        grain_harv             soyb        0.00000       1.00000             grain  n   n   n   y   n   y   n   n   n
 rot_reset                  hru         0           reset_2              null       1.00000       1.00000              null  n   n   n   n   n   n   y   n   n
 
  NAME      	   CONDS  ALTS	ACTS
@@ -342,7 +358,7 @@ no_tile_drain        1	    1	 1
  VAR		OBJ	OB_NUM	LIM_VAR		LIM_OP		LIM_CONST	      	ALT1
 day_start 	hru	  0	 null		  -	  	   1.0		        =
  ACT_TYP       OBJ     OBJ_NUM   NAME          OPTION      CONST    CONST2   FP         OUTCOMES
-drain_control   hru	  0	 close_always	 null	    0.0	      1      null	y
+drain_control   hru	  0	 close_always	 null	    0.0	      1      1.00	 y
 
  NAME   	CONDS	ALTS	ACTS
  pl_grow_sum	  2	 2	 1
@@ -350,7 +366,7 @@ drain_control   hru	  0	 close_always	 null	    0.0	      1      null	y
  phu_base0 	hlt	  0	    null	  -	  	     0.15		    >	  <
  phu_base0 	hlt	  0	    null	  -	  	     0.2		    <	  -
  ACT_TYP        OBJ OBJ_NUM     NAME              OPTION        CONST       CONST2      FP        OUTCOMES
- grow_init	hlt	  0	start_growth	   file	           0	      0         null	  y	  n
+ grow_init	     hlt	  0	start_growth	     file	           0	      0         null	  y	  n
 
  NAME   	CONDS	ALTS	ACTS
  pl_end_sum	  2	 3	 1
@@ -358,7 +374,7 @@ drain_control   hru	  0	 close_always	 null	    0.0	      1      null	y
  phu_base0 	hlt	  0	    null	     -	  	     0.5	           >     <	 -
  jday	 	hlt	  0	    null	     -	  	     330		   -	  -	 =
  ACT_TYP         OBJ OBJ_NUM   NAME            OPTION        CONST       CONST2      FP       OUTCOMES
- grow_end	hlt	   0   end_growth	 file	        0        0	     null     y	     n	    y
+ grow_end	     hlt	   0   end_growth	   file	               0        0	     null     y	     n	    y
 
  NAME   	     CONDS	ALTS	ACTS
 fert_rot_1	      5          2	  2
@@ -369,8 +385,72 @@ n_stress 	hru	  0	    null	   -	    0.9		 		-	<
 plant_gro 	hru	  0	    y   	   -	    1		        	-	=
 phu_plant 	hru	  0	    phu_mat	   -	    1.05		 	-       <
  ACT_TYP        OBJ  OBJ_NUM   NAME             OPTION      CONST   CONST2      FP             OUTCOMES
-fertilize	hru	  0  ammonia_spring   anh_nh3	    160.       1      inject      	y     	 n
-fertilize	hru	  0  side_dress	      urea	     50.       2      broadcast	  	n	 y
+fertilize	    hru	       0   ammonia_spring   anh_nh3	    160.       1      inject      	   y    n
+fertilize	    hru	       0   side_dress	      urea	     50.       2      broadcast	  	   n	y
  
+ name                     conds      alts      acts   !plant and harv for continuous summer crop - set crop in management.sch
+pl_hv_covercrop            2         2         2  
+var                        obj   obj_num           lim_var            lim_op     lim_const                       alt1    alt2
+days_harv                  hru         0              null                 -       3.00000                          >       -      !plant cover crop 3 days after harvest
+phu_base0                  hru         0              null                 -       0.12000                          -       >      !kill cover crop at 0.12 phu_base0 - before planting
+act_typ                    obj   obj_num     name            option         const     const2       fp    outcome          
+plant                      hru         0             plant               rye       0.00000    1.00000    null       y          n
+kill                       hru         0        kill_cover               rye       0.00000    1.00000    null       n          y
 
+name                            conds      alts      acts   !plant and harv for continuous summer crop - set crop in management.sch
+pl_hv_covercrop2            2         2         2  
+var                        obj   obj_num           lim_var            lim_op     lim_const                       alt1    alt2
+phu_base0                  hru         0              null                 -       0.75000                        >       - !plant cover crop at 0.75 phu_base0
+phu_base0                  hru         0              null                 -       0.12000                        -       - !kill cover crop at 0.12 phu_base0 - before planting
+act_typ                    obj   obj_num              name            option         const     const2      fp     outcome          
+plant                      hru         0             plant               rye       0.00000    1.00000    null     y       n
+kill                       hru         0        kill_cover               rye       0.00000    1.00000    null     n       y  
+
+name                     conds      alts      acts  
+p_fall_test                2         2         6  	!! fall soil phosphorus test - split fall/spring application
+var                        obj   obj_num           lim_var     lim_op     lim_const                        alt1      alt2  
+jday                       dat         0              null          -     293.00000                          =         =    !! Oct 20
+p_labile                   hru         0              null          -     21.700000                          <        >=    !! soil labile P
+act_typ                    obj   obj_num              name     option         const    const2           fp    outcome           
+fertilize                  hru         0        fall_low_p     elem_n      84.10000   1.00000    broadcast   y         n   
+fertilize                  hru         0        fall_low_p     elem_p       5.90000   1.00000    broadcast   y         n   
+fertilize                  hru         0       fall_high_p     elem_n      24.70000   1.00000    broadcast   n         y   
+fertilize                  hru         0       fall_high_p     elem_p      50.90000   1.00000    broadcast   n         y  
+fert_future                frt         1     spring_high_p     elem_n      59.40000 125.00000       inject   n         y   
+fert_future                frt         2     spring_high_p     elem_p       5.90000 125.00000       inject   n         y
+
+name                     conds      alts      acts  
+pl_hv_corn_sb                7         7         5  
+var                        obj   obj_num           lim_var            lim_op     lim_const      alt1      alt2      alt3      alt4      alt5      alt6      alt7  
+jday                       hru         0              null                 -     350.00000         -         -         -         -         =         =         -  
+phu_base0                  hru         0              null                 -       0.15000         >         >         -         -         -         -         -  
+phu_plant                  hru         0           phu_mat                 -       1.15000         -         -         >         >         -         -         -  
+soil_water                 hru         0                fc                 *       2.05000         <         <         <         <         -         -         -  
+year_rot                   hru         0              null                 -       2.00000         -         -         -         -         -         -         >  
+year_rot                   hru         0              null                 -       2.00000         -         =         -         =         -         =         -  
+year_rot                   hru         0              null                 -       1.00000         =         -         =         -         =         -         -  
+act_typ                    obj   obj_num              name            option         const        const2                fp  outcome           
+harvest_kill               hru         0        grain_harv              soyb       0.00000       1.00000             grain  n   n   n   y   n   y   n   
+harvest_kill               hru         0        grain_harv              corn       0.00000       1.00000             grain  n   n   y   n   y   n   n   
+plant                      hru         0        plant_soyb              soyb       0.00000       1.00000              null  n   y   n   n   n   n   n   
+plant                      hru         0        plant_corn              corn       0.00000       1.00000              null  y   n   n   n   n   n   n   
+rot_reset                  hru         0           reset_2              null       1.00000       1.00000              null  n   n   n   n   n   n   y   
+
+               DTBL_NAME      CONDS       ALTS       ACTS
+            graze_summer          3          1          1
+ COND_VAR   OBJ   OBJ_NUMB LIM_VAR LIM_OP LIM_CONST  ALT1
+  biomass   hru          0    null      -      3000     >                                                      
+     jday   hru          0    null      -       200     <                                                      
+     jday   hru          0    null      -       120     >                                                      
+ ACT_TYP   OBJ OBJ_NUM    ACT_NAME ACT_OPTION CONST CONST2 FILE_POINTER  OUT1
+   graze   hru       0 summer_high  beef_high     0      0         null     y                                                      
+
+               DTBL_NAME      CONDS       ALTS       ACTS
+            graze_winter          3          2          1
+ COND_VAR   OBJ   OBJ_NUMB LIM_VAR LIM_OP LIM_CONST  ALT1  ALT2
+  biomass   hru          0    null      -      3000     >     >                                                
+     jday   hru          0    null      -        85     -     <                                                
+     jday   hru          0    null      -       295     >     -                                                
+ ACT_TYP   OBJ OBJ_NUM   ACT_NAME ACT_OPTION CONST CONST2 FILE_POINTER  OUT1  OUT2
+   graze   hru       0 winter_low   beef_low     0      0         null     y     y                                                
  

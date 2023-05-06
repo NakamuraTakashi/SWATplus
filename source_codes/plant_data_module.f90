@@ -6,7 +6,7 @@
       character(len=16), dimension (:), allocatable :: plants_bsn   !none      |plant names simulated in current run - final
      
       type plant_db
-        character(len=16) :: plantnm     !none              |crop name
+        character(len=40) :: plantnm     !none              |crop name
         character(len=18) :: typ         !none              |plant category
                                          !                  |warm_annual
                                          !                  |cold_annual
@@ -77,8 +77,8 @@
         real :: frsw_gro = .5            !frac              |30 day sum of P-PET to initiate growth of tropical 
                                          !                     plants during monsoon season - pcom()%plcur()%iseason
         real :: aeration = 0.2           !                  |aeration stress factor
-        real :: wind_std = 0.            !                  |wind erosion factor for standing dead residue
-        real :: wind_flat = 0.           !                  |wind erosion factor for flat residue
+        real :: rsd_pctcov = 0.          !                  |residue factor for percent cover equation
+        real :: rsd_covfac = 0.          !                  |residue factor for surface cover (C factor) equation
         !character(len=45) :: desc = "unknown"
       end type plant_db
       type (plant_db), dimension(:),allocatable, target, save :: pldb
@@ -107,7 +107,7 @@
       type (plant_cp), pointer :: pl_cp
             
       type plant_init_db
-        character(len=16) :: cpnm = "frsd"
+        character(len=40) :: cpnm = "frsd"
         integer :: db_num = 1               !           |plant object
         character(len=1) :: igro = "y"      !           |land cover status
                                             !           |n = no land cover growing
@@ -121,7 +121,7 @@
       end type plant_init_db
       
       type plant_community_db   
-        character(len=35) :: name = "frsd_frsd"
+        character(len=40) :: name = "frsd_frsd"
         integer :: plants_com = 1
         integer :: rot_yr_ini = 1
         type (plant_init_db), dimension(:), allocatable :: pl
@@ -129,11 +129,12 @@
       type (plant_community_db), dimension(:), allocatable :: pcomdb
                           
       type plant_transplant_db
-        character(len=16) :: name = "frsd"
-        real :: lai = 0.                    !m**2/m**2  |leaf area index
-        real :: bioms = 0.                  !kg/ha      |land cover/crop biomass
-        real :: phuacc = 0.                 !           |frac of plant heat unit acc.
-        real :: fr_yrmat = 0.05             !years      |fraction of current year of growth to years to maturity 
+        character(len=40) :: name = "frsd"
+        real :: lai = 0.                    !m**2/m**2      |leaf area index
+        real :: bioms = 0.                  !kg/ha          |land cover/crop biomass
+        real :: phuacc = 0.                 !frac           |frac of plant heat unit acc.
+        real :: fr_yrmat = 0.05             !years          |fraction of current year of growth to years to maturity 
+        real :: pop                         !plants/m^2     |plant population 
       end type plant_transplant_db
       type (plant_transplant_db), dimension(:), allocatable :: transpl
     

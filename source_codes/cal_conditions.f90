@@ -34,7 +34,7 @@
       integer :: iday                                         !none            |counter
       integer :: ig                                           !                |
       integer :: nvar                                         !                |number of plant cal variables (1=lai_pot, 2=harv_idx)
-      integer :: cal_lyr1, cal_lyr2, ireg, ilum
+      integer :: cal_lyr1, cal_lyr2, ireg, ilum, iplant
          
       do ichg_par = 1, db_mx%cal_upd
         do ispu = 1, cal_upd(ichg_par)%num_elem
@@ -105,6 +105,7 @@
             case ("plt")
               nvar = 2
               select case (cal_upd(ichg_par)%name)
+                  
               case ("phu_mat")
                 do ipl = 1, pcom(ielem)%npl
                   do ic = 1, cal_upd(ichg_par)%conds
@@ -112,8 +113,6 @@
                       ireg = hru(ielem)%crop_reg
                       do ilum = 1, plcal(ireg)%lum_num
                         if (pl_prms(1)%prm(ilum)%name == pcom(ielem)%pl(ipl)) then
-                          absmin = pl_prms(1)%prm(ilum)%lo
-                          absmax = pl_prms(1)%prm(ilum)%up
                           pcom(ielem)%plcur(ipl)%phumat = chg_par (pcom(ielem)%plcur(ipl)%phumat, ielem, chg_typ, chg_val, &
                             absmin, absmax, num_db)
                         end if
@@ -121,6 +120,27 @@
                     end if
                   end do
                 end do
+                
+              case ("epco")
+                iplant = 0
+                !! check to see if conditioned on the plant and only update that plant
+                do ic = 1, cal_upd(ichg_par)%conds
+                    do ipl = 1, pcom(ielem)%npl
+                      if (cal_upd(ichg_par)%cond(ic)%var == "plant") then
+                        pcom(ielem)%plcur(ipl)%lai_pot = chg_par (pcom(ielem)%plcur(ipl)%lai_pot, ielem, chg_typ, chg_val, &
+                            absmin, absmax, num_db)
+                        iplant = 1
+                      end if
+                    end do
+                end do
+                if (iplant == 0) then
+                  !! not conditioned on plant - change all plants
+                  do ipl = 1, pcom(ielem)%npl
+                    pcom(ielem)%plcur(ipl)%lai_pot = chg_par (pcom(ielem)%plcur(ipl)%lai_pot, ielem, chg_typ, chg_val, &
+                            absmin, absmax, num_db)
+                  end do
+                end if
+                    
               case ("lai_pot")
                 do ipl = 1, pcom(ielem)%npl
                   do ic = 1, cal_upd(ichg_par)%conds
@@ -128,8 +148,6 @@
                       ireg = hru(ielem)%crop_reg
                       do ilum = 1, plcal(ireg)%lum_num
                         if (pl_prms(1)%prm(ilum)%name == pcom(ielem)%pl(ipl)) then
-                          absmin = pl_prms(1)%prm(ilum)%lo
-                          absmax = pl_prms(1)%prm(ilum)%up
                           pcom(ielem)%plcur(ipl)%lai_pot = chg_par (pcom(ielem)%plcur(ipl)%lai_pot, ielem, chg_typ, chg_val, &
                             absmin, absmax, num_db)
                         end if
@@ -137,6 +155,7 @@
                     end if
                   end do
                 end do
+                
               case ("harv_idx")
                 do ipl = 1, pcom(ielem)%npl
                   do ic = 1, cal_upd(ichg_par)%conds
@@ -144,8 +163,6 @@
                       ireg = hru(ielem)%crop_reg
                       do ilum = 1, plcal(ireg)%lum_num
                         if (pl_prms(1)%prm(ilum)%name == pcom(ielem)%pl(ipl)) then
-                          absmin = pl_prms(1)%prm(ilum+nvar)%lo
-                          absmax = pl_prms(1)%prm(ilum+nvar)%up
                           pcom(ielem)%plcur(ipl)%harv_idx = chg_par (pcom(ielem)%plcur(ipl)%harv_idx, ielem, chg_typ, chg_val, &
                             absmin, absmax, num_db)
                         end if

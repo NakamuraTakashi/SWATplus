@@ -110,6 +110,8 @@
              end if
            end if
            if (pco%pw_hru%m == "y") then
+             hpw_m(j)%nplnt = pl_mass(j)%tot_com%n
+             hpw_m(j)%pplnt = pl_mass(j)%tot_com%p
              write (2041,101) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_m(j)
                if (pco%csvout == "y") then 
                  write (2045,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_m(j)
@@ -163,6 +165,8 @@
              end if
            end if
            if (time%end_yr == 1 .and. pco%pw_hru%y == "y") then
+             hpw_y(j)%nplnt = pl_mass(j)%tot_com%n
+             hpw_y(j)%pplnt = pl_mass(j)%tot_com%p
              write (2042,101) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_y(j)
                if (pco%csvout == "y") then 
                  write (2046,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_y(j)
@@ -221,6 +225,8 @@
          if (time%end_sim == 1 .and. pco%pw_hru%a == "y") then     
            hpw_a(j) = hpw_a(j) / time%yrs_prt
            hpw_a(j) = hpw_a(j) // time%days_prt
+           hpw_a(j)%nplnt = pl_mass(j)%tot_com%n
+           hpw_a(j)%pplnt = pl_mass(j)%tot_com%p
            write (2043,102) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_a(j)
              if (pco%csvout == "y") then 
                write (2047,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_a(j)
@@ -228,8 +234,28 @@
              hru(j)%strsa = hpw_a(j)%strsa
              hpw_a(j) = hpwz
          end if
+         
+         !! write yearly crop yields
+         if (time%end_yr == 1) then
+           if (pco%crop_yld == "y" .or. pco%crop_yld == "b") then
+           do ipl = 1, pcom(j)%npl
+             idp = pcom(j)%plcur(ipl)%idplt
+             if (pcom(j)%plcur(ipl)%harv_num_yr > 0) then 
+               pl_mass(j)%yield_yr(ipl) = pl_mass(j)%yield_yr(ipl) / float(pcom(j)%plcur(ipl)%harv_num_yr)
+             endif
+           if (pco%crop_yld == "y" .or. pco%crop_yld == "b") then
+            write (4010,103) time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pl_mass(j)%yield_yr(ipl)
+           end if
+            if (pco%csvout == "y") then
+              write (4011,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pl_mass(j)%yield_yr(ipl) 
+            end if
+           end do
+           end if
+         end if
 
+         !! write average annual crop yields
          if (time%end_sim == 1) then
+           if (pco%crop_yld == "a" .or. pco%crop_yld == "b") then
            do ipl = 1, pcom(j)%npl
              idp = pcom(j)%plcur(ipl)%idplt
              if (pcom(j)%plcur(ipl)%harv_num > 0) then 
@@ -240,10 +266,11 @@
               write (4009,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pl_mass(j)%yield_tot(ipl) 
             end if
            end do
+           end if
          end if
       return
       
-100   format (4i6,2i8,2x,a,39f12.3)
+100   format (4i6,2i8,2x,a,40f12.3)
 101   format (4i6,2i8,2x,a,24f12.3)
 102   format (4i6,2i8,2x,a,24f12.3)
 103   format (4i6,i8,4x,a,5x,4f12.3)

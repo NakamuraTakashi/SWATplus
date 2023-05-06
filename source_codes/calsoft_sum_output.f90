@@ -19,7 +19,7 @@
       
       
         !! sum landscape output for soft data calibration
-        if (cal_codes%hyd_hru == "y" .or. cal_codes%hyd_hru == "y") then
+        if (cal_codes%hyd_hru /= "n" .or. cal_codes%hyd_hrul == "y") then
           !calibrate hru"s
           do ireg = 1, db_mx%lsu_reg
             do ilu = 1, region(ireg)%nlum

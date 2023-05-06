@@ -39,9 +39,9 @@
         integer :: sb               !none           |subbasin number
         real :: sedp_attach         !kg P/ha        |amount of phosphorus attached to sediment 
                                     !               |in soil
-        real :: wt1                 !none           |conversion factor (mg/kg => kg/ha)
+        real :: wt1                 !kg/ha          |weight of upper soil layer
         real :: er                  !none           |enrichment ratio
-        real :: conc                !               |concentration of organic N in soil
+        real :: frac                !none           |fraction of organic P in soil
         real :: sedp                !kg P/ha        |total amount of P removed in sediment erosion 
         real :: sed_orgp            !kg P/ha        |total amount of P in organic pools
         real :: sed_hump            !kg P/ha        |amount of P in humus pool
@@ -61,7 +61,8 @@
           fr_stamin = soil1(j)%mp(1)%act / sedp_attach
         end if
 
-        wt1 = soil(j)%phys(1)%bd * soil(j)%phys(1)%d / 100.
+        !! kg/ha = t/m3 * mm * 10,000 m2/ha * m/1000 mm * 1000 kg/t
+        wt1 = 10000. * soil(j)%phys(1)%bd * soil(j)%phys(1)%d
 
         if (hru(j)%hyd%erorgp > .001) then
           er = hru(j)%hyd%erorgp
@@ -69,8 +70,9 @@
           er = enratio
         end if
       
-        conc = sedp_attach * er / wt1
-        sedp = .001 * conc * sedyld(j) / hru(j)%area_ha
+        frac = sedp_attach * er / wt1
+        !! kg/ha = t / ha * 1000. kg/t
+        sedp = 1000. * frac * sedyld(j) / hru(j)%area_ha
         
         if (sedp > 1.e-9) then
           sedorgp(j) = sedp * fr_orgp

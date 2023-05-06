@@ -79,8 +79,8 @@
         sd_ch(i)%chk = sd_chd(idb)%chk      
         sd_ch(i)%cherod = sd_chd(idb)%cherod
         sd_ch(i)%cov = sd_chd(idb)%cov
-        sd_ch(i)%wd_rto = sd_chd(idb)%wd_rto
-        if (sd_ch(i)%wd_rto < 1.e-6) sd_ch(i)%wd_rto = 4.
+        sd_ch(i)%sinu = sd_chd(idb)%sinu
+        if (sd_ch(i)%sinu < 1.05) sd_ch(i)%sinu = 1.05
         sd_ch(i)%chseq = sd_chd(idb)%chseq
         if (sd_ch(i)%chseq < 1.e-9) sd_ch(i)%chseq = .000001
         sd_ch(i)%d50 = sd_chd(idb)%d50
@@ -89,6 +89,8 @@
         sd_ch(i)%ch_bd = sd_chd(idb)%ch_bd
         sd_ch(i)%chss = sd_chd(idb)%chss
         sd_ch(i)%bedldcoef = sd_chd(idb)%bedldcoef
+        if (sd_ch(i)%bedldcoef > 1.) sd_ch(i)%bedldcoef = 0.
+        if (sd_ch(i)%bedldcoef <= 1.e-6) sd_ch(i)%bedldcoef = .0
         sd_ch(i)%fps = sd_chd(idb)%fps
         if (sd_ch(i)%fps > sd_ch(i)%chs) sd_ch(i)%fps = sd_ch(i)%chs
         if (sd_ch(i)%fps <= 1.e-6) sd_ch(i)%fps = .00001       !!! nbs 1/24/22

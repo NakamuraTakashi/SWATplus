@@ -58,6 +58,7 @@
           res_out_a(j) = res_out_a(j) + res_out_y(j)
           res_wat_y(j) = res_wat_y(j) // 12.
           res_wat_a(j) = res_wat_a(j) + res_wat_y(j)
+          !write (7780,*) res_in_y(j)
           if (pco%res%y == "y") then
             write (2542,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, res_wat_y(j), res(j), &
                 res_in_y(j), res_out_y(j)
@@ -89,6 +90,6 @@
         
       return
 
-100   format (4i6,2i10,2x,a,60e15.4)       
+100   format (4i6,2i10,2x,a,63e15.4)       
      
       end subroutine reservoir_output

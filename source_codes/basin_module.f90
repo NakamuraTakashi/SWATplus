@@ -42,7 +42,7 @@
                                  !!   0 = all stresses applied
                                  !!   1 = turn off all plant stress
                                  !!   2 = turn off nutrient plant stress only
-        integer :: cn = 0        !! 0=call cal_soft_hyd_bfr(CEAP); 1=call cal_soft_hyd;
+        integer :: cn = 0        !! not used
         integer :: cfac = 0      !!  0 = C-factor calc using CMIN
                                  !!  1 = for new C-factor from RUSLE (no min needed)      
         integer :: cswat = 0     !! carbon code
@@ -66,7 +66,7 @@
                                  !!   1 = sim wt_shall using subsurface new water table depth routine
                                  !!   0 = sim wt_shall using subsurface orig water table depth routine
         integer :: sol_p_model=0 !! 1 = new soil P model
-        integer :: gampt = 0     !! Initial abstraction on impervious cover (mm) 
+        integer :: gampt = 0     !! 0 = curve number; 1 = Green and Ampt 
         character(len=1) :: atmo = "a"   !! atmospheric deposition interval
                                          !!   "m" = monthly
                                          !!   "y" = yearly
@@ -76,7 +76,9 @@
                                  !!          roughness and rain intensity
                                  !!   0 = static stmaxd read from .bsn for the global value or .sdr
                                  !! for specific hrus 
-        integer :: i_fpwet = 0   !! new flood routing model (work in progress)  
+        integer :: i_fpwet = 0   !! 0 = daily routing
+                                 !! 1 = sudaily routing - no flood plain interaction
+                                 !! 2 = sudaily routing - flood plain interaction
       end type basin_control_codes
       type (basin_control_codes) :: bsn_cc
 
@@ -124,7 +126,7 @@
         real :: decr_min = 0.01     !! minimum daily residue decay
         real :: rsd_covco = 0.30    !! residue cover factor for computing frac of cover         
         real :: urb_init_abst = 1.  !! maximum initial abstraction for urban areas when using Green and Ampt
-        real :: petco_pmpt = 1.0    !! PET adjustment (%) for Penman-Montieth and Preiestly-Taylor methods
+        real :: petco_pmpt = 100.0  !! PET adjustment (%) for Penman-Montieth and Preiestly-Taylor methods
         real :: uhalpha = 1.0       !! alpha coeff for est unit hydrograph using gamma func
         real :: eros_spl = 0.       !! coeff of splash erosion varing 0.9-3.1 
         real :: rill_mult = 0.      !! rill erosion coefficient
@@ -173,10 +175,11 @@
         character(len=1) :: dbout  = "    n"         !!  code to print database (db) files n=no print; y=print;
         character(len=1) :: cdfout = "    n"         !!  code to print netcdf (cdf) files n=no print; y=print;
       ! OTHER OUTPUTS
-        character(len=1) :: snutc  = "    a"         !!  soils nutrients carbon output (default ave annual-d,m,y,a input)
+        character(len=1) :: snutc  = "    n"         !!  not used - soils nutrients carbon output (default ave annual-d,m,y,a input)
+        character(len=1) :: crop_yld  = "    a"      !!  crop yields - a=average annual; y=yearly; b=both annual and yearly; n=no print
         character(len=1) :: mgtout = "    n"         !!  management output file (mgt.out) (default ave annual-d,m,y,a input)
         character(len=1) :: hydcon = "    n"         !!  hydrograph connect output file (hydcon.out)
-        character(len=1) :: fdcout = "    n"         !!  flow duration curve output n=no print; avann=print;
+        character(len=1) :: fdcout = "    n"         !!  flow duration curve output n=no print; avann=print; NOT ACTIVE
       ! BASIN
         type(print_interval) :: wb_bsn          !!  water balance BASIN output
         type(print_interval) :: nb_bsn          !!  nutrient balance BASIN output
@@ -194,9 +197,9 @@
         type(print_interval) :: pw_reg          !!  plant weather REGION output
         type(print_interval) :: aqu_reg         !!  
         type(print_interval) :: res_reg         !!
-        type(print_interval) :: chan_reg        !!
         type(print_interval) :: sd_chan_reg     !! 
         type(print_interval) :: recall_reg      !!
+        type(print_interval) :: water_allo      !!
        ! LSU
         type(print_interval) :: wb_lsu          !!  water balance LSU output
         type(print_interval) :: nb_lsu          !!  nutrient balance LSU output

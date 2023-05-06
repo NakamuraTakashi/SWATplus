@@ -1085,13 +1085,26 @@
        end if
        end if
        
-!!! CROP YIELDS
-      if (sp_ob%hru > 0) then
+!!! CROP YIELDS - output file only written for yearly or annual timesteps; "b" = both files written;
+      if (pco%crop_yld == "y" .or. pco%crop_yld == "b") then
+        !! headers for yearly crop yields
+        open (4010,file="crop_yld_yr.txt")
+        write (4010,*) bsn%name, prog
+          write (4010,1000)
+        write (9000,*) "CROP                      crop_yld_yr.txt"
+        if (pco%csvout == "y") then
+            open (4011,file="crop_yld_yr.csv")
+            write (4011,*) bsn%name, prog
+            write (4011,'(*(G0.3,:,","))') "jday","mon","day","year","unit","plantnm","yield"
+            write (9000,*) "CROP                      crop_yld_yr.csv"
+        end if
+      end if
+              
+      !! headers for annual crop yields
+      if (pco%crop_yld == "a" .or. pco%crop_yld == "b") then
         open (4008,file="crop_yld_aa.txt")
         write (4008,*) bsn%name, prog
           write (4008,1000)
-1000    format (76x,"--YIELD (kg/ha)--",/,1x," jday",1x,"  mon",1x,"  day",1x,"   yr",1x,"   unit", 1x,"PLANTNM",   &
-                 18x,"       MASS","          C", "           N","           P")
         write (9000,*) "CROP                      crop_yld_aa.txt"
         if (pco%csvout == "y") then
             open (4009,file="crop_yld_aa.csv")
@@ -1100,6 +1113,9 @@
             write (9000,*) "CROP                      crop_yld_aa.csv"
         end if
       end if
-                 
+      
+1000    format (76x,"--YIELD (kg/ha)--",/,1x," jday",1x,"  mon",1x,"  day",1x,"   yr",1x,"   unit", 1x,"PLANTNM",   &
+                 18x,"       MASS","          C", "           N","           P")
+        
       return
       end subroutine output_landscape_init

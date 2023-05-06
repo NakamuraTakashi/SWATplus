@@ -62,7 +62,7 @@
 
       case ("grassww")
         hru(j)%lumv%ngrwat = istr
-        if (istr < 0)  then
+        if (istr > 0)  then
           hru(j)%lumv%grwat_i = grwaterway_db(istr)%grwat_i
           hru(j)%lumv%grwat_n = grwaterway_db(istr)%grwat_n
           hru(j)%lumv%grwat_spcon = grwaterway_db(istr)%grwat_spcon
@@ -93,7 +93,7 @@
           !! Depth and Width not possible with 8:1 sideslope and trapazoidal channel assume b =.25*width
           if (b <= 0.) hru(j)%lumv%grwat_d = 3. / 64. * hru(j)%lumv%grwat_w
 
-          call ttcoef_wway
+          call ttcoef_wway(j)
         end if
 
       case ("user_def")                 !user defined Upland CP removal MJW

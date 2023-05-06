@@ -29,12 +29,15 @@
       j = ihru
       idp = pcom(j)%plcur(ipl)%idplt
       
+      leaf_drop%m = 0.
+      
       !! lai decline for annuals - if dlai < phuacc < 1
       if (pldb(idp)%typ == "warm_annual" .or. pldb(idp)%typ == "cold_annual" .or.  &
              pldb(idp)%typ == "warm_annual_tuber" .or. pldb(idp)%typ == "cold_annual_tuber") then
         if (pcom(j)%plcur(ipl)%phuacc > pldb(idp)%dlai .and. pcom(j)%plcur(ipl)%phuacc < 1.) then
           rto = (1. - pcom(j)%plcur(ipl)%phuacc) / (1. - pcom(j)%plg(ipl)%dphu)
           pcom(j)%plg(ipl)%lai = pcom(j)%plg(ipl)%olai * rto ** pldb(idp)%dlai_rate
+          !! need to add leaf drop for annuals
         end if
       end if
       
@@ -54,12 +57,7 @@
           !! compute leaf biomass drop
           lai_drop = lai_init - pcom(j)%plg(ipl)%lai
           lai_drop = amax1 (0., lai_drop)
-          leaf_drop = lai_drop * pl_mass(j)%leaf(ipl)
-          rsd1(j)%tot(ipl) = rsd1(j)%tot(ipl) + leaf_drop
-          if (j==1 .and. rsd1(j)%tot(ipl)%n > 100) then
-            iob = 1
-          end if
-          pl_mass(j)%leaf(ipl) = pl_mass(j)%leaf(ipl) - leaf_drop
+          leaf_drop%m = lai_drop * pl_mass(j)%leaf(ipl)%m
         end if
       end if
       
@@ -93,5 +91,16 @@
         pcom(j)%plg(ipl)%lai = amax1 (pcom(j)%plg(ipl)%lai, pldb(idp)%alai_min)
       end if
           
+      if (leaf_drop%m > 0.) then
+        rsd1(j)%tot(ipl)%m = rsd1(j)%tot(ipl)%m + leaf_drop%m
+        rsd1(j)%tot(ipl)%m = Max(rsd1(j)%tot(ipl)%m, 0.)
+        rsd1(j)%tot(ipl)%n = leaf_drop%m * pcom(j)%plm(ipl)%n_fr + rsd1(j)%tot(ipl)%n
+        rsd1(j)%tot(ipl)%p = leaf_drop%m * pcom(j)%plm(ipl)%p_fr + rsd1(j)%tot(ipl)%p
+          
+        pl_mass(j)%tot(ipl)%m = pl_mass(j)%tot(ipl)%m - leaf_drop%m
+        pl_mass(j)%tot(ipl)%n = pl_mass(j)%tot(ipl)%n - leaf_drop%m * pcom(j)%plm(ipl)%n_fr
+        pl_mass(j)%tot(ipl)%p = pl_mass(j)%tot(ipl)%p - leaf_drop%m * pcom(j)%plm(ipl)%p_fr
+      end if
+      
       return
       end subroutine pl_leaf_senes

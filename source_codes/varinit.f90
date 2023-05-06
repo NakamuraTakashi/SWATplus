@@ -61,6 +61,7 @@
         pet_day, qday, qtile, sepday, snoev, snofall, snomlt,                           &
         sw_excess, ubnrunoff, ubntss, uno3d, usle, usle_ei, voltot, vpd, fixn 
       use soil_module
+      use hydrograph_module
       
       implicit none
 
@@ -120,11 +121,16 @@
         voltot = 0.
 
 	!! urban modeling by J.Jeong
-	    sedprev = 0.
-	    ubnrunoff = 0.
-	    irmmdt = 0.
+	  sedprev = 0.
+	  ubnrunoff = 0.
+	  irmmdt = 0.
         hhsedy = 0.
         ubntss = 0.
+        wet_seep_day(:)%no3 = 0
+        wet_seep_day(:)%nh3 = 0
+        wet_seep_day(:)%orgn =0
+        wet_seep_day(:)%solp =0
+        wet_seep_day(:)%sedp =0
 
        return
        end subroutine varinit

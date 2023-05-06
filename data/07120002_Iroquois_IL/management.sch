@@ -2,7 +2,7 @@ mgt_sch Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:
                                NAME NUMB_OPS NUMB_AUTO OP_TYP   MON   DAY HU_SCH OP_DATA1    OP_DATA2 OP_DATA3
        alfa_cmz_16_intense_dry_8575       11         0
                                                          till     4    10      0  nom_mod        null        0
-                                                         kill     4    15      0     alfa        null        0
+                                                         kill     4    15      0     crn2        null        0
                                                          till     4    15      0 shal_mod        null        0
                                                          till     4    15      0  nom_mod        null        0
                                                          plnt     4    16      0     alfa        null        0

@@ -44,6 +44,7 @@
         allocate (pl_mass_init(iihru)%seed(nplt))
         allocate (pl_mass_init(iihru)%root(nplt))
         allocate (pl_mass_init(iihru)%yield_tot(nplt))
+        allocate (pl_mass_init(iihru)%yield_yr(nplt))
 
         isched = hru(iihru)%mgt_ops
         allocate (pcom_init(iihru)%dtbl(sched(isched)%num_autos))

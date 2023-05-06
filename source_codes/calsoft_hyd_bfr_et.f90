@@ -107,6 +107,7 @@
         ! 1st esco adjustment 
         if (isim > 0) then
           cal_sim =  " first esco adj "
+          cal_adj = chg_val
           call time_control
         end if
         
@@ -183,6 +184,7 @@
           ! et adjustment 
           if (isim > 0) then
             cal_sim =  " esco adj "
+          cal_adj = chg_val
             call time_control
           end if
         
@@ -232,10 +234,10 @@
               iihru = region(ireg)%num(ihru_s)
               if (lscal(ireg)%lum(ilum)%meas%name == hru(iihru)%lum_group_c .or. lscal(ireg)%lum(ilum)%meas%name == "basin") then
                 !set parms for pet adjustment and run
-                hru(iihru)%hyd%harg_pet = chg_val * hru(iihru)%hyd%harg_pet
-                hru(iihru)%hyd%harg_pet = amin1 (hru(iihru)%hyd%harg_pet, ls_prms(4)%up)
-                hru(iihru)%hyd%harg_pet = Max (hru(iihru)%hyd%harg_pet, ls_prms(4)%lo)
-                hru_init(iihru)%hyd%harg_pet = hru(iihru)%hyd%harg_pet
+                hru(iihru)%hyd%pet_co = chg_val * hru(iihru)%hyd%pet_co
+                hru(iihru)%hyd%pet_co = amin1 (hru(iihru)%hyd%pet_co, ls_prms(4)%up)
+                hru(iihru)%hyd%pet_co = Max (hru(iihru)%hyd%pet_co, ls_prms(4)%lo)
+                hru_init(iihru)%hyd%pet_co = hru(iihru)%hyd%pet_co
               end if
             end do
             
@@ -252,6 +254,7 @@
         ! 1st cover adjustment 
         if (isim > 0) then
           cal_sim =  " first pet adj "
+          cal_adj = chg_val
           call time_control
         end if
 

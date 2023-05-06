@@ -42,6 +42,7 @@
         real :: lagsurf = 0.		  !mm H2O        |surface runoff in transit to channel
         real :: laglatq = 0.          !mm H2O	     |lateral flow in transit to channel
         real :: lagsatex = 0.         !mm H2O	     |saturation excess flow in transit to channel
+        real :: wet_out = 0.          !mm H2O	     |outflow (spill) from wetland
       end type output_waterbal
        
       type (output_waterbal), pointer :: h
@@ -190,11 +191,11 @@
         real :: latno3 = 0.         !kg N/ha        |nitrate NO3-N transported in lateral runoff
         real :: surqsolp = 0.       !kg P/ha        |soluble phosphorus transported in surface runoff
         real :: usle = 0.           !metric tons/ha |sediment erosion predicted with the USLE equation
-        real :: sedmin = 0.         !kg P/ha        |mineral phosphorus leaving the landscape transported in sediment
+        real :: sedminp = 0.        !kg P/ha        |mineral phosphorus leaving the landscape transported in sediment
         real :: tileno3 = 0.        !kg N/ha        |nitrate NO3 in tile flow
         real :: lchlabp = 0.        !kg P/ha        |soluble P (labile) leaching past bottom soil layer
         real :: tilelabp = 0.       !kg N/ha        |soluble P (labile) NO3 in tile flow
-        real :: satexn = 0.          !kg N/ha		  | amt of NO3-N in saturation excess surface runoff in HRU for the day
+        real :: satexn = 0.         !kg N/ha        | amt of NO3-N in saturation excess surface runoff in HRU for the day
       end type output_losses
       
       type (output_losses), dimension (:), allocatable :: hls_d
@@ -246,7 +247,7 @@
         real :: solrad = 0.                !MJ/m^2        |average solar radiation during timestep
         real :: wndspd = 0.                !m/s           |average windspeed during timestep
         real :: rhum = 0.                  !none          |average relative humidity during timestep
-        real :: phubase0 = 0.              !deg c         |base zero potential heat units
+        real :: phubase0 = 0.              !deg c/deg c   |base zero potential heat units
         real :: lai_max = 0.               !m**2/m**2     |maximum leaf area index during timestep
         real :: bm_max = 0.                !kg/ha         |maximum total plant biomass during timestep
         real :: bm_grow = 0.               !kg/ha         |total plant biomass growth during timestep
@@ -328,7 +329,8 @@
         character (len=12) :: sw_change  =  "   sw_change"
         character (len=12) :: lagsurf    =  "     lagsurf"
         character (len=12) :: laglatq    =  "     laglatq"
-        character (len=12) :: lagsatex    =  "   lagsatex"
+        character (len=12) :: lagsatex   =  "    lagsatex"
+        character (len=12) :: wet_out    =  "     wet_out"
       end type output_waterbal_header      
       type (output_waterbal_header) :: wb_hdr
       
@@ -379,6 +381,7 @@
         character (len=12) :: lagsurf    =  "          mm"
         character (len=12) :: laglatq    =  "          mm"
         character (len=12) :: lagsatex   =  "          mm"
+        character (len=12) :: wet_out    =  "          mm"
       end type output_waterbal_header_units      
       type (output_waterbal_header_units) :: wb_hdr_units
          
@@ -389,26 +392,26 @@
          character (len=6) :: yrc           =    "    yr"
          character (len=9) :: isd           =    "    unit " 
          character (len=8) :: id            =    " gis_id "                
-         character (len=16) :: name         =    " name           "        
-         character(len=12) :: grazn         =    "        grzn"
-         character(len=12) :: grazp         =    "        grzp"        
-         character(len=12) :: lab_min_p     =    "   lab_min_p"     
-         character(len=12) :: act_sta_p     =    "   act_sta_p"
-         character(len=17) :: fertn         =    "            fertn"       
-         character(len=17) :: fertp         =    "            fertp"       
-         character(len=17) :: fixn          =    "             fixn"       
-         character(len=17) :: denit         =    "            denit"
-         character(len=17) :: act_nit_n     =    "        act_nit_n"
-         character(len=17) :: act_sta_n     =    "        act_sta_n"
-         character(len=17) :: org_lab_p     =    "        org_lab_p"
+         character (len=16) :: name         =    " name           "         
+         character(len=12) :: grazn         =    " grzn       "
+         character(len=12) :: grazp         =    " grzp       "        
+         character(len=12) :: lab_min_p     =    " lab_min_p  "     
+         character(len=12) :: act_sta_p     =    " act_sta_p  "        
+         character(len=17) :: fertn         =    "     fertn       "       
+         character(len=17) :: fertp         =    "     fertp       "       
+         character(len=17) :: fixn          =    "     fixn        "       
+         character(len=17) :: denit         =    "     denit       "
+         character(len=17) :: act_nit_n     =    "     act_nit_n   "
+         character(len=17) :: act_sta_n     =    "     act_sta_n   "
+         character(len=17) :: org_lab_p     =    "     org_lab_p   "
          character(len=17) :: rsd_nitorg_n  =    "     rsd_nitorg_n"      
-         character(len=17) :: rsd_laborg_p  =    "     rsd_laborg_p"      
-         character(len=17) :: no3atmo =    "          no3atmo" 
-         character(len=17) :: nh4atmo =    "          nh4atmo"
-         character(len=17) :: nuptake =    "          nuptake" 
-         character(len=17) :: puptake =    "          puptake"		 
-         character(len=17) :: gwtrann =    "          gwtrann"
-         character(len=17) :: gwtranp =    "          gwtranp"
+         character(len=17) :: rsd_laborg_p  =    "     rsd_laborg_p"        
+         character(len=17) :: no3atmo =    "    no3atmo       " 
+         character(len=17) :: nh4atmo =    "    nh4atmo       "
+         character(len=17) :: nuptake =    "    nuptake       " 
+         character(len=17) :: puptake =    "    puptake       "		 
+         character(len=17) :: gwtrann =    "    gwtrann       "
+         character(len=17) :: gwtranp =    "    gwtranp       "
       end type output_nutbal_header         
       type (output_nutbal_header) :: nb_hdr
       
@@ -419,26 +422,26 @@
          character (len=6) :: yrc           =    "      "
          character (len=9) :: isd           =    "         " 
          character (len=8) :: id            =    "        "        
-         character (len=16) :: name         =    "                "        
-         character(len=12) :: grazn         =    "        kgha"
-         character(len=12) :: grazp         =    "        kgha"         
-         character(len=12) :: lab_min_p     =    "        kgha"     
-         character(len=12) :: act_sta_p     =    "        kgha" 
-         character(len=17) :: fertn         =    "             kgha"        
-         character(len=17) :: fertp         =    "             kgha"        
-         character(len=17) :: fixn          =    "             kgha"        
-         character(len=17) :: denit         =    "             kgha" 
-         character(len=17) :: act_nit_n     =    "             kgha" 
-         character(len=17) :: act_sta_n     =    "             kgha" 
-         character(len=17) :: org_lab_p     =    "             kgha" 
-         character(len=17) :: rsd_nitorg_n  =    "             kgha"       
-         character(len=17) :: rsd_laborg_p  =    "             kgha"       
-         character(len=17) :: no3atmo       =    "             kgha"  
-         character(len=17) :: nh4atmo       =    "             kgha"
-         character(len=17) :: nuptake       =    "             kgha"  
-         character(len=17) :: puptake       =    "             kgha" 
-         character(len=17) :: gwtrann       =    "             kgha"
-         character(len=17) :: gwtranp       =    "             kgha"
+         character (len=16) :: name         =    "                "  
+         character(len=12) :: grazn         =    " kgha       "
+         character(len=12) :: grazp         =    " kgha       "         
+         character(len=12) :: lab_min_p     =    " kgha       "     
+         character(len=12) :: act_sta_p     =    " kgha       "          
+         character(len=17) :: fertn         =    "      kgha       "        
+         character(len=17) :: fertp         =    "      kgha       "        
+         character(len=17) :: fixn          =    "      kgha       "         
+         character(len=17) :: denit         =    "      kgha       "  
+         character(len=17) :: act_nit_n     =    "      kgha       " 
+         character(len=17) :: act_sta_n     =    "      kgha       "  
+         character(len=17) :: org_lab_p     =    "      kgha       "  
+         character(len=17) :: rsd_nitorg_n  =    "      kgha       "        
+         character(len=17) :: rsd_laborg_p  =    "      kgha       "        
+         character(len=17) :: no3atmo       =    "      kgha       "   
+         character(len=17) :: nh4atmo       =    "      kgha       " 
+         character(len=17) :: nuptake       =    "      kgha       "   
+         character(len=17) :: puptake       =    "      kgha       "  
+         character(len=17) :: gwtrann       =    "      kgha       " 
+         character(len=17) :: gwtranp       =    "      kgha       " 
       end type output_nutbal_header_units         
       type (output_nutbal_header_units) :: nb_hdr_units
       
@@ -457,7 +460,7 @@
         character (len=12)  :: latno3   =  "     lat3no3"            
         character (len=12)  :: surqsolp =  "    surqsolp"
         character (len=12)  :: usle     =  "        usle"     
-        character (len=12)  :: sedmin   =  "      sedmin"
+        character (len=12)  :: sedminp  =  "     sedminp"
         character (len=12)  :: tileno3  =  "     tileno3"
         character (len=12)  :: lchlabp  =  "     lchlabp"
         character (len=12)  :: tilelabp =  "    tilelabp"
@@ -543,7 +546,7 @@
         character (len=17)  :: surqno3  =  "          surqno3"
         character (len=17)  :: latno3   =  "          lat3no3"            
         character (len=17)  :: surqsolp =  "         surqsolp"   
-        character (len=17)  :: sedmin   =  "           sedmin"
+        character (len=17)  :: sedminp   =  "         sedminp"
         character (len=17)  :: tileno3  =  "          tileno3"
         character (len=17)  :: no3atmo  =  "          no3atmo"
         character (len=17)  :: nh4atmo  =  "          nh4atmo"
@@ -805,6 +808,7 @@
         hru3%lagsurf = hru1%lagsurf + hru2%lagsurf
         hru3%laglatq = hru1%laglatq + hru2%laglatq
         hru3%lagsatex = hru1%lagsatex + hru2%lagsatex
+        hru3%wet_out = hru1%wet_out + hru2%wet_out
       end function hruout_waterbal_add
       
       function hruout_nutbal_add (hru1, hru2) result (hru3)
@@ -843,7 +847,7 @@
         hru3%latno3 = hru1%latno3 + hru2%latno3
         hru3%surqsolp = hru1%surqsolp + hru2%surqsolp
         hru3%usle = hru1%usle + hru2%usle
-        hru3%sedmin = hru1%sedmin + hru2%sedmin
+        hru3%sedminp = hru1%sedminp + hru2%sedminp
         hru3%tileno3 = hru1%tileno3 + hru2%tileno3
         hru3%lchlabp = hru1%lchlabp + hru2%lchlabp
         hru3%tilelabp = hru1%tilelabp + hru2%tilelabp
@@ -1064,6 +1068,7 @@
         hru2%lagsurf = hru1%lagsurf / const
         hru2%laglatq = hru1%laglatq / const
         hru2%lagsatex = hru1%lagsatex / const
+        hru2%wet_out = hru1%wet_out / const
       end function hruout_waterbal_div
       
       function hruout_waterbal_ave (hru1,const) result (hru2)
@@ -1109,6 +1114,7 @@
         hru2%lagsurf = hru1%lagsurf
         hru2%laglatq = hru1%laglatq
         hru2%lagsatex = hru1%lagsatex
+        hru2%wet_out = hru1%wet_out
       end function hruout_waterbal_ave
 
       function hruout_waterbal_mult (hru1,const) result (hru2)
@@ -1150,6 +1156,7 @@
         hru2%lagsurf = hru1%lagsurf * const
         hru2%laglatq = hru1%laglatq * const
         hru2%lagsatex = hru1%lagsatex * const
+        hru2%wet_out = hru1%wet_out * const
       end function hruout_waterbal_mult
       
       function hruout_nutbal_div (hru1,const) result (hru2)
@@ -1213,7 +1220,7 @@
         hru2%latno3 = hru1%latno3 / const
         hru2%surqsolp = hru1%surqsolp / const
         hru2%usle = hru1%usle / const        
-        hru2%sedmin = hru1%sedmin / const
+        hru2%sedminp = hru1%sedminp / const
         hru2%tileno3 = hru1%tileno3 / const
         hru2%lchlabp = hru1%lchlabp / const
         hru2%tilelabp = hru1%tilelabp / const
@@ -1231,7 +1238,7 @@
         hru2%latno3 = hru1%latno3 * const
         hru2%surqsolp = hru1%surqsolp * const
         hru2%usle = hru1%usle * const        
-        hru2%sedmin = hru1%sedmin * const
+        hru2%sedminp = hru1%sedminp * const
         hru2%tileno3 = hru1%tileno3 * const
         hru2%lchlabp = hru1%lchlabp * const
         hru2%tilelabp = hru1%tilelabp * const

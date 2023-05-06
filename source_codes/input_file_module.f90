@@ -140,9 +140,9 @@
       
 !! water-rights
       type input_water_rights
-        character(len=25) :: transfer_wro = "transfer.wro"      !! transferring water using water rights objects (using decision tables)
+        character(len=25) :: transfer_wro = "water_allocation.wro"  !! transferring water using water rights objects (using decision tables)
         character(len=25) :: element = "element.wro"
-        character(len=25) :: water_rights = "water_rights.wro"  !! 2 sources and compensation (used for NAM)
+        character(len=25) :: water_rights = "water_rights.wro"      !! 2 sources and compensation (used for NAM)
       end type input_water_rights
       type (input_water_rights) :: in_watrts
       

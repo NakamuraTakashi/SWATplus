@@ -81,7 +81,7 @@
       integer :: ilu                 !              |
       integer :: mo                    !           |
       integer :: day_mo                !           |
-      integer :: iwallo
+      integer :: iwallo, imallo
 
       integer :: day_index !rtb gwflow
       
@@ -231,7 +231,7 @@
             !if (upd_cond(iupd)%num_hits < upd_cond(iupd)%max_hits) then
             !  upd_cond(iupd)%num_hits = upd_cond(iupd)%num_hits + 1
               !! all hru fractions are set at once
-              if (upd_cond(iupd)%typ == "hru_fr_change") then
+              if (upd_cond(iupd)%typ == "basin") then
                 call conditions (j, id)
                 call actions (j, iob, id)
               end if
@@ -251,6 +251,13 @@
               !! if a channel is not an object, call at beginning of day
               j = iwallo    ! to avoid a compiler warning
               if (wallo(iwallo)%cha_ob == "n") call wallo_control (j)
+            end do
+          end if
+
+          !! allocate manure to appropriate demand objects
+          if (db_mx%mallo_db > 0) then
+            do imallo = 1, db_mx%mallo_db
+              call mallo_control (imallo)
             end do
           end if
 
@@ -378,11 +385,9 @@
       time%yrc = time%yrc + 1
       end do            !!     end annual loop
      
-      !! write output for SWIFT input
-      !if (bsn_cc%swift_out == 1) call swift_output
-      
       !! ave annual calibration output and reset time for next simulation
       call calsoft_ave_output
+      yrs_print = time%yrs_prt
       time = time_init
 
       return

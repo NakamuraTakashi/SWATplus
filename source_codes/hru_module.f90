@@ -26,7 +26,7 @@
       end type irrigation_sources
       
       type topography
-           character(len=13) :: name
+           character(len=40) :: name
            real :: elev = 0.         !!               |m             |elevation of HRU
            real :: slope = 0.        !!	hru_slp(:)    |m/m           |average slope steepness in HRU
            real :: slope_len = 0.    !! slsubbsn(:)   |m             |average slope length for erosion
@@ -39,14 +39,14 @@
       end type topography
       
       type field
-           character(len=13) :: name = "default"
+           character(len=40) :: name = "default"
            real :: length = 500. !!               |m             |field length for wind erosion
            real :: wid = 100.    !!               |m             |field width for wind erosion
            real :: ang = 30.     !!               |deg           |field angle for wind erosion
       end type field
       
       type hydrology
-           character(len=16) :: name
+           character(len=40) :: name
            real :: lat_ttime = 0.   !! lat_ttime(:)  |days          |days of lateral soil flow across the hillslope
            real :: lat_sed = 0.     !! lat_sed(:)    |g/L           |sediment concentration in lateral flow
            real :: canmx = 0.       !! canmx(:)      |mm H2O        |maximum canopy storage
@@ -64,13 +64,13 @@
            real :: perco = 0.       !!               |0-1           |percolation coefficient - linear adjustment to daily perc
            real :: lat_orgn = 0.
            real :: lat_orgp = 0.
-           real :: harg_pet  = .0023  
+           real :: pet_co  = .0023  
            real :: latq_co = 0.3    !!               |              |lateral soil flow coefficient - linear adjustment to daily lat flow
            real :: perco_lim = 1.   !!               |              |percolation coefficient-limits perc from bottom layer
       end type hydrology
       
       type snow_parameters
-         character (len=16) :: name
+         character (len=40) :: name
          real :: falltmp = 0.     !deg C         |snowfall temp
          real :: melttmp = 0.5    !deg C         |snow melt base temp 
          real :: meltmx = 4.5     !mm/deg C/day  |Max melt rate for snow during year (June 21)
@@ -83,7 +83,7 @@
       type (snow_parameters), dimension (:), allocatable :: snodb
       
       type subsurface_drainage_parameters
-        character(len=13) :: name = "null"
+        character(len=40) :: name = "null"
         real :: depth = 0.    !! |mm            |depth of drain tube from the soil surface
         real :: time = 0.     !! |hrs           |time to drain soil to field capacity
         real :: lag = 0.      !! |hours         |drain tile lag time
@@ -96,7 +96,7 @@
       type (subsurface_drainage_parameters), dimension (:), allocatable :: sdr
               
       type landuse
-          character(len=15) :: name
+          character(len=40) :: name
           integer :: cn_lu = 0
           integer :: cons_prac = 0
           real :: usle_p = 0.           !! none     | USLE equation support practice (P) factor daily
@@ -109,13 +109,13 @@
       type (landuse), dimension (:), allocatable :: luse
       
       type soil_plant_initialize
-        character(len=16) :: name = ""
+        character(len=40) :: name = ""
         real :: sw_frac
-        character(len=16) :: nutc = ""
-        character(len=16) :: pestc = ""
-        character(len=16) :: pathc = ""
-        character(len=16) :: saltc = ""
-        character(len=16) :: hmetc = ""
+        character(len=40) :: nutc = ""
+        character(len=40) :: pestc = ""
+        character(len=40) :: pathc = ""
+        character(len=40) :: saltc = ""
+        character(len=40) :: hmetc = ""
         integer :: nut = 0
         integer :: pest = 1
         integer :: path = 1
@@ -125,7 +125,7 @@
       type (soil_plant_initialize), dimension (:), allocatable :: sol_plt_ini
         
       type hru_databases
-        character(len=13) :: name = ""
+        character(len=40) :: name = ""
         integer :: topo = 1
         integer :: hyd = 1
         integer :: soil = 1
@@ -137,19 +137,19 @@
       end type hru_databases
       
       type hru_databases_char
-        character(len=25) :: name = ""
-        character(len=25) :: topo = ""
-        character(len=25) :: hyd = ""
-        character(len=25) :: soil = ""
-        character(len=25) :: land_use_mgt = ""
-        character(len=25) :: soil_plant_init = ""
-        character(len=25) :: surf_stor = ""
-        character(len=25) :: snow = ""
-        character(len=25) :: field = ""
+        character(len=40) :: name = ""
+        character(len=40) :: topo = ""
+        character(len=40) :: hyd = ""
+        character(len=40) :: soil = ""
+        character(len=40) :: land_use_mgt = ""
+        character(len=40) :: soil_plant_init = ""
+        character(len=40) :: surf_stor = ""
+        character(len=40) :: snow = ""
+        character(len=40) :: field = ""
       end type hru_databases_char
 
       type hydrologic_response_unit_db
-        character(len=13) :: name = "default"
+        character(len=40) :: name = "default"
         type (hru_databases) :: dbs
         type (hru_databases_char) :: dbsc
       end type hydrologic_response_unit_db
@@ -185,7 +185,7 @@
       end type land_use_mgt_variables
      
       type hydrologic_response_unit
-        character(len=13) :: name = ""
+        character(len=40) :: name = ""
         integer :: obj_no
         real :: area_ha
         real :: km
@@ -193,10 +193,10 @@
         type (hru_databases) :: dbs             !database pointers
         type (hru_databases_char) :: dbsc       !database pointers
         integer :: land_use_mgt
-        character(len=16) :: land_use_mgt_c
+        character(len=40) :: land_use_mgt_c
         integer :: lum_group
-        character(len=16) :: lum_group_c        !land use group for soft cal and output
-        character(len=16) :: region
+        character(len=40) :: lum_group_c        !land use group for soft cal and output
+        character(len=40) :: region
         integer :: plant_cov
         integer :: mgt_ops
         integer :: tiledrain = 0
@@ -205,6 +205,7 @@
         integer :: grassww = 0
         integer :: bmpuser = 0
         integer :: crop_reg = 0
+        integer :: paddy_irr = 0  !Jaehak 2022
 
         !! other data
         type (topography) :: topo
@@ -217,12 +218,20 @@
         real :: snocov1, snocov2
         integer :: cur_op = 1
         integer :: irr_dmd_dtbl = 0
-        real :: sno_mm                          !mm H2O        |amount of water in snow on current day
+        integer :: man_dmd_dtbl = 0
+        integer :: irr_dmd_iauto = 0
+        integer :: man_dmd_iauto = 0
+        integer :: wet_db = 0                   !none       |pointer to wetland data - saved so turn on/off
+        real :: wet_hc                          !mm/h       |hydraulic conductivity of upper layer - wetlands
+        real :: sno_mm                          !mm H2O     |amount of water in snow on current day
         real :: water_seep
         real :: water_evap
         real :: precip_aa
         character(len=1) :: wet_fp = "n"
+        character(len=5) :: irr_src = "unlim"    !        |irrigation source, Jaehak 2022
         real :: strsa
+        real :: irr_hmax = 0               !mm H2O        |target ponding depth during paddy irrigation Jaehak 2022
+        real :: irr_hmin = 0               !mm H2O        |threshold ponding depth to trigger paddy irrigation
       end type hydrologic_response_unit
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru_init
@@ -274,8 +283,7 @@
       integer :: mo
       integer :: ihru             !!none          |HRU number
       integer :: nd_30
-      integer :: mpst, mlyr
-!  routing 5/3/2010 gsm per jga    
+      integer :: mpst, mlyr   
 ! date
       character(len=8) :: date
 

@@ -156,7 +156,7 @@
         end if
                 
       case ("petco")
-        hru(ielem)%hyd%harg_pet = chg_par (hru(ielem)%hyd%harg_pet,     &
+        hru(ielem)%hyd%pet_co = chg_par (hru(ielem)%hyd%pet_co,     &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
 
       case ("lat_orgn")
@@ -621,9 +621,9 @@
             sd_ch(ielem)%cov = chg_par(sd_ch(ielem)%cov,                  &
                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
             
-         case ("wd_rto")
-            sd_ch(ielem)%wd_rto = chg_par(sd_ch(ielem)%wd_rto,            &
-                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+        ! case ("wd_rto")
+        !    sd_ch(ielem)%wd_rto = chg_par(sd_ch(ielem)%wd_rto,            &
+        !                 ielem, chg_typ, chg_val, absmin, absmax, num_db)
         
          case ("chseq")
             sd_ch(ielem)%chseq = chg_par(sd_ch(ielem)%chseq,              &
@@ -759,33 +759,67 @@
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
             
       !!AQU
-         case ("alpha")
-            aqu_prm(ielem)%alpha = chg_par(aqu_prm(ielem)%alpha, ielem, chg_typ, chg_val, absmin, absmax, num_db)
-            aqu_prm(ielem)%alpha_e = Exp(-aqu_prm(ielem)%alpha)
-
-         case ("bf_max")
-            aqu_prm(ielem)%bf_max = chg_par(aqu_prm(ielem)%bf_max, ielem, chg_typ, chg_val, absmin, absmax, num_db)
-
-         case ("flo_min")
-            aqu_prm(ielem)%flo_min = chg_par(aqu_prm(ielem)%flo_min,        &
+         case ("flo_init_mm")
+            aqu_dat(ielem)%flo = chg_par(aqu_dat(ielem)%flo,                &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+         case ("dep_bot")
+            aqu_dat(ielem)%dep_bot = chg_par(aqu_dat(ielem)%dep_bot,        &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
 
-         case ("revap_co")
-            aqu_prm(ielem)%revap_co = chg_par(aqu_prm(ielem)%revap_co,      &
+         case ("dep_wt_init")
+            aqu_dat(ielem)%dep_wt = chg_par(aqu_dat(ielem)%dep_wt,          &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+
+         case ("no3_init")
+            aqu_dat(ielem)%no3 = chg_par(aqu_dat(ielem)%no3,                &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
             
-         case ("revap_min")
-            aqu_prm(ielem)%revap_min = chg_par(aqu_prm(ielem)%revap_min,    &
+         case ("minp_init")
+            aqu_dat(ielem)%minp = chg_par(aqu_dat(ielem)%minp,              &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
                
-         case ("sp_yld")
-            aqu_prm(ielem)%spyld = chg_par(aqu_prm(ielem)%spyld,            &
+         case ("cbn_init")
+            aqu_dat(ielem)%cbn = chg_par(aqu_dat(ielem)%cbn,                &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
                            
+         case ("flo_dist")
+            aqu_dat(ielem)%flo_dist = chg_par(aqu_dat(ielem)%flo_dist,      &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+         
+         case ("bf_max")
+            aqu_dat(ielem)%bf_max = chg_par(aqu_dat(ielem)%bf_max,          &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+   
+         case ("alpha")
+            aqu_dat(ielem)%alpha = chg_par(aqu_dat(ielem)%alpha,            &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+            aqu_prm(ielem)%alpha_e = Exp(-aqu_dat(ielem)%alpha)
+
+         case ("revap_co")
+            aqu_dat(ielem)%revap_co = chg_par(aqu_dat(ielem)%revap_co,      &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+                  
          case ("deep_seep")
-            aqu_prm(ielem)%seep = chg_par(aqu_prm(ielem)%seep,              &
+            aqu_dat(ielem)%seep = chg_par(aqu_dat(ielem)%seep,              &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
             
+         case ("sp_yld")
+            aqu_dat(ielem)%spyld = chg_par(aqu_dat(ielem)%spyld,            &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+                    
+         case ("hlife_n")
+            aqu_dat(ielem)%hlife_n = chg_par(aqu_dat(ielem)%hlife_n,        &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+            aqu_prm(ielem)%nloss = Exp(-.693 / (aqu_dat(ielem)%hlife_n + .1))
+
+         case ("flo_min")
+            aqu_dat(ielem)%flo_min = chg_par(aqu_dat(ielem)%flo_min,        &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+ 
+         case ("revap_min")
+            aqu_dat(ielem)%revap_min = chg_par(aqu_dat(ielem)%revap_min,    &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+               
       !!LTE
          case ("cn2_lte")
             hlt_db(ielem)%cn2 = chg_par (hlt_db(ielem)%cn2, ielem, chg_typ, chg_val, absmin, absmax, num_db)

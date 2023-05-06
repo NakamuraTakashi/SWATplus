@@ -22,6 +22,7 @@
       !allocate objects for each aquifer
       allocate (aqu_om_init(sp_ob%aqu))
       allocate (aqu_d(sp_ob%aqu))
+      allocate (aqu_dat(sp_ob%aqu))
       allocate (aqu_prm(sp_ob%aqu))
       allocate (aqu_m(sp_ob%aqu))
       allocate (aqu_y(sp_ob%aqu))
@@ -56,29 +57,26 @@
         iaqdb = ob(iob)%props
 
         !! initialize parameters
+        aqu_dat(iaq) = aqudb(iaqdb)
+        
         aqu_prm(iaq)%area_ha = ob(iob)%area_ha
-        aqu_prm(iaq)%alpha = aqudb(iaqdb)%alpha
-        aqu_prm(iaq)%flo_min = aqudb(iaqdb)%flo_min
-        aqu_prm(iaq)%revap_co = aqudb(iaqdb)%revap_co
-        aqu_prm(iaq)%revap_min = aqudb(iaqdb)%revap_min
-        aqu_prm(iaq)%spyld = aqudb(iaqdb)%spyld
-        aqu_prm(iaq)%seep = aqudb(iaqdb)%seep
-        aqu_prm(iaq)%alpha_e = Exp(-aqudb(iaqdb)%alpha)
-        aqu_prm(iaq)%bf_max = aqudb(iaq)%bf_max
-        aqu_prm(iaq)%nloss = Exp(-.693 / (aqudb(iaqdb)%hlife_n + .1))
-        aqu_d(iaq)%flo = aqudb(iaqdb)%flo
-        aqu_d(iaq)%dep_wt = aqudb(iaqdb)%dep_wt
-        aqu_d(iaq)%stor = 1000. * (aqudb(iaqdb)%dep_bot - aqu_d(iaqdb)%dep_wt) * aqudb(iaqdb)%spyld
-        aqu_d(iaq)%no3 = aqudb(iaqdb)%no3
-        aqu_d(iaq)%minp = aqudb(iaqdb)%minp
-        aqu_d(iaq)%cbn = aqudb(iaqdb)%cbn
+        aqu_prm(iaq)%alpha_e = Exp(-aqu_dat(iaq)%alpha)
+        aqu_prm(iaq)%nloss = Exp(-.693 / (aqu_dat(iaq)%hlife_n + .1))
+        
+        aqu_d(iaq)%flo = aqu_dat(iaq)%flo
+        aqu_d(iaq)%dep_wt = aqu_dat(iaq)%dep_wt
+        aqu_d(iaq)%stor = 1000. * (aqu_dat(iaq)%dep_bot - aqu_d(iaqdb)%dep_wt) * aqu_dat(iaq)%spyld
+        !! convert ppm -> kg    (m3=10*mm*ha)     kg=m3*ppm/1000
+        aqu_d(iaq)%no3_st = (10. * aqu_d(iaq)%flo * aqu_prm(iaq)%area_ha) * aqu_dat(iaq)%no3 / 1000.
+        aqu_d(iaq)%minp = 0.
+        aqu_d(iaq)%cbn = aqu_dat(iaq)%cbn
         aqu_d(iaq)%rchrg = 0.
         aqu_d(iaq)%seep = 0.
         aqu_d(iaq)%revap = 0.
-        aqu_d(iaq)%rchrg_n = 0.
-        aqu_d(iaq)%nloss = 0.
-        aqu_d(iaq)%no3gw = 0.
-        aqu_d(iaq)%seepno3 = 0.
+        aqu_d(iaq)%no3_rchg = 0.
+        aqu_d(iaq)%no3_loss = 0.
+        aqu_d(iaq)%no3_lat = 0.
+        aqu_d(iaq)%no3_seep = 0.
         aqu_d(iaq)%flo_cha = 0.
         aqu_d(iaq)%flo_res = 0.
         aqu_d(iaq)%flo_ls = 0

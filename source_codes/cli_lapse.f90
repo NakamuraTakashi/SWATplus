@@ -27,13 +27,9 @@
         end if
         if (wst(iwst)%wco_c%tgage == "sim") then
           iwgn = wst(iwst)%wco%wgn
-          ob(iob)%tlaps = bsn_prm%tlaps * (tmp(igage)%elev - ob(iob)%elev) / 1000.
-          ob(iob)%tlaps = bsn_prm%tlaps * (tmp(igage)%elev - ob(iob)%elev) / 1000.
-          ob(iob)%tlaps = bsn_prm%tlaps * (tmp(igage)%elev - ob(iob)%elev) / 1000.
+          ob(iob)%tlaps = bsn_prm%tlaps * (wgn(iwgn)%elev - ob(iob)%elev) / 1000.
         else
           igage = wst(iwst)%wco%tgage
-          ob(iob)%tlaps = bsn_prm%tlaps * (tmp(igage)%elev - ob(iob)%elev) / 1000.
-          ob(iob)%tlaps = bsn_prm%tlaps * (tmp(igage)%elev - ob(iob)%elev) / 1000.
           ob(iob)%tlaps = bsn_prm%tlaps * (tmp(igage)%elev - ob(iob)%elev) / 1000.
         end if
       end do

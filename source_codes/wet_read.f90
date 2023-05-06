@@ -147,6 +147,7 @@
           do isstor = 1, db_mx%wet_dat
             if (hru(i)%dbsc%surf_stor == wet_dat_c(isstor)%name) then
               hru(i)%dbs%surf_stor = isstor
+              hru(i)%wet_db = isstor
               exit
             end if
           end do

@@ -44,7 +44,7 @@
       qp_cms = qp_cms * hru(j)%km / 3.6          !! m^3/s
       
       !! NRCS dimensionless hydrograph with PRF
-      !! convert ha-mm * mi2/259km2 * in/25.4mm to mi2-in --> 1/6578.6
+      !! convert ha-mm * mi2/259ha * in/25.4mm to mi2-in --> 1/6578.6
       qp_cfs = bsn_prm%prf / 6578.6 * hru(j)%area_ha * qday / tconc(j)
       qp_cms = qp_cfs / 35.3
 

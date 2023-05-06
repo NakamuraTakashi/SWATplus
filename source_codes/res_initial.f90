@@ -33,6 +33,8 @@
         res_ob(ires)%pvol = res_hyd(ihyd)%pvol * 10000.       !! ha-m => m**3
         res_ob(ires)%esa = res_hyd(ihyd)%esa
         res_ob(ires)%psa = res_hyd(ihyd)%psa
+        !! set initial weir height to principal depth - m
+        res_ob(ires)%weir_hgt = res_ob(ires)%pvol / (res_ob(ires)%psa * 10000.)
         
         !! calculate shape parameters for surface area equation
         resdif = res_hyd(ihyd)%evol - res_hyd(ihyd)%pvol
@@ -61,46 +63,52 @@
       end do
       
       do ires = 1, sp_ob%res
-        idat = res_ob(ires)%props
-        i = res_dat(idat)%init
+        !! only initialize volume and constituents if operational at start of simulation
+        !! if not, assume zero volume when dam is built
+        if (time%yrc > res_hyd(ires)%iyres .or. (time%mo >= res_hyd(ires)%mores   &
+                                   .and. time%yrc == res_hyd(ires)%iyres)) then
+          idat = res_ob(ires)%props
+          i = res_dat(idat)%init
         
-        !! initialize org-min in reservoir
-        init = res_init(i)%org_min
-        res(ires) = om_init_water(init)
-        call res_convert_mass (res(ires), res_ob(ires)%pvol)
+          !! initialize org-min in reservoir
+          init = res_init(i)%org_min
+          res(ires) = om_init_water(init)
+          call res_convert_mass (res(ires), res_ob(ires)%pvol)
         
-        !! set initial reservoir org-min to reset for soft calibration
-        res_om_init(ires) = res(ires)
+          !! set initial reservoir org-min to reset for soft calibration
+          res_om_init(ires) = res(ires)
 
-        !! initialize pesticides in reservoir water and benthic from input data
-        init = res_init(i)%pest
-        do ipest = 1, cs_db%num_pests
-          ipest_db = cs_db%pest_num(ipest)
-          res_water(ires)%pest(ipest) = pest_water_ini(init)%water(ipest)
-          res_benthic(ires)%pest(ipest) = pest_water_ini(init)%benthic(ipest)
-          !! calculate mixing velocity using molecular weight and porosity
-          ised = res_dat(idat)%sed
-          res_ob(ires)%aq_mix(ipest) = pestdb(ipest_db)%mol_wt * (1. - res_sed(ised)%bd / 2.65)
-        end do
+          !! initialize pesticides in reservoir water and benthic from input data
+          init = res_init(i)%pest
+          do ipest = 1, cs_db%num_pests
+            ipest_db = cs_db%pest_num(ipest)
+            res_water(ires)%pest(ipest) = pest_water_ini(init)%water(ipest)
+            res_benthic(ires)%pest(ipest) = pest_water_ini(init)%benthic(ipest)
+            !! calculate mixing velocity using molecular weight and porosity
+            ised = res_dat(idat)%sed
+            res_ob(ires)%aq_mix(ipest) = pestdb(ipest_db)%mol_wt * (1. - res_sed(ised)%bd / 2.65)
+          end do
                   
-        !! initialize pathogens in reservoir water and benthic from input data
-        init = res_init(i)%path
-        do ipath = 1, cs_db%num_paths
-          res_water(ires)%path(ipath) = path_water_ini(init)%water(ipath)
-          res_benthic(ires)%path(ipath) = path_water_ini(init)%benthic(ipath)
-        end do
+          !! initialize pathogens in reservoir water and benthic from input data
+          init = res_init(i)%path
+          do ipath = 1, cs_db%num_paths
+            res_water(ires)%path(ipath) = path_water_ini(init)%water(ipath)
+            res_benthic(ires)%path(ipath) = path_water_ini(init)%benthic(ipath)
+          end do
                         
-        !! initialize salts in reservoir water and benthic from input data
-        init = res_init(i)%salt
-        do isalt = 1, cs_db%num_salts
-          res_water(ires)%salt(isalt) = salt_water_ini(init)%water(isalt)
-          res_benthic(ires)%salt(isalt) = salt_water_ini(init)%benthic(isalt)
-        end do
+          !! initialize salts in reservoir water and benthic from input data
+          init = res_init(i)%salt
+          do isalt = 1, cs_db%num_salts
+            res_water(ires)%salt(isalt) = salt_water_ini(init)%water(isalt)
+            res_benthic(ires)%salt(isalt) = salt_water_ini(init)%benthic(isalt)
+          end do
         
-        !! calculate initial surface area       
-        res_wat_d(ires)%area_ha = res_ob(ires)%br1 * res(ires)%flo ** res_ob(ires)%br2
+          !! calculate initial surface area       
+          res_wat_d(ires)%area_ha = res_ob(ires)%br1 * res(ires)%flo ** res_ob(ires)%br2
 
+        end if
       end do
+                                   
       close(105)
 
       return

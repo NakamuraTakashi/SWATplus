@@ -168,12 +168,8 @@
       !	drainage flux for ponded surface
       depth = hru(j)%lumv%sdr_dep + hdrain
       hdmin = depth - hru(j)%lumv%sdr_dep
-      if (bsn_cc%smax == 1) then
-        call swr_depstor ! dynamic stmaxd(j): compute current HRU stmaxd based 
+      call swr_depstor ! dynamic stmaxd(j): compute current HRU stmaxd based 
 	           ! on cumulative rainfall and cum. intensity
-	else
-	  stmaxd(j) = sstmaxd(j)
-	end if 
       storro = 0.2 * stmaxd(j) !surface storage that must be filled before surface
                    !water can move to the tile drain tube
       !! Determine surface storage for the day in a given HRU (stor)

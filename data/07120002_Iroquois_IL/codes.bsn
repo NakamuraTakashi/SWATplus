@@ -1,3 +1,3 @@
 codes.bsn
-    PET_FILE     WQ_FILE   PET EVENT CRACK RTU_WQ SED_DET RTE_CHA DEG_CHA WQ_CHA    STRESS   CN  C_FACT CARBON  BASEFLOW  UHYD SED_CHA TILEDRAIN WTABLE SOIL_P   GAMPT ATMO_DEP STOR_MAX  I_FPWET
-        null        null     2     0     0      0       1       1       0      0       0      0      0      0       0     1       0         0      0      0          0        0        0        0
+    PET_FILE     WQ_FILE   PET EVENT CRACK  SWIFT SED_DET RTE_CHA DEG_CHA WQ_CHA    STRESS   CN  C_FACT CARBON  BASEFLOW  UHYD SED_CHA TILEDRAIN WTABLE SOIL_P   GAMPT ATMO_DEP STOR_MAX  I_FPWET
+        null        null     2     0     0      0       1       1       0      0       0      0      0      0       0     1       0         0      0      0          0        y        0        0

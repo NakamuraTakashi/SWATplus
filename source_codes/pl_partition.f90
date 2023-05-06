@@ -74,10 +74,15 @@
       !! partition n and p
       if (pldb(idp)%typ == "perennial") then
         !! partition leaves and seed (stem is woody biomass)
-        pl_mass(j)%seed(ipl)%n = pldb(idp)%cnyld * pl_mass(j)%seed(ipl)%m
-        n_left = pl_mass(j)%tot(ipl)%n - pl_mass(j)%seed(ipl)%n
         m_left = pl_mass(j)%leaf(ipl)%m + pl_mass(j)%stem(ipl)%m + pl_mass(j)%root(ipl)%m
         if (m_left > 1.e-9) then
+          pl_mass(j)%seed(ipl)%n = pldb(idp)%cnyld * pl_mass(j)%seed(ipl)%m
+          n_left = pl_mass(j)%tot(ipl)%n - pl_mass(j)%seed(ipl)%n
+          !! if n is neg after seed is removed - assume 0 n in seed - plant database cnyld and fr_n_mat are off
+          if (n_left < 0.) then
+            pl_mass(j)%seed(ipl)%n = 0.
+            n_left = pl_mass(j)%seed(ipl)%n +  n_left
+          end if
           !! partition n_left between remaining masses - assume equal concentrations
           pl_mass(j)%leaf(ipl)%n = n_left * pl_mass(j)%leaf(ipl)%m / m_left
           pl_mass(j)%stem(ipl)%n = n_left * pl_mass(j)%stem(ipl)%m / m_left
@@ -86,6 +91,11 @@
         
           pl_mass(j)%seed(ipl)%p = pldb(idp)%cpyld * pl_mass(j)%seed(ipl)%m
           p_left = pl_mass(j)%tot(ipl)%p - pl_mass(j)%seed(ipl)%p
+          !! if n is neg after seed is removed - assume 0 n in seed - plant database cnyld and fr_n_mat are off
+          if (p_left < 0.) then
+            pl_mass(j)%seed(ipl)%p = 0.
+            p_left = pl_mass(j)%seed(ipl)%p +  p_left
+          end if
           !! partition p_left between remaining masses - assume equal concentrations
           pl_mass(j)%leaf(ipl)%p = p_left * pl_mass(j)%leaf(ipl)%m / m_left
           pl_mass(j)%stem(ipl)%p = p_left * pl_mass(j)%stem(ipl)%m / m_left

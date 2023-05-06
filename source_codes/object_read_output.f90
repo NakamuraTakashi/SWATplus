@@ -2,6 +2,7 @@
       
       use input_file_module
       use hydrograph_module
+      use maximum_data_module
       
       implicit none
        
@@ -37,6 +38,7 @@
             mobj_out = mobj_out + 1
           end do
           
+        db_mx%object_prt = mobj_out
         allocate (ob_out(0:imax))
         rewind (107)
         read (107,*,iostat=eof) titldum

@@ -40,6 +40,7 @@
       integer :: j           !none      |hru number
       integer :: l           !none      |counter (soil layer)
       real :: root_depth     !mm        |root depth
+      real :: soil_depth     !mm        |soil layer depth
       real :: uapl           !kg P/ha   |amount of phosphorus removed from layer
       real :: gx             !mm        |lowest depth in layer from which nitrogen
                              !          |may be removed
@@ -57,15 +58,21 @@
       hnb_d(j)%puptake = 0.
       if (uapd(ipl) < 1.e-6) return
 
+      !! find depth of soil layer the roots are into
+      root_depth = amax1 (10.1, pcom(j)%plg(ipl)%root_dep)
+      soil_depth = 0.
       do l = 1, soil(j)%nly
-        root_depth = amax1 (10., pcom(j)%plg(ipl)%root_dep)
-        if (pcom(j)%plg(ipl)%root_dep <= soil(j)%phys(l)%d) then
+        soil_depth = soil(j)%phys(l)%d
+        if (root_depth < soil_depth) then
+          root_depth = soil(j)%phys(l)%d
           exit
-        else
-          gx = soil(j)%phys(l)%d
         end if
-
-        upmx = uapd(ipl) * rto_solp * (1. - Exp(-bsn_prm%p_updis * gx / root_depth)) / uptake%p_norm
+      end do
+        
+      do l = 1, soil(j)%nly
+        soil_depth = soil(j)%phys(l)%d
+        if (root_depth < soil_depth) exit
+        upmx = uapd(ipl) * rto_solp * (1. - Exp(-bsn_prm%p_updis * soil_depth / root_depth)) / uptake%p_norm
         uapl = Min(upmx - pplnt(j), soil1(j)%mp(l)%lab)
         pplnt(j) = pplnt(j) + uapl
         soil1(j)%mp(l)%lab = soil1(j)%mp(l)%lab - uapl
@@ -73,6 +80,8 @@
       if (pplnt(j) < 0.) pplnt(j) = 0.
 
       pl_mass(j)%tot(ipl)%p = pl_mass(j)%tot(ipl)%p + pplnt(j)
+      pl_mass(j)%ab_gr(ipl)%p = pl_mass(j)%ab_gr(ipl)%p + pplnt(j) * (1. - pcom(j)%plg(ipl)%root_frac)
+      pl_mass(j)%root(ipl)%p = pl_mass(j)%root(ipl)%p + pplnt(j) * pcom(j)%plg(ipl)%root_frac
       pl_mass_up%p = pplnt(j)
       hnb_d(j)%puptake = hnb_d(j)%puptake + pplnt(j)
 

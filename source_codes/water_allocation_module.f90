@@ -1,11 +1,15 @@
       module water_allocation_module
     
+      use hydrograph_module, only : hyd_output
+    
       implicit none
             
+      character(len=16), dimension(:), allocatable :: trt_om_name    !treatment name in treatment.trt
+      
       !water source objects
       type water_source_objects
         integer :: num                          !demand object number
-        character (len=3) :: ob_typ             !reservoir(res), aquifer(aqu), unlimited groundwater source(gwu)
+        character (len=3) :: ob_typ             !channel(cha), reservoir(res), aquifer(aqu), unlimited source(unl)
         integer :: ob_num                       !number of the object type
         real, dimension (12) :: limit_mon       !min chan flow(m3/s), min res level(frac prinicpal), max aqu depth(m)
       end type water_source_objects
@@ -17,6 +21,12 @@
         character (len=1) :: comp               !compensate from source if other sources are limiting (y/n)
       end type water_demand_sources
           
+      !demand source objects
+      type water_demand_source_objects
+        character (len=10) :: ob_typ            !hru (for irrigation) or muni (municipal) or divert (interbasin diversion)
+        integer :: ob_num                       !number of the object type
+      end type water_demand_source_objects
+          
       !water demand objects
       type water_demand_objects
         integer :: num                          !demand object number
@@ -25,26 +35,23 @@
         character (len=25) :: withdr            !withdrawal type - ave_day or recall for muni and divert - irrig for hru
         real :: amount                          !m3 per day for muni and mm for hru
         character (len=2) :: right              !water right (sr -senior or jr - junior right)
+        character (len=25) :: treat_typ         !recall for inputting a recall object and treat for a treatment object
+        character (len=25) :: treatment         !pointer to the recall or dr file
+        character (len=10) :: rcv_ob            !receiving object (channel, reservoir, aquifer) - no dtl - all return to this object
+        integer :: rcv_num                      !receiving object number
+        character (len=10) :: rcv_dtl           !receiving object decision table - to condition water transfers and diversions
         integer :: rec_num                      !recall number when using recall for muni or divert demands
+        integer :: trt_num                      !treatment database number when treating the withdrawn water
         integer :: dmd_src_obs                  !number of source objects available for the demand object
         real :: unmet_m3                        !m3     |unmet demand for the object
         real :: withdr_tot                      !m3     |total withdrawal of demand object from all souces
         real :: irr_eff                         !irrigation in-field efficiency
         real :: surq                            !surface runoff ratio
-        type (water_demand_sources), dimension(:), allocatable :: src           !sources for each demand object
+        type (hyd_output) :: hd
+        type (hyd_output) :: trt
+        type (water_demand_sources), dimension(:), allocatable :: src               !sequential source objects as listed in wallo object
+        type (water_demand_source_objects), dimension(:), allocatable :: src_ob     !type and number of each source object
       end type water_demand_objects
-      
-      !water allocation
-      type water_allocation
-        character (len=25) :: name              !name of the water allocation object
-        character (len=25) :: rule_typ          !rule type to allocate water
-        integer :: src_obs                      !number of source objects
-        integer :: dmd_obs                      !number of demand objects
-        character (len=1) :: cha_ob             !y-yes there is a channel object; n-no channel object (only one per water allocation object)
-        type (water_source_objects), dimension(:), allocatable :: src        !dimension by source objects
-        type (water_demand_objects), dimension(:), allocatable :: dmd        !dimension by demand objects
-      end type water_allocation
-      type (water_allocation), dimension(:), allocatable :: wallo            !dimension by water allocation objects
 
       !source output
       type source_output
@@ -54,6 +61,19 @@
       end type source_output
       type (source_output) :: walloz
       
+      !water allocation
+      type water_allocation
+        character (len=25) :: name              !name of the water allocation object
+        character (len=25) :: rule_typ          !rule type to allocate water
+        integer :: src_obs                      !number of source objects
+        integer :: dmd_obs                      !number of demand objects
+        character (len=1) :: cha_ob             !y-yes there is a channel object; n-no channel object (only one per water allocation object)
+        type (source_output) :: tot             !total demand, withdrawal and unmet for entire allocation object
+        type (water_source_objects), dimension(:), allocatable :: src        !dimension by source objects
+        type (water_demand_objects), dimension(:), allocatable :: dmd        !dimension by demand objects
+      end type water_allocation
+      type (water_allocation), dimension(:), allocatable :: wallo            !dimension by water allocation objects
+
       !demand object output
       type demand_object_output
         real :: dmd_tot                 !m3     |total demand of the demand object

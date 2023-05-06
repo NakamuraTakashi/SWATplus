@@ -1,4 +1,4 @@
-file.cio (control input/output)
+file.cio
 SIMULATION        time.sim          print.prt         object.prt       	object.cnt         constituents.cs
 BASIN             codes.bsn         parameters.bsn
 CLIMATE           weather-sta.cli   weather-wgn.cli   null              pcp.cli           tmp.cli           slr.cli           hmd.cli           wnd.cli      atmo_year.dat
@@ -14,7 +14,7 @@ AQUIFER           initial.aqu	    aquifer.aqu
 HERD              null              null               null
 WATER_RIGHTS      null              null               null
 LINK              null              aqu_cha.lin  
-HYDROLOGY         hydrology.hyd     topography.hyd     field.fld
+HYDROLOGY         hydrology.hyd     topography.hyd    field.fld
 STRUCTURAL        tiledrain.str     septic.str        filterstrip.str  grassedww.str    bmpuser.str 
 PARM_DB           plants.plt        fertilizer.frt    tillage.til      pesticide.pes    pathogens.pth       null     salt.slt	urban.urb        septic.sep         snow.sno
 OPS               harv.ops          null              irr.ops          chem_app.ops     null     null     

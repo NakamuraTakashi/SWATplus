@@ -66,7 +66,7 @@
 	    if (bsn_cc%sol_P_model == 0) then 
 	      !! Allow Dynamic PSP Ratio
           !! convert to concentration
-          solp = soil1(ihru)%mp(ly)%lab / soil(ihru)%phys(ly)%conv_wt * 1000000.
+          solp = soil1(ihru)%mp(ly)%lab / wt1
 	      !! PSP = -0.045*log (% clay) + 0.001*(Solution P, mg kg-1) - 0.035*(% Organic C) + 0.43
 	      if (soil(ihru)%phys(ly)%clay > 0.) then
             bsn_prm%psp = -0.045 * log(soil(ihru)%phys(ly)%clay) + (0.001 * solp) 
@@ -86,8 +86,8 @@
         !! Set Stable pool based on dynamic coefficient
 	    if (bsn_cc%sol_P_model == 0) then  !! From White et al 2009 
             !! convert to concentration for ssp calculation
-	        actp = soil1(ihru)%mp(ly)%act / soil(ihru)%phys(ly)%conv_wt * 1000000.
-		    solp = soil1(ihru)%mp(ly)%lab / soil(ihru)%phys(ly)%conv_wt * 1000000.
+	        actp = soil1(ihru)%mp(ly)%act / wt1
+		    solp = soil1(ihru)%mp(ly)%lab / wt1
             !! estimate Total Mineral P in this soil based on data from sharpley 2004
 		    ssp = 25.044 * (actp + solp)** (-0.3833)
 		    !!limit SSP Range

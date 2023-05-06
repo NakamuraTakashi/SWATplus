@@ -19,6 +19,7 @@
       real, dimension (:), allocatable :: rnd8                  !none          |random number between 0.0 and 1.0
       real, dimension (:), allocatable :: rnd9                  !none          |random number between 0.0 and 1.0
       integer :: rndseed_cond = 748932582   ! random number seed for dtbl conditional
+      real, dimension(:), allocatable :: co2y
 
       type weather_generator_db      
         real :: lat =  0.0                          !! degrees      |latitude of weather station used to compile data
@@ -128,6 +129,8 @@
         type (weather_codes_station_char) :: wco_c
         type (weather_codes_station) :: wco 
         type (weather_daily) :: weat
+        real :: precip_aa = 0.              ! mm         |average annual precipitation
+        real :: pet_aa = 0.                 ! mm         |average annual potential ET
         integer :: pcp_ts = 0               ! 1/day      |precipitation time steps per day (0 or 1 = daily)
         real, dimension(12) :: rfinc = 0    ! deg C      |monthly precipitation adjustment
         real, dimension(12) :: tmpinc = 0   ! deg C      |monthly temperature adjustment

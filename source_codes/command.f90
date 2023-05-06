@@ -224,17 +224,13 @@
 
           !convert to per area basis
           if (ob(icmd)%typ == "hru" .or. ob(icmd)%typ == "ru") then  !only convert hru and subbasin hyds for routing
-            !if (ob(icmd)%ru_tot > 0) then
-            !  !object is in a subbasin
-            !  ielem = ob(icmd)%elem
-            !  iru = ob(icmd)%ru(1)  !can only be in one subbasin if routing over
-            !  conv = 100. * ru(iru)%da_km2  !* ru_elem(ielem)%frac
-            !else
-              conv = 10. * ob(icmd)%area_ha      ! m3/10*ha = mm
-            !end if
-            ob(icmd)%hin_sur = ob(icmd)%hin_sur // conv
-            ob(icmd)%hin_lat = ob(icmd)%hin_lat // conv
-            ob(icmd)%hin_til = ob(icmd)%hin_til // conv
+            conv = ob(icmd)%area_ha
+            ob(icmd)%hin_sur = ob(icmd)%hin_sur / conv
+            ob(icmd)%hin_sur%flo = ob(icmd)%hin_sur%flo / 10.      ! m3/10*ha = mm
+            ob(icmd)%hin_lat = ob(icmd)%hin_lat / conv
+            ob(icmd)%hin_lat%flo = ob(icmd)%hin_lat%flo / 10.      ! m3/10*ha = mm
+            ob(icmd)%hin_til = ob(icmd)%hin_til / conv
+            ob(icmd)%hin_til%flo = ob(icmd)%hin_til%flo / 10.      ! m3/10*ha = mm
           end if
         end if
 
@@ -311,6 +307,7 @@
                 ob(icmd)%hd(1) = recall(irec)%hd(1,1)
               end select
               
+              ob(icmd)%hd(1) = hz   !***jga
               rec_d(irec) = ob(icmd)%hd(1)
 
               if (cs_db%num_tot > 0) then
@@ -371,7 +368,13 @@
             end if
             
           end select
-        if (pco%fdcout == "y" .and. ob(icmd)%typ == "chandeg") call flow_dur_curve
+        if (pco%fdcout == "y" .and. ob(icmd)%typ == "chandeg") then
+          call flow_dur_curve
+          !! compute flashiness index
+          ob(icmd)%flash_idx%sum_q_q1 = ob(icmd)%hd(1)%flo - ob(icmd)%flash_idx%q_prev
+          ob(icmd)%flash_idx%q_prev = ob(icmd)%hd(1)%flo
+          ob(icmd)%flash_idx%sum_q = ob(icmd)%hd(1)%flo
+        end if
         
         !print all outflow hydrographs
         if (ob(icmd)%src_tot > 0) then
@@ -390,17 +393,7 @@
         icmd = ob(icmd)%cmd_next
         
       end do
-      
-      !! set demand requirements for water rights objects
-      !! call water_demand
-      do iwro =1, db_mx%wro_db
-        wro(iwro)%demand = 0.
-        do iob = 1, wro(iwro)%num_objs
-          ob_num = wro(iwro)%field(iob)%ob_num
-          wro(iwro)%demand = irrig(ob_num)%demand + wro(iwro)%demand   
-        end do
-      end do
-    
+
       !! print all output files
       if (time%yrs > pco%nyskip) then  ! .and. time%step == 0) then
         call obj_output
@@ -408,6 +401,12 @@
         !! print water allocation output
         do iwro =1, db_mx%wallo_db
           call water_allocation_output (iwro)
+        end do
+        
+        !! print manure allocation output
+        do iwro =1, db_mx%mallo_db
+          call manure_source_output (iwro)
+          call manure_demand_output (iwro)
         end do
         
         do isd = 1, sp_ob%hru_lte
@@ -424,10 +423,12 @@
             call hru_pathogen_output (ihru)
           end if
           !sum annual for SWIFT input
-          icmd = hru(ihru)%obj_no
-          do ihyd = 1, 5
-            ob(icmd)%hd_aa(ihyd) = ob(icmd)%hd_aa(ihyd) + ob(icmd)%hd(ihyd)
-          end do
+          if (bsn_cc%swift_out == 1) then
+            icmd = hru(ihru)%obj_no
+            do ihyd = 1, 5
+              ob(icmd)%hd_aa(ihyd) = ob(icmd)%hd_aa(ihyd) + ob(icmd)%hd(ihyd)
+            end do
+          end if
         end do        
         
         do iaq = 1, sp_ob%aqu

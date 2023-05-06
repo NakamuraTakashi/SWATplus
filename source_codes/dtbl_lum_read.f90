@@ -165,7 +165,33 @@
                       exit
                     endif
                   end do
-                                        
+                          
+                case ("fert_future")
+                  !xwalk fert name with fertilizer data base
+                  do idb = 1, db_mx%fertparm
+                    if (dtbl_lum(i)%act(iac)%option == fertdb(idb)%fertnm) then
+                      dtbl_lum(i)%act_typ(iac) = idb
+                      exit
+                    endif
+                  end do
+                  !xwalk application type with chemical application data base
+                  do idb = 1, db_mx%chemapp_db
+                    if (dtbl_lum(i)%act(iac)%file_pointer == chemapp_db(idb)%name) then
+                      dtbl_lum(i)%act_app(iac) = idb
+                      exit
+                    endif
+                  end do
+                            
+                case ("manure_demand")
+                  !fert name with manure allocation source object
+                  !xwalk application type with chemical application data base
+                  do idb = 1, db_mx%chemapp_db
+                    if (dtbl_lum(i)%act(iac)%option == chemapp_db(idb)%name) then
+                      dtbl_lum(i)%act_app(iac) = idb
+                      exit
+                    endif
+                  end do
+                                      
                 case ("pest_apply")
                   !xwalk fert name with fertilizer data base
                   do idb = 1, cs_db%num_pests
@@ -187,6 +213,14 @@
                   do idb = 1, db_mx%grazeop_db
                     if (dtbl_lum(i)%act(iac)%option == grazeop_db(idb)%name) then
                       dtbl_lum(i)%act_typ(iac) = idb
+                    end if
+                  end do
+                  
+                case ("puddle")
+                  do idb = 1, db_mx%pudl_db
+                    if (dtbl_lum(i)%act(iac)%option == pudl_db(idb)%name) then
+                      dtbl_lum(i)%act_typ(iac) = idb
+                      exit
                     end if
                   end do
                   

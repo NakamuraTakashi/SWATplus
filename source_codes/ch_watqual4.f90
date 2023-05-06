@@ -9,6 +9,7 @@
       use climate_module
       use channel_data_module
       use sd_channel_module
+      use water_body_module
 
       integer :: istep
       real :: tday, wtmp, fll, gra
@@ -71,7 +72,7 @@
        
         !! algal growth
         !! calculate chlorophyll-a concentration at end of day QUAL2E equation III-1
-        algcon = 1000. * ch_stor(jrch)%chla / ch_nut(jnut)%ai0
+        algcon = 1000. * ht3%chla / ch_nut(jnut)%ai0
         algin = 1000. * ht3%chla / ch_nut(jnut)%ai0
          
         !! calculate light extinction coefficient (algal self shading) QUAL2E equation III-12
@@ -209,10 +210,10 @@
 
         !! calculate nitrate concentration at end of day QUAL2E section 3.3.4 equation III-20
         factk = 0.
-        factm = -bc2_m + ht3%no3
+        factm = -bc2_m
         
         ht2%no3 = wq_semianalyt (tday, rt_delt, factm, 0., ch_stor(jrch)%no3, ht3%no3)
-        if (ht2%no3 < 1.e-6) ht2%no3 = 0.
+        if (ht2%no3 < 1.e-6) ht3%no3 = 0.
         !! end nitrogen calculations
 
         !! phosphorus calculations

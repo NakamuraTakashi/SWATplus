@@ -44,6 +44,7 @@
       use climate_module
       use hydrograph_module
       use water_body_module
+      use reservoir_data_module
       
       implicit none
 
@@ -81,7 +82,8 @@
       real :: expo               !              |
       real :: cover              !kg/ha         |soil cover
       real :: wetvol_mm          !mm            |wetland water volume - average depth over hru
-      integer :: ly              !none          |counter                               
+      integer :: ly              !none          |counter     
+      integer:: ires !Jaehak 2022
 
       j = ihru
       pet = pet_day
@@ -89,6 +91,8 @@
 	esd = 500.  !soil(j)%zmx
 	etco = 0.80
 	effnup = 0.05
+      ires= hru(j)%dbs%surf_stor !Jaehak 2022
+
 
 !! evaporate canopy storage first
 !! canopy storage is calculated by the model only if the Green & Ampt
@@ -137,12 +141,23 @@
         es_max = Min(es_max, eos1)
         es_max = Max(es_max, 0.)
 
-        !! make sure maximum plant and soil ET doesn't exceed potential ET
-        if (pet_day < es_max + ep_max) then
-          es_max = pet_day - ep_max
-          if (pet < es_max + ep_max) then
-            es_max = pet * es_max / (es_max + ep_max)
-            ep_max = pet * ep_max / (es_max + ep_max)
+        if (wet(j)%flo > 0.) then !wetlands water evaporation reduced by canopy Jaehak 2022
+        
+          if (pcom(j)%lai_sum <= 4.0) then 
+            es_max = wet_hyd(ires)%evrsv * (1.-pcom(j)%lai_sum / 4.) * pet !adapted from Sakaguchi et al. 2014
+          else
+            es_max = 0.
+          endif
+
+        else  
+        
+          !! make sure maximum plant and soil ET doesn't exceed potential ET
+          if (pet_day < es_max + ep_max) then
+            es_max = pet_day - ep_max
+            if (pet < es_max + ep_max) then
+              es_max = pet * es_max / (es_max + ep_max)
+              ep_max = pet * ep_max / (es_max + ep_max)
+            end if
           end if
         end if
         
@@ -205,12 +220,12 @@
              Exp(2.374 - .00713 * soil(j)%phys(ly)%d))
           sev = evz - evzp * (1. - hru(j)%hyd%esco)
           evzp = evz
-          !if (soil(j)%phys(ly)%st < soil(j)%phys(ly)%fc) then
-          !  xx =  2.5 * (soil(j)%phys(ly)%st - soil(j)%phys(ly)%fc) /    &
-          !   soil(j)%phys(ly)%fc
-          !  sev = sev * expo(xx)
-          !end if
-          !sev = Min(sev, soil(j)%phys(ly)%st * etco)
+          if (soil(j)%phys(ly)%st < soil(j)%phys(ly)%fc) then
+            xx =  2.5 * (soil(j)%phys(ly)%st - soil(j)%phys(ly)%fc) /    &
+             soil(j)%phys(ly)%fc
+            sev = sev * expo(xx)
+          end if
+          sev = Min(sev, soil(j)%phys(ly)%st * etco)
 
           if (sev < 0.) sev = 0.
           if (sev > esleft) sev = esleft

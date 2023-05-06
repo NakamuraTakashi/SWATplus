@@ -50,7 +50,9 @@
       type (update_conditional), dimension (:), allocatable :: upd_cond
       
       type soft_calibration_codes
-        character (len=1) :: hyd_hru = "n"      !! if y, calibrate hydrologic balance for hru by land use in each region
+        character (len=1) :: hyd_hru = "n"      !! if a, calibrate all hydrologic balance processes for hru by land use in each region
+                                                !! if b, calibrate baseflow and total runoff for hru by land use in each region
+                                                !! if y, defaults to b for existing NAM simulations
         character (len=1) :: hyd_hrul = "n"     !! if y, calibrate hydrologic balance for hru_lte by land use in each region
         character (len=1) :: plt = "n"          !! if y, calibrate plant growth by land use (by plant) in each region
         character (len=1) :: sed = "n"          !! if y, calibrate sediment yield by land use in each region  

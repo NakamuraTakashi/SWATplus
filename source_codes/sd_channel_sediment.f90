@@ -88,6 +88,7 @@
       real :: scoef                   !none          |Storage coefficient
       real :: rchvol
       
+      
       ich = isdch
       isd_db = sd_dat(ich)%hyd
       iwst = ob(icmd)%wst
@@ -129,6 +130,7 @@
         end if
       end if
         
+      
         !! break hydrograph into maxint segments and compute deg at each flow increment
         do ihval = 1, ts_int
           !! calc critical shear and shear on bottom of channel
@@ -166,11 +168,11 @@
             if (shear_btm > shear_btm_cr) then
               e_btm = ts_hr *  sd_ch(ich)%cherod * (shear_btm - shear_btm_cr)    !! cm = hr * cm/hr/Pa * Pa
               !! if downcutting - check width depth ratio to see if widens
-              if (sd_ch(ich)%chw / sd_ch(ich)%chd < sd_ch(ich)%wd_rto) then
-                erode_bank_cut = e_btm * sd_ch(ich)%wd_rto
+              !if (sd_ch(ich)%chw / sd_ch(ich)%chd < sd_ch(ich)%wd_rto) then
+              !  erode_bank_cut = e_btm * sd_ch(ich)%wd_rto
                 !! appy to both bank sides
-                deg_bank = deg_bank + 10. * erode_bank_cut * perim_bank * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
-              end if
+              !  deg_bank = deg_bank + 10. * erode_bank_cut * perim_bank * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
+              !end if
               erode_btm = erode_btm + e_btm
               !! calc mass of sediment eroded -> t = cm * m/100cm * width (m) * length (km) * 1000 m/km * bd (t/m3)
               deg_btm = deg_btm + 10. * e_btm * perim_bed * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
@@ -178,6 +180,8 @@
           end if
 
         end do    ! ihval
+        
+
           
           erode_btm = amax1 (0., erode_btm)
           erode_bank = amax1 (0., erode_bank)
