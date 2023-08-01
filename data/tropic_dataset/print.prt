@@ -6,7 +6,7 @@ AA_NUMINT
 CSV         DB        NETCDF
    n         n             n
 CROP_YLD        MGT        HYDCON         FDC	
-a                 n             n           n	 
+b                 n             n           n	 
 OBJECTS        DAILY       MONTHLY      YEARLY      AVANN      
 basin_wb           n             n           y          y
 basin_nb           n             n           n          n

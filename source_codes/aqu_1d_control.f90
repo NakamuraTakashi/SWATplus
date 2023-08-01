@@ -129,6 +129,9 @@
       !! compute mineral p flow (constant concentration) from aquifer - m^3 * ppm * 1000 kg/m^3 = 1/1000
       aqu_d(iaq)%minp = ob(icmd)%hin%flo * aqu_dat(iaq)%minp / 1000.
       ob(icmd)%hd(1)%solp = aqu_d(iaq)%minp
+      
+      !! temperature of aquifer flow
+      !ob(icmd)%hd(1)%temp = l_t * tmp
 
       !! compute fraction of flow to each channel in the aquifer
       !! if connected to aquifer - add flow

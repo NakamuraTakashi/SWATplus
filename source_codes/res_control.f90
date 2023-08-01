@@ -19,6 +19,7 @@
       integer :: irel                 !              |
       integer :: inut                 !none          |counter
       integer :: iob                  !none          |counter
+      integer :: ictbl
       real :: pvol_m3
       real :: evol_m3
       real :: dep
@@ -48,7 +49,7 @@
         idat = res_ob(jres)%props
         ihyd = res_dat(idat)%hyd
         ised = res_dat(idat)%sed
-        if(time%step == 0) then
+        if(res_ob(jres)%rel_tbl == "d") then
           !! determine reservoir outflow
           irel = res_dat(idat)%release
           d_tbl => dtbl_res(irel)
@@ -64,7 +65,8 @@
           call res_hydro (jres, irel, ihyd, pvol_m3, evol_m3, dep, weir_hgt)
           call res_sediment (jres, ihyd, ised)
 	    else
-	      !call res_hourly
+	      ictbl = res_dat(idat)%release                              !! Osvaldo
+          call res_rel_conds (ictbl, res(jres)%flo, ht1%flo, 0.)
         endif
         
         !! calculate water balance for day

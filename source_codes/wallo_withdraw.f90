@@ -67,6 +67,7 @@
             !! only have flow, no3, and minp(solp) for aquifer
             ht5%flo = dmd_m3
             aqu_d(j)%stor = aqu_d(j)%stor - (dmd_m3 / (10. * aqu_prm(j)%area_ha))  !mm = m3/(10.*ha)
+            rto =  (dmd_m3 / (10. * aqu_prm(j)%area_ha)) / aqu_d(j)%stor  !mm
             ht5%no3 = rto * aqu_d(j)%no3_st
             aqu_d(j)%no3_st = (1. - rto) * aqu_d(j)%no3_st
             ht5%solp = rto * aqu_d(j)%minp

@@ -28,6 +28,7 @@
       use water_body_module
       use reservoir_data_module
       use manure_allocation_module
+      use water_allocation_module
       use gwflow_module, only : gwflow_flag, hru_num_cells, hru_cells, cell_size, gw_cell_head,  &
             gw_cell_bot, gw_cell_sy, gw_cell_ss_pumpag
 
@@ -70,7 +71,7 @@
       integer :: isched
       integer :: ipud, ipdl
       integer :: ires,idb
-      integer :: imallo, idmd
+      integer :: imallo, idmd,irec
       real :: hiad1                        !         |
       real :: irrig_m3                     !         |
       real :: amt_mm                       !         |
@@ -125,10 +126,22 @@
             ipl = 1
             j = d_tbl%act(iac)%ob_num
             if (j == 0) j = ob_cur
+            
+            if (d_tbl%act(iac)%name=='ponding') then !irrigation demand calculated by paddy/wetland ponding depth requirements Jaehak 2023
+              hru(j)%irr_hmax = d_tbl%act(iac)%const !mm target ponding depth
+              hru(j)%irr_hmin = d_tbl%act(iac)%const2 !mm threshold ponding depth for irrigation
+              
+              wet_ob(j)%depth = wet_ob(j)%depth + irrig(j)%applied / 1000. !mm irrigation by wro already happend for today Jaehak 2023
 
-            if (pcom(j)%dtbl(idtbl)%num_actions(iac) <= Int(d_tbl%act(iac)%const2)) then
-            irrop = d_tbl%act_typ(iac)      ! irrigation application type in irr.ops
-            irrig(j)%demand = d_tbl%act(iac)%const * hru(j)%area_ha * 10.       ! m3 = mm * ha * 10.
+              if (wet_ob(j)%depth*1000.<hru(j)%irr_hmin) then
+                irrig(j)%demand = max(0.,d_tbl%act(iac)%const-wet_ob(j)%depth*1000.) * hru(j)%area_ha * 10.       ! m3 = mm * ha * 10.
+              else
+                irrig(j)%demand = 0.
+              endif
+            else
+              if (pcom(j)%dtbl(idtbl)%num_actions(iac) <= Int(d_tbl%act(iac)%const2)) then
+                irrop = d_tbl%act_typ(iac)      ! irrigation application type in irr.ops
+                irrig(j)%demand = d_tbl%act(iac)%const * hru(j)%area_ha * 10.       ! m3 = mm * ha * 10.
             
             !! if unlimited source, set irrigation applied directly to hru
             if (d_tbl%act(iac)%file_pointer == "unlim") then
@@ -136,48 +149,49 @@
               irrig(j)%runoff = irrop_db(irrop)%amt_mm * irrop_db(irrop)%eff * irrop_db(irrop)%surq
               
               
-              !rtb gwflow - connect irrigation to groundwater pumping from aquifer
-              if(gwflow_flag) then
-                irrig_total = (irrop_db(irrop)%amt_mm/1000.) * hru(j)%area_ha * 10000. !m3 of irrigation water
-                if(hru_num_cells(j).gt.0) then
-                  gwvol_demand = irrig_total / hru_num_cells(j) !groundwater to remove from each cell connected to the HRU
-                  !loop through the cells that are connected to the HRU
-                  gwvol_diff = 0.
-                  do i=1,hru_num_cells(j)
-                    cell_row = hru_cells(j,i,1)
-                    cell_col = hru_cells(j,i,2)
-                    !check for available groundwater
-                    gwvol_avail = ((gw_cell_head(cell_row,cell_col)-gw_cell_bot(cell_row,cell_col)) * (cell_size * cell_size)) * gw_cell_Sy(cell_row,cell_col) !m3 of groundwater available for removal
-                    if(gwvol_avail.lt.gwvol_demand) then
-                      gwvol_removed = gwvol_avail
-                      gwvol_diff = gwvol_diff + (gwvol_demand - gwvol_avail) !track the amount that is not available for irrigation
-                    else
-                      gwvol_removed = gwvol_demand
+                  !rtb gwflow - connect irrigation to groundwater pumping from aquifer
+                  if(gwflow_flag) then
+                    irrig_total = (irrop_db(irrop)%amt_mm/1000.) * hru(j)%area_ha * 10000. !m3 of irrigation water
+                    if(hru_num_cells(j).gt.0) then
+                      gwvol_demand = irrig_total / hru_num_cells(j) !groundwater to remove from each cell connected to the HRU
+                      !loop through the cells that are connected to the HRU
+                      gwvol_diff = 0.
+                      do i=1,hru_num_cells(j)
+                        cell_row = hru_cells(j,i,1)
+                        cell_col = hru_cells(j,i,2)
+                        !check for available groundwater
+                        gwvol_avail = ((gw_cell_head(cell_row,cell_col)-gw_cell_bot(cell_row,cell_col)) * (cell_size * cell_size)) * gw_cell_Sy(cell_row,cell_col) !m3 of groundwater available for removal
+                        if(gwvol_avail.lt.gwvol_demand) then
+                          gwvol_removed = gwvol_avail
+                          gwvol_diff = gwvol_diff + (gwvol_demand - gwvol_avail) !track the amount that is not available for irrigation
+                        else
+                          gwvol_removed = gwvol_demand
+                        endif
+                        gw_cell_ss_pumpag(cell_row,cell_col) = gwvol_removed * (-1) !m3 --> store for groundwater balance calculations in gwflow_simulate (negative = leaving the aquifer)
+                      enddo
+                      !if available < demand, re-calculate irrigation applied
+                      gwmm_diff = gwvol_diff  / (hru(j)%area_ha * 10000.) * 1000. !m3 --> mm
+                      irrig(j)%applied = (irrop_db(irrop)%amt_mm - gwmm_diff) * irrop_db(irrop)%eff * (1. - irrop_db(irrop)%surq) !decrease ammount by the difference
+                      irrig(j)%runoff = (irrop_db(irrop)%amt_mm - gwmm_diff) * irrop_db(irrop)%eff * irrop_db(irrop)%surq
+                      if(irrig(j)%applied.lt.0) irrig(j)%applied = 0.
+                      if(irrig(j)%runoff.lt.0) irrig(j)%runoff = 0.
                     endif
-                    gw_cell_ss_pumpag(cell_row,cell_col) = gwvol_removed * (-1) !m3 --> store for groundwater balance calculations in gwflow_simulate (negative = leaving the aquifer)
-                  enddo
-                  !if available < demand, re-calculate irrigation applied
-                  gwmm_diff = gwvol_diff  / (hru(j)%area_ha * 10000.) * 1000. !m3 --> mm
-                  irrig(j)%applied = (irrop_db(irrop)%amt_mm - gwmm_diff) * irrop_db(irrop)%eff * (1. - irrop_db(irrop)%surq) !decrease ammount by the difference
-                  irrig(j)%runoff = (irrop_db(irrop)%amt_mm - gwmm_diff) * irrop_db(irrop)%eff * irrop_db(irrop)%surq
-                  if(irrig(j)%applied.lt.0) irrig(j)%applied = 0.
-                  if(irrig(j)%runoff.lt.0) irrig(j)%runoff = 0.
-                endif
-              endif
-              end if  
+                  endif
+                end if  
               
-              !set organics and constituents from irr.ops ! irrig(j)%water =  cs_irr(j) = 
-              if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIGATE", phubase(j),  &
-                    pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
-                    sol_sumno3(j), sol_sumsolp(j), irrig(j)%applied
-              end if
-            else
-              !! set demand for irrigation from channel, reservoir or aquifer
-              if (pco%mgtout == "y") then
-                write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIG_DMD", phubase(j), &
-                    pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
-                    sol_sumno3(j), sol_sumsolp(j), irrop_db(irrop)%amt_mm
+                !set organics and constituents from irr.ops ! irrig(j)%water =  cs_irr(j) = 
+                if (pco%mgtout == "y") then
+                  write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIGATE", phubase(j),  &
+                      pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
+                      sol_sumno3(j), sol_sumsolp(j), irrig(j)%applied
+                end if
+              else
+                !! set demand for irrigation from channel, reservoir or aquifer
+                if (pco%mgtout == "y") then
+                  write (2612, *) j, time%yrc, time%mo, time%day_mo, "        ", "IRRIG_DMD", phubase(j), &
+                      pcom(j)%plcur(ipl)%phuacc, soil(j)%sw,pl_mass(j)%tot(ipl)%m, rsd1(j)%tot(ipl)%m, &
+                      sol_sumno3(j), sol_sumsolp(j), irrop_db(irrop)%amt_mm
+                end if
               end if
             end if
 
@@ -209,6 +223,8 @@
               else
                 rto = 0.
               end if
+              rto = amax1 (0., rto)
+              rto = amin1 (1., rto)
               rto1 = (1. - rto)
               irrig(j)%water%flo = rto * aqu_d(iob)%flo                 ! organics in irrigation water
               !! need to conver irrig(j)%water%flo from mm to m3 
@@ -216,7 +232,7 @@
               cs_irr(iob) = rto * cs_aqu(iob)                           ! constituents in irrigation water
               cs_aqu(iob) = rto1 * cs_aqu(iob)                          ! remainder stays in aquifer
               
-            case ("cha")
+            case ("cha", "sdc")
               if (ch_stor(iob)%flo > irrig(j)%demand) then
                 rto = irrig(j)%demand / ch_stor(iob)%flo                ! ratio of water removed from channel volume
               else
@@ -414,14 +430,17 @@
                   iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                   bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
                   bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + yield * hru(j)%area_ha / 1000.
-                  !! sum regional crop yields for soft calibration
-                  ireg = hru(j)%crop_reg
-                  do ilum = 1, plcal(ireg)%lum_num
-                    if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
-                      plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
-                      plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
-                    end if
-                  end do
+                  
+                  if (cal_codes%plt == "y") then
+                    !! sum regional crop yields for soft calibration
+                    ireg = hru(j)%crop_reg
+                    do ilum = 1, plcal(ireg)%lum_num
+                      if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
+                        plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
+                        plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                      end if
+                    end do
+                  end if
             
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
@@ -526,14 +545,17 @@
                   iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                   bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
                   bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                  
                   !! sum regional crop yields for soft calibration
-                  ireg = hru(j)%crop_reg
-                  do ilum = 1, plcal(ireg)%lum_num
-                    if (plcal(ireg)%lum(ilum)%meas%name == d_tbl%act(iac)%option) then
-                      plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
-                      plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
-                    end if
-                  end do
+                  if (cal_codes%plt == "y") then
+                    ireg = hru(j)%crop_reg
+                    do ilum = 1, plcal(ireg)%lum_num
+                      if (plcal(ireg)%lum(ilum)%meas%name == d_tbl%act(iac)%option) then
+                        plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
+                        plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                      end if
+                    end do
+                  end if
             
                   idp = pcom(j)%plcur(ipl)%idplt
                   if (pco%mgtout == "y") then
@@ -656,7 +678,40 @@
               !end if
               pcom(j)%dtbl(idtbl)%num_actions(iac) = pcom(j)%dtbl(idtbl)%num_actions(iac) + 1
             end if
-                           
+                                   
+          ! set the amount of water to be diverted
+          case ("divert") 
+            ! ob_num is set in wallo_control
+            select case (d_tbl%act(iac)%option)
+                
+            case ("min_cms")    !! minimum flow rate (m3/s)
+              if (ob(ob_num)%hd(1)%flo / 86400. < d_tbl%act(iac)%const + .0001) then
+                !! below min - all flow to downstream channel (first outflow hydrograph in connect file)
+                trans_m3 = 0.
+              else
+                !! above min flow 
+                trans_m3 = d_tbl%act(iac)%const / (ob(ob_num)%hd(1)%flo / 86400.)
+              end if
+              
+            case ("all_flo")    !! all flow to first outflow channel in connect file
+              trans_m3 = ob(ob_num)%hd(1)%flo
+
+            case ("min_frac")   !! minimum or constant fraction 
+              trans_m3 = d_tbl%act(iac)%const * ob(ob_num)%hd(1)%flo
+              
+            case ("recall")
+              irec = d_tbl%act_typ(iac)
+              select case (recall(irec)%typ)
+              case (1)    !daily
+                trans_m3 = recall(irec)%hd(time%day,time%yrs)%flo
+              case (2)    !monthly
+                trans_m3 = recall(irec)%hd(time%mo,time%yrs)%flo
+              case (3)    !annual
+                trans_m3 = recall(irec)%hd(1,time%yrs)%flo
+              end select
+                
+            end select
+                                       
           !flow control for water allocation - needs to be modified***
           case ("flow_control") !! set flow fractions in con file
             ! ob_num is the object number of the current channel
@@ -761,8 +816,8 @@
               wet_ob(j)%weir_hgt = d_tbl%act(iac)%const / 1000. !m
               !update pvol/evol according to weir height for paddy weir discharge. Jaehak 2023
               wet_ob(j)%pvol = hru(j)%area_ha * wet_ob(j)%weir_hgt * 10.**4  ! m3
-              if (wet_ob(j)%evol < wet_ob(j)%pvol*1.1) then
-                wet_ob(j)%evol = wet_ob(j)%pvol * 1.1   
+              if (wet_ob(j)%evol < wet_ob(j)%pvol*1.2) then
+                wet_ob(j)%evol = wet_ob(j)%pvol * 1.2   
               endif
               
             else 

@@ -91,7 +91,7 @@
         if (jj == 1) then
           surqno3(j) = surfq(j) * bsn_prm%nperco * co
           surqno3(j) = Min(surqno3(j), soil1(j)%mn(jj)%no3)
-          soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - surqno3(j)
+          soil1(j)%mn(jj)%no3 = max(0.0001,soil1(j)%mn(jj)%no3 - surqno3(j))
         endif
 
         !! calculate nitrate in tile flow 
@@ -133,12 +133,12 @@
         end if
         ssfnlyr = Min(ssfnlyr, soil1(j)%mn(jj)%no3)
         latno3(j) = latno3(j) + ssfnlyr
-        soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - ssfnlyr
+        soil1(j)%mn(jj)%no3 = max(0.0001,soil1(j)%mn(jj)%no3 - ssfnlyr)
 
         !! calculate nitrate in percolate
         percnlyr = co * soil(j)%ly(jj)%prk
         percnlyr = Min(percnlyr, soil1(j)%mn(jj)%no3)
-        soil1(j)%mn(jj)%no3 = soil1(j)%mn(jj)%no3 - percnlyr
+        soil1(j)%mn(jj)%no3 = max(0.0001,soil1(j)%mn(jj)%no3 - percnlyr)
         
         !! last layer leaches from soil profile
         if (jj == soil(j)%nly) then

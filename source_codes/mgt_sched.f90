@@ -52,6 +52,7 @@
       real :: wsa1,rto
       integer :: isstor            !none     |counter
       integer :: idb            !none     |counter
+      integer :: iru, i, isrc, itr
 
       j = ihru
       ires= hru(j)%dbs%surf_stor ! for paddy management Jaehak 2022
@@ -90,8 +91,14 @@
                   pcom(j)%plcur(ipl)%gro = "y"
                   pcom(j)%plcur(ipl)%idorm = "n"
                   call mgt_plantop
-                  if (mgt%op4 > 0) then
-                    call mgt_transplant (mgt%op4)
+                  if (mgt%op3 > 0) then
+                    do idb = 1, db_mx%transplant
+                      if (mgt%op_plant == transpl(idb)%name) then
+                        itr = idb
+                        exit
+                      endif
+                    end do
+                    if (itr > 0) call mgt_transplant (itr)
                   end if
                   if (pco%mgtout ==  "y") then
                     write (2612, *) j, time%yrc, time%mo, time%day_mo, pldb(idp)%plantnm,  "    PLANT ",    &
@@ -161,15 +168,18 @@
                 iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                 bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
                 bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                
                 !! sum regional crop yields for soft calibration
-                if (hru(j)%crop_reg > 0) then
-                  ireg = hru(j)%crop_reg
-                  do ilum = 1, plcal(ireg)%lum_num
-                    if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
-                      plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
-                      plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
-                    end if
-                  end do
+                if (cal_codes%plt == "y") then
+                  if (hru(j)%crop_reg > 0) then
+                    ireg = hru(j)%crop_reg
+                    do ilum = 1, plcal(ireg)%lum_num
+                      if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
+                        plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
+                        plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                      end if
+                    end do
+                  end if
                 end if
             
                 idp = pcom(j)%plcur(ipl)%idplt
@@ -244,14 +254,17 @@
                 iplt_bsn = pcom(j)%plcur(ipl)%bsn_num
                 bsn_crop_yld(iplt_bsn)%area_ha = bsn_crop_yld(iplt_bsn)%area_ha + hru(j)%area_ha
                 bsn_crop_yld(iplt_bsn)%yield = bsn_crop_yld(iplt_bsn)%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                
                 !! sum regional crop yields for soft calibration
-                ireg = hru(j)%crop_reg
-                do ilum = 1, plcal(ireg)%lum_num
-                  if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
-                    plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
-                    plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
-                  end if
-                end do
+                if (cal_codes%plt == "y") then
+                  ireg = hru(j)%crop_reg
+                  do ilum = 1, plcal(ireg)%lum_num
+                    if (plcal(ireg)%lum(ilum)%meas%name == mgt%op_char) then
+                      plcal(ireg)%lum(ilum)%ha = plcal(ireg)%lum(ilum)%ha + hru(j)%area_ha
+                      plcal(ireg)%lum(ilum)%sim%yield = plcal(ireg)%lum(ilum)%sim%yield + pl_yield%m * hru(j)%area_ha / 1000.
+                    end if
+                  end do
+                end if
             
                 idp = pcom(j)%plcur(ipl)%idplt
                 if (pco%mgtout == "y") then
@@ -417,14 +430,17 @@
           case ("irrp")  !! continuous irrigation to maintain surface ponding in rice fields Jaehak 2022
 
             hru(j)%irr_src = mgt%op_plant                   !irrigation source: cha; res; aqu; or unlim
-            hru(j)%irr_hmax = irrop_db(mgt%op1)%amt_mm     !irrigation depth, mm
-            hru(j)%irr_hmin = irrop_db(mgt%op1)%dep_mm     !threshold ponding depth, mm
-            
-            ipl = 1
+            hru(j)%irr_isc = mgt%op3                        !irrigation source object ID: cha; res; aqu; or unlim
+            hru(j)%irr_hmax = irrop_db(mgt%op1)%amt_mm     !irrigation amount in irr.org, mm
+            hru(j)%irr_hmin = hru(j)%irr_hmax * 0.7        !threshold ponding depth, mm
             irrig(j)%eff = irrop_db(mgt%op1)%eff
             irrig(j)%frac_surq = irrop_db(mgt%op1)%surq
-            irrig(j)%demand = max(0., hru(j)%irr_hmax - wet_ob(j)%depth*1000.) * wsa1 !m3
-            irrig(j)%water%flo = irrig(j)%demand
+            if (hru(j)%irr_hmax > 0) then
+              hru(j)%paddy_irr = 1 !paddy irrigation is on with manual scheduling
+            else
+              hru(j)%paddy_irr = 0!paddy irrigation is off
+              hru(j)%irr_hmin = 0
+            endif
             
           !print irrigation COMMAND
             if (pco%mgtout == "y") then

@@ -27,21 +27,27 @@
 	    if (ht1%sed < 1.e-6) ht1%sed = 0.0      
         !! velsetl = 1.35 for clay particle m/d
 	    if (wbody_wb%area_ha > 1.e-6) then
-          velofl = (wbody%flo / wbody_wb%area_ha) / 10000.  ! m3/d / ha * 10000. = m/d
-	      trapres = res_sed(ised)%velsetlr / velofl
+          velofl = (ht2%flo / wbody_wb%area_ha) / 10000.  ! m3/d / ha * 10000. = m/d
+          if (velofl > 1.e-6) then
+	        trapres = res_sed(ised)%velsetlr / velofl
+          else
+            trapres = 1.
+          end if
 	      if (trapres > 1.) trapres = 1.
-	      susp = 1. - trapres
 	    else
-	      susp = 0.
+	      trapres = 0.
         end if
+        wbody%sed = wbody%sed - (ht1%sed * trapres)
+        wbody%sil = wbody%sil - (ht1%sil * trapres)
+        wbody%cla = wbody%cla - (ht1%cla * trapres)
 
         !! compute concentrations
 	    if (wbody%flo > 0.) then
-          sed_ppm = 1000000. * (ht1%sed * susp + wbody%sed) / wbody%flo
+          sed_ppm = 1000000. * wbody%sed / wbody%flo
           sed_ppm = Max(1.e-6, sed_ppm)
-          sil_ppm = 1000000. * (ht1%sil * susp + wbody%sil) / wbody%flo
+          sil_ppm = 1000000. * wbody%sil / wbody%flo
           sil_ppm = Max(1.e-6, sil_ppm)
-          cla_ppm = 1000000. * (ht1%cla * susp + wbody%cla) / wbody%flo
+          cla_ppm = 1000000. * wbody%cla / wbody%flo
           cla_ppm = Max(1.e-6, cla_ppm)
 	    else
           sed_ppm = 1.e-6
@@ -69,8 +75,11 @@
 
         !! compute sediment leaving reservoir - ppm -> t
         ht2%sed = sed_ppm * ht2%flo / 1000000.
+        wbody%sed = wbody%sed - ht2%sed
         ht2%sil = sil_ppm * ht2%flo / 1000000.
+        wbody%sil = wbody%sil - ht2%sil
         ht2%cla = cla_ppm * ht2%flo / 1000000.
+        wbody%cla = wbody%cla - ht2%cla
 
       end if
 

@@ -21,13 +21,24 @@
       ch_wat_m(ichan) = ch_wat_m(ichan) + ch_wat_d(ichan)
       
 !!!!! subdaily print
-       if (pco%day_print == "y" .and. time%step > 0 .and. pco%int_day_cur == pco%int_day) then
-         do ii = 1, time%step 
-           write (2508,"(7i6,10(1x,e15.4))") iob, ob(iob)%gis_id, time%yrc, time%mo, time%day_mo, time%day, &
-                    ii, ob(iob)%hyd_flo(1,ii)         
-         end do
-      end if
+       !if (pco%day_print == "y" .and. time%step > 0 .and. pco%int_day_cur == pco%int_day) then
+       !  do ii = 1, time%step 
+       !    write (2508,"(7i6,10(1x,e15.4))") iob, ob(iob)%gis_id, time%yrc, time%mo, time%day_mo, time%day, &
+       !             ii, ob(iob)%hyd_flo(1,ii)
+       !    if (pco%csvout == "y") then 
+       !      write (4814,"(7i6,10(1x,e15.4))") iob, ob(iob)%gis_id, time%yrc, time%mo, time%day_mo, time%day, &
+       !             ii, ob(iob)%hyd_flo(1,ii)
+       !    end if
+       !  end do
+      !end if
       
+         if (pco%day_print == "y" .and. time%step > 0 .and. pco%int_day_cur == pco%int_day) then
+          do ii = 1, time%step 
+            write (2508,101)  time%day, time%mo, time%day_mo, time%yrc, ichan, ob(iob)%gis_id, ii, ob(iob)%name,  &
+                     ob(iob)%hyd_flo(1,ii)
+          end do
+         end if
+           
 !!!!! daily print
        if (pco%day_print == "y" .and. pco%int_day_cur == pco%int_day) then
         if (pco%sd_chan%d == "y") then
@@ -119,6 +130,7 @@
       
       return
 
-100   format (4i6,2i8,2x,a,73e15.4)      
+100   format (4i6,2i8,2x,a,73e15.4)
+101   format (4i6,3i8,2x,a,e15.4)  
        
       end subroutine sd_channel_output

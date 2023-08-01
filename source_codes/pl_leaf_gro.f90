@@ -98,6 +98,7 @@
               rto = alog10 (rto_lin)
               lai_exp = rto * pldb(idp)%laixco_tree
               laimax = pcom(j)%plcur(ipl)%lai_pot * 10. ** lai_exp
+              laimax = amin1 (laimax, pcom(j)%plcur(ipl)%lai_pot)
             else
               laimax = pcom(j)%plcur(ipl)%lai_pot
             end if

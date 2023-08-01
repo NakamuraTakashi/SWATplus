@@ -14,6 +14,7 @@
          real :: hi_prev = 0.           !! (kg/ha)/(kg/ha)  |optimal harvest index for current time during growing season
          real :: olai = 0.              !!                  |leaf area index (0-1) when leaf area decline begins
          real :: dphu = 0.              !!                  |phu accumulated (0-1) when leaf area decline begins
+         real :: d_senes = 0.           !! days             !days since start of senescence
          real :: leaf_frac = 0.         !! none             |fraction of above ground tree biomass that is leaf
          real :: root_dep = 0.          !! mm               |root depth
          real :: root_frac = 0.         !! kg/ha            |root fraction of total plant mass

@@ -6,7 +6,7 @@ aa_int_cnt
 csvout        dbout         cdfout 
      n            n              n
 crop_yld       mgtout        hydcon        fdcout
-       a            n             n             n	 
+       b            n             n             n	 
 objects        daily       monthly      yearly      avann       
 basin_wb           n             n           n          y
 basin_nb           n             n           n          n

@@ -6,7 +6,7 @@ print Generated from Y:\HUC8_models\models\07120002.accdb Time: 8/1/2019 1:23:55
   CSVOUT  DBOUT CDFOUT
        n      n      n
  CROPYLD MGTOUT HYDCON FDCOUT
-       a      n      n      n
+       b      n      n      n
        OBJECTS     DAILY   MONTHLY    YEARLY     AVANN
       basin_wb         n         n         y         y
       basin_nb         n         n         y         y

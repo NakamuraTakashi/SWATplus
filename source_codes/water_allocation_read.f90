@@ -76,7 +76,10 @@
             read (107,*,iostat=eof) k, wallo(iwro)%src(i)%ob_typ, wallo(iwro)%src(i)%ob_num,    &
                                                                   wallo(iwro)%src(i)%limit_mon
             !! call wallo_control from channel
-            if (wallo(iwro)%src(i)%ob_typ == "cha") sd_ch(wallo(iwro)%src(i)%ob_num)%wallo = iwro
+            if (wallo(iwro)%src(i)%ob_typ == "cha") then
+              sd_ch(wallo(iwro)%src(i)%ob_num)%wallo = iwro
+              wallo(iwro)%cha = wallo(iwro)%src(i)%ob_num
+            end if
           end do
           
           !! read demand object data
@@ -120,8 +123,8 @@
             if (wallo(iwro)%dmd(i)%ob_typ == "muni" .or. wallo(iwro)%dmd(i)%ob_typ == "divert") then
               if (wallo(iwro)%dmd(i)%withdr /= "ave_day") then
                 !! xwalk with recall database
-                do idb = 1, db_mx%recall_max
-                  if (wallo(iwro)%dmd(i)%withdr == recall(idb)%name) then
+                do idb = 1, db_mx%dtbl_flo
+                  if (wallo(iwro)%dmd(i)%withdr == dtbl_flo(idb)%name) then
                     wallo(iwro)%dmd(i)%rec_num = idb
                     exit
                   end if

@@ -138,8 +138,10 @@
           ob(icmd)%fdc%p_md%min = ob(icmd)%fdc%p_md%min / 86400.
           
           !compute flashiness index
-          ob(icmd)%flash_idx%index = ob(icmd)%flash_idx%sum_q_q1 / ob(icmd)%flash_idx%sum_q
-        
+          if (ob(icmd)%flash_idx%sum_q > 1.e-6) then
+            ob(icmd)%flash_idx%index = ob(icmd)%flash_idx%sum_q_q1 / ob(icmd)%flash_idx%sum_q
+          end if
+          
           write (6000,*) ob(icmd)%typ, ob(icmd)%props, ob(icmd)%area_ha, ob(icmd)%flash_idx%index,  &
             ob(icmd)%fdc%p_md%mean, ob(icmd)%fdc%p_md%max, ob(icmd)%fdc%p_md%p, ob(icmd)%fdc%p_md%min
           

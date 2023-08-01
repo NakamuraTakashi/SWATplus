@@ -199,18 +199,19 @@
       !open (107,file="object_prt.swf",recl = 1500)
       do iobj_out = 1, mobj_out
         !write (107,*) irec, recall(irec)%name, "   4   ", recall(irec)%name
-        
         !! write to each object print file
         open (108,file="object_prt.swf",recl = 1500)
         write (108,*) " AVE ANNUAL OBJECT OUTPUT FILE  ", ob_out(iobj_out)%filename
         iob = ob_out(iobj_out)%objno
         ihyd = ob_out(iobj_out)%hydno
-        ob(iob)%hd_aa(ihyd) = ob(iob)%hd_aa(ihyd) / yrs_print
-        write (108,*) "     1    1    1     1    ", ob_out(iobj_out)%name, ob_out(iobj_out)%name,       &
+        if (ihyd < 6) then
+          ob(iob)%hd_aa(ihyd) = ob(iob)%hd_aa(ihyd) / yrs_print
+          write (108,*) "     1    1    1     1    ", ob_out(iobj_out)%name, ob_out(iobj_out)%name,       &
                         ob(iob)%hd_aa(ihyd)%flo, ob(iob)%hd_aa(ihyd)%sed, ob(iob)%hd_aa(ihyd)%orgn,     &
                         ob(iob)%hd_aa(ihyd)%sedp, ob(iob)%hd_aa(ihyd)%no3, ob(iob)%hd_aa(ihyd)%solp,    &
                         ob(iob)%hd_aa(ihyd)%nh3, ob(iob)%hd_aa(ihyd)%no2
-        close (108)
+          close (108)
+        end if
       end do
       close (107)
             

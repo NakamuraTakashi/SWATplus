@@ -64,7 +64,7 @@
            real :: perco = 0.       !!               |0-1           |percolation coefficient - linear adjustment to daily perc
            real :: lat_orgn = 0.
            real :: lat_orgp = 0.
-           real :: pet_co  = .0023  
+           real :: pet_co  = 1.0  
            real :: latq_co = 0.3    !!               |              |lateral soil flow coefficient - linear adjustment to daily lat flow
            real :: perco_lim = 1.   !!               |              |percolation coefficient-limits perc from bottom layer
       end type hydrology
@@ -232,6 +232,7 @@
         real :: strsa
         real :: irr_hmax = 0               !mm H2O        |target ponding depth during paddy irrigation Jaehak 2022
         real :: irr_hmin = 0               !mm H2O        |threshold ponding depth to trigger paddy irrigation
+        real :: irr_isc = 0                !mm H2O        |ID of the source cha/res/aqu for paddy irrigation
       end type hydrologic_response_unit
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru_init

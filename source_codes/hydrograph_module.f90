@@ -650,7 +650,21 @@
         character (len=15) :: temp_out  =  "           degc"        !! deg c        |temperature
       end type sd_hyd_header_units
       type (sd_hyd_header_units) :: sd_hyd_hdr_units
-                          
+      
+      type solnut_header        
+        character (len=15) :: mn_no3 =  "        st_mm_1"        !!mm H2O       |amt of water stored in layer 1 
+        character (len=15) :: mn_nh4 =  "        st_mm_2"        !!mm H2O       |amt of water stored in layer 2              
+        character (len=15) :: hact_n =  "        st_mm_3"        !!mm H2O       |amt of water stored in layer 3
+        character (len=15) :: hsta_n =  "        st_mm_4"        !!mm H2O       |amt of water stored in layer 4      
+        !character (len=15) :: layer5 =  "        st_mm_5"        !!mm H2O       |amt of water stored in layer 5
+        !character (len=15) :: layer6 =  "        st_mm_6"        !!mm H2O       |amt of water stored in layer 6 
+        !character (len=15) :: layer7 =  "        st_mm_7"        !!mm H2O       |amt of water stored in layer 7
+        !character (len=15) :: layer8 =  "        st_mm_8"        !!mm H2O       |amt of water stored in layer 8
+        !character (len=15) :: layer9 =  "        st_mm_9"        !!mm H2O       |amt of water stored in layer 9
+        !character (len=15) :: layer10 = "       st_mm_10"        !!mm H2O       |amt of water stored in layer 10
+      end type solnut_header
+      type (solnut_header) :: solnut_hdr
+                              
       type ch_watbod_header 
         character (len=6) :: day           = "  jday"       
         character (len=6) :: mo            = "   mon"
@@ -1161,6 +1175,11 @@
         hyd3%sag = hyd1%sag + hyd2%sag
         hyd3%lag = hyd1%lag + hyd2%lag
         hyd3%grv = hyd1%grv + hyd2%grv
+        if (hyd1%flo + hyd2%flo > 1.e-6) then
+          hyd3%temp = (hyd1%flo * hyd2%temp + hyd2%flo + hyd2%temp) / (hyd1%flo + hyd2%flo)
+        else
+          hyd3%temp = 0.
+        end if
       end function hydout_add
                      
       !! routines for hydrograph module
@@ -1185,6 +1204,7 @@
         hyd3%sag = hyd1%sag - hyd2%sag
         hyd3%lag = hyd1%lag - hyd2%lag
         hyd3%grv = hyd1%grv - hyd2%grv
+        hyd3%temp = hyd1%temp
       end function hydout_subtract
             
       !! routines for hydrograph module
@@ -1209,6 +1229,7 @@
         hyd3%sag = hyd1%sag * hyd2%sag
         hyd3%lag = hyd1%lag * hyd2%lag
         hyd3%grv = hyd1%grv * hyd2%grv
+        hyd3%temp = hyd1%temp
       end function hydout_mult
             
       !! routines for hydrograph module
@@ -1233,6 +1254,7 @@
         hyd2%sag = const + hyd1%sag
         hyd2%lag = const + hyd1%lag
         hyd2%grv = const + hyd1%grv
+        hyd2%temp = hyd1%temp
       end function hydout_add_const
       
       function hydout_mult_const (const, hyd1) result (hyd2)
@@ -1257,6 +1279,7 @@
         hyd2%sag = const * hyd1%sag
         hyd2%lag = const * hyd1%lag
         hyd2%grv = const * hyd1%grv
+        hyd2%temp = hyd1%temp
       end function hydout_mult_const
       
       function hydout_div_const (hyd1,const) result (hyd2)
@@ -1280,6 +1303,7 @@
         hyd2%sag = hyd1%sag / const
         hyd2%lag = hyd1%lag / const
         hyd2%grv = hyd1%grv / const
+        hyd2%temp = hyd1%temp
       end function hydout_div_const
             
       !function to divide hyd by another hyd
@@ -1372,7 +1396,11 @@
         else
           hyd3%grv = 0.
         end if
-          
+        if (hyd1%flo + hyd2%flo > 1.e-6) then
+          hyd3%temp = (hyd1%flo * hyd2%temp + hyd2%flo + hyd2%temp) / (hyd1%flo + hyd2%flo)
+        else
+          hyd3%temp = 0.
+        end if
       end function hydout_div_conv
       
       !function to set dr to a constant

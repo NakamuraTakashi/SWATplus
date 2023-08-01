@@ -83,7 +83,7 @@
       real :: cover              !kg/ha         |soil cover
       real :: wetvol_mm          !mm            |wetland water volume - average depth over hru
       integer :: ly              !none          |counter     
-      integer:: ires !Jaehak 2022
+      integer:: ires,ihyd !Jaehak 2022
 
       j = ihru
       pet = pet_day
@@ -144,7 +144,8 @@
         if (wet(j)%flo > 0.) then !wetlands water evaporation reduced by canopy Jaehak 2022
         
           if (pcom(j)%lai_sum <= 4.0) then 
-            es_max = wet_hyd(ires)%evrsv * (1.-pcom(j)%lai_sum / 4.) * pet !adapted from Sakaguchi et al. 2014
+            ihyd = wet_dat(ires)%hyd
+            es_max = wet_hyd(ihyd)%evrsv * (1.-pcom(j)%lai_sum / 4.) * pet !adapted from Sakaguchi et al. 2014
           else
             es_max = 0.
           endif
@@ -251,8 +252,8 @@
           sev_st = amin1 (1., sev_st)
           no3up = effnup * sev_st * soil1(j)%mn(2)%no3
           no3up = Min(no3up, soil1(j)%mn(2)%no3)
-          soil1(j)%mn(2)%no3 = soil1(j)%mn(2)%no3 - no3up
-          soil1(j)%mn(1)%no3 = soil1(j)%mn(1)%no3 + no3up
+          soil1(j)%mn(2)%no3 = max(0.0001,soil1(j)%mn(2)%no3 - no3up)
+          soil1(j)%mn(1)%no3 = max(0.0001,soil1(j)%mn(1)%no3 + no3up)
         endif
 
       end do    !layer loop

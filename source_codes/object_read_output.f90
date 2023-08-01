@@ -88,7 +88,9 @@
             case ("til")   !tile
                ob_out(i)%hydno = 5 
             case ("sol")  !soil moisture by layer 
-               ob_out(i)%hydno = 6
+               ob_out(i)%hydno = 6 
+            case ("soln")  !soil n and p by layer 
+               ob_out(i)%hydno = 7
             end select
          iunit = ob_out(i)%unitno
          

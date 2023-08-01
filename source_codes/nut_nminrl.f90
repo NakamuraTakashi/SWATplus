@@ -275,7 +275,7 @@
 	        else
 	          wdn = 0.
 	        endif
-	        soil1(j)%mn(k)%no3 = soil1(j)%mn(k)%no3 - wdn
+	        soil1(j)%mn(k)%no3 = max(0.0001,soil1(j)%mn(k)%no3 - wdn)
           end if
           hnb_d(j)%denit = hnb_d(j)%denit + wdn
 

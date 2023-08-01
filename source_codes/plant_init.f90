@@ -179,7 +179,7 @@
             end if
           
             ! caculate planting day for winter annuals at end of dormancy
-            if (pldb(idp)%typ == "test") then   !"cold_annual" .or. pldb(idp)%typ == "cold_annual_tuber") then
+            if (pldb(idp)%typ == "cold_annual" .or. pldb(idp)%typ == "cold_annual_tuber") then
               if (wgn(iwgn)%lat > 0.) then
                 igrow = 1
               else

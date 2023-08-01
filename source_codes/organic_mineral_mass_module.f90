@@ -127,7 +127,8 @@
       type (organic_mass) :: pl_residue
       type (organic_mass) :: harv_seed, harv_leaf, harv_stem, harv_left
       type (organic_mass) :: graz_plant, graz_seed, graz_leaf, graz_stem
-      type (organic_mass) :: leaf_drop
+      type (organic_mass) :: leaf_drop                              !kg/ha      |organic mass of falling leaves
+      type (organic_mass) :: abgr_drop                              !kg/ha      |above ground that dies at dormancy
       type (organic_mass) :: plt_mass_z
 
       type organic_mineral_hydrograph1

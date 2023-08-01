@@ -270,7 +270,15 @@
 
         !! ht2%sed==sediment routed across hru from surface runon
         sedyld(j) = sedyld(j) + ht2%sed
-      
+        
+        !! check wetland/paddy continuous irrigation Jaehak 2023
+        !! manual irrigation on if ponding depth is lower than the threshold depth 
+        if (hru(j)%paddy_irr > 0) then
+          if (wet_ob(j)%depth < hru(j)%irr_hmin / 1000.) then 
+            call wet_irrp
+          endif
+        endif
+        
         !! wetland/paddy processes
         if (ires > 0) then
           call wetland_control
@@ -459,11 +467,6 @@
         !! compute nitrate movement leaching
         call nut_nlch
 
-       !write(100100,'(4(I6,","),14(f10.1,","))') time%yrc,time%mo,time%day_mo,j,w%precip,irrig(j)%applied,hru(j)%water_seep,&
-       ! pet_day,etday,wet_ob(j)%weir_hgt*1000,wet_ob(j)%depth*1000.,ht2%flo/(hru(j)%area_ha * 10.),soil(j)%sw,wet(j)%sed,ht2%sed*1000,wet(j)%no3,ht2%no3,&
-       ! pcom(j)%lai_sum
-      !write(*,'(3(I6),14(f10.1))') time%yrc,time%mo,time%day_mo,w%precip,irrig(j)%applied,hru(j)%water_seep,&
-      !  pet_day,etday,wet_ob(j)%weir_hgt*1000,wet(j)%flo/(hru(j)%area_ha * 10.),ht2%flo/(hru(j)%area_ha * 10.),soil(j)%sw,wet(j)%sed,ht2%sed*1000,wet(j)%no3,ht2%no3,&    
         !! compute phosphorus movement
         call nut_solp
 
@@ -615,6 +618,7 @@
         hwb_d(j)%ecanopy = canev
         hwb_d(j)%eplant = ep_day
         hwb_d(j)%esoil = es_day + hru(j)%water_evap 
+        hwb_d(j)%wet_out = hru(j)%water_evap 
         hwb_d(j)%surq_cont = surfq(j)
         hwb_d(j)%cn = cnday(j)
         hwb_d(j)%sw = soil(j)%sw

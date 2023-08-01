@@ -10,20 +10,16 @@
       integer :: date_time(8)           !              |
       character*10 b(3)                 !              |
     
-      prog = " SWAT+ Mar 16 2023       MODULAR Rev 2023.60.5.6"
+      prog = " SWAT+ Jun 13 2023       MODULAR Rev 2023.60.5.7"
 
       write (*,1000)
       open (9003,file='simulation.out')
       write (9003,1000)
  1000 format(1x,"                  SWAT+               ",/,             &
-     &          "             Revision 60.5.6          ",/,             &
+     &          "             Revision 60.5.7          ",/,             &
      &          "      Soil & Water Assessment Tool    ",/,             &
      &          "               PC Version             ",/,             &
      &          "    Program reading . . . executing",/)
-
-      !open(100100,file="paddy_test.csv") !temporary output for paddy Jaehak 2022 
-      !write(100100,'(4a7,14a11)')"Year,","Mon,","Day,","HRU,","Precip,","Irrig,","Seep,","PET,","ET,","WeirH,","Wtrdep,","WeirQ,","SW,","Sedcon,","SedYld,","NO3Con,","NO3Yld,","LAI"
-      !write(*,'(3a7,14a11)')"Year,","Mon,","Day,","Precip,","Irrig,","Seep,","PET,","ET,","WeirH,","Wtrdep,","WeirQ,","SW,","Sedcon,","SedYld,","NO3Con,","NO3Yld,","LAI"
       
       open (888,file="erosion.txt",recl = 1500)
 
@@ -66,13 +62,14 @@
       ! read manure allocation inputs
       call manure_allocation_read
       
+      call dtbl_flocon_read
+            
       ! read water treatment and water allocation files - before hru lum tables
       call treat_read_om
       call water_allocation_read
       
-      call dtbl_flocon_read
       call hru_dtbl_actions_init
-            
+      
       ! read reservoir and wetland data
       call proc_res
       call wet_read_hyd

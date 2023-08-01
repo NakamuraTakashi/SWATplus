@@ -27,7 +27,7 @@
         real :: chseq = 0.      !m/m        |equilibrium channel slope
         real :: d50 = 0.        !mm         |channel median sediment size
         real :: ch_clay = 0.    !%          |clay percent of bank and bed
-        real :: carbon = 0.     !%          |cabon percent of bank and bed
+        real :: carbon = 0.     !%          |carbon percent of bank and bed
         real :: ch_bd = 0.      !t/m3       |dry bulk density
         real :: chss = 0.       !           |channel side slope
         real :: bedldcoef = 0.  !           |percent of sediment entering the channel that is bed material
@@ -235,7 +235,7 @@
       end type sdch_header
       type (sdch_header) :: sdch_hdr
       
-     type sdch_header_units
+      type sdch_header_units
           character (len=6) :: day        =  "      "
           character (len=6) :: mo         =  "      "
           character (len=6) :: day_mo     =  "      "
@@ -266,7 +266,33 @@
           character(len=16) :: flo_mm     =  "             mm"        ! (mm) 
           character(len=16) :: sed_stor   =  "           tons"        ! (tons)
       end type sdch_header_units
-      type (sdch_header_units) :: sdch_hdr_units
+      type (sdch_header_units) :: sdch_hdr_units   
+      
+      type sdch_header_sub
+          character (len=6) :: day        =  "  jday"
+          character (len=6) :: mo         =  "   mon"
+          character (len=6) :: day_mo     =  "   day"
+          character (len=6) :: yrc        =  "    yr"
+          character (len=8) :: isd        =  "   unit "
+          character (len=8) :: id         =  " gis_id " 
+          character (len=8) :: ii         =  "  tstep "
+          character (len=16) :: name      =  " name          "        
+          character(len=16) :: hyd_flo    =  "        flo_out"        ! (m^3/s)
+      end type sdch_header_sub
+      type (sdch_header_sub) :: sdch_hdr_subday
+  
+      type sdch_header_units_sub
+          character (len=6) :: day        =  "      "
+          character (len=6) :: mo         =  "      "
+          character (len=6) :: day_mo     =  "      "
+          character (len=6) :: yrc        =  "      "
+          character (len=8) :: isd        =  "        "
+          character (len=8) :: id         =  "        " 
+          character (len=8) :: ii         =  "        "
+          character (len=16) :: name      =  "              "         
+          character (len=16) :: hyd_flo   =  "        m^3/s   "        ! (m^3/s)
+      end type sdch_header_units_sub
+      type (sdch_header_units) :: sdch_hdr_units_sub
      
       interface operator (+)
         module procedure chsd_add

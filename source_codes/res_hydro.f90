@@ -79,7 +79,7 @@
                 case ("evol")
                   b_lo = evol_m3
               end select
-              ht2%flo = ht2%flo + (wbody%flo - b_lo) / d_tbl%act(iac)%const
+              ht2%flo = ht2%flo + (wbody%flo - b_lo) / d_tbl%act(iac)%const / nstep
               ht2%flo = max(0.,ht2%flo)
               
             case ("dyrt")
@@ -107,7 +107,17 @@
               case ("/")
                 b_lo = (evol_m3 - pvol_m3) / d_tbl%cond(ic)%lim_const
               end select
-              ht2%flo = (wbody%flo - b_lo) / d_tbl%act(iac)%const + d_tbl%act(iac)%const2 * pvol_m3 / 100.
+              ht2%flo = ht2%flo + (wbody%flo - b_lo) / d_tbl%act(iac)%const +           &
+                                         d_tbl%act(iac)%const2 * pvol_m3 / 100. / nstep
+              ht2%flo = max(0.,ht2%flo)
+              
+            case ("inflo_targ")
+              !release inflow + all volume over target, use condition associated with action
+              ic = int (d_tbl%act(iac)%const)
+              b_lo = pvol_m3 * d_tbl%cond(ic)%lim_const
+              
+              ht2%flo = ht2%flo + ht1%flo + (wbody%flo - b_lo)
+              ht2%flo = max(0.,ht2%flo)
               
             case ("irrig_dmd")
               iob = Int(d_tbl%act(iac)%const2)
@@ -118,24 +128,28 @@
                 demand = irrig(iob)%demand
               end select
               !! const allows a fraction (usually > 1.0) of the demand (m3) released
-              ht2%flo = demand * d_tbl%act(iac)%const
+              ht2%flo = ht2%flo + demand * d_tbl%act(iac)%const / nstep
+              ht2%flo = max(0.,ht2%flo)
                  
             case ("weir")
               res_h = vol / (wbody_wb%area_ha * 10000.)     !m
               hgt_above = max(0., res_h - wet_ob(jres)%weir_hgt)    !m
               iweir = d_tbl%act_typ(iac)
-              ht2%flo = res_weir(iweir)%c * res_weir(iweir)%w * hgt_above ** res_weir(iweir)%k   !m3/s
+              ht2%flo = ht2%flo + res_weir(iweir)%c * res_weir(iweir)%w * hgt_above ** res_weir(iweir)%k / nstep   !m3/s
+              ht2%flo = max(0.,ht2%flo)
               
             case ("meas")
               irel = int(d_tbl%act_typ(iac))
               select case (recall(irel)%typ)
               case (1)    !daily
-                ht2%flo = recall(irel)%hd(time%day,time%yrs)%flo
+                ht2%flo = ht2%flo + recall(irel)%hd(time%day,time%yrs)%flo / nstep
               case (2)    !monthly
-                ht2%flo = recall(irel)%hd(time%mo,time%yrs)%flo
+                ht2%flo = ht2%flo + recall(irel)%hd(time%mo,time%yrs)%flo / nstep
               case (3)    !annual
-                ht2%flo = recall(irel)%hd(1,time%yrs)%flo
+                ht2%flo = ht2%flo + recall(irel)%hd(1,time%yrs)%flo / nstep
               end select
+              ht2%flo = max(0.,ht2%flo)
+              
             end select
           end if    ! if action hit 
             

@@ -589,7 +589,7 @@
 
         !channel flow
         case ("channel_flo")
-          ob_num = ob_cur   !the dtbl ob_num is the sequential hyd number in the con file
+          ob_num = d_tbl%cond(ic)%ob_num
           if (ob_num == 0) ob_num = ob_cur
           !ob_num is channel number - need object number
           iob = sp_ob1%chandeg + ob_num - 1
@@ -598,7 +598,7 @@
                 
         !tile flow
         case ("tile_flo")
-          ob_num = ob_cur   !the dtbl ob_num is the sequential hyd number in the con file
+          ob_num = d_tbl%cond(ic)%ob_num
           if (ob_num == 0) ob_num = ob_cur
           
           call cond_real (ic, hwb_d(ob_num)%qtile, d_tbl%cond(ic)%lim_const, idtbl)
@@ -735,6 +735,14 @@
           !check alternatives
           call cond_real (ic, res(ires)%flo, targ, idtbl)
                
+        !reservoir inflow
+        case ("res_in")
+          !determine target variable
+          ires = d_tbl%cond(ic)%ob_num
+          if (ires == 0) ires = ob_cur
+          icmd = res_ob(ires)%ob
+          call cond_real (ic, ob(icmd)%hin%flo, d_tbl%cond(ic)%lim_const, idtbl)
+            
         !impounded water depth -paddy average water depth of water
         case ("wet_depth")
           !determine target variable

@@ -68,6 +68,7 @@
         idat = ob(icmd)%props
         idb = sd_dat(idat)%hyd
         sd_ch(i)%name = sd_chd(idb)%name
+        sd_ch(i)%obj_no = icmd
         sd_ch(i)%order = sd_chd(idb)%order
         sd_ch(i)%chw = sd_chd(idb)%chw
         sd_ch(i)%chd = sd_chd(idb)%chd

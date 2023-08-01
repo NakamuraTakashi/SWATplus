@@ -111,7 +111,7 @@
        do 
          read (108,*,iostat=eof) iyr, istep, tempx, tempn
          if (eof < 0) exit
-         if (iyr == time%yrc .and. istep == time%day_start) exit
+         if (iyr >= time%yrc .and. istep >= time%day_start) exit
        end do
 
        backspace (108)

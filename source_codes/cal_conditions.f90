@@ -2,6 +2,7 @@
 
       use maximum_data_module
       use calibration_data_module
+      use conditional_module
       use hru_lte_module
       use hru_module, only : hru, cn2
       use soil_module
@@ -54,6 +55,10 @@
               if (cal_upd(ichg_par)%cond(ic)%targc /= soil(ielem)%hydgrp) then
                 cond_met = "n"
               end if
+            case ("res_typ")
+              if (cal_upd(ichg_par)%cond(ic)%targc /= dtbl_res(ielem)%name) then
+                cond_met = "n"
+              end if
             case ("texture")
               if (cal_upd(ichg_par)%cond(ic)%targc /= soil(ielem)%texture) then
                 cond_met = "n"
@@ -87,7 +92,7 @@
 
           if (cond_met == "y") then
             if (cal_parms(num_db)%ob_typ /= "sol" .and. cal_parms(num_db)%ob_typ /= "cli" .and. &
-              cal_parms(num_db)%ob_typ /= "plt") then
+              cal_parms(num_db)%ob_typ /= "plt" .and. cal_parms(num_db)%ob_typ /= "rdt") then
               call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
             end if
             select case (cal_parms(num_db)%ob_typ)
@@ -102,6 +107,60 @@
                 call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
               end do
 
+            case ("rdt")    !reservoir decision table
+              !! check storage zones and flood season
+              
+              !! exclusive flood control storage
+              if (cal_upd(ichg_par)%lyr1 /= 0) then
+                lyr = 1
+                select case (chg_parm)
+                case ("drawdown_days")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                case ("withdraw_rate")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                end select
+              end if
+              !! seasonal flood control storage - non flood season
+              if (cal_upd(ichg_par)%lyr2 /= 0) then
+                lyr = 2
+                select case (chg_parm)
+                case ("drawdown_days")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                case ("withdraw_rate")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                end select
+              end if
+              !! seasonal flood control storage - flood season
+              if (cal_upd(ichg_par)%year1 /= 0) then
+                lyr = 3
+                select case (chg_parm)
+                case ("drawdown_days")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                case ("withdraw_rate")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                end select
+              end if
+              !! multiple use storage - non flood season
+              if (cal_upd(ichg_par)%year2 /= 0) then
+                lyr = 4
+                select case (chg_parm)
+                case ("drawdown_days")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                case ("withdraw_rate")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                end select
+              end if
+              !! multiple use storage - non flood season
+              if (cal_upd(ichg_par)%day1 /= 0) then
+                lyr = 5
+                select case (chg_parm)
+                case ("drawdown_days")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                case ("withdraw_rate")
+                  call cal_parm_select (ielem, lyr, chg_parm, chg_typ, chg_val, absmin, absmax, num_db)
+                end select
+              end if
+
             case ("plt")
               nvar = 2
               select case (cal_upd(ichg_par)%name)
@@ -110,13 +169,8 @@
                 do ipl = 1, pcom(ielem)%npl
                   do ic = 1, cal_upd(ichg_par)%conds
                     if (cal_upd(ichg_par)%cond(ic)%targc == pcom(ielem)%pl(ipl)) then
-                      ireg = hru(ielem)%crop_reg
-                      do ilum = 1, plcal(ireg)%lum_num
-                        if (pl_prms(1)%prm(ilum)%name == pcom(ielem)%pl(ipl)) then
-                          pcom(ielem)%plcur(ipl)%phumat = chg_par (pcom(ielem)%plcur(ipl)%phumat, ielem, chg_typ, chg_val, &
+                      pcom(ielem)%plcur(ipl)%phumat = chg_par (pcom(ielem)%plcur(ipl)%phumat, ielem, chg_typ, chg_val, &
                             absmin, absmax, num_db)
-                        end if
-                      end do
                     end if
                   end do
                 end do
@@ -145,13 +199,8 @@
                 do ipl = 1, pcom(ielem)%npl
                   do ic = 1, cal_upd(ichg_par)%conds
                     if (cal_upd(ichg_par)%cond(ic)%targc == pcom(ielem)%pl(ipl)) then
-                      ireg = hru(ielem)%crop_reg
-                      do ilum = 1, plcal(ireg)%lum_num
-                        if (pl_prms(1)%prm(ilum)%name == pcom(ielem)%pl(ipl)) then
-                          pcom(ielem)%plcur(ipl)%lai_pot = chg_par (pcom(ielem)%plcur(ipl)%lai_pot, ielem, chg_typ, chg_val, &
+                      pcom(ielem)%plcur(ipl)%lai_pot = chg_par (pcom(ielem)%plcur(ipl)%lai_pot, ielem, chg_typ, chg_val, &
                             absmin, absmax, num_db)
-                        end if
-                      end do
                     end if
                   end do
                 end do
@@ -160,13 +209,8 @@
                 do ipl = 1, pcom(ielem)%npl
                   do ic = 1, cal_upd(ichg_par)%conds
                     if (cal_upd(ichg_par)%cond(ic)%targc == pcom(ielem)%pl(ipl)) then
-                      ireg = hru(ielem)%crop_reg
-                      do ilum = 1, plcal(ireg)%lum_num
-                        if (pl_prms(1)%prm(ilum)%name == pcom(ielem)%pl(ipl)) then
-                          pcom(ielem)%plcur(ipl)%harv_idx = chg_par (pcom(ielem)%plcur(ipl)%harv_idx, ielem, chg_typ, chg_val, &
+                      pcom(ielem)%plcur(ipl)%harv_idx = chg_par (pcom(ielem)%plcur(ipl)%harv_idx, ielem, chg_typ, chg_val, &
                             absmin, absmax, num_db)
-                        end if
-                      end do
                     end if
                   end do
                 end do

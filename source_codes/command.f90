@@ -307,7 +307,6 @@
                 ob(icmd)%hd(1) = recall(irec)%hd(1,1)
               end select
               
-              ob(icmd)%hd(1) = hz   !***jga
               rec_d(irec) = ob(icmd)%hd(1)
 
               if (cs_db%num_tot > 0) then
@@ -371,9 +370,9 @@
         if (pco%fdcout == "y" .and. ob(icmd)%typ == "chandeg") then
           call flow_dur_curve
           !! compute flashiness index
-          ob(icmd)%flash_idx%sum_q_q1 = ob(icmd)%hd(1)%flo - ob(icmd)%flash_idx%q_prev
+          ob(icmd)%flash_idx%sum_q_q1 = ob(icmd)%flash_idx%sum_q_q1 + (ob(icmd)%hd(1)%flo - ob(icmd)%flash_idx%q_prev)
           ob(icmd)%flash_idx%q_prev = ob(icmd)%hd(1)%flo
-          ob(icmd)%flash_idx%sum_q = ob(icmd)%hd(1)%flo
+          ob(icmd)%flash_idx%sum_q = ob(icmd)%flash_idx%sum_q + ob(icmd)%hd(1)%flo
         end if
         
         !print all outflow hydrographs

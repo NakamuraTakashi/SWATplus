@@ -25,6 +25,7 @@
       use hru_module, only : hru, isol, cn2, brt, tconc
       use soil_module
       use channel_module
+      use conditional_module
       use sd_channel_module
       use reservoir_module
       use aquifer_module
@@ -46,7 +47,8 @@
       integer, intent (in) :: ly                            !                |
       integer :: nly                                        !                |
       integer :: jj                                         !                |soil layer counter
-      integer :: ipl                                        !                |
+      integer :: ipl                                        !                |soil layer counter
+      integer :: ihru                                       !                |hru counter
       real :: dep_below_soil                                !                |
       real :: alpha                                         !                | 
       real :: exp                                           !                | 
@@ -345,7 +347,9 @@
       case ("surlag")
         bsn_prm%surlag = chg_par(bsn_prm%surlag,                         &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
-        brt(ielem) = 1. - Exp(-bsn_prm%surlag / tconc(ielem))
+        do ihru = 1, sp_ob%hru
+          brt(ihru) = 1. - Exp(-bsn_prm%surlag / tconc(ihru))
+        end do
         
       case ("adj_pkr")
         bsn_prm%adj_pkr = chg_par(bsn_prm%adj_pkr,                      &
@@ -758,6 +762,18 @@
             res_nut(ielem)%seccir = chg_par(res_nut(ielem)%seccir,      &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
             
+      !! res decision tables
+        case ("drawdown_days")
+          if (ly <= dtbl_res(ielem)%acts)then
+            dtbl_res(ielem)%act(ly)%const = chg_par(dtbl_res(ielem)%act(ly)%const,      &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+          end if
+        case ("withdraw_rate")
+          if (ly <= dtbl_res(ielem)%acts)then
+            dtbl_res(ielem)%act(ly)%const2 = chg_par(dtbl_res(ielem)%act(ly)%const2,    &
+                         ielem, chg_typ, chg_val, absmin, absmax, num_db)
+          end if
+            
       !!AQU
          case ("flo_init_mm")
             aqu_dat(ielem)%flo = chg_par(aqu_dat(ielem)%flo,                &
@@ -806,6 +822,7 @@
          case ("sp_yld")
             aqu_dat(ielem)%spyld = chg_par(aqu_dat(ielem)%spyld,            &
                          ielem, chg_typ, chg_val, absmin, absmax, num_db)
+            aqu_d(ielem)%stor = 1000. * (aqu_dat(ielem)%dep_bot - aqu_d(ielem)%dep_wt) * aqu_dat(ielem)%spyld
                     
          case ("hlife_n")
             aqu_dat(ielem)%hlife_n = chg_par(aqu_dat(ielem)%hlife_n,        &

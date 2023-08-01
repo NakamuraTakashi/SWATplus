@@ -27,6 +27,7 @@
       integer :: ise                  !              |
       integer :: ielem                !              |
       integer :: id
+      integer :: iter
       real :: ebtm_m                  !m             |erosion of bottom of channel
       real :: ebank_m                 !m             |meander cut on one side
       real :: erode_bank_cut          !cm            |widening caused by downcutting (both sides)
@@ -214,6 +215,7 @@
             ivalint = 1
             tbase = 1.5 * 3600.     !sd_chd(isd_db)%tc * 60.   !hydrograph base time in s
             tb_pr = tbase
+            iter = 0
             DO WHILE (flo_rt < peakrate)
               rchdep = rchdep + 0.01
               rcharea = (sd_ch_vel(ich)%wid_btm + chside * rchdep) * rchdep
@@ -229,6 +231,8 @@
                 ivalint = ivalint + 1
                 valint = float (ivalint) / float (maxint)
               end if
+              iter = iter + 1
+              if (iter > 100) exit
             END DO
             
             !! estimate overbank flow - assume a triangular hyd
@@ -359,82 +363,30 @@
         pr_ratio = (sd_ch(ich)%chl - sd_ch(ich)%hc_len / 1000.) / sd_ch(ich)%chl
         pr_ratio = Max(pr_ratio, 0.)
 
-        go to 777
         !! new q*qp (m3 * m3/s) equation for entire runoff event
-        qmm = ht1%flo / (10. * ob(icmd)%area_ha)
-        if (qmm > 3.) then
-          sd_ch(ich)%hc_hgt = 0.    !gully erosion is turned off - 7/28/2021
-          qh = (ht1%flo / 86400.) ** .5 * sd_ch(ich)%hc_hgt ** .225
-          hc = sd_ch(ich)%hc_co * qh            !m per event
-          hc = Max(hc, 0.)
-          sd_ch(ich)%hc_len = sd_ch(ich)%hc_len + hc
-          if (sd_ch(ich)%hc_len > sd_ch(ich)%chl * 1000.) then
-            hc = hc - (sd_ch(ich)%hc_len - sd_ch(ich)%chl * 1000.)
-            sd_ch(ich)%hc_len = sd_ch(ich)%chl * 1000.
-          end if
+        !qmm = ht1%flo / (10. * ob(icmd)%area_ha)
+        !if (qmm > 3.) then
+        !  sd_ch(ich)%hc_hgt = 0.    !gully erosion is turned off - 7/28/2021
+        !  qh = (ht1%flo / 86400.) ** .5 * sd_ch(ich)%hc_hgt ** .225
+        !  hc = sd_ch(ich)%hc_co * qh            !m per event
+        !  hc = Max(hc, 0.)
+        !  sd_ch(ich)%hc_len = sd_ch(ich)%hc_len + hc
+        !  if (sd_ch(ich)%hc_len > sd_ch(ich)%chl * 1000.) then
+        !    hc = hc - (sd_ch(ich)%hc_len - sd_ch(ich)%chl * 1000.)
+        !    sd_ch(ich)%hc_len = sd_ch(ich)%chl * 1000.
+        !  end if
             
           !! compute sediment yield from headcut- assume bd = 1.2 t/m3
           !! assume channel dimensions are same as data file
-          hc_sed = hc * sd_ch(ich)%chw * sd_ch(ich)%chd * 1.2
-        end if
-        
-        !! break hydrograph into maxint segments and compute deg at each flow increment
-        do ihval = 1, maxint
-          !! calc critical shear and shear on bottom of channel
-          shear_btm_cr = sd_ch(ich)%d50
-          shear_btm = 9800. * hyd_rad(ihval) * sd_ch(ich)%chs   !! Pa = N/m^2 * m * m/m
-            
-          !! degradation of the bank (widening)
-          perim_bank = 2. * ((sd_ch(ich)%chd ** 2) * (1. + sd_ch(ich)%chss ** 2)) ** 0.5
-          perim_bed = sd_ch(ich)%chw
-          tw = perim_bed + 2. * sd_ch(ich)%chss * rchdep
-          s_bank = 1.77 * (perim_bed / perim_bank + 1.5) ** (-1.4)
-          !! assume bank shear is 75% of bottom shear
-          shear_bank = shear_btm * 0.75     !sd_ch(ich)%shear_bnk * s_bank * (tw * perim_bed) / (2. * perim_bank)
-          if (sd_ch(ich)%ch_clay >= 10.) then
-            chns = .0156
-          else
-            chns = (sd_ch(ich)%d50 / 25.4) ** .16666 / 39.
-          end if
-          shear_bank_adj = shear_bank * (1. - sd_ch(ich)%cov)      !* (chns / sd_chd(isd_db)%chn) ** 2
-          shear_bank_cr = 0.493 * 10. ** (.0182 * sd_ch(ich)%ch_clay)
-          e_bank = 0.
-          if (shear_bank_adj > shear_bank_cr) then
-            e_bank = timeint(ihval) * sd_ch(ich)%cherod * (shear_bank_adj - shear_bank_cr)    !! cm = hr * cm/hr/Pa * Pa
-            ebank_m = ebank_m + e_bank
-            !! calc mass of sediment eroded -> t = cm * m/100cm * width (m) * length (km) * 1000 m/km * bd (t/m3)
-            !! apply to only one side (perim_bank / 2.)
-            ebank_t = ebank_t + 10. * e_bank * perim_bank / 2. * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
-          end if
-              
-          !! no downcutting below equilibrium slope
-          e_btm = 0.
-          erode_bank_cut = 0.
-          if (sd_ch(ich)%chs > sd_ch(ich)%chseq) then
-            !! if bottom shear > d50 -> downcut - widen to maintain width depth ratio
-            if (shear_btm > shear_btm_cr) then
-              e_btm = timeint(ihval) *  sd_ch(ich)%cherod * (shear_btm - shear_btm_cr)    !! cm = hr * cm/hr/Pa * Pa
-              !! if downcutting - check width depth ratio to see if widens
-              !if (sd_ch(ich)%chw / sd_ch(ich)%chd < sd_ch(ich)%wd_rto) then
-              !  erode_bank_cut = e_btm * sd_ch(ich)%wd_rto
-                !! appy to both bank sides
-              !  ebank_t = ebank_t + 10. * erode_bank_cut * perim_bank * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
-              !end if
-              ebtm_m = ebtm_m + e_btm
-              !! calc mass of sediment eroded -> t = cm * m/100cm * width (m) * length (km) * 1000 m/km * bd (t/m3)
-              ebtm_t = ebtm_t + 10. * e_btm * perim_bed * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
-            end if
-          end if
+        ! hc_sed = hc * sd_ch(ich)%chw * sd_ch(ich)%chd * 1.2
+        !end if
 
-        end do    ! ihval
-          
-        !go to 777
         !! Peters latest channel erosion model
         !!vel = 1.37 * (sd_ch(ich)%chs ** 0.31) * (12. * sd_ch(ich)%chw) ** 0.32      !annual ave for SWIFT
         !! mean daily to peak ratio developed from GARDAY - THE STUDY OF MOST PROBABLE MEAN DAILY BANKFULL RUNOFF VOLUMES 
-        !! IN SMALL WATERSHEDS DOMINATED BY CONVECTIVE/FRONTAL CHANNEL FORMING EVENTS AND THE CO-INCIDENT INNER BERM CHANNELS – PART I. 
+        !! IN SMALL WATERSHEDS DOMINATED BY CONVECTIVE/FRONTAL CHANNEL FORMING EVENTS AND THE CO-INCIDENT INNER BERM CHANNELS ?PART I. 
         !! Another eq from Peter - Qmax=Qmean*(1+2.66*Drainage Area^-.3)
-  777   pk_rto = 0.2 + 0.5 / 250. * ob(icmd)%area_ha
+        pk_rto = 0.2 + 0.5 / 250. * ob(icmd)%area_ha
         pk_rto = amin1 (1., pk_rto)
         peakrate = ht1%flo / 86400. / pk_rto    !m3/s
         
@@ -446,15 +398,7 @@
         vel = qcms / rcurv%xsec_area
         
         cla = sd_ch(ich)%ch_clay
-        
-        !! check Peters calcs
-        !vel = 1.42
-        !sd_ch(ich)%sinu = 1.3
-        !sd_ch(ich)%chw = 20.    !m  ***jga
-        !rcurv%dep = 2.     !m  ***jga
-        !sd_ch(ich)%chs = .004   !m/m ***jga
-        !cla = 25.
-        
+
         !! calc soil cohesion
         if (cla - 7.123 > 0.001) then
           !cohes = 177.5 * (cla - 7.123) ** 1.08
@@ -490,63 +434,31 @@
         ebank_t = ebank_m * sd_ch(ich)%chd * (arc_len + prot_len) * sd_ch(ich)%ch_bd
         ebank_t = amax1 (0., ebank_t)
         
-        !! bed erosion and limiting transport capacity !!vel_cr = 0.35 * (sd_ch(ich)%d50 / 1000.) ** 0.45  !d50 in m
-        !sd_ch(ich)%d50 = 10.    !mm ***jga
-        !sd_ch(ich)%chw = 15.    !m  ***jga
-        !sd_ch(ich)%chs = .004   !m/m ***jga
-        !qcms = 45.              !cms
-        d50_m = sd_ch(ich)%d50 / 1000.
-        str_pow = 9810. * qcms * sd_ch(ich)%chs / sd_ch(ich)%chw !stream power
-        str_pow_cr = 100. * (16.2 * d50_m) ** 1.5
-        if (str_pow - str_pow_cr > 1.e-6) then
-          sedcap_ppm = 0.0214 * (str_pow - str_pow_cr) ** 1.5 / d50_m * (qcms / sd_ch(ich)%chw) ** -0.833
-        else
-          sedcap_ppm = 0.
-        end if
-        sedcap_t = sedcap_ppm * ht1%flo / 1000000.  !t = ppm (g/m3) * 1 t/m3 / 1000000. g/t
-        !! concentration of incoming and bank erosion
-        sedin_t = ht1%sed + ebank_t
-        ebtm_t = sedcap_t - sedin_t
-        if (ebtm_t > 0.) then
-          dep = 0.
-        else
-          dep = -ebtm_t
-          ebtm_t = 0.
-        end if
-        !! check if bottom width (w_btm) is < 0
-        w_btm = sd_ch(ich)%chw - 2. * sd_ch(ich)%chd * sd_ch(ich)%chss
-        if (w_btm < 0.01) then
-          w_btm = .5 * sd_ch(ich)%chw
-          w_btm = Max(0., b)
-          sd_ch(ich)%chss = (sd_ch(ich)%chw - w_btm) / (2. * sd_ch(ich)%chd)
-        end if
-        !! m = t / (t/m3 * m * km * 1000 m/km)
-        ebtm_m = ebtm_t / (1.3 * w_btm * sd_ch(ich)%chl * 1000.)
-        !erode_bank_cut = amax1 (0., erode_bank_cut)
-          
+          !! no downcutting below equilibrium slope
+          if (sd_ch(ich)%chs > sd_ch(ich)%chseq) then
+          !! calc critical shear and shear on bottom of channel
+          shear_btm_cr = sd_ch(ich)%d50
+          shear_btm = 9800. * hyd_radius * sd_ch(ich)%chs   !! Pa = N/m^2 * m * m/m
+            !! if bottom shear > d50 -> downcut - widen to maintain width depth ratio
+            if (shear_btm > shear_btm_cr) then
+              ebtm_m = sd_ch(ich)%cherod * sd_ch(ich)%cov *  (shear_btm - shear_btm_cr)    !! cm = hr * cm/hr/Pa * Pa
+              !! calc mass of sediment eroded -> t = cm * m/100cm * width (m) * length (km) * 1000 m/km * bd (t/m3)
+              ebtm_t = 10. * ebtm_m * sd_ch(ich)%chw * sd_ch(ich)%chl * sd_ch(ich)%ch_bd
+            end if
+          end if
+
           !! adjust for incoming bedload and compute deposition
           !! assume bedload is deposited
           !dep = sd_ch(ich)%bedldcoef * ht1%sed
           !dep_btm = dep / (10. * perim_bed * sd_ch(ich)%chl * sd_ch(ich)%ch_bd)
- !777     !ebtm_m = ebtm_m ! - dep_btm      !don't add in all bedload (most will be transported out)
+          !ebtm_m = ebtm_m ! - dep_btm      !don't add in all bedload (most will be transported out)
           sd_ch(ich)%chd = sd_ch(ich)%chd + ebtm_m !/ 100.
           if (sd_ch(ich)%chd < 0.) then
             !! stream is completely filled in
             sd_ch(ich)%chd = 0.01
           end if
-          
-          !sd_ch(ich)%chw = sd_ch(ich)%chw + ebank_m
-          !sd_ch(ich)%chs = sd_ch(ich)%chs - (ebtm_m) / (sd_ch(ich)%chl * 1000.)
-          !sd_ch(ich)%chs = amax1 (sd_ch(ich)%chseq, sd_ch(ich)%chs)
-
-      !if (ich==422) then
-      !    write (888,*) time%day, time%yrs, ebank_m, sd_ch(ich)%chw, ebtm_m, sd_ch(ich)%chd
-      !end if
-      
-        !end if
 
       !! compute sediment leaving the channel
-      
 	  washld = (1. - sd_ch(ich)%bedldcoef) * ht1%sed
       washld = amax1 (0., washld)
 	  sedout = washld + hc_sed + ebtm_t + ebank_t
@@ -650,24 +562,19 @@
       scoef = amax1 (0., scoef)
       scoef = amin1 (1., scoef)
       frac = 1. - scoef
-      !scoef = 1.
-      !frac = 0.
-      !if (rttime > det) then      ! ht1 = incoming + storage
-      !  !! travel time > timestep -- then all incoming is stored and frac of stored is routed
-      !  ht2 = scoef * ch_stor(ich)
-      !  ch_stor(ich) = frac * ch_stor(ich) + ht1
-      !  hcs2 = scoef * ch_water(ich)
-      !  ch_water(ich) = frac * ch_water(ich) + hcs1
-      !else
-        !! travel time < timestep -- route all stored and frac of incoming
-        ht3 = ht2 + ch_stor(ich)
-        ht2 = scoef * ht3
-        ch_stor(ich) = ht3 - ht2    !incoming + initial storage - outflow
+      
+      !compute stream temperature
+      ! Call Subroutune for Ficklin Model, Linear Equation Model, Energy Balance Model
+      !ht2%temp = "output from subroutine"
+      
+      !! travel time < timestep -- route all stored and frac of incoming
+      ht3 = ht2 + ch_stor(ich)
+      ht2 = scoef * ht3
+      ch_stor(ich) = ht3 - ht2    !incoming + initial storage - outflow
         
-        hcs2 = scoef * hcs1
-        hcs2 = hcs2 + ch_water(ich)
-        ch_water(ich) = frac * hcs1
-      !end if
+      hcs2 = scoef * hcs1
+      hcs2 = hcs2 + ch_water(ich)
+      ch_water(ich) = frac * hcs1
       
       !rtb hydrograph separation
       if (rttime > det) then      ! ht1 = incoming + storage

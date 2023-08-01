@@ -3,23 +3,23 @@
       implicit none
       
        type calibration_parameters
-        character(len=16) :: name = "default"   !         |cn2, esco, awc, etc.
-        character(len=16) :: ob_typ = "plt"     !         |object type the parameter is associated with (hru, chan, res, basin, etc)
+        character(len=25) :: name = "default"   !         |cn2, esco, awc, etc.
+        character(len=25) :: ob_typ = "plt"     !         |object type the parameter is associated with (hru, chan, res, basin, etc)
         real :: absmin = 0.                     !         |minimum range for variable
         real :: absmax = 1.e6                   !         |maximum change for variable
-        character(len=16) :: units = "null"     !         |units used for each parameter
+        character(len=25) :: units = "null"     !         |units used for each parameter
       end type calibration_parameters
       type (calibration_parameters), dimension (:), allocatable :: cal_parms    !dimensioned to db_mx%cal_parms_tot
       
       type calibration_conditions
-        character(len=16) :: var
-        character(len=16) :: alt
+        character(len=25) :: var
+        character(len=25) :: alt
         real :: targ
-        character(len=16) :: targc
+        character(len=25) :: targc
       end type calibration_conditions   
 
       type update_parameters
-        character(len=16) :: name       !! cn2, terrace, land use, mgt, etc.
+        character(len=25) :: name       !! cn2, terrace, land use, mgt, etc.
         integer :: num_db = 0           !! crosswalk number of parameter, structure or land use to get database array number
         character(len=16) :: chg_typ    !! type of change (absval,abschg,pctchg)
         real :: val                     !! value of change

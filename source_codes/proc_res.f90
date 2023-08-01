@@ -10,6 +10,7 @@
       call res_read_nut
       !call res_read_weir
       call res_read_init
+      call res_read_conds   !! Osvaldo
         
       if (sp_ob%res > 0) then
         call res_allo

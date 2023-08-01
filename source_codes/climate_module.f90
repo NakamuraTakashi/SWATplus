@@ -65,7 +65,7 @@
         integer, dimension (:), allocatable :: mne_ppet          !!none          |next element in precip-pet linked list
         real, dimension (:), allocatable :: precip_mce           !!mm            |precip on current day of 30 day list 
         real, dimension (:), allocatable :: pet_mce              !!mm            |pet on current day of 30 day list 
-        integer :: ireg = 0                     !!               |annual precip category-1 <= 508 mm; 2 > 508 and <= 1016 mm; 3 > 1016 mm/yr
+        integer :: ireg = 1                     !!               |annual precip category-1 <= 508 mm; 2 > 508 and <= 1016 mm; 3 > 1016 mm/yr
         integer :: idewpt = 0                   !!               |0=dewpoint; 1=rel humididty input
       end type wgn_parms
       type (wgn_parms), dimension(:),allocatable :: wgn_pms

@@ -6,13 +6,25 @@
       
       implicit none 
 
-!!!  SWAT-DEG CHANNEL
+!!!  SWAT-DEG CHANNEL - SUBDAILY OUTPUT
       if (sp_ob%chandeg > 0) then
         if (pco%sd_chan%d == "y") then
           if (time%step > 0.) then
+!!!!!!!! SD_CHANNEL
             open (2508,file="channel_sd_subday.txt",recl = 1500)
             write (2508,*) bsn%name, prog
+            write (2508,*) sdch_hdr_subday !! swat deg channel 
+            write (2508,*) sdch_hdr_units_sub
+          write (9000,*) "SWAT-DEG_CHANNEL         channel_sd_subday.txt"
+          if (pco%csvout == "y") then
+            open (4814,file="channel_sd_subday.csv",recl = 1500)
+            write (4814,*) bsn%name, prog
+            write (4814,'(*(G0.3,:,","))') sdch_hdr 
+            write (4814,'(*(G0.3,:,","))') sdch_hdr_units_sub
+            write (9000,*) "SWAT-DEG_CHANNEL          channel_sd_subday.csv"
           end if
+           end if		  
+         end if
           
           open (2500,file="channel_sd_day.txt",recl = 1500)
           write (2500,*) bsn%name, prog
@@ -39,7 +51,7 @@
             !write (9000,*) "SWAT-DEG_CHANNEL          channel_sd_day_new.csv"                  
           end if
         endif
-      endif
+      !endif
       
         if (sp_ob%chandeg > 0) then
           if (pco%sd_chan%m == "y") then  

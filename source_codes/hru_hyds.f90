@@ -117,6 +117,20 @@
         obcs(icmd)%hd(5)%path(ipath) = 0.
       end do
       
+      !water temperature calculations
+      !percolate temperature
+      !ob(icmd)%hd(2)%temp = b_t
+      !surface runoff temperature
+      !if (snomlt > 0.1) then
+        !ob(icmd)%hd(3)%temp = a_t
+      !else
+        !ob(icmd)%hd(3)%temp = l_t * tmp
+      !end if
+      !lateral soil flow temperature
+      !ob(icmd)%hd(4)%temp = l_t * tmp
+      !tile flow temperature
+      !ob(icmd)%hd(5)%temp = l_t * tmp
+      
       !sum to obtain the total outflow hydrograph (1)
       do ihyd = 3, 5
         ob(icmd)%hd(1) = ob(icmd)%hd(1) + ob(icmd)%hd(ihyd)
@@ -146,6 +160,7 @@
           ob(icmd)%hyd_flo(day_next,:) = 0.
           if (tconc(j) * 60. > time%dtm) then
             tinc = int (tconc(j) * 60. / time%dtm)
+            tinc = min1 (float(time%step), float(tinc))
             !! move to next days hydrograph
             do istep = 1, tinc
               inext_step = time%step - tinc + istep

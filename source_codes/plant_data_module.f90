@@ -62,7 +62,7 @@
         real :: ext_coef = 0.65          !                  |light extinction coefficient
         real :: leaf_tov_min = 12.       !months            |perennial leaf turnover rate with minimum stress (complete turnover in 12 mon)
         real :: leaf_tov_max = 3.        !months            |perennial leaf turnover rate with maximum stress (complete turnover in 3 mon)
-        real :: bm_dieoff = 1.           !frac              |above ground biomass that dies off at dormancy
+        real :: bm_dieoff = 0.           !frac              |above ground biomass that dies off at dormancy
         !real :: leaf_frac_mx             !frac              |max fraction of above ground biomass that is leaf (assume constant over life of perennial)
         real :: rsr1 = 0.                !frac              |initial root to shoot ratio at the beg of growing season
         real :: rsr2 = 0.                !frac              |root to shoot ratio at the end of the growing season

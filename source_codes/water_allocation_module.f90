@@ -4,6 +4,7 @@
     
       implicit none
             
+      real :: trans_m3
       character(len=16), dimension(:), allocatable :: trt_om_name    !treatment name in treatment.trt
       
       !water source objects
@@ -68,6 +69,7 @@
         integer :: src_obs                      !number of source objects
         integer :: dmd_obs                      !number of demand objects
         character (len=1) :: cha_ob             !y-yes there is a channel object; n-no channel object (only one per water allocation object)
+        integer :: cha                          !channel number
         type (source_output) :: tot             !total demand, withdrawal and unmet for entire allocation object
         type (water_source_objects), dimension(:), allocatable :: src        !dimension by source objects
         type (water_demand_objects), dimension(:), allocatable :: dmd        !dimension by demand objects

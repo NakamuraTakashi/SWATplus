@@ -58,7 +58,9 @@
       ihyd = wet_dat(ires)%hyd
       ised = wet_dat(ires)%sed
       irel = wet_dat(ires)%release
-      wsa1 = hru(j)%area_ha * 10. 
+      wsa1 = hru(j)%area_ha * 10.
+      !! zero outgoing flow 
+      ht2 = resz 
 
       !! initialize variables for wetland daily simulation
       hru(j)%water_seep = 0.
@@ -69,61 +71,6 @@
       wet_wat_d(j)%precip = w%precip * wsa1 !m3
       wet_ob(j)%depth = wet_ob(j)%depth + w%precip / 1000.  !m  Jaehak 2022
       wet(j)%flo =  wet(j)%flo + wet_wat_d(j)%precip !m3
-      
-      !add irrigated water to wetland storage
-      if (wet_ob(j)%depth*1000. < hru(j)%irr_hmin) then
-          
-        irrig(j)%demand = max(0., hru(j)%irr_hmax - wet_ob(j)%depth*1000.) * hru(j)%area_ha * 10. !m3
-          
-        rto = 0.
-        if (hru(j)%irr_src == 'cha') then
-          if (ubound(ch_stor,1) > 0) then 
-            if (ch_stor(iob)%flo > 0.001) then
-              rto = min(0.99, irrig(j)%demand / ch_stor(iob)%flo)   ! ratio of water removed from channel volume
-            end if
-            irrig(j)%water = rto * ch_stor(iob)                     ! irrigation water
-            cs_irr(iob) = rto * ch_water(iob)                       ! constituents in irrigation water
-            ch_stor(iob) = (1. - rto) * ch_stor(iob)                ! remainder stays in channel
-            ch_water(iob) = (1. - rto) * ch_water(iob)                      
-          else
-            irrig(j)%water%flo = irrig(j)%demand
-          endif
-            
-        elseif (hru(j)%irr_src == 'res') then
-          if (ubound(res,1) > 0) then 
-            if (res(iob)%flo > 0.001) then
-              rto = min(0.99, irrig(j)%demand / res(iob)%flo)       ! ratio of water removed from res volume
-            end if
-            irrig(j)%water = rto * res(iob)                         ! organics in irrigation water
-            cs_irr(iob) = rto * res_water(iob)                      ! constituents in irrigation water
-            res(iob) = (1. - rto) * res(iob)                        ! remainder stays in reservoir
-            res_water(iob) = (1. - rto) * res_water(iob)                    
-          else
-            irrig(j)%water%flo = irrig(j)%demand
-          endif
-
-        elseif (hru(j)%irr_src == 'aqu') then
-          if (ubound(aqu_d,1) > 0) then 
-            if (aqu_d(iob)%stor > 0.001) then
-              rto = min(0.99, irrig(j)%demand / aqu_d(iob)%stor)    ! ratio of water removed from aquifer volume
-            end if
-            irrig(j)%water%flo = rto * aqu_d(iob)%flo               ! organics in irrigation water
-            cs_irr(iob) = rto * cs_aqu(iob)                         ! constituents in irrigation water
-            aqu_d(iob)%stor = (1. - rto) * aqu_d(iob)%stor          ! remainder stays in aquifer
-            cs_aqu(iob) = (1. - rto) * cs_aqu(iob)  
-          else
-            irrig(j)%water%flo = irrig(j)%demand
-          endif
-
-        else !unlimited source
-          irrig(j)%water%flo = irrig(j)%demand
-
-        end if
-        
-        irrig(j)%applied = irrig(j)%water%flo / wsa1 * irrig(j)%eff * (1. - irrig(j)%frac_surq) !mm
-        irrig(j)%runoff = irrig(j)%water%flo / wsa1 * irrig(j)%eff * irrig(j)%frac_surq !mm
-      endif
-      wet(j)%flo =  wet(j)%flo + irrig(j)%applied * wsa1 !m3
       
       !! subtract evaporation  - mm*ha*10.=m3
       wet_wat_d(j)%evap = pet_day * wet_hyd(ihyd)%evrsv * wsa1 !m3
@@ -224,17 +171,10 @@
         else
           dep = 0.
         end if
-        weir_hgt = wet_ob(j)%weir_hgt !m
-        wet_ob(j)%depth = dep !m
-
-
-        !! use cn control for Jaehak's release algorithm - points to weir.res
-        !if (bsn_cc%cn > 0) then 
-        !  call res_weir_release (j, irel, ihyd, pvol_m3, evol_m3, dep, weir_hgt)
-        !else
-          call conditions (j, irel)
-          call res_hydro (j, irel, ihyd, pvol_m3, evol_m3, dep, weir_hgt)
-        !end if
+        weir_hgt = wet_ob(j)%weir_hgt   !m
+        wet_ob(j)%depth = dep           !m
+        call conditions (j, irel)
+        call res_hydro (j, irel, ihyd, pvol_m3, evol_m3, dep, weir_hgt)
           
         !! subtract outflow from storage
         wet(j)%flo =  wet(j)%flo - ht2%flo
@@ -288,13 +228,13 @@
       ob(icmd)%hd(1)%temp = 0.                  !!undefined
 
       !qdr(j) = ht2%flo / (10. * hru(j)%area_ha) + ht1%flo * bypass
-      sedyld(j) = ht2%sed / hru(j)%area_ha + sedyld(j) * bypass
-      sanyld(j) = ht2%san / hru(j)%area_ha + sanyld(j) * bypass
-      silyld(j) = ht2%sil / hru(j)%area_ha + silyld(j) * bypass
-	    clayld(j) = ht2%cla / hru(j)%area_ha + clayld(j) * bypass 
-	    sagyld(j) = ht2%sag / hru(j)%area_ha + sagyld(j) * bypass
-	    lagyld(j) = ht2%lag / hru(j)%area_ha + lagyld(j) * bypass
-	    grayld(j) = ht2%grv / hru(j)%area_ha + grayld(j) * bypass
+      sedyld(j) = ht2%sed + sedyld(j) * bypass
+      sanyld(j) = ht2%san + sanyld(j) * bypass
+      silyld(j) = ht2%sil + silyld(j) * bypass
+      clayld(j) = ht2%cla + clayld(j) * bypass 
+      sagyld(j) = ht2%sag + sagyld(j) * bypass
+      lagyld(j) = ht2%lag + lagyld(j) * bypass
+      grayld(j) = ht2%grv + grayld(j) * bypass
 
 
       sedorgn(j) = ht2%orgn / hru(j)%area_ha + sedorgn(j) * bypass

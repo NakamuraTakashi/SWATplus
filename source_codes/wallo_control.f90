@@ -1,7 +1,7 @@
       subroutine wallo_control (iwallo)
       
       use water_allocation_module
-      use hydrograph_module, only : irrig
+      use hydrograph_module, only : irrig, hz
       use hru_module
       use basin_module
       use time_module
@@ -35,6 +35,7 @@
         !! if demand - check source availability
         if (wallod_out(iwallo)%dmd(idmd)%dmd_tot > 0.) then
             
+          wallo(iwallo)%dmd(idmd)%hd = hz
           !! check if water is available from each source - set withdrawal and unmet
           do isrc = 1, wallo(iwallo)%dmd(idmd)%dmd_src_obs
             dmd_m3 = wallod_out(iwallo)%dmd(idmd)%src(isrc)%demand

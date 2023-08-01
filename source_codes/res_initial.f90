@@ -29,6 +29,7 @@
         !! convert units
         iprop = res_ob(ires)%props
         ihyd = res_dat(iprop)%hyd
+        res_ob(ires)%ob  = sp_ob1%res + ires - 1
         res_ob(ires)%evol = res_hyd(ihyd)%evol * 10000.       !! ha-m => m**3
         res_ob(ires)%pvol = res_hyd(ihyd)%pvol * 10000.       !! ha-m => m**3
         res_ob(ires)%esa = res_hyd(ihyd)%esa

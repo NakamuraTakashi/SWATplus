@@ -296,8 +296,13 @@
       end do
 
       !! determine precipitation category (ireg initialized to category 1)
-      if (summm_p > 508.) wgn_pms(iwgn)%ireg = 2
-      if (summm_p > 1016.) wgn_pms(iwgn)%ireg = 3
+      if (summm_p < 508.) then
+        wgn_pms(iwgn)%ireg = 1
+      else if (summm_p >= 508. .and. summm_p < 1016.) then
+        wgn_pms(iwgn)%ireg = 2
+      else if (summm_p >= 1016.) then
+        wgn_pms(iwgn)%ireg = 3
+      end if
 
       return
       end subroutine cli_initwgn
