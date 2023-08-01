@@ -25,9 +25,8 @@
       !! read number of spatial objects from obj_connect.dat
       inquire (file=in_sim%object_cnt, exist=i_exist)
       if (.not. i_exist .or. in_sim%object_cnt == "null") then
-          allocate (ob(0:0))
-          allocate (obcs(0:0))
-          allocate (obom(0:0))
+          write (*,*) 'Cannot find object.cnt input file'
+          stop
       else
       do
         open (107,file=in_sim%object_cnt)

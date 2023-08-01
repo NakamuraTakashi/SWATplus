@@ -50,17 +50,23 @@
       integer :: l           !none      |counter (soil layer)
       integer :: ir          !none      |flag to denote bottom of root zone reached
       real :: uapl           !kg P/ha   |amount of phosphorus removed from layer
-      real :: gx             !mm        |lowest depth in layer from which nitrogen
-                             !          |may be removed
+      real :: gx             !mm        |lowest depth in layer from which nitrogen may be removed
+      real :: matur_frac     !frac      |fraction to maturity - use hu for annuals and years to maturity for perennials
 
       j = ihru
 
       idp = pcom(j)%plcur(ipl)%idplt
       
-      pcom(j)%plm(ipl)%p_fr = (pldb(idp)%pltpfr1 - pldb(idp)%pltpfr3) * &  
-        (1. - pcom(j)%plcur(ipl)%phuacc / (pcom(j)%plcur(ipl)%phuacc +  &       
-        Exp(plcp(idp)%pup1 - plcp(idp)%pup2 *                           &
-        pcom(j)%plcur(ipl)%phuacc))) + pldb(idp)%pltpfr3
+      !! set fraction to maturity for annuals and perennials
+      if (pldb(idp)%typ == "perennial") then
+        matur_frac = float(pcom(j)%plcur(ipl)%curyr_mat) / float(pldb(idp)%mat_yrs)
+      else  !annuals
+        matur_frac = pcom(j)%plcur(ipl)%phuacc
+      end if
+      
+      pcom(j)%plm(ipl)%p_fr = (pldb(idp)%pltpfr1 - pldb(idp)%pltpfr3) *             &  
+        (1. - matur_frac / (matur_frac + Exp(plcp(idp)%pup1 - plcp(idp)%pup2 *      &
+        matur_frac))) + pldb(idp)%pltpfr3
 
       up2(ipl) = pcom(j)%plm(ipl)%p_fr * pl_mass(j)%tot(ipl)%m
       if (up2(ipl) < pl_mass(j)%tot(ipl)%p) up2(ipl) = pl_mass(j)%tot(ipl)%p

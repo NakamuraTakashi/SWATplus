@@ -27,16 +27,16 @@
         
       do iterall = 1, iter_all
 
-        ! calibrate cn3_swf for surface runoff
+        ! calibrate pet_co for potential ET
         call calsoft_hyd_bfr_et
 
         ! calibrate cn3_swf for surface runoff
         call calsoft_hyd_bfr_surq
         
-        ! calibrate latq_co for water yield
+        ! calibrate latq_co for lateral soil flow
         call calsoft_hyd_bfr_latq
         
-        ! calibrate perco for water yield
+        ! calibrate perco for percolation
         call calsoft_hyd_bfr_perc
 
         ! calibrate cn3_swf for surface runoff

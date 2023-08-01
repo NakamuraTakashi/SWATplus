@@ -34,16 +34,18 @@
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
       use hru_module, only : hru, ihru, i_sep, inflpcp, isep, latlyr, latq, lyrtile, qstemm, sepbtm, sepcrktot, sepday,   &
-         sw_excess, wt_shall, qtile
+         sw_excess, wt_shall, qtile, gwtranq !rtb gwflow
       use soil_module
       use septic_data_module
       use hydrograph_module
+      use gwflow_module, only : hru_gwtran,gw_transfer_flag,gw_transport_flag !rtb gwflow
       use basin_module
       
       implicit none
       
       integer :: j           !none       |HRU number
       integer :: j1          !none       |counter
+      integer :: ires        !none       |counter
       real :: slug           !           | 
       real :: sep_left       !           |
       real :: por_air        !           |
@@ -56,11 +58,26 @@
       real :: sumqtile       !           | 
     
       j = ihru
+      ires =  hru(j)%dbs%surf_stor !Jaehak 2022
+
+      !rtb gwflow: add groundwater transferred to soil profile
+      if(gw_transfer_flag.eq.1) then
+        do j1 = 1, soil(j)%nly
+          soil(j)%phys(j1)%st = soil(j)%phys(j1)%st + hru_gwtran(j,j1)
+          gwtranq(j) = gwtranq(j) + hru_gwtran(j,j1) !HRU total
+        enddo
+      endif
+      
 
       !! initialize water entering first soil layer
       !! ht1%flo is infiltration from overland flow routing
-      sepday = inflpcp + irrig(j)%applied + hru(j)%water_seep + ht1%flo
-      hru(j)%water_seep = 0.
+      if (ires==0) then
+        sepday = inflpcp + irrig(j)%applied + ht1%flo !mm
+      else
+        sepday = inflpcp + ht1%flo / (hru(j)%area_ha * 10.)
+      endif
+      
+      !hru(j)%water_seep = 0.
 
       !! calculate crack flow 
       if (bsn_cc%crk == 1) then 
@@ -82,7 +99,7 @@
  	  !! septic tank inflow to biozone layer  J.Jeong
 	  ! STE added to the biozone layer if soil temp is above zero. 
 	  if (j1 == i_sep(j) .and. soil(j)%phys(j1)%tmp > 0. .and.          &
-              sep(isep)%opt  /= 0) then
+            sep(isep)%opt  /= 0) then
 		soil(j)%phys(j1)%st = soil(j)%phys(j1)%st + qstemm(j)  ! in mm
         end if
 

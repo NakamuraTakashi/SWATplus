@@ -18,6 +18,8 @@
       real, dimension (:), allocatable :: rnd3                  !none          |random number between 0.0 and 1.0
       real, dimension (:), allocatable :: rnd8                  !none          |random number between 0.0 and 1.0
       real, dimension (:), allocatable :: rnd9                  !none          |random number between 0.0 and 1.0
+      integer :: rndseed_cond = 748932582   ! random number seed for dtbl conditional
+      real, dimension(:), allocatable :: co2y
 
       type weather_generator_db      
         real :: lat =  0.0                          !! degrees      |latitude of weather station used to compile data
@@ -56,13 +58,15 @@
         real :: ppet_an = 0.                    !!               |average annual precip/pet
         real :: precip_sum = 0.                 !!               |30 day sum of PET (mm)
         real :: pet_sum = 0.                    !!               |30 day sum of PRECIP (mm)
+        real :: p_pet_rto = 0.                  !!               |30 day sum of PRECIP/PET ratio
         real, dimension (12) :: pcf = 0.        !!               |normalization factor for precipitation
         real, dimension (12) :: amp_r = 0.      !!               |alpha factor for rain(mo max 0.5h rain)
         real, dimension (12) :: pet             !!               |average monthly PET (mm)
         integer, dimension (:), allocatable :: mne_ppet          !!none          |next element in precip-pet linked list
         real, dimension (:), allocatable :: precip_mce           !!mm            |precip on current day of 30 day list 
         real, dimension (:), allocatable :: pet_mce              !!mm            |pet on current day of 30 day list 
-        integer :: ireg = 0                     !!               |annual precip category-1 <= 508 mm; 2 > 508 and <= 1016 mm; 3 > 1016 mm/yr
+        integer :: ireg = 1                     !!               |annual precip category-1 <= 508 mm; 2 > 508 and <= 1016 mm; 3 > 1016 mm/yr
+        integer :: idewpt = 0                   !!               |0=dewpoint; 1=rel humididty input
       end type wgn_parms
       type (wgn_parms), dimension(:),allocatable :: wgn_pms
           
@@ -91,9 +95,10 @@
         real :: precip_half_hr                              !! frac         |fraction of total rainfall on day that occurs
                                                             !!              |during 0.5h highest intensity rainfall
         character(len=3) :: precip_prior_day = "dry"        !!              |"dry" or "wet"
-        real, dimension(:), allocatable :: ts               !! mm           |subdaily precip
+        real, dimension(:), allocatable :: ts               !! mm           |subdaily precip - current day
+        real, dimension(:), allocatable :: ts_next          !! mm           |subdaily precip - next day
       end type weather_daily
-      type (weather_daily) :: weat
+      type (weather_daily) :: w
             
       type weather_codes_station
         integer :: wgn = 1        !!  weather generator station number
@@ -120,32 +125,53 @@
 
       type weather_station
         character(len=50) :: name = "Farmer Branch IL"
-        real :: lat                          ! degrees    |latitude
+        real :: lat                         ! degrees    |latitude
         type (weather_codes_station_char) :: wco_c
         type (weather_codes_station) :: wco 
         type (weather_daily) :: weat
-        real, dimension(12) :: rfinc = 0     ! deg C      |monthly precipitation adjustment
-        real, dimension(12) :: tmpinc = 0    ! deg C      |monthly temperature adjustment
-        real, dimension(12) :: radinc = 0    ! MJ/m^2     |monthly solar radiation adjustment
-        real, dimension(12) :: huminc = 0    ! none       |monthly humidity adjustment
+        real :: precip_aa = 0.              ! mm         |average annual precipitation
+        real :: pet_aa = 0.                 ! mm         |average annual potential ET
+        integer :: pcp_ts = 0               ! 1/day      |precipitation time steps per day (0 or 1 = daily)
+        real, dimension(12) :: rfinc = 0    ! deg C      |monthly precipitation adjustment
+        real, dimension(12) :: tmpinc = 0   ! deg C      |monthly temperature adjustment
+        real, dimension(12) :: radinc = 0   ! MJ/m^2     |monthly solar radiation adjustment
+        real, dimension(12) :: huminc = 0   ! none       |monthly humidity adjustment
       end type weather_station
       type (weather_station), dimension(:),allocatable :: wst
          
+      type climate_change_variables
+        character(len=50) :: name = "Increment or Scenario"
+        integer :: ref_yr                   ! none       |reference year to begin incremental adjustments
+        real :: co2inc = 0                  ! ppm        |annual CO2 increment
+        real, dimension(12) :: rfinc = 0    ! deg C      |monthly precipitation annual increment
+        real, dimension(12) :: tmpinc = 0   ! deg C      |monthly temperature annual increment
+        real, dimension(12) :: radinc = 0   ! MJ/m^2     |monthly solar radiation annual increment
+        real, dimension(12) :: huminc = 0   ! none       |monthly humidity annual increment
+        real :: co2scen = 0                 ! ppm        |annual CO2 scenario adjustment
+        real, dimension(12) :: rfscen = 0   ! deg C      |monthly precipitation scenario adjustment
+        real, dimension(12) :: tmpscen = 0  ! deg C      |monthly temperature scenario adjustment
+        real, dimension(12) :: radscen = 0  ! MJ/m^2     |monthly solar radiation scenario adjustment
+        real, dimension(12) :: humscen = 0  ! none       |monthly humidity scenario adjustment
+      end type climate_change_variables
+         
       type climate_measured_data
         character (len=50) :: filename
-        real :: lat                     !! latitude of raingage         
-        real :: long                    !! longitude of raingage
-        real :: elev                    !! elevation of raingage
-        integer :: nbyr                 !! number of years of daily rainfall
-        integer :: tstep                !! timestep of precipitation  
+        real :: lat                         !! latitude of raingage         
+        real :: long                        !! longitude of raingage
+        real :: elev                        !! elevation of raingage
+        integer :: nbyr                     !! number of years of daily rainfall
+        integer :: tstep                    !! timestep of precipitation  
         
-        integer :: days_gen = 0         !! number of missing days - generated 
-        integer :: yrs_start = 1        !! number of years of simulation before record starts
+        integer :: days_gen = 0             !! number of missing days - generated 
+        integer :: yrs_start = 1            !! number of years of simulation before record starts
         
-        integer :: start_day            !! daily precip start julian day
-        integer :: start_yr             !! daily precip start year
-        integer :: end_day              !! daily precip end julian day
-        integer :: end_yr               !! daily precip end year
+        integer :: start_day                !! daily precip start julian day
+        integer :: start_yr                 !! daily precip start year
+        integer :: end_day                  !! daily precip end julian day
+        integer :: end_yr                   !! daily precip end year
+        real, dimension (12) :: mean_mon    !! same as variable unit        |mean monthly measured value
+        real, dimension (12) :: max_mon     !! same as variable unit        |maximum monthly measured value
+        real, dimension (12) :: min_mon     !! same as variable unit        |minimum monthly measured value
         
         real, dimension (:,:), allocatable :: ts
         real, dimension (:,:), allocatable :: ts2

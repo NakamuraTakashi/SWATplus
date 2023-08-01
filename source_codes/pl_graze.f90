@@ -104,7 +104,7 @@
         
         !! apply manure
         it = graze%manure_id
-        manure_kg = graze%eat * graze%manure
+        manure_kg = graze%manure
         if (manure_kg > 0.) then 
           l = 1
           if (bsn_cc%cswat == 0) then
@@ -113,6 +113,8 @@
             soil1(j)%mn(l)%nh4 = soil1(j)%mn(l)%nh4 + manure_kg * fertdb(it)%fnh3n * fertdb(it)%fminn
             soil1(j)%mp(l)%lab = soil1(j)%mp(l)%lab + manure_kg * fertdb(it)%fminp
             soil1(j)%tot(l)%p = soil1(j)%tot(l)%p + manure_kg * fertdb(it)%forgp
+            grazn = manure_kg * (fertdb(it)%forgn + fertdb(it)%fminn)
+            grazp = manure_kg * (fertdb(it)%forgp + fertdb(it)%fminp)
           end if
           if (bsn_cc%cswat == 1) then
           soil1(j)%mn(l)%no3 = soil1(j)%mn(l)%no3 + manure_kg *       &

@@ -46,7 +46,7 @@
      !! read other output
         read (107,*,iostat=eof) header
         if (eof < 0) exit
-        read (107,*,iostat=eof) pco%snutc, pco%mgtout, pco%hydcon, pco%fdcout
+        read (107,*,iostat=eof) pco%crop_yld, pco%mgtout, pco%hydcon, pco%fdcout
         if (eof < 0) exit
              
      !! read objects output
@@ -83,13 +83,13 @@
         read (107,*,iostat=eof) name, pco%aqu_reg
         if (eof < 0) exit            
         read (107,*,iostat=eof) name, pco%res_reg
-        if (eof < 0) exit        
-        read (107,*,iostat=eof) name, pco%chan_reg
-        if (eof < 0) exit                       
+        if (eof < 0) exit                           
         read (107,*,iostat=eof) name, pco%sd_chan_reg
         if (eof < 0) exit 
         read (107,*,iostat=eof) name, pco%recall_reg
         if (eof < 0) exit 
+        read (107,*,iostat=eof) name, pco%water_allo
+        if (eof < 0) exit   
     !! lsu
         read (107,*,iostat=eof) name, pco%wb_lsu
         if (eof < 0) exit     

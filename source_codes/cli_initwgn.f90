@@ -27,12 +27,6 @@
 !!                               |  3 precipitation > 1016 mm/yr
 !!    latcos(:)   |none          |Cos(Latitude)
 !!    latsin(:)   |none          |Sin(Latitude)
-!!    pcp_stat(:,1,:)|mm/day     |average amount of precipitation falling in
-!!                               |one day for the month
-!!    pcp_stat(:,2,:)|mm/day     |standard deviation for the average daily
-!!                               |precipitation
-!!    pcp_stat(:,3,:)|none       |skew coefficient for the average daily 
-!!                               |precipitation
 !!    phutot(:)   |heat unit     |total potential heat units for year (used
 !!                               |when no crop is growing)
 !!    pr_w(1,:,:) |none          |probability of wet day after dry day in month
@@ -214,6 +208,15 @@
         summm_pet = summm_pet + wgn_pms(iwgn)%pet(mon)
       end do
 
+      !! idewpt=0 if dew point or 1 if relative humidity
+      wgn_pms(iwgn)%idewpt = 1
+      do mon = 1, 12
+        if (wgn(iwgn)%dewpt(mon) > 1. .or. wgn(iwgn)%dewpt(mon) < 0.) then
+          wgn_pms(iwgn)%idewpt = 0
+          exit
+        end if
+      end do
+              
       !! initialize arrays for precip divided by pet moving sum
       ppet_ndays = 30
       allocate (wgn_pms(iwgn)%mne_ppet(ppet_ndays))
@@ -293,8 +296,13 @@
       end do
 
       !! determine precipitation category (ireg initialized to category 1)
-      if (summm_p > 508.) wgn_pms(iwgn)%ireg = 2
-      if (summm_p > 1016.) wgn_pms(iwgn)%ireg = 3
+      if (summm_p < 508.) then
+        wgn_pms(iwgn)%ireg = 1
+      else if (summm_p >= 508. .and. summm_p < 1016.) then
+        wgn_pms(iwgn)%ireg = 2
+      else if (summm_p >= 1016.) then
+        wgn_pms(iwgn)%ireg = 3
+      end if
 
       return
       end subroutine cli_initwgn

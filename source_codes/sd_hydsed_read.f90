@@ -5,6 +5,7 @@
       use channel_velocity_module
       use maximum_data_module
       use hydrograph_module
+      use time_module
       
       implicit none      
       
@@ -43,7 +44,15 @@
       maxint = 10
       
       allocate (timeint(10))    !***jga
-      allocate (hyd_rad(10))
+      if (bsn_cc%i_fpwet == 0) then
+        allocate (hyd_rad(10))
+        allocate (trav_time(10))
+        allocate (flo_dep(10))
+      else
+        allocate (hyd_rad(time%step))
+        allocate (trav_time(time%step))
+        allocate (flo_dep(time%step))
+      end if
       
       inquire (file=in_cha%hyd_sed, exist=i_exist)
       if (.not. i_exist .or. in_cha%hyd_sed == "null") then
@@ -77,7 +86,6 @@
         
         do idb = 1, db_mx%ch_lte
           read (1,*,iostat=eof) sd_chd(idb)
-          if (sd_chd(idb)%wd_rto < 1.e-6) sd_chd(idb)%wd_rto = 4.
           if (eof < 0) exit
         end do
 

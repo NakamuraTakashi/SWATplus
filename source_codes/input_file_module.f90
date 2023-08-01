@@ -140,9 +140,9 @@
       
 !! water-rights
       type input_water_rights
-        character(len=25) :: define = "define.wro"
+        character(len=25) :: transfer_wro = "water_allocation.wro"  !! transferring water using water rights objects (using decision tables)
         character(len=25) :: element = "element.wro"
-        character(len=25) :: water_rights = "water_rights.wro"
+        character(len=25) :: water_rights = "water_rights.wro"      !! 2 sources and compensation (used for NAM)
       end type input_water_rights
       type (input_water_rights) :: in_watrts
       
@@ -176,7 +176,7 @@
        character(len=25) :: plants_plt = "plants.plt"
        character(len=25) :: fert_frt = "fertilizer.frt"
        character(len=25) :: till_til = "tillage.til"
-       character(len=25) :: pest = "pesticide.pst"
+       character(len=25) :: pest = "pesticide.pes"
 	   character(len=25) :: pathcom_db = "pathogens.pth"
 	   character(len=25) :: hmetcom_db = "metals.mtl"
 	   character(len=25) :: saltcom_db = "salt.slt"

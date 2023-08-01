@@ -40,7 +40,6 @@
       allocate (percn(mhru))
 
 !! septic changes added 1/28/09 gsm
-      allocate (percp(mhru))
       allocate (i_sep(mhru))
       allocate (sep_tsincefail(mhru))
       allocate (qstemm(mhru))
@@ -82,8 +81,6 @@
       allocate (dormhr(mhru))
       allocate (doxq(mhru))
       allocate (filterw(mhru))
-      allocate (hru_ra(mhru))
-      allocate (hru_rmx(mhru))
       allocate (igrz(mhru))
       allocate (yr_skip(mhru))
       allocate (isweep(mhru))
@@ -99,8 +96,13 @@
 
       allocate (pplnt(mhru))
       allocate (qdr(mhru))
-      allocate (rhd(mhru))
 
+      allocate (gwtranq(mhru)) !rtb gwflow
+      allocate (satexq(mhru)) !rtb gwflow
+      allocate (gwtrann(mhru)) !rtb gwflow
+      allocate (gwtranp(mhru)) !rtb gwflow
+      allocate (satexn(mhru)) !rtb gwflow
+      
 !    Drainmod tile equations  01/2006 
 	  allocate (sstmaxd(mhru))	  
 !    Drainmod tile equations  01/2006 
@@ -119,7 +121,6 @@
       allocate (sed_con(mhru))
       allocate (sepbtm(mhru))
       allocate (smx(mhru))
-      allocate (snotmp(mhru))
       allocate (soln_con(mhru))
       allocate (solp_con(mhru))
 !!    Drainmod tile equations  01/2006 
@@ -129,20 +130,19 @@
       allocate (surqno3(mhru))
       allocate (surqsolp(mhru))
       allocate (swtrg(mhru))
+      allocate (rateinf_prev(mhru))
+      allocate (urb_abstinit(mhru))
       allocate (t_ov(mhru))
       allocate (tconc(mhru))
       allocate (tc_gwat(mhru))
       allocate (tileno3(mhru))
-      allocate (tmn(mhru))
-      allocate (tmpav(mhru))
-      allocate (tmx(mhru))
       allocate (twash(mhru))
-      allocate (u10(mhru))
       allocate (usle_cfac(mhru))
       allocate (usle_eifac(mhru))
       allocate (wfsh(mhru))
 
       allocate (bss(4,mhru))
+      allocate (bss_ex(10,mhru)) !rtb gwflow
       allocate (wrt(2,mhru))
       allocate (surf_bs(17,mhru))  
 

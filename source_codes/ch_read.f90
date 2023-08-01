@@ -92,10 +92,10 @@
            end if
          end do   
 
-       if (ch_dat(ichi)%init == 0) write (9001,*) ch_dat_c(ichi)%init, " not found (chan)"
-       if (ch_dat(ichi)%hyd == 0) write (9001,*) ch_dat_c(ichi)%hyd, " not found (chan)"
-       if (ch_dat(ichi)%sed == 0) write (9001,*) ch_dat_c(ichi)%sed, " not found (chan)"
-       if (ch_dat(ichi)%nut == 0) write (9001,*) ch_dat_c(ichi)%nut, " not found (chan)"      
+       if (ch_dat(ichi)%init == 0) write (9001,*) ch_dat_c(ichi)%init, " not found (initial.cha)"
+       if (ch_dat(ichi)%hyd == 0) write (9001,*) ch_dat_c(ichi)%hyd, " not found (hydrology.cha)"
+       if (ch_dat(ichi)%sed == 0) write (9001,*) ch_dat_c(ichi)%sed, " not found (sediment.cha)"
+       if (ch_dat(ichi)%nut == 0) write (9001,*) ch_dat_c(ichi)%nut, " not found (nutrients.cha)"      
        
        end do
               

@@ -3,6 +3,8 @@
       use hydrograph_module
       use input_file_module
       use maximum_data_module
+      use sd_channel_module
+      
       implicit none 
 
       character (len=80) :: titldum   !           |title of file
@@ -56,19 +58,15 @@
         
                 !db_mx%ch_surf
         do ise = 1, imax
-          read (107,*,iostat=eof) i, ichan, namedum, nspu
+          read (107,*,iostat=eof) i, namedum, nspu
           if (eof < 0) exit
-          allocate (ch_sur(i)%obtyp(nspu))
-          allocate (ch_sur(i)%obtypno(nspu))
-          allocate (ch_sur(i)%wid(nspu))
-          allocate (ch_sur(i)%dep(nspu))
-          allocate (ch_sur(i)%flood_volmx(nspu))
-          allocate (ch_sur(i)%hd(nspu))
-        
+          
           if (nspu > 0) then
+            allocate (sd_ch(i)%fp%obtyp(nspu))
+            allocate (sd_ch(i)%fp%obtypno(nspu))
             backspace (107)
-            read (107,*,iostat=eof) numb, ch_sur(i)%chnum, ch_sur(i)%name,    &
-            ch_sur(i)%num, (ch_sur(i)%obtyp(isp), ch_sur(i)%obtypno(isp), isp = 1, nspu)
+            read (107,*,iostat=eof) numb, sd_ch(i)%fp%name, sd_ch(i)%fp%obj_tot, &
+               (sd_ch(i)%fp%obtyp(isp), sd_ch(i)%fp%obtypno(isp), isp = 1, nspu)
             if (eof < 0) exit
           end if
 
@@ -77,5 +75,5 @@
       end do
       close (107)
       end if
-      return
+       return
       end subroutine overbank_read

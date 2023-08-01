@@ -41,7 +41,7 @@
     use pathogen_data_module
     use organic_mineral_mass_module
     use hru_module, only : hru, ihru, i_sep, iseptic, qstemm, bz_perc, isep, sep_tsincefail,    &
-       biom, plqm, bio_bod, fcoli, rbiom, percp, isep
+       biom, plqm, bio_bod, fcoli, rbiom, isep
     use soil_module
     use time_module
       
@@ -103,6 +103,7 @@
     real*8 svolp               !              |
     real*8 totalp              !              |
     real*8 ctmp                !              |
+    real*8 percp               !              |
 
 	j = ihru
 	nly = soil(j)%nly
@@ -115,8 +116,9 @@
 	qsrf = 0
 	
 	!temperature correction factor for bacteria growth/dieoff (Eppley, 1972)
-    ibac = 1        !there should be a loop for all pathogens in this hru
-	ctmp = path_db(ibac)%t_adj ** (soil(j)%phys(bz_lyr)%tmp- 20.) 
+    !ibac = 1        !there should be a loop for all pathogens in this hru
+	!ctmp = path_db(ibac)%t_adj ** (soil(j)%phys(bz_lyr)%tmp- 20.) 
+    ctmp = 1.
 
 	! initial water volume
 	qi = (soil(j)%phys(bz_lyr)%st + soil(j)%ly(bz_lyr-1)%prk + qstemm(j)) *   &
@@ -148,8 +150,8 @@
            soil(j)%phys(bz_lyr)%wp)
 		 soil1(j)%mn(bz_lyr)%nh4 = 0
 		 soil1(j)%mn(bz_lyr)%no3 = 0
-		 soil1(j)%hp(bz_lyr)%n = 0
-		 soil1(j)%hp(bz_lyr)%p = 0
+		 soil1(j)%hsta(bz_lyr)%n = 0
+		 soil1(j)%hsta(bz_lyr)%p = 0
 		 soil1(j)%tot(bz_lyr)%p = 0 
 		 soil1(j)%mp(bz_lyr)%lab = 0
          soil1(j)%mp(bz_lyr)%act = 0
@@ -177,11 +179,11 @@
                      sepdb(sep(isep)%typ)%no2concs)  
       soil1(j)%mn(bz_lyr)%nh4 = soil1(j)%mn(bz_lyr)%nh4 + xx *            &
                                     sepdb(sep(isep)%typ)%nh4concs 
-      soil1(j)%hp(bz_lyr)%n = soil1(j)%hp(bz_lyr)%n + xx *                & 
+      soil1(j)%hsta(bz_lyr)%n = soil1(j)%hsta(bz_lyr)%n + xx *                & 
                                    sepdb(sep(isep)%typ)%orgnconcs*rtof
       soil1(j)%tot(bz_lyr)%n = soil1(j)%tot(bz_lyr)%n +                 &
                xx*sepdb(sep(isep)%typ)%orgnconcs*(1-rtof)
-      soil1(j)%hp(bz_lyr)%p = soil1(j)%hp(bz_lyr)%p + xx *                &
+      soil1(j)%hsta(bz_lyr)%p = soil1(j)%hsta(bz_lyr)%p + xx *                &
                                     sepdb(sep(isep)%typ)%orgps*rtof
       soil1(j)%tot(bz_lyr)%p = soil1(j)%tot(bz_lyr)%p + xx *              &
                                     sepdb(sep(isep)%typ)%orgps*           &        
@@ -292,9 +294,9 @@
       soil1(j)%mp(bz_lyr)%lab = solp_end
       endif	     
       solpconc = soil1(j)%mp(bz_lyr)%lab * bza / qi * 1000. !mg/l
-	percp(j) = 0.01*solpconc * qout / bza * 1.e-3
-	soil1(j)%mp(bz_lyr)%lab = soil1(j)%mp(bz_lyr)%lab - percp(j) !kg/ha
-      soil1(j)%mp(bz_lyr+1)%lab = soil1(j)%mp(bz_lyr+1)%lab + percp(j) !kg/ha	     
+	percp = 0.01*solpconc * qout / bza * 1.e-3
+	soil1(j)%mp(bz_lyr)%lab = soil1(j)%mp(bz_lyr)%lab - percp !kg/ha
+      soil1(j)%mp(bz_lyr+1)%lab = soil1(j)%mp(bz_lyr+1)%lab + percp !kg/ha	     
       nh3_end = soil1(j)%mn(bz_lyr)%nh4
 	no3_end = soil1(j)%mn(bz_lyr)%no3
       solp_end = soil1(j)%mp(bz_lyr)%lab  

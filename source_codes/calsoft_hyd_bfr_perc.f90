@@ -122,6 +122,7 @@
         ! 1st perco adjustment 
         if (isim > 0) then
           cal_sim =  " first perco adj "
+          cal_adj = chg_val
           call time_control
         end if
   
@@ -206,6 +207,7 @@
         ! perco adjustment 
         if (isim > 0) then
           cal_sim =  " perco adj "
+          cal_adj = chg_val
           call time_control
         end if
         

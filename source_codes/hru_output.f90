@@ -32,33 +32,39 @@
         hnb_m(j) = hnb_m(j) + hnb_d(j)
         hls_m(j) = hls_m(j) + hls_d(j) 
         hpw_m(j) = hpw_m(j) + hpw_d(j)
-
+        
+        hwb_d(j)%sw_final = soil(j)%sw
+        hwb_d(j)%sw = (hwb_d(j)%sw_init + hwb_d(j)%sw_final) / 2.
+        hwb_d(j)%sno_final = hru(j)%sno_mm
+        hwb_d(j)%snopack = (hwb_d(j)%sno_init + hwb_d(j)%sno_final) / 2.
+             
       !! daily print
          if (pco%day_print == "y" .and. pco%int_day_cur == pco%int_day) then
           if (pco%wb_hru%d == "y") then
-             hwb_d(j)%sw_final = soil(j)%sw
-             hwb_d(j)%sw = (hwb_d(j)%sw_init + hwb_d(j)%sw_final) / 2.
-             hwb_d(j)%sno_final = hru(j)%sno_mm
-             hwb_d(j)%snopack = (hwb_d(j)%sno_init + hwb_d(j)%sno_final) / 2.
              write (2000,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_d(j)   !! waterbal
              if (pco%csvout == "y") then
                !! changed write unit below (2004 to write file data)
                write (2004,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_d(j)  !! waterbal
              end if
-             hwb_d(j)%sw_init = hwb_d(j)%sw_final
-             hwb_d(j)%sno_init = hwb_d(j)%sno_final
           end if
+          hwb_d(j)%sw_init = hwb_d(j)%sw_final
+          hwb_d(j)%sno_init = hwb_d(j)%sno_final
+          
           if (pco%nb_hru%d == "y") then
             write (2020,104) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_d(j)  !! nutrient bal
-              if (pco%csvout == "y") then
+            write (3333,105) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_d(j) !! new nutrient carb file
+            if (pco%csvout == "y") then
                 write (2024,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_d(j)  !! nutrient bal
-              end if
+                write (3334,105) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_d(j) !! new nutrient carb file
+            end if
           end if
           if (pco%ls_hru%d == "y") then
             write (2030,102) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_d(j)  !! losses
-              if (pco%csvout == "y") then
+            write (3341,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_d(j) !! new nutrient carb file
+            if (pco%csvout == "y") then
                 write (2034,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_d(j)  !! losses
-              end if
+                write (3342,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_d(j) !! new nutrient carb file
+            end if
           end if
           if (pco%pw_hru%d == "y") then
             write (2040,101) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_d(j)  !! plant weather 
@@ -67,7 +73,7 @@
               end if 
           end if
         end if
-
+         
         !! check end of month
         if (time%end_mo == 1) then
           hwb_y(j) = hwb_y(j) + hwb_m(j)
@@ -80,27 +86,37 @@
           hwb_m(j) = hwb_m(j) // const
           
           !! monthly print
+           hwb_m(j)%sw_final = hwb_d(j)%sw_final
+           hwb_m(j)%sno_final = hwb_d(j)%sno_final
+           
            if (pco%wb_hru%m == "y") then
-             hwb_m(j)%sw_final = hwb_d(j)%sw_final
-             hwb_m(j)%sno_final = hwb_d(j)%sno_final
              write (2001,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_m(j)
                if (pco%csvout == "y") then
                  write (2005,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_m(j)
                end if
            end if
+           
            if (pco%nb_hru%m == "y") then
              write (2021,104) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_m(j)
-               if (pco%csvout == "y") then
+             write (3335,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_m(j) !! new nutrient carb file
+             if (pco%csvout == "y") then
                  write (2025,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_m(j)
-               end if
+                 write (3336,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_m(j) !! new nutrient carb file               end if
+             end if
            end if
+           
            if (pco%ls_hru%m == "y") then
              write (2031,102) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_m(j)
-               if (pco%csvout == "y") then 
+             write (3343,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_m(j) !! new nutrient carb file
+             if (pco%csvout == "y") then 
                  write (2035,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_m(j)
-               end if
+                 write (3344,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_d(j) !! new nutrient carb file
+             end if
            end if
+           
            if (pco%pw_hru%m == "y") then
+             hpw_m(j)%nplnt = pl_mass(j)%tot_com%n
+             hpw_m(j)%pplnt = pl_mass(j)%tot_com%p
              write (2041,101) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_m(j)
                if (pco%csvout == "y") then 
                  write (2045,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_m(j)
@@ -129,27 +145,36 @@
           hpw_y(j) = hpw_y(j) // const
           
           !! yearly print
-           if (time%end_yr == 1 .and. pco%wb_hru%y == "y") then
-             hwb_y(j)%sw_final = hwb_d(j)%sw_final
-             hwb_y(j)%sno_final = hwb_d(j)%sno_final
+          hwb_y(j)%sw_final = hwb_d(j)%sw_final
+          hwb_y(j)%sno_final = hwb_d(j)%sno_final
+          if (pco%wb_hru%y == "y") then
              write (2002,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_y(j)
                if (pco%csvout == "y") then
                  write (2006,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_y(j)
                end if
-           end if
-           if (time%end_yr == 1 .and. pco%nb_hru%y == "y") then
+          end if
+          
+           if (pco%nb_hru%y == "y") then
              write (2022,104) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_y(j)
-               if (pco%csvout == "y") then
+             write (3337,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_y(j) !! new nutrient carb file               end if
+             if (pco%csvout == "y") then
                  write (2026,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_y(j)
-               end if
+                 write (3338,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_y(j) !! new nutrient carb file               end if
+             end if
            end if
-           if (time%end_yr == 1 .and. pco%ls_hru%y == "y") then
+           
+           if (pco%ls_hru%y == "y") then
              write (2032,102) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_y(j)
-               if (pco%csvout == "y") then
+             write (3345,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_y(j) !! new nutrient carb file
+             if (pco%csvout == "y") then
                  write (2036,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_y(j)
-               end if
+                 write (3346,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_y(j) !! new nutrient carb file
+             end if
            end if
-           if (time%end_yr == 1 .and. pco%pw_hru%y == "y") then
+           
+           if (pco%pw_hru%y == "y") then
+             hpw_y(j)%nplnt = pl_mass(j)%tot_com%n
+             hpw_y(j)%pplnt = pl_mass(j)%tot_com%p
              write (2042,101) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_y(j)
                if (pco%csvout == "y") then 
                  write (2046,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_y(j)
@@ -160,18 +185,21 @@
         end if
         
 !!!!! average annual print
-         if (time%end_sim == 1 .and. pco%wb_hru%a == "y") then
+         if (time%end_sim == 1) then
            sw_init = hwb_a(j)%sw_init
            sno_init = hwb_a(j)%sno_init
            hwb_a(j) = hwb_a(j) / time%yrs_prt
            hwb_a(j) = hwb_a(j) // time%days_prt
+           hru(j)%precip_aa = hwb_a(j)%precip
            hwb_a(j)%sw_init = sw_init
            hwb_a(j)%sw_final = hwb_d(j)%sw_final
            hwb_a(j)%sno_init = sno_init
            hwb_a(j)%sno_final = hwb_d(j)%sno_final
-           write (2003,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
-           if (pco%csvout == "y") then
-             write (2007,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
+           if (pco%wb_hru%a == "y") then
+             write (2003,100) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
+             if (pco%csvout == "y") then
+               write (2007,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hwb_a(j)
+             end if
            end if
            sw_init = hwb_d(j)%sw_final
            sno_init = hwb_d(j)%sno_final
@@ -183,8 +211,10 @@
          if (time%end_sim == 1 .and. pco%nb_hru%a == "y") then 
            hnb_a(j) = hnb_a(j) / time%yrs_prt
            write (2023,104) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_a(j)
+           write (3339,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_a(j) !! new nutrient carb file               end if
              if (pco%csvout == "y") then 
                write (2027,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hnb_a(j)
+               write (3340,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hcyl_a(j) !! new nutrient carb file               end if
              end if
              hnb_a(j) = hnbz
          end if
@@ -192,8 +222,10 @@
          if (time%end_sim == 1 .and. pco%ls_hru%a == "y") then
            hls_a(j) = hls_a(j) / time%yrs_prt 
            write (2033,101) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_a(j)
+           write (3347,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_a(j) !! new nutrient carb file               end if
              if (pco%csvout == "y") then 
                write (2037,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hls_a(j)
+               write (3348,106) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hgl_a(j) !! new nutrient carb file               end if
              end if
              hls_a(j) = hlsz
          end if
@@ -201,6 +233,8 @@
          if (time%end_sim == 1 .and. pco%pw_hru%a == "y") then     
            hpw_a(j) = hpw_a(j) / time%yrs_prt
            hpw_a(j) = hpw_a(j) // time%days_prt
+           hpw_a(j)%nplnt = pl_mass(j)%tot_com%n
+           hpw_a(j)%pplnt = pl_mass(j)%tot_com%p
            write (2043,102) time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_a(j)
              if (pco%csvout == "y") then 
                write (2047,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j, ob(iob)%gis_id, ob(iob)%name, hpw_a(j)
@@ -208,8 +242,28 @@
              hru(j)%strsa = hpw_a(j)%strsa
              hpw_a(j) = hpwz
          end if
+         
+         !! write yearly crop yields
+         if (time%end_yr == 1) then
+           if (pco%crop_yld == "y" .or. pco%crop_yld == "b") then
+           do ipl = 1, pcom(j)%npl
+             idp = pcom(j)%plcur(ipl)%idplt
+             if (pcom(j)%plcur(ipl)%harv_num_yr > 0) then 
+               pl_mass(j)%yield_yr(ipl) = pl_mass(j)%yield_yr(ipl) / float(pcom(j)%plcur(ipl)%harv_num_yr)
+             endif
+           if (pco%crop_yld == "y" .or. pco%crop_yld == "b") then
+            write (4010,103) time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pl_mass(j)%yield_yr(ipl)
+           end if
+            if (pco%csvout == "y") then
+              write (4011,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pl_mass(j)%yield_yr(ipl) 
+            end if
+           end do
+           end if
+         end if
 
+         !! write average annual crop yields
          if (time%end_sim == 1) then
+           if (pco%crop_yld == "a" .or. pco%crop_yld == "b") then
            do ipl = 1, pcom(j)%npl
              idp = pcom(j)%plcur(ipl)%idplt
              if (pcom(j)%plcur(ipl)%harv_num > 0) then 
@@ -220,13 +274,16 @@
               write (4009,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, j,pldb(idp)%plantnm, pl_mass(j)%yield_tot(ipl) 
             end if
            end do
+           end if
          end if
       return
       
-100   format (4i6,2i8,2x,a,32f12.3)
-101   format (4i6,2i8,2x,a,20f12.3)
-102   format (4i6,2i8,2x,a,20f12.3)
+100   format (4i6,2i8,2x,a,40f12.3)
+101   format (4i6,2i8,2x,a,24f12.3)
+102   format (4i6,2i8,2x,a,24f12.3)
 103   format (4i6,i8,4x,a,5x,4f12.3)
 104   format (4i6,2i8,2x,a8,4f12.3,23f17.3)
+105   format (4i6,2i8,2x,a8,8f17.3)
+106   format (4i6,2i8,2x,a8,29f17.3)
        
       end subroutine hru_output

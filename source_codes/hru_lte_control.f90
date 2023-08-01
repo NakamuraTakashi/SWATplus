@@ -40,7 +40,7 @@
       real :: xsd                       !             | 
       real :: ch                        !             | 
       real :: tan                       !             | 
-      real :: h                         !             | 
+      real :: hlat                      !             | 
       real :: acos                      !             | 
       real :: ramm                      !MJ/m2        |extraterrestrial radiation  
       real :: pet                       !             | 
@@ -151,12 +151,12 @@
           ch = -hlt(isd)%yls * tan(xsd) / hlt(isd)%ylc 
           IF (ch.lt.1.) THEN 
             IF (ch.le.-1.) THEN 
-              h = 3.1415 
+              hlat = 3.1415 
             ELSE 
-              h = acos(ch) 
+              hlat = acos(ch) 
             END IF 
           ELSE 
-            h = 0. 
+            hlat = 0. 
           END IF 
           
           IF (hlt_db(ihlt_db)%ipet .eq. "harg") THEN
@@ -374,7 +374,7 @@
         hltwb_d(isd)%wateryld = chflow
         hltwb_d(isd)%perc = perc                
         hltwb_d(isd)%et = aet                   
-        hltwb_d(isd)%tloss = 0.                  
+        hltwb_d(isd)%ecanopy = 0.                  
         hltwb_d(isd)%eplant = 0.                
         hltwb_d(isd)%esoil = 0.                
         hltwb_d(isd)%surq_cont = 0.
@@ -397,7 +397,7 @@
         hltls_d(isd)%latno3 = 0.    !! latno3(isd)
         hltls_d(isd)%surqsolp = 0.  !! surqsolp(isd)
         hltls_d(isd)%usle = 0.      !! usle
-        hltls_d(isd)%sedmin = 0.    !! sedminpa(isd) + sedminps(isd)
+        hltls_d(isd)%sedminp = 0.    !! sedminpa(isd) + sedminps(isd)
         hltls_d(isd)%tileno3 = 0.   !! tileno3(isd)
         
 !    output_plantweather - SWAT-DEG

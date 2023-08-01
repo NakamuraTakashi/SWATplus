@@ -106,6 +106,7 @@
         ! 1st cn3_swf adjustment 
         if (isim > 0) then
           cal_sim =  " first cn3_swf adj "
+          cal_adj = chg_val
           call time_control
         end if
 
@@ -175,6 +176,7 @@
         ! cn3_swf adjustment
         if (isim > 0) then
           cal_sim =  " cn3_swf adj "
+          cal_adj = chg_val
           !pco%wb_hru%a = "y"
           !if (icn == 2) pco%wb_hru%d = "y"
           call time_control

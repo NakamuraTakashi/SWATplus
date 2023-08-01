@@ -69,9 +69,7 @@
       
       integer :: j              !none               |HRU number
       integer :: idp            !                   |
-      real :: f                 !none               |fraction of plant's maximum leaf area index
-                                !                   |corresponding to a given fraction of
-                                !                   |potential heat units for plant 
+      real :: f                 !none               |fraction of plant's maximum lai corresponding to a given fraction of phu 
       real :: ff                !                   |
       real :: deltalai          !                   |
       real :: laimax            !none               |maximum leaf area index
@@ -100,6 +98,7 @@
               rto = alog10 (rto_lin)
               lai_exp = rto * pldb(idp)%laixco_tree
               laimax = pcom(j)%plcur(ipl)%lai_pot * 10. ** lai_exp
+              laimax = amin1 (laimax, pcom(j)%plcur(ipl)%lai_pot)
             else
               laimax = pcom(j)%plcur(ipl)%lai_pot
             end if

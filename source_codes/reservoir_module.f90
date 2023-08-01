@@ -12,6 +12,7 @@
         character(len=13) :: name = "default"
         integer :: ob = 0                           !object number if reservoir object; hru number if hru object
         integer :: props = 0                        !points to res_dat
+        character (len=1) :: rel_tbl = "d"          !d == decision table, c == conditions table
         real :: psa = 0.                    !ha     |res surface area when res is filled to princ spillway
         real :: pvol = 0.                   !ha-m   |vol of water needed to fill the res to the princ spillway (read in as ha-m and converted to m^3)
         real :: esa = 0.                    !ha     |res surface area when res is filled to emerg spillway 
@@ -20,6 +21,9 @@
                                             !       |vol-depth coefficient for hru impoundment
         real :: br2 = 0.                    !none   |vol-surface area coefficient for reservoirs (model estimates if zero)
                                             !       |vol-depth coefficient for hru impoundment
+        real :: depth = 0                   !m      !average depth of water
+        real :: weir_hgt = 0                !m      !height of weir above the bottom
+        real :: weir_wid = 0                !m      !width of weir above the bottom  Jaehak 2022
         real :: seci = 0                    !m      !seci depth
         real, dimension (:), allocatable :: kd      !           |aquatic mixing velocity (diffusion/dispersion)-using mol_wt
         real, dimension (:), allocatable :: aq_mix  ! m/day     |aquatic mixing velocity (diffusion/dispersion)-using mol_wt
@@ -28,10 +32,13 @@
       
       type wetland
         real :: psa = 0.                    !ha     |res surface area when res is filled to princ spillway
-        real :: pvol = 0.                   !ha-m   |vol of water needed to fill the res to the princ spillway (read in as ha-m and converted to m^3)
+        real :: pvol = 0.                   !m^3    |vol of water needed to fill the res to the princ spillway (read in as ha-m and converted to m^3)
         real :: esa = 0.                    !ha     |res surface area when res is filled to emerg spillway 
-        real :: evol = 0.                   !ha-m   |vol of water needed to fill the res to the emerg spillway (read in as ha-m and converted to m^3)
+        real :: evol = 0.                   !m^3    |vol of water needed to fill the res to the emerg spillway (read in as ha-m and converted to m^3)
         real :: area_ha = 0                 !ha     !reservoir surface area
+        real :: depth = 0                   !m      !average depth of water
+        real :: weir_hgt = 0                !m      !height of weir above the bottom
+        real :: weir_wid = 0                !m      !width of weir   Jaehak 2022
         real :: seci = 0                    !m      !seci depth
       end type wetland          
       type (wetland), dimension(:),allocatable :: wet_ob

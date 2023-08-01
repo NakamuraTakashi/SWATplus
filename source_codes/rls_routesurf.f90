@@ -14,7 +14,7 @@
 
       use hru_module, only : hru, ihru, usle_cfac, ls_overq, precip_eff
       use hydrograph_module
-      !use topography_data_module
+      use climate_module, only : w
       
       implicit none
       
@@ -27,9 +27,14 @@
       j = ihru
       ifield = hru(j)%dbs%field
 
-!!    compute infiltration from surface runon to next landscape unit
+      !! compute infiltration from surface runon to next landscape unit
       ls_overq = ob(iob)%hin_sur%flo        !/ (10. * hru(j)%area_ha)   ! m3/10*ha = mm
       precip_eff = precip_eff + ls_overq
+      
+      !! add surface runon to subdaily effective precip
+      if (time%step > 0) then
+          w%ts(:) = w%ts(:) + ls_overq / time%step
+      end if
       
 !!    compute infiltration from surface runon to next landscape unit
       !ls_overq = ob(iob)%hin%flo    !/ (10. * hru(j)%area_ha) 

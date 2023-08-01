@@ -2,6 +2,7 @@
       
       use input_file_module
       use hydrograph_module
+      use maximum_data_module
       
       implicit none
        
@@ -37,6 +38,7 @@
             mobj_out = mobj_out + 1
           end do
           
+        db_mx%object_prt = mobj_out
         allocate (ob_out(0:imax))
         rewind (107)
         read (107,*,iostat=eof) titldum
@@ -48,8 +50,8 @@
           read (107,*,iostat=eof) ii
           if (eof < 0) exit
           backspace (107)
-          read (107,*,iostat=eof) k, ob_out(i)%obtyp,                    &
-             ob_out(i)%obtypno, ob_out(i)%hydtyp, ob_out(i)%filename
+          read (107,*,iostat=eof) k, ob_out(ii)%obtyp,                    &
+             ob_out(ii)%obtypno, ob_out(ii)%hydtyp, ob_out(ii)%filename
           if (eof < 0) exit
           
           select case (ob_out(i)%obtyp)
@@ -86,7 +88,9 @@
             case ("til")   !tile
                ob_out(i)%hydno = 5 
             case ("sol")  !soil moisture by layer 
-               ob_out(i)%hydno = 6
+               ob_out(i)%hydno = 6 
+            case ("soln")  !soil n and p by layer 
+               ob_out(i)%hydno = 7
             end select
          iunit = ob_out(i)%unitno
          
@@ -106,6 +110,4 @@
       
       return
       
-100   format (4a8,32a18) !H
-!      100   format (2a8,a8,a8, 30(a18)) !H
       end subroutine object_read_output

@@ -13,11 +13,7 @@
       call pl_read_regions_cal      !soft data for plant parms (lai_pot and harv_idx) calibration
       call pl_read_parms_cal
       call cal_conditions
-            
-      !! read update data
-      !call update_sched_read
-      call cal_cond_read
-            
+
       !! read soft calibration parameters
       call calsoft_read_codes
       

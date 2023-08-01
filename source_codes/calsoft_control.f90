@@ -14,6 +14,7 @@
       integer :: ireg        !none      |counter
       integer :: ilum        !none      |counter
       integer :: icvmax      !          |
+      integer :: nyskip      !          |
       integer :: icond_sum   !          |
       integer :: ihru        !none      |counter
       integer :: isdh        !none      |counter
@@ -24,8 +25,10 @@
       real :: cond1          !          |   
       real :: cond2          !          |   
       
+      nyskip = pco%nyskip
       pco = pco_init
       pco%wb_bsn%a = "y"
+      pco%nyskip = nyskip
       !pco%wb_bsn%y = "y"
       !pco%wb_bsn%m = "y"
       !pco%wb_bsn%d = "y"
@@ -33,9 +36,13 @@
       !pco%sd_chan%a = "y"
 
       !calibrate hydrology for hru
-      if (cal_codes%hyd_hru == "y") then
-        !call calsoft_hyd
-        call calsoft_hyd_bfr
+      if (cal_codes%hyd_hru /= "n") then
+        if (cal_codes%hyd_hru == "a") then
+          call calsoft_hyd        !calibrate all components
+        else
+          call calsoft_hyd_bfr    !calibrate total and baseflow
+        end if
+ 
         !print calibrated hydrology for hru_lte
 		do ireg = 1, db_mx%lsu_reg
            do ilum = 1, region(ireg)%nlum
@@ -118,10 +125,10 @@
       end if
            
       !! write output to hydrology-cal.hyd   
-      if (cal_codes%hyd_hru == "y") then
+      if (cal_codes%hyd_hru /= "n") then
         write (5001,*) " hydrology-cal.hyd developed from soft data calibration"
         write (5001,*) " NAME LAT_TTIME LAT_SED CAN_MAX  ESCO  EPCO ORGN_ENRICH ORGP_ENRICH CN3_SWF &
-                                               BIO_MIX PERCO LAT_ORGN LAT_ORGP HARG_PET LATQ_CO"
+                                        BIO_MIX PERCO LAT_ORGN LAT_ORGP PET_CO LATQ_CO NOT_USED"
         do ihru = 1, sp_ob%hru
           write (5001,*) hru(ihru)%hyd
         end do
@@ -134,7 +141,7 @@
         !! write perco to hydrology-cal.hyd
         write (5001,*) " hydrology-cal.hyd developed from soft data calibration"
         write (5001,*) " NAME LAT_TTIME LAT_SED CAN_MAX  ESCO  EPCO ORGN_ENRICH ORGP_ENRICH CN3_SWF &
-                                               BIO_MIX PERCO LAT_ORGN LAT_ORGP HARG_PET LATQ_CO"
+                                        BIO_MIX PERCO LAT_ORGN LAT_ORGP PET_CO LATQ_CO NOT_USED"
         do ihru = 1, sp_ob%hru
           write (5001,*) hru(ihru)%hyd
         end do

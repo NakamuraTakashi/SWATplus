@@ -9,7 +9,7 @@
         real :: dep_bot = 0.        !m          |depth - mid-slope surface to bottom of aquifer 
         real :: dep_wt = 0.         !m          |depth - mid-slope surface to water table (initial)
         real :: no3 = 0.            !ppm NO3-N  |nitrate-N concentration in aquifer (initial)
-        real :: minp = 0.           !kg         |mineral phosphorus in aquifer (initial)
+        real :: minp = 0.           !ppm P      |mineral phosphorus concentration in aquifer (initial)
         real :: cbn = .5            !percent    |organic carbon in aquifer (initial)
         real :: flo_dist = 50.      !m          |average flow distance to stream or object
         real :: bf_max = 0.         !mm         |maximum daily baseflow - when all channels are contributing
@@ -17,45 +17,40 @@
         real :: revap_co = 0.       !           |revap oefficient - evap=pet*revap_co
         real :: seep = 0.           !frac       |fraction of recharge that seeps from aquifer
         real :: spyld = 0.          !m^3/m^3    |specific yield of aquifer
-        real :: hlife_n = 0.        !days       |half-life of nitrogen in groundwater
+        real :: hlife_n = 30.       !days       |half-life of nitrogen in groundwater
         real :: flo_min = 0.        !m          |water table depth for return flow to occur
         real :: revap_min = 0.      !m          |water table depth for revap to occur 
       end type aquifer_database
-      type (aquifer_database), dimension(:), allocatable :: aqudb 
+      type (aquifer_database), dimension(:), allocatable :: aqudb
+      type (aquifer_database), dimension(:), allocatable :: aqu_dat
       
       type aquifer_data_parameters
-        real :: alpha = 0.      !           |
-        real :: bf_max = 0.     !           |
-        real :: flo_min         !mm         |minimum aquifer storage to allow return flow
-        real :: revap_co        !0-1 frac   |fraction of pet to calculate revap
-        real :: revap_min = 0.  !mm H2O     |threshold depth of water in shallow aquifer required to allow revap to occur
-        real :: seep = 0.       !frac       |fraction of recharge that seeps from aquifer
-        real :: spyld = 0.      !m^3/m^3    |specific yield of aquifer
-        real :: alpha_e = 0.    !days       |Exp(-alpha)
-        real :: nloss = 0.      !frac       |nloss based on half life
-        real :: rchrg_prev = 0.   !m^3      |previous days recharge
-        real :: rchrgn_prev = 0.  !m^3      |previous days n recharge
+        real :: area_ha = 0.     !ha         |surface area of aquifer
+        real :: alpha_e = 0.     !days       |Exp(-alpha)
+        real :: nloss = 0.       !frac       |nloss based on half life
+        real :: rchrg_prev = 0.  !m^3        |previous days recharge
+        real :: rchrgn_prev = 0. !m^3        |previous days n recharge
       end type aquifer_data_parameters
       type (aquifer_data_parameters), dimension(:), allocatable :: aqu_prm 
 
       type aquifer_dynamic
-        real :: flo = 0.        !mm         |flow from aquifer in current time step       
-        real :: dep_wt = 0.     !m          |depth to water table
-        real :: stor = 0.       !mm         |total water storage in aquifer
-        real :: rchrg = 0.      !mm         |recharge
-        real :: seep = 0.       !kg N/ha    |seepage to next object
-        real :: revap = 0.      !mm         |revap
-        real :: no3 = 0.        !ppm NO3-N  |nitrate-N concentration in aquifer
-        real :: minp = 0.       !kg         |mineral phosphorus from aquifer on current timestep    
-        real :: cbn = 0.        !percent    |organic carbon in aquifer (initial)  
-        real :: orgn = 0.   
-        real :: rchrg_n = 0.    !           |amount of nitrate getting to the shallow aquifer  
-        real :: nloss = 0. 
-        real :: no3gw           !kg N/ha    |nitrate loading to reach in groundwater
-        real :: seepno3 = 0.    !kg         |seepage of no3 to next object
+        real :: flo = 0.        !mm         |lateral flow from aquifer      
+        real :: dep_wt = 0.     !m          |average depth from average surface elevation to water table
+        real :: stor = 0.       !mm         |average water storage in aquifer in timestep
+        real :: rchrg = 0.      !mm         |recharge entering aquifer from other objects
+        real :: seep = 0.       !mm         |seepage from bottom of aquifer
+        real :: revap = 0.      !mm         |plant water uptake and evaporation
+        real :: no3_st = 0.     !kg/ha N    |current total NO3-N mass in aquifer 
+        real :: minp = 0.       !kg/ha P    |mineral phosphorus transported in return (lateral) flow 
+        real :: cbn = 0.        !percent    |organic carbon in aquifer - currently static
+        real :: orgn = 0.       !kg/ha P    |organic nitrogen in aquifer - currently static
+        real :: no3_rchg = 0.   !kg/ha N    |nitrate NO3-N flowing into aquifer from another object  
+        real :: no3_loss = 0.   !kg/ha      |nitrate NO3-N loss
+        real :: no3_lat         !kg/ha N    |nitrate loading to reach in groundwater
+        real :: no3_seep = 0.   !kg/ha N    |seepage of no3 to next object
         real :: flo_cha = 0.    !mm H2O     |surface runoff flowing into channels
         real :: flo_res = 0.    !mm H2O     |surface runoff flowing into reservoirs
-        real :: flo_ls = 0.     !mm H2O     |surface runoff flowing into a landscape element
+        real :: flo_ls = 0.     !mm H2O     |surface runoff flowing into a landscape element (hru or ru)
       end type aquifer_dynamic
       type (aquifer_dynamic), dimension(:), allocatable :: aqu_om_init
       type (aquifer_dynamic), dimension(:), allocatable :: aqu_d
@@ -110,16 +105,16 @@
           character(len=15) :: seep     =      "           seep"        ! (mm)
           character(len=15) :: revap    =      "          revap"        ! (mm)
           character(len=15) :: no3_st   =      "         no3_st"        ! (kg/ha N)
-          character(len=15) :: minp     =      "           minp"        ! (kg)
+          character(len=15) :: minp     =      "           minp"        ! (kg/ha P)
           character(len=15) :: orgn     =      "           orgn"        ! (kg/ha N)
           character(len=15) :: orgp     =      "           orgp"        ! (kg/ha P)
-          character(len=15) :: rchrgn   =      "         rchrgn"        ! (kg/ha N)
-          character(len=15) :: nloss    =      "          nloss"        ! (kg/ha N)
-          character(len=15) :: no3gw    =      "          no3gw"        ! (kg N/ha)
-          character(len=15) :: seep_no3 =      "        seepno3"        ! (kg)
-          character(len=15) :: flo_cha  =      "        flo_cha"        ! (m^3)
-          character(len=15) :: flo_res  =      "        flo_res"        ! (m^3)
-          character(len=15) :: flo_ls   =      "         flo_ls"        ! (m^3)
+          character(len=15) :: no3_rchg =      "       no3_rchg"        ! (kg/ha N)
+          character(len=15) :: no3_loss =      "       no3_loss"        ! (kg/ha N)
+          character(len=15) :: no3_lat  =      "        no3_lat"        ! (kg N/ha)
+          character(len=15) :: no3_seep =      "       no3_seep"        ! (kg N/ha)
+          character(len=15) :: flo_cha  =      "        flo_cha"        ! (mm)
+          character(len=15) :: flo_res  =      "        flo_res"        ! (mm)
+          character(len=15) :: flo_ls   =      "         flo_ls"        ! (mm)
       end type aqu_header
       type (aqu_header) :: aqu_hdr
       
@@ -138,16 +133,16 @@
           character(len=15) :: seep     =  "             mm"          ! (mm)
           character(len=15) :: revap    =  "             mm"          ! (mm)
           character(len=15) :: no3_st   =  "        kg/ha_N"          ! (kg/ha N)
-          character(len=14) :: minp     =  "            kg"           ! (kg)
+          character(len=15) :: minp     =  "        kg/ha_P"          ! (kg/ha P)
           character(len=15) :: orgn     =  "        kg/ha_N"          ! (kg/ha N)
           character(len=15) :: orgp     =  "        kg/ha_P"          ! (kg/ha P)
-          character(len=15) :: rchrgn   =  "        kg/ha_N"          ! (kg/ha N)
-          character(len=15) :: nloss    =  "        kg/ha_N"          ! (kg/ha N)
-          character(len=15) :: no3gw    =  "        kg/ha_N"          ! (kg N/ha)
-          character(len=15) :: seep_no3 =  "             kg"          ! (kg)
-          character(len=15) :: flo_cha  =  "            m^3"          ! (m^3)
-          character(len=15) :: flo_res  =  "            m^3"          ! (m^3)
-          character(len=15) :: flo_ls   =  "            m^3"          ! (m^3)
+          character(len=15) :: no3_rchg =  "        kg/ha_N"          ! (kg/ha N)
+          character(len=15) :: no3_loss =  "        kg/ha_N"          ! (kg/ha N)
+          character(len=15) :: no3_lat  =  "        kg/ha_N"          ! (kg N/ha)
+          character(len=15) :: no3_seep =  "        kg/ha_N"          ! (kg N/ha)
+          character(len=15) :: flo_cha  =  "             mm"          ! (mm)
+          character(len=15) :: flo_res  =  "             mm"          ! (mm)
+          character(len=15) :: flo_ls   =  "             mm"          ! (mm)
       end type aqu_header_units
       type (aqu_header_units) :: aqu_hdr_units
       
@@ -159,6 +154,9 @@
         module procedure aqu_div
       end interface
         
+      interface operator (*)
+        module procedure aqu_mult
+      end interface
       contains
             
       function aqu_add(aqo1,aqo2) result (aqo3)
@@ -168,17 +166,17 @@
        aqo3%flo = aqo1%flo + aqo2%flo
        aqo3%dep_wt = aqo1%dep_wt + aqo2%dep_wt
        aqo3%stor = aqo1%stor + aqo2%stor
-       aqo3%no3 = aqo1%no3 + aqo2%no3   
+       aqo3%no3_st = aqo1%no3_st + aqo2%no3_st   
        aqo3%minp = aqo1%minp + aqo2%minp  
-       aqo3%cbn = aqo1%cbn + aqo2%cbn
+       aqo3%cbn = aqo2%cbn
        aqo3%orgn = aqo1%orgn + aqo2%orgn
        aqo3%rchrg = aqo1%rchrg + aqo2%rchrg     
-       aqo3%rchrg_n = aqo1%rchrg_n + aqo2%rchrg_n         
-       aqo3%nloss = aqo1%nloss + aqo2%nloss
+       aqo3%no3_rchg = aqo1%no3_rchg + aqo2%no3_rchg         
+       aqo3%no3_loss = aqo1%no3_loss + aqo2%no3_loss
        aqo3%seep = aqo1%seep + aqo2%seep
        aqo3%revap = aqo1%revap + aqo2%revap
-       aqo3%no3gw = aqo1%no3gw + aqo2%no3gw
-       aqo3%seepno3 = aqo1%seepno3 + aqo2%seepno3
+       aqo3%no3_lat = aqo1%no3_lat + aqo2%no3_lat
+       aqo3%no3_seep = aqo1%no3_seep + aqo2%no3_seep
        aqo3%flo_cha = aqo1%flo_cha + aqo2%flo_cha
        aqo3%flo_res = aqo1%flo_res + aqo2%flo_res
        aqo3%flo_ls = aqo1%flo_ls + aqo2%flo_ls
@@ -191,20 +189,43 @@
         aq2%flo = aq1%flo / const
         aq2%dep_wt = aq1%dep_wt / const
         aq2%stor = aq1%stor / const
-        aq2%no3 = aq1%no3 / const
+        aq2%no3_st = aq1%no3_st / const
         aq2%minp = aq1%minp / const
-        aq2%cbn = aq1%cbn / const
+        aq2%cbn = aq1%cbn
         aq2%orgn = aq1%orgn / const
         aq2%rchrg = aq1%rchrg / const
-        aq2%rchrg_n = aq1%rchrg_n / const
-        aq2%nloss = aq1%nloss / const
+        aq2%no3_rchg = aq1%no3_rchg / const
+        aq2%no3_loss = aq1%no3_loss / const
         aq2%seep = aq1%seep / const
         aq2%revap = aq1%revap / const
-        aq2%no3gw = aq1%no3gw / const
-        aq2%seepno3 = aq1%seepno3 / const
+        aq2%no3_lat = aq1%no3_lat / const
+        aq2%no3_seep = aq1%no3_seep / const
         aq2%flo_cha = aq1%flo_cha / const
         aq2%flo_res = aq1%flo_res / const
         aq2%flo_ls = aq1%flo_ls / const
       end function aqu_div
         
+      function aqu_mult (aq1,const) result (aq2)
+        type (aquifer_dynamic), intent (in) :: aq1
+        real, intent (in) :: const
+        type (aquifer_dynamic) :: aq2
+        aq2%flo = aq1%flo * const
+        aq2%dep_wt = aq1%dep_wt * const
+        aq2%stor = aq1%stor * const
+        aq2%no3_st = aq1%no3_st * const
+        aq2%minp = aq1%minp * const
+        aq2%cbn = aq1%cbn
+        aq2%orgn = aq1%orgn * const
+        aq2%rchrg = aq1%rchrg * const
+        aq2%no3_rchg = aq1%no3_rchg * const
+        aq2%no3_loss = aq1%no3_loss * const
+        aq2%seep = aq1%seep * const
+        aq2%revap = aq1%revap * const
+        aq2%no3_lat = aq1%no3_lat * const
+        aq2%no3_seep = aq1%no3_seep * const
+        aq2%flo_cha = aq1%flo_cha * const
+        aq2%flo_res = aq1%flo_res * const
+        aq2%flo_ls = aq1%flo_ls * const
+      end function aqu_mult
+      
       end module aquifer_module

@@ -32,7 +32,7 @@
       integer :: ob1                  !none       |beginning of loop
       integer :: ob2                  !none       |ending of loop
       integer :: iobj_tot             !           |
-      real ::mexco_sp                 !           |
+      real :: mexco_sp                !           |
       integer :: i                    !none       |counter
       integer :: ii                   !none       |counter
       integer :: ielem                !none       |counter 
@@ -192,17 +192,15 @@
       !read connect file for swat-deg channels
       if (sp_ob%chandeg > 0) then
         call hyd_read_connect(in_con%chandeg_con, "chandeg ", sp_ob1%chandeg, sp_ob%chandeg, hd_tot%chandeg, bsn_prm%day_lag_mx)
-        call overbank_read
       end if
       
       !read connect file for gwflow
       if (sp_ob%gwflow > 0) then
+        call gwflow_riv !first, read in river cell information
         call hyd_read_connect(in_con%gwflow_con, "gwflow  ", sp_ob1%gwflow, sp_ob%gwflow, hd_tot%gwflow, 1)
         call gwflow_read
       end if
       
-      
-
       !! for each hru or defining unit, set all subbasins that contain it 
         do i = 1, sp_ob%objs
           nspu = ob(i)%ru_tot
@@ -414,30 +412,47 @@
     do while (idone == 0)
         do i = 1, sp_ob%objs
         
-        if (iord > 1000) then
-          if (ob(i)%fired == 0) then         
-
-            do iob = 1, sp_ob%objs
-              if (ob(iob)%fired == 0 .and. ob(iob)%rcv_tot > 0) then
-                  kk=1
-                write (9001, *) iob, ob(iob)%fired, ob(iob)%typ, ob(iob)%num, ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj),  &
-                                    ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj), jj = 1, ob(iob)%rcv_tot)
-              end if 
-            end do
-            write (*,1002)
-            !pause   !!! stop the simulation run (ob(i)%fired == 0)
-            !stop
-            call exit(1)
-          end if
+        if (iord > 1000) then        
+          open (9002,file="looping.con",recl = 8000)
+          write (9002, *) "LOOPING.CON CHECKING INFINITE LOOPS"
+          do iob = 1, sp_ob%objs
+            if (ob(iob)%fired == 0 .and. ob(iob)%rcv_tot > 0) then
+              kk=1
+              write (9002, *) ob(iob)%typ, ob(iob)%num, ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj),  &
+                                    ob(iob)%obtypno_in(jj), jj = 1, ob(iob)%rcv_tot)
+            end if 
+          end do
+          write (*,1002)
+          call exit(1)
         end if 
    
       
-            !check if all incoming and defining objects have been met
+          !check if all incoming and defining objects have been met
           !if not sum incoming 
           if (rcv_sum(i) == ob(i)%rcv_tot .and.                        & 
                                       dfn_sum(i) == ob(i)%dfn_tot) then
             if (ob(i)%fired == 0) then
             ob(i)%fired = 1
+            
+                !! calculate drainage area to compare to input area - need reservoir surface area
+                do ircv = 1, ob(i)%rcv_tot
+                  if (ob(i)%obtyp_in(ircv) == "hru" .or. ob(i)%obtyp_in(ircv) == "ru" .or.      &
+                        ob(i)%obtyp_in(ircv) == "chandeg" .or. ob(i)%obtyp_in(ircv) == "recall" &
+                        .or. ob(i)%obtyp_in(ircv) == "res" .or. ob(i)%obtyp_in(ircv) == "outlet") then
+                    !if (ircv == 1) then
+                      ob1 = ob(i)%obj_in(ircv)
+                      ob(i)%area_ha_calc = ob(i)%area_ha_calc + ob(ob1)%area_ha_calc * ob(i)%frac_in(ircv)
+                    !else
+                    !  do ob2 = 1, ircv
+                    !    ob1 = ob(i)%obj_in(ircv)
+                    !    if (ob(i)%obj_in(ircv) /= ob(i)%obj_in(ob2)) then
+                    !      ob(i)%area_ha_calc = ob(i)%area_ha_calc + ob(ob1)%area_ha_calc * ob(i)%frac_in(ircv)
+                    !    end if
+                    !  end do
+                    !end if
+                  end if
+                end do
+                    
             iobj_tot = iobj_tot + 1    ! check to see if all objects are done
             if (iobj_tot == sp_ob%objs) idone = 1
             !sum defining units for each subbasin
@@ -514,8 +529,18 @@
         end do
         iord = iord + 1
       end do
+
+    !! write calculated and input drainage areas for all objects except hru's
+      do iob = 1, sp_ob%objs
+        if (ob(iob)%typ /= "hru" .and. ob(iob)%typ /= "ru") then
+          write (9004,*) iob, ob(iob)%typ, ob(iob)%num, ob(iob)%area_ha, ob(iob)%area_ha_calc,             &
+            ob(iob)%rcv_tot, (ob(iob)%obtyp_in(jj), ob(iob)%obtypno_in(jj), ob(iob)%obj_in(jj),             &
+            ob(iob)%frac_in(jj), &
+            ob(ob(iob)%obj_in(jj))%area_ha, ob(ob(iob)%obj_in(jj))%area_ha_calc, jj = 1, ob(iob)%rcv_tot)
+        end if 
+      end do
       
 1002  format (5x,/,"ERROR - An infinite loop is detected in the connect file(s)",/, 15x, "the simulation will end",       &
-                       /, 9x, "(review diagnostics.out file for more info)",/)
+                       /, 9x, "(review looping.con file for more info)",/)
       return
       end subroutine hyd_connect

@@ -1,4 +1,4 @@
-  hru-new.cal developed from soft data calibration
+calibration.cal: developed from soft data calibration
      7
  NAME           CHG_TYP                  VAL   CONDS  LYR1  LYR2   YEAR1  YEAR2   DAY1   DAY2  OBJ_TOT
 petco           pctchg              -9.90052     0      0      0      0      0      0      0      0      0

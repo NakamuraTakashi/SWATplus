@@ -1,4 +1,4 @@
-Subbasin	definition		file	-	SB_LS1
+ls_unit.def
   1
-LCU_NUMB	LCU_NAME	LCU_AREA	ELEM_TOT	ELEM1	ELEM2
-1	lcu1	37.53	1	1
+LSU_NUMB	LSU_NAME	LSU_AREA	ELEM_TOT	ELEM1
+1	         lcu1	       37.53	       1	    1

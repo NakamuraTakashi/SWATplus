@@ -1,3 +1,5 @@
 recall.rec 
 NUMB        NAME        TYP        NAME
+   1        daily         1        recall_day_swatplus.rec
+
    1        aveann        4        exco1

@@ -3,23 +3,23 @@
       implicit none
       
        type calibration_parameters
-        character(len=16) :: name = "default"   !         |cn2, esco, awc, etc.
-        character(len=16) :: ob_typ = "plt"     !         |object type the parameter is associated with (hru, chan, res, basin, etc)
+        character(len=25) :: name = "default"   !         |cn2, esco, awc, etc.
+        character(len=25) :: ob_typ = "plt"     !         |object type the parameter is associated with (hru, chan, res, basin, etc)
         real :: absmin = 0.                     !         |minimum range for variable
         real :: absmax = 1.e6                   !         |maximum change for variable
-        character(len=16) :: units = "null"     !         |units used for each parameter
+        character(len=25) :: units = "null"     !         |units used for each parameter
       end type calibration_parameters
       type (calibration_parameters), dimension (:), allocatable :: cal_parms    !dimensioned to db_mx%cal_parms_tot
       
       type calibration_conditions
-        character(len=16) :: var
-        character(len=16) :: alt
+        character(len=25) :: var
+        character(len=25) :: alt
         real :: targ
-        character(len=16) :: targc
+        character(len=25) :: targc
       end type calibration_conditions   
 
       type update_parameters
-        character(len=16) :: name       !! cn2, terrace, land use, mgt, etc.
+        character(len=25) :: name       !! cn2, terrace, land use, mgt, etc.
         integer :: num_db = 0           !! crosswalk number of parameter, structure or land use to get database array number
         character(len=16) :: chg_typ    !! type of change (absval,abschg,pctchg)
         real :: val                     !! value of change
@@ -41,15 +41,18 @@
       type (update_parameters) :: chg
 
       type update_conditional
-        character(len=16) :: typ        !! type of update schedule (parameter, structure, land_use_mgt)
-        character(len=16) :: name       !! name of update schedule
-        character(len=16) :: cond       !! points to ruleset in conditional.ctl for scheduling the update
+        integer :: max_hits = 0         !! maximum number of times the table will be executed
+        integer :: num_hits = 0         !! current number of times the table will be executed
+        character(len=25) :: typ        !! type of table- "lu_change" checks all hru; "hru_fr_change" sets all hru fractions
+        character(len=25) :: dtbl       !! points to ruleset in conditional.ctl for scheduling the update
         integer :: cond_num             !! integer pointer to d_table in conditional.ctl
       end type update_conditional
       type (update_conditional), dimension (:), allocatable :: upd_cond
       
       type soft_calibration_codes
-        character (len=1) :: hyd_hru = "n"      !! if y, calibrate hydrologic balance for hru by land use in each region
+        character (len=1) :: hyd_hru = "n"      !! if a, calibrate all hydrologic balance processes for hru by land use in each region
+                                                !! if b, calibrate baseflow and total runoff for hru by land use in each region
+                                                !! if y, defaults to b for existing NAM simulations
         character (len=1) :: hyd_hrul = "n"     !! if y, calibrate hydrologic balance for hru_lte by land use in each region
         character (len=1) :: plt = "n"          !! if y, calibrate plant growth by land use (by plant) in each region
         character (len=1) :: sed = "n"          !! if y, calibrate sediment yield by land use in each region  
@@ -197,7 +200,7 @@
       
       type landscape_region_elements
         character(len=16) :: name
-        real :: ha                      !area of reegion element -hectares
+        real :: ha                      !area of region element -hectares
         integer :: obj = 1              !object number
         character (len=3) :: obtyp      !object type- hru, hru_lte, lsu, etc
         integer :: obtypno = 0          !2-number of hru_lte"s or 1st hru_lte command

@@ -137,6 +137,8 @@
             end if 
           end if
           if (pco%pw_lsu%m == "y") then
+            rupw_m(ilsu)%nplnt = rupw_d(ilsu)%nplnt
+            rupw_m(ilsu)%pplnt = rupw_d(ilsu)%pplnt
             write (2171,100) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, rupw_m(ilsu)
             if (pco%csvout == "y") then 
               write (2175,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, &
@@ -190,6 +192,8 @@
              end if 
            end if
            if (pco%pw_lsu%y == "y") then
+             rupw_y(ilsu)%nplnt = rupw_d(ilsu)%nplnt
+             rupw_y(ilsu)%pplnt = rupw_d(ilsu)%pplnt
              write (2172,102) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, rupw_y(ilsu)
              if (pco%csvout == "y") then 
                write (2176,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, &
@@ -241,6 +245,8 @@
       if (time%end_sim == 1 .and. pco%pw_lsu%a == "y") then    
         rupw_a(ilsu) = rupw_a(ilsu) / time%yrs_prt
         rupw_a(ilsu) = rupw_a(ilsu) // time%days_prt
+        rupw_a(ilsu)%nplnt = rupw_d(ilsu)%nplnt
+        rupw_a(ilsu)%pplnt = rupw_d(ilsu)%pplnt
         write (2173,102) time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, rupw_a(ilsu) 
         if (pco%csvout == "y") then 
           write (2177,'(*(G0.3,:","))') time%day, time%mo, time%day_mo, time%yrc, ilsu, "       0", lsu_out(ilsu)%name, rupw_a(ilsu)
@@ -250,9 +256,10 @@
       
       return
       
-100   format (1x,4i6,i7,a,2x,a,32f12.3)
-102   format (1x,4i6,i7,a,2x,a,32f12.3)
-103   format (4i6,i8,a,2x,a,6f12.3,22f17.3)
-104   format (4i6,i8,a,2x,a,6f12.3,22f17.3)
+100   format (1x,4i6,i7,a,2x,a,40f12.3)
+102   format (1x,4i6,i7,a,2x,a,40f12.3)
+!103   format (4i6,i8,a,2x,a,6f12.3,29f17.3)
+103   format (4i6,i8,a,2x,a,4f12.3,23f17.3)
+104   format (4i6,i8,a,2x,a,6f12.3,29f17.3)
        
       end subroutine lsu_output

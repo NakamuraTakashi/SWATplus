@@ -87,7 +87,7 @@
               endif
           end do
           
-        case ("irrm")
+        case ("irrm","irrp")
           sched(isched)%irr = 1
           do idb = 1, db_mx%irrop_db
             if (sched(isched)%mgt_ops(iop)%op_char == irrop_db(idb)%name) then

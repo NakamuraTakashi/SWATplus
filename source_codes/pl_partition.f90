@@ -1,4 +1,4 @@
-      subroutine pl_partition
+      subroutine pl_partition(j)
       
       use plant_data_module
       use basin_module
@@ -10,27 +10,26 @@
       
       implicit none 
       
-      integer :: j              !none               |HRU number
-      integer :: idp            !                   |
-      real :: root_frac         !none               |root mass fraction
-      real :: ab_gr_frac        !none               |above ground mass fraction
-      real :: leaf_mass_frac    !none               |leaf mass fraction of above ground biomass
-      real :: stem_mass_frac    !none               |stem mass fraction of above ground biomass
-      real :: seed_mass_frac    !none               |stem mass fraction of above ground biomass
-      real :: n_left            !none               |n left after seed is removed
-      real :: n_frac            !none               |n fraction in remainder of plant
-      real :: p_left            !none               |p left after seed is removed
-      real :: p_frac            !none               |p fraction in remainder of plant
-      real :: m_left            !none               |mass left after seed is removed
-      real :: leaf_frac_veg     !none               |fraction veg mass (stem+leaf) that is leaf
-      real :: leaf_mass_frac_veg     !none               |fraction veg mass (stem+leaf) that is leaf
+      integer, intent (in) :: j     !none               |HRU number
+      integer :: idp                !                   |
+      real :: root_frac             !none               |root mass fraction
+      real :: ab_gr_frac            !none               |above ground mass fraction
+      real :: leaf_mass_frac        !none               |leaf mass fraction of above ground biomass
+      real :: stem_mass_frac        !none               |stem mass fraction of above ground biomass
+      real :: seed_mass_frac        !none               |stem mass fraction of above ground biomass
+      real :: n_left                !none               |n left after seed is removed
+      real :: n_frac                !none               |n fraction in remainder of plant
+      real :: p_left                !none               |p left after seed is removed
+      real :: p_frac                !none               |p fraction in remainder of plant
+      real :: m_left                !none               |mass left after seed is removed
+      real :: leaf_frac_veg         !none               |fraction veg mass (stem+leaf) that is leaf
+      real :: leaf_mass_frac_veg    !none               |fraction veg mass (stem+leaf) that is leaf
            
-      j = ihru
       idp = pcom(j)%plcur(ipl)%idplt
       
-      !! update plant mass for daily biomass/c increase and n and p uptake
-      pl_mass(j)%tot(ipl) = pl_mass(j)%tot(ipl) + pl_mass_up
-      pl_mass(j)%tot(ipl)%m = Max(pl_mass(j)%tot(ipl)%m, 0.)
+      !! update plant mass for daily biomass/c increase
+      pl_mass(j)%tot(ipl)%m = pl_mass(j)%tot(ipl)%m + pl_mass_up%m
+      pl_mass(j)%tot(ipl)%c = pl_mass(j)%tot(ipl)%c + pl_mass_up%c
       
       !! partition leaf and stem (stalk) and seed (grain) mass
       if (pldb(idp)%typ == "perennial") then
@@ -49,10 +48,8 @@
         seed_mass_frac = 1. - root_frac - ab_gr_frac
         leaf_mass_frac = leaf_mass_frac_veg * ab_gr_frac
         stem_mass_frac = (1. - leaf_mass_frac_veg) * ab_gr_frac
-      !end if
-      !! partition root and above ground biomass for all other annuals (above groound grain)
       else
-      !if (pldb(idp)%typ == "warm_annual" .or. pldb(idp)%typ == "cold_annual") then
+      !! partition root and above ground biomass for all other annuals (above ground grain)
         root_frac = pcom(j)%plg(ipl)%root_frac
         ab_gr_frac = 1. - root_frac
         seed_mass_frac = pcom(j)%plg(ipl)%hi_adj
@@ -77,10 +74,15 @@
       !! partition n and p
       if (pldb(idp)%typ == "perennial") then
         !! partition leaves and seed (stem is woody biomass)
-        pl_mass(j)%seed(ipl)%n = pldb(idp)%cnyld * pl_mass(j)%seed(ipl)%m
-        n_left = pl_mass(j)%tot(ipl)%n - pl_mass(j)%seed(ipl)%n
         m_left = pl_mass(j)%leaf(ipl)%m + pl_mass(j)%stem(ipl)%m + pl_mass(j)%root(ipl)%m
         if (m_left > 1.e-9) then
+          pl_mass(j)%seed(ipl)%n = pldb(idp)%cnyld * pl_mass(j)%seed(ipl)%m
+          n_left = pl_mass(j)%tot(ipl)%n - pl_mass(j)%seed(ipl)%n
+          !! if n is neg after seed is removed - assume 0 n in seed - plant database cnyld and fr_n_mat are off
+          if (n_left < 0.) then
+            pl_mass(j)%seed(ipl)%n = 0.
+            n_left = pl_mass(j)%seed(ipl)%n +  n_left
+          end if
           !! partition n_left between remaining masses - assume equal concentrations
           pl_mass(j)%leaf(ipl)%n = n_left * pl_mass(j)%leaf(ipl)%m / m_left
           pl_mass(j)%stem(ipl)%n = n_left * pl_mass(j)%stem(ipl)%m / m_left
@@ -89,6 +91,11 @@
         
           pl_mass(j)%seed(ipl)%p = pldb(idp)%cpyld * pl_mass(j)%seed(ipl)%m
           p_left = pl_mass(j)%tot(ipl)%p - pl_mass(j)%seed(ipl)%p
+          !! if n is neg after seed is removed - assume 0 n in seed - plant database cnyld and fr_n_mat are off
+          if (p_left < 0.) then
+            pl_mass(j)%seed(ipl)%p = 0.
+            p_left = pl_mass(j)%seed(ipl)%p +  p_left
+          end if
           !! partition p_left between remaining masses - assume equal concentrations
           pl_mass(j)%leaf(ipl)%p = p_left * pl_mass(j)%leaf(ipl)%m / m_left
           pl_mass(j)%stem(ipl)%p = p_left * pl_mass(j)%stem(ipl)%m / m_left

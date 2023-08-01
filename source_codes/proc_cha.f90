@@ -35,6 +35,10 @@
         call ch_initial (idat, irch)
       end do
       
+      !set parms for sd-channel-landscape linkage
+      call overbank_read
+      call sd_channel_surf_link
+      
       call time_conc_init
 
 	  return

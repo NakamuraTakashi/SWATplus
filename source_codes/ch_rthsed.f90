@@ -136,7 +136,7 @@
 
        if (sedin < 1.e-6) sedin = 0.
        !! initialize reach peak runoff rate
-       peakr = bsn_prm%prf * hsdti(ii)
+       peakr = hsdti(ii)
 
        !! calculate flow velocity
        vc = 0.
@@ -186,7 +186,7 @@
 
 		   !! critical grain Froude number
 		   fr_gc = 4.596 * shear_stress ** 0.5293 * ch_hyd(jhyd)%s **           &
-                                (-0.1405)  * bsn_prm%sig_g ** (-0.1606)
+                                (-0.1405)  * 1.57 ** (-0.1606)
 
 		   !! grain Froude number
 		   fr_g = vc / sqrt((particle_specific_gravity - 1.) *                  &

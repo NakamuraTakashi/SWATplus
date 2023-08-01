@@ -14,7 +14,7 @@
        integer :: eof                  !           |end of file
        logical :: i_exist              !none       |check to determine if file exists
        integer :: mreg                 !none       |end of loop
-       integer :: i                    !none       |counter
+       integer :: i, ii                !none       |counter
        integer :: ilum
        integer :: ilum_mx
        integer :: isp                  !none       |counter 
@@ -86,10 +86,6 @@
         !! set parms for each plant
         ilum_mx = pl_prms(i)%lum_num * pl_prms(i)%parms
         do ilum = 1, ilum_mx
-          !! use actual value for epco and not change in value like other parms
-          if (pl_prms(i)%prm(ilum)%var == "epco") then
-            plcal(i)%lum(ilum-pl_prms(i)%lum_num)%prm%epco = pl_prms(i)%prm(ilum)%init_val
-          end if
           do ihru = 1, pl_prms(i)%num_tot
             iihru = pl_prms(i)%num(ihru)
             do ipl = 1, pcom(iihru)%npl

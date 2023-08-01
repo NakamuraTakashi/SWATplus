@@ -1,0 +1,4 @@
+scenario decision table used in simulation - scen_dtl.upd
+ 1
+num_hits    	name 			dtable    
+   1    	land_use_change		jsmith_crossslope 

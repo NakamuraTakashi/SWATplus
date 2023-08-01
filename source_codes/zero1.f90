@@ -3,7 +3,7 @@
 !!    ~ ~ ~ PURPOSE ~ ~ ~
 !!    this subroutine initializes the values for some of the arrays 
 
-      use hru_module, only : bio_bod,biom,bz_perc,cn2,fcoli,hru,i_sep,par,percp,   &
+      use hru_module, only : bio_bod,biom,bz_perc,cn2,fcoli,hru,i_sep,par,   &
        plqm,qstemm,rbiom,sep_tsincefail,                   &
        sweepeff,swtrg,t_ov,tconc,usle,usle_cfac,   &
        usle_ei,usle_eifac,wfsh
@@ -44,7 +44,6 @@
       plqm = 0.
       qstemm = 0
       i_sep = 0
-      percp = 0
       sep_opt= 1
       sep_tsincefail = 0
 

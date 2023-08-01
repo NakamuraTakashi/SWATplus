@@ -19,11 +19,6 @@
 !!    ~ ~ ~ OUTGOING VARIABLES ~ ~ ~
 !!    name        |units         |definition
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-!!    hru_ra(:)   |MJ/m^2        |solar radiation for the day in HRU
-!!    hru_rmx(:)  |MJ/m^2        |maximum solar radiation for the day in HRU
-!!    wst(:)%weat%ts(:) |mm H2O        |precipitation for the time step during the
-!!                               |day in HRU
-!!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 !!    ~ ~ ~ LOCAL DEFINITIONS ~ ~ ~
 !!    name        |units         |definition
@@ -70,7 +65,7 @@
       real :: xl                  !MJ/kg         |latent heat of vaporization
       real :: expo                !              | 
       real :: atri                !none          |daily value generated for distribution
-      real :: ifirstpet           !none          |potential ET data search code
+      integer :: ifirstpet = -1   !none          |potential ET data search code
                                   !              |0 first day of potential ET data located in
                                   !              |file
                                   !              |1 first day of potential ET data not located
@@ -187,13 +182,13 @@
 !! Potential ET: Read in data !!
       if (bsn_cc%pet == 3) then
         if (ifirstpet == 0) then
-          read (140,5100) petmeas
+          read (140,*) iyp, idap, petmeas
         else
           ifirstpet = 0
           do 
             iyp = 0
             idap = 0
-            read (140,5000) iyp, idap, petmeas
+            read (140,*) iyp, idap, petmeas
             if (iyp == time%yrc .and. idap == time%day_start) exit
           end do
         end if
@@ -230,6 +225,7 @@
         iwgn = wst(iwst)%wco%wgn
         wgn_pms(iwgn)%precip_sum = wgn_pms(iwgn)%precip_sum + wst(iwst)%weat%precip - wgn_pms(iwgn)%precip_mce(ppet_mce)
         wgn_pms(iwgn)%pet_sum = wgn_pms(iwgn)%pet_sum + wst(iwst)%weat%pet - wgn_pms(iwgn)%pet_mce(ppet_mce)
+        wgn_pms(iwgn)%p_pet_rto = wgn_pms(iwgn)%precip_sum / wgn_pms(iwgn)%pet_sum
         wgn_pms(iwgn)%precip_mce(ppet_mce) = wst(iwst)%weat%precip
         wgn_pms(iwgn)%pet_mce(ppet_mce) = wst(iwst)%weat%pet
       end do
@@ -274,7 +270,5 @@
       end do
 
       return
- 5000 format (i4,i3,f5.1)
- 5100 format (7x,f5.1)
 
       end subroutine climate_control

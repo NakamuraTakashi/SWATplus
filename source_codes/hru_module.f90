@@ -3,7 +3,6 @@
       implicit none
       
       integer :: isep                !          |
-      integer :: ith                 !          |
       integer :: ilu                 !          | 
       integer :: ulu                 !          |
       integer :: iwgen               !          |
@@ -27,7 +26,7 @@
       end type irrigation_sources
       
       type topography
-           character(len=13) :: name
+           character(len=40) :: name
            real :: elev = 0.         !!               |m             |elevation of HRU
            real :: slope = 0.        !!	hru_slp(:)    |m/m           |average slope steepness in HRU
            real :: slope_len = 0.    !! slsubbsn(:)   |m             |average slope length for erosion
@@ -40,15 +39,15 @@
       end type topography
       
       type field
-           character(len=13) :: name = "default"
+           character(len=40) :: name = "default"
            real :: length = 500. !!               |m             |field length for wind erosion
            real :: wid = 100.    !!               |m             |field width for wind erosion
            real :: ang = 30.     !!               |deg           |field angle for wind erosion
       end type field
       
       type hydrology
-           character(len=13) :: name
-           real :: lat_ttime = 0.   !! lat_ttime(:)  |none          |Exponential of the lateral flow travel time
+           character(len=40) :: name
+           real :: lat_ttime = 0.   !! lat_ttime(:)  |days          |days of lateral soil flow across the hillslope
            real :: lat_sed = 0.     !! lat_sed(:)    |g/L           |sediment concentration in lateral flow
            real :: canmx = 0.       !! canmx(:)      |mm H2O        |maximum canopy storage
            real :: esco = 0.        !! esco(:)       |none          |soil evaporation compensation factor
@@ -65,26 +64,26 @@
            real :: perco = 0.       !!               |0-1           |percolation coefficient - linear adjustment to daily perc
            real :: lat_orgn = 0.
            real :: lat_orgp = 0.
-           real :: harg_pet  = .0023  
-           real :: latq_co = 0.3    !!               |              |plant ET curve number coefficient
+           real :: pet_co  = 1.0  
+           real :: latq_co = 0.3    !!               |              |lateral soil flow coefficient - linear adjustment to daily lat flow
            real :: perco_lim = 1.   !!               |              |percolation coefficient-limits perc from bottom layer
       end type hydrology
       
       type snow_parameters
-         character (len=16) :: name
+         character (len=40) :: name
          real :: falltmp = 0.     !deg C         |snowfall temp
-         real :: melttmp = 0.     !deg C         |snow melt base temp 
-         real :: meltmx = 0.      !mm/deg C/day  |Max melt rate for snow during year (June 21)
-         real :: meltmn = 0.      !mm/deg C/day  |Min melt rate for snow during year (Dec 21)
-         real :: timp             !none          |snow pack temp lag factor (0-1)
-         real :: covmx = 0.       !mm H20        |Min snow water content
-         real :: cov50 = 0.       !none          |frac of COVMX
+         real :: melttmp = 0.5    !deg C         |snow melt base temp 
+         real :: meltmx = 4.5     !mm/deg C/day  |Max melt rate for snow during year (June 21)
+         real :: meltmn = 0.5     !mm/deg C/day  |Min melt rate for snow during year (Dec 21)
+         real :: timp = 0.8       !none          |snow pack temp lag factor (0-1)
+         real :: covmx = 25.0     !mm H20        |snow water content at full ground cover
+         real :: cov50 = 0.5      !none          |frac of covmx at 50% snow cover
          real :: init_mm = 0.     !mm H20        |initial snow water content at start of simulation
       end type snow_parameters
       type (snow_parameters), dimension (:), allocatable :: snodb
       
       type subsurface_drainage_parameters
-        character(len=13) :: name = "default"
+        character(len=40) :: name = "null"
         real :: depth = 0.    !! |mm            |depth of drain tube from the soil surface
         real :: time = 0.     !! |hrs           |time to drain soil to field capacity
         real :: lag = 0.      !! |hours         |drain tile lag time
@@ -97,7 +96,7 @@
       type (subsurface_drainage_parameters), dimension (:), allocatable :: sdr
               
       type landuse
-          character(len=15) :: name
+          character(len=40) :: name
           integer :: cn_lu = 0
           integer :: cons_prac = 0
           real :: usle_p = 0.           !! none     | USLE equation support practice (P) factor daily
@@ -110,14 +109,14 @@
       type (landuse), dimension (:), allocatable :: luse
       
       type soil_plant_initialize
-        character(len=16) :: name = ""
+        character(len=40) :: name = ""
         real :: sw_frac
-        character(len=16) :: nutc = ""
-        character(len=16) :: pestc = ""
-        character(len=16) :: pathc = ""
-        character(len=16) :: saltc = ""
-        character(len=16) :: hmetc = ""
-        integer :: nut = 1
+        character(len=40) :: nutc = ""
+        character(len=40) :: pestc = ""
+        character(len=40) :: pathc = ""
+        character(len=40) :: saltc = ""
+        character(len=40) :: hmetc = ""
+        integer :: nut = 0
         integer :: pest = 1
         integer :: path = 1
         integer :: salt = 1
@@ -126,7 +125,7 @@
       type (soil_plant_initialize), dimension (:), allocatable :: sol_plt_ini
         
       type hru_databases
-        character(len=13) :: name = ""
+        character(len=40) :: name = ""
         integer :: topo = 1
         integer :: hyd = 1
         integer :: soil = 1
@@ -138,26 +137,21 @@
       end type hru_databases
       
       type hru_databases_char
-        character(len=25) :: name = ""
-        character(len=25) :: topo = ""
-        character(len=25) :: hyd = ""
-        character(len=25) :: soil = ""
-        character(len=25) :: land_use_mgt = ""
-        character(len=25) :: soil_plant_init = ""
-        character(len=25) :: surf_stor = ""
-        character(len=25) :: snow = ""
-        character(len=25) :: field = ""
+        character(len=40) :: name = ""
+        character(len=40) :: topo = ""
+        character(len=40) :: hyd = ""
+        character(len=40) :: soil = ""
+        character(len=40) :: land_use_mgt = ""
+        character(len=40) :: soil_plant_init = ""
+        character(len=40) :: surf_stor = ""
+        character(len=40) :: snow = ""
+        character(len=40) :: field = ""
       end type hru_databases_char
-        
-      type hru_parms_db
-        real :: co2 = 350.
-      end type hru_parms_db
-      
+
       type hydrologic_response_unit_db
-        character(len=13) :: name = "default"
+        character(len=40) :: name = "default"
         type (hru_databases) :: dbs
         type (hru_databases_char) :: dbsc
-        type (hru_parms_db) :: parms
       end type hydrologic_response_unit_db
       type (hydrologic_response_unit_db), dimension(:),allocatable :: hru_db
       
@@ -191,19 +185,18 @@
       end type land_use_mgt_variables
      
       type hydrologic_response_unit
-        character(len=13) :: name = ""
+        character(len=40) :: name = ""
         integer :: obj_no
         real :: area_ha
         real :: km
         integer :: surf_stor                    !points to res() for surface storage
         type (hru_databases) :: dbs             !database pointers
         type (hru_databases_char) :: dbsc       !database pointers
-        type (hru_parms_db) :: parms            !calibration parameters
         integer :: land_use_mgt
-        character(len=16) :: land_use_mgt_c
+        character(len=40) :: land_use_mgt_c
         integer :: lum_group
-        character(len=16) :: lum_group_c        !land use group for soft cal and output
-        character(len=16) :: region
+        character(len=40) :: lum_group_c        !land use group for soft cal and output
+        character(len=40) :: region
         integer :: plant_cov
         integer :: mgt_ops
         integer :: tiledrain = 0
@@ -212,6 +205,7 @@
         integer :: grassww = 0
         integer :: bmpuser = 0
         integer :: crop_reg = 0
+        integer :: paddy_irr = 0  !Jaehak 2022
 
         !! other data
         type (topography) :: topo
@@ -221,26 +215,35 @@
         type (land_use_mgt_variables) :: lumv
         type (subsurface_drainage_parameters) :: sdr
         type (snow_parameters) :: sno
+        real :: snocov1, snocov2
         integer :: cur_op = 1
-        real :: sno_mm                          !mm H2O        |amount of water in snow on current day
-        real :: water_fr
+        integer :: irr_dmd_dtbl = 0
+        integer :: man_dmd_dtbl = 0
+        integer :: irr_dmd_iauto = 0
+        integer :: man_dmd_iauto = 0
+        integer :: wet_db = 0                   !none       |pointer to wetland data - saved so turn on/off
+        real :: wet_hc                          !mm/h       |hydraulic conductivity of upper layer - wetlands
+        real :: sno_mm                          !mm H2O     |amount of water in snow on current day
         real :: water_seep
         real :: water_evap
+        real :: precip_aa
+        character(len=1) :: wet_fp = "n"
+        character(len=5) :: irr_src = "unlim"    !        |irrigation source, Jaehak 2022
         real :: strsa
-        integer :: ich_flood
+        real :: irr_hmax = 0               !mm H2O        |target ponding depth during paddy irrigation Jaehak 2022
+        real :: irr_hmin = 0               !mm H2O        |threshold ponding depth to trigger paddy irrigation
+        real :: irr_isc = 0                !mm H2O        |ID of the source cha/res/aqu for paddy irrigation
       end type hydrologic_response_unit
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru
       type (hydrologic_response_unit), dimension(:), allocatable, target :: hru_init
 
       
-      real :: precipday         !! mm   |daily precip for the hru
       real :: precip_eff        !! mm   |daily effective precip for runoff calculations = precipday + ls_overq + snomlt - canstor
                                 !!      |precip_eff = precipday + ls_overq - snofall + snomlt - canstor
-      real :: qday              !! mm   |surface runoff that reaches main channel during day in HRU                               
-                                
-!!    change per JGA 8/31/2011 gsm for output.mgt 
-      real :: yield
-      
+      real :: qday              !! mm   |surface runoff that reaches main channel during day in HRU
+      real :: satexq_chan       !! mm   |saturation excess runoff that reaches main channel during day in HRU
+
+
 !!    new/modified arrays for plant competition
       integer :: ipl, isol
 
@@ -254,10 +257,10 @@
       integer, dimension (:), allocatable :: iseptic
      
 !! septic variables for output.std
-      real :: peakr, sw_excess, albday
+      real :: qp_cms, sw_excess, albday
       real :: wt_shall
       real :: sq_rto
-      real :: tloss, snomlt, snofall, fixn, qtile
+      real :: snomlt, snofall, fixn, qtile
       real :: latlyr                 !!mm            |lateral flow in soil layer for the day
       real :: inflpcp                !!mm            |amount of precipitation that infiltrates
       real :: fertn, sepday, bioday
@@ -281,14 +284,12 @@
       integer :: mo
       integer :: ihru             !!none          |HRU number
       integer :: nd_30
-      integer :: mpst, mlyr
-!  routing 5/3/2010 gsm per jga    
+      integer :: mpst, mlyr   
 ! date
       character(len=8) :: date
 
 !! septic change added iseptic 1/28/09 gsm
-      integer :: isep_ly
-      real, dimension (:), allocatable :: percp    
+      integer :: isep_ly   
       real, dimension (:), allocatable :: qstemm
 !! septic changes added 1/28/09 gsm
       real, dimension (:), allocatable :: bio_bod, biom,rbiom
@@ -324,13 +325,9 @@
       real, dimension (:), allocatable :: cn2
       real, dimension (:), allocatable :: smx
       real, dimension (:), allocatable :: cnday
-      real, dimension (:), allocatable :: tmpav
-      real, dimension (:), allocatable :: hru_ra
-      real, dimension (:), allocatable :: tmx,tmn
-      real, dimension (:), allocatable :: tconc,hru_rmx
+      real, dimension (:), allocatable :: tconc
       real, dimension (:), allocatable :: usle_cfac,usle_eifac
       real, dimension (:), allocatable :: t_ov
-      real, dimension (:), allocatable :: u10,rhd
       real, dimension (:), allocatable :: canstor,ovrlnd
 
 !    Drainmod tile equations  08/2006 
@@ -341,7 +338,7 @@
 !    Drainmod tile equations  08/2006
       real, dimension (:), allocatable :: surqsolp
       real, dimension (:), allocatable :: cklsp
-      real, dimension (:), allocatable :: pplnt,snotmp
+      real, dimension (:), allocatable :: pplnt
       real, dimension (:), allocatable :: brt
 
       real, dimension (:), allocatable :: twash,doxq
@@ -357,9 +354,16 @@
       real, dimension (:,:), allocatable :: wrt
       real, dimension (:,:), allocatable :: bss,surf_bs  
       integer, dimension (:), allocatable :: swtrg
+      real, dimension (:), allocatable :: rateinf_prev
+      real, dimension (:), allocatable :: urb_abstinit
       !! burn
       integer, dimension (:), allocatable :: grz_days
       integer, dimension (:), allocatable :: igrz,ndeat
+
+      real, dimension (:), allocatable :: gwtranq,satexq !rtb gwflow
+      real, dimension (:,:), allocatable :: bss_ex !rtb gwflow
+      real, dimension (:), allocatable :: gwtrann,gwtranp,satexn !rtb gwflow
+      
 
 !!     gsm added for sdr (drainage) 7/24/08
       integer, dimension (:,:), allocatable :: mgt_ops

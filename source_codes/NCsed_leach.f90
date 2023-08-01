@@ -62,7 +62,7 @@
 	  wt1 = 0.  !! conversion factor
       er = 0.	!! enrichment ratio
         !! HRU calculations
-        xx = rsd1(j)%str%n + rsd1(j)%meta%n + soil1(j)%hp(1)%n + soil1(j)%hs(1)%n
+        xx = rsd1(j)%str%n + rsd1(j)%meta%n + soil1(j)%hsta(1)%n + soil1(j)%hact(1)%n
         !wt = sol_bd(1,j) * sol_z(1,j) * 10. (tons/ha)
         !wt1 = wt/1000
         wt1 = soil(j)%phys(1)%bd * soil(j)%phys(1)%d / 100.
@@ -86,8 +86,8 @@
         
 		rsd1(j)%str%n = rsd1(j)%str%n * xx1
 		rsd1(j)%meta%n = rsd1(j)%meta%n * xx1
-		soil1(j)%hp(1)%n = soil1(j)%hp(1)%n * xx1
-		soil1(j)%hs(1)%n = soil1(j)%hs(1)%n * xx1
+		soil1(j)%hsta(1)%n = soil1(j)%hsta(1)%n * xx1
+		soil1(j)%hact(1)%n = soil1(j)%hact(1)%n * xx1
 		!sol_BMN(1,j) = sol_BMN(1,j) * xx1
       end if
       
@@ -105,7 +105,7 @@
       YBC=0.    !BMC LOSS WITH SEDIMENT
       YOC=0.    !Organic C loss with sediment
       YW=0.     !YW = WIND EROSION (T/HA)
-      TOT = soil1(j)%hp(1)%c + soil1(j)%hs(1)%c + rsd1(j)%meta%c + rsd1(j)%str%c !Total organic carbon in layer 1
+      TOT = soil1(j)%hsta(1)%c + soil1(j)%hact(1)%c + rsd1(j)%meta%c + rsd1(j)%str%c !Total organic carbon in layer 1
       !YEW = MIN(er*(sedyld(j)/hru(j)%area_ha+YW/hru(j)%area_ha)/(sol_mass/1000.),.9)
       ! Not sure whether should consider enrichment ratio or not!
       YEW = MIN((sedyld(j)/hru(j)%area_ha+YW/hru(j)%area_ha)/(sol_mass/1000.),.9) !fraction of soil erosion of total soil mass
@@ -115,8 +115,8 @@
 	  !YSD water erosion
 	  !YW wind erosion
       YOC=YEW*TOT
-      soil1(j)%hs(1)%c = soil1(j)%hs(1)%c * X1
-      soil1(j)%hp(1)%c = soil1(j)%hp(1)%c * X1
+      soil1(j)%hact(1)%c = soil1(j)%hact(1)%c * X1
+      soil1(j)%hsta(1)%c = soil1(j)%hsta(1)%c * X1
       rsd1(j)%str%m = rsd1(j)%str%m * X1
       rsd1(j)%meta%m = rsd1(j)%meta%m * X1
       rsd1(j)%lig%m = rsd1(j)%lig%m * X1
@@ -130,7 +130,7 @@
       IF(soil1(j)%microb(1)%c > .01) THEN
           PRMT_21 = 0.  !KOC FOR CARBON LOSS IN WATER AND SEDIMENT(500._1500.) KD = KOC * C
           PRMT_21 = 1000.
-          soil1(j)%water(1)%c = rsd1(j)%str%c + rsd1(j)%meta%c + soil1(j)%hp(1)%c + soil1(j)%hs(1)%c + soil1(j)%microb(1)%c 
+          soil1(j)%water(1)%c = rsd1(j)%str%c + rsd1(j)%meta%c + soil1(j)%hsta(1)%c + soil1(j)%hact(1)%c + soil1(j)%microb(1)%c 
           DK = .0001 * PRMT_21 * soil1(j)%water(1)%c
           !X1=PO(LD1)-S15(LD1)
           X1 = soil(j)%phys(1)%por*soil(j)%phys(1)%d-soil(j)%phys(1)%wpmm !mm
@@ -172,7 +172,7 @@
           end if
           sol_thick = 0.
           sol_thick = soil(j)%phys(k)%d-soil(j)%phys(k-1)%d
-          soil1(j)%water(1)%c = soil1(j)%str(k)%c + soil1(j)%meta(k)%c + soil1(j)%hp(k)%c + soil1(j)%hs(k)%c 
+          soil1(j)%water(1)%c = soil1(j)%str(k)%c + soil1(j)%meta(k)%c + soil1(j)%hsta(k)%c + soil1(j)%hact(k)%c 
           Y1 = soil1(j)%microb(k)%c + VBC
           VBC=0.
           IF(Y1>=.01)THEN

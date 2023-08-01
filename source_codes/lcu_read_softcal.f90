@@ -77,7 +77,7 @@
                 read (107,*,iostat=eof) lscal(ireg)%lum(ilum)%meas
                 if (eof < 0) exit
                 !! when using wyr and bfr to calibrate
-                if (lscal(ireg)%lum(ilum)%meas%bfr > 0.) then
+                if (cal_codes%hyd_hru /= "a") then
                   !! convert baseflow ratio from frac of water yield to frac of precip
                   lscal(ireg)%lum(ilum)%meas%srr = lscal(ireg)%lum(ilum)%meas%wyr * (1. - lscal(ireg)%lum(ilum)%meas%bfr)
                   lscal(ireg)%lum(ilum)%meas%bfr = lscal(ireg)%lum(ilum)%meas%wyr * lscal(ireg)%lum(ilum)%meas%bfr
@@ -87,7 +87,7 @@
             end if 
                
             !! if calibrating the entire region - later we can set up for lsu/regional calibrations
-            if (region(ireg)%name == "basin") then
+            if (region(ireg)%name == "basin" .or. db_mx%lsu_reg == 1) then
               region(ireg)%num_tot = sp_ob%hru
               allocate (region(ireg)%num(sp_ob%hru))
               allocate (region(ireg)%hru_ha(sp_ob%hru))

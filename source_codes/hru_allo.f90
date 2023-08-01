@@ -9,6 +9,7 @@
       use plant_module
       use soil_module
       use water_body_module
+      use channel_velocity_module
       
       implicit none
 
@@ -17,6 +18,7 @@
       imax = sp_ob%hru
       if (imax == 0) then
         allocate (hru(0:0))
+        allocate (grwway_vel(0:0))
         allocate (soil(0:0))
         allocate (soil1(0:0))
         allocate (soil1_init(0:0))
@@ -30,6 +32,7 @@
         allocate (irrig(0:0))
       else 
         allocate (hru(0:imax))
+        allocate (grwway_vel(0:imax))
         allocate (soil(0:imax))
         allocate (soil1(0:imax))
         allocate (soil1_init(0:imax))
@@ -57,6 +60,7 @@
         allocate (wet_wat_y(imax))
         allocate (wet_wat_a(imax))
         allocate (rsd1(0:imax))
+        allocate (wet_seep_day(imax))
       endif
 
       return

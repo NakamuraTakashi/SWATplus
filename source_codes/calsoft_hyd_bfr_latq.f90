@@ -107,6 +107,7 @@
         ! 1st latq_co adjustment 
         if (isim > 0) then
           cal_sim =  " first latq_co adj "
+          cal_adj = chg_val
           call time_control
         end if
 
@@ -172,6 +173,7 @@
         ! latq_co adjustment for lateral soil flow
         if (isim > 0) then
           cal_sim =  " latq_co adj "
+          cal_adj = chg_val
           call time_control
         end if
         end do  

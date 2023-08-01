@@ -9,6 +9,7 @@
       use constituent_mass_module
       use reservoir_module
       use pesticide_data_module
+      use reservoir_conditions_module
       
       implicit none
 
@@ -113,14 +114,25 @@
              exit
            end if
          end do
-       
+                
+         if (res_dat_c(ires)%release(1:5) == "ctbl_") then
+           do irel = 1, db_mx%ctbl_res
+             if (ctbl(irel)%name == res_dat_c(ires)%release) then 
+               res_dat(ires)%release = irel
+               res_ob(ires)%rel_tbl = "c"
+               exit
+             end if
+           end do 
+         else
           do irel = 1, db_mx%dtbl_res
             if (dtbl_res(irel)%name == res_dat_c(ires)%release) then
              res_dat(ires)%release = irel
+             res_ob(ires)%rel_tbl = "d"
              exit
             end if
-          end do      
- 
+          end do
+         end if
+          
          do ised = 1, db_mx%res_sed
            if (res_sed(ised)%name == res_dat_c(ires)%sed) then
              res_dat(ires)%sed = ised

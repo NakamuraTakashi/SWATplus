@@ -1,6 +1,6 @@
 ls_unit.def: Landscape unit definition - LREW 
 1248
-id             name            area        elem_tot           elem1           elem2
+lsu_numb      lsu_name         area        elem_tot           elem1           elem2
 1              lcu1           103.5               2               1             -21
 2              lcu2            6.21               2              22             -28
 3              lcu3           61.92               2              29             -39

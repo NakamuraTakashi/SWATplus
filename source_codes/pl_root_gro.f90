@@ -1,4 +1,4 @@
-      subroutine pl_root_gro
+      subroutine pl_root_gro(j)
       
       use plant_data_module
       use basin_module
@@ -11,13 +11,13 @@
       
       implicit none 
       
-      integer :: j              !none               |HRU number
-      integer :: idp            !                   |
-      real :: rto               !none               |ratio of current years of growth:years to maturity of perennial
-      integer :: min            !                   |
-      real :: biomxyr           !                   |
+      integer, intent (in) :: j     !none               |HRU number
+      integer :: idp                !                   |
+      real :: rto                   !none               |ratio of current years of growth:years to maturity of perennial
+      integer :: min                !                   |
+      real :: biomxyr               !                   |
+      real :: phumax
              
-      j = ihru
       idp = pcom(j)%plcur(ipl)%idplt
 
       !! calculate root depth
@@ -46,7 +46,8 @@
         end if
       else    !!annuals
         !! calculate fraction of total biomass that is in the roots for annuals
-        pcom(j)%plg(ipl)%root_frac = pldb(idp)%rsr1 - pldb(idp)%rsr2 * pcom(j)%plcur(ipl)%phuacc
+        phumax = amin1 (1., pcom(j)%plcur(ipl)%phuacc)
+        pcom(j)%plg(ipl)%root_frac = pldb(idp)%rsr1 - (pldb(idp)%rsr1 - pldb(idp)%rsr2) * phumax
       end if
       
       !! root mass

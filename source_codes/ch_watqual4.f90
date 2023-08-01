@@ -8,7 +8,10 @@
       use hydrograph_module      
       use climate_module
       use channel_data_module
+      use sd_channel_module
+      use water_body_module
 
+      integer :: istep
       real :: tday, wtmp, fll, gra
       real :: lambda, fnn, fpp, algi, fl_1, xx, yy, zz, ww
       real :: uu, vv, cordo, f1, algcon
@@ -18,9 +21,16 @@
       real :: thrk1 = 1.047, thrk2 = 1.024, thrk3 = 1.024, thrk4 = 1.060
       real :: soxy             !mg O2/L       |saturation concetration of dissolved oxygen
 
+      jrch = isdch
       !! calculate flow duration
       tday = rttime / 24.0
       tday = amin1 (1., tday)
+      rt_delt = 1.
+      !! use maximum daily flow depth
+      !rchdep = 0.
+      !do istep = 1, time%step
+      !  rchdep = Max (rchdep, flo_dep(istep))
+      !end do
 
       !! calculate temperature in stream Stefan and Preudhomme. 1993.  Stream temperature estimation 
       !! from air temperature.  Water Res. Bull. p. 27-45 SWAT manual equation 2.3.13
@@ -34,7 +44,7 @@
       rk4_s =  Theta(ch_nut(jnut)%rk4,thrk4,wtmp) * ben_area    !ch_hyd(jhyd)%l *ch_hyd(jhyd)%w * rt_delt
 
       !! ht3 = concentration of incoming nutrients
-      if (ht3%flo > 0.) then
+      if (ht3%flo > 0. .and. rchdep > 0.) then
         disoxin = ht3%dox - rk4_s / ht3%flo
         disoxin = amax1 (0., disoxin)
         dispin = ht3%solp + rs2_s / ht3%flo 
@@ -62,7 +72,7 @@
        
         !! algal growth
         !! calculate chlorophyll-a concentration at end of day QUAL2E equation III-1
-        algcon = 1000. * ch_stor(jrch)%chla / ch_nut(jnut)%ai0
+        algcon = 1000. * ht3%chla / ch_nut(jnut)%ai0
         algin = 1000. * ht3%chla / ch_nut(jnut)%ai0
          
         !! calculate light extinction coefficient (algal self shading) QUAL2E equation III-12
@@ -200,10 +210,10 @@
 
         !! calculate nitrate concentration at end of day QUAL2E section 3.3.4 equation III-20
         factk = 0.
-        factm = -bc2_m + ht3%no3
+        factm = -bc2_m
         
         ht2%no3 = wq_semianalyt (tday, rt_delt, factm, 0., ch_stor(jrch)%no3, ht3%no3)
-        if (ht2%no3 < 1.e-6) ht2%no3 = 0.
+        if (ht2%no3 < 1.e-6) ht3%no3 = 0.
         !! end nitrogen calculations
 
         !! phosphorus calculations

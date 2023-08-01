@@ -3,7 +3,7 @@
       implicit none
       
      type irrigation_operation
-        character (len=13) :: name
+        character (len=40) :: name
         real :: amt_mm = 25.4           !! mm     |irrigation application amount
         real :: eff = 0.                !!        |irrigation in-field efficiency
         real :: surq = 0.               !! frac   |surface runoff ratio
@@ -14,8 +14,21 @@
       end type irrigation_operation
       type (irrigation_operation), dimension(:), allocatable :: irrop_db
 
+     type puddle_operation
+        character (len=40) :: name
+        real :: wet_hc = 0.             !! mm/h     |hydraulic conductivity of upper layer of soil after puddling
+        real :: sed = 0.                !! ppm      |sediment concentration after puddling
+        real :: orgn = 0.               !! ppm      |organic N concentration after puddling
+        real :: sedp = 0.               !! ppm      |organic P concentration after puddling
+        real :: no3 = 0.                !! ppm      |NO3-N concentration after puddling
+        real :: solp = 0.               !! ppm      |mineral (soluble P) concentration after puddling
+        real :: nh3 = 0.                !! ppm      |NH3 concentration after puddling
+        real :: no2 = 0.                !! ppm      |NO2 concentration after puddling
+      end type puddle_operation
+      type (puddle_operation), dimension(:), allocatable :: pudl_db
+
       type filtstrip_operation
-        character (len=13) :: name
+        character (len=40) :: name
         real :: vfsi = 0.               !       |initial SCS curve number II value
         real :: vfsratio = 0.           !       |contouring USLE P factor
         real :: vfscon                  !       |fraction of the total runoff from the entire field
@@ -25,14 +38,14 @@
       type (filtstrip_operation), dimension(:), allocatable :: filtstrip_db
 
       type fire_operation
-        character (len=13) :: name
+        character (len=40) :: name
         real :: cn2_upd = 0.            !       |change in SCS curve number II value
         real :: fr_burn = 0.            !       |fraction burned
       end type fire_operation
       type (fire_operation),dimension(:), allocatable :: fire_db
       
       type grwaterway_operation
-        character (len=13) :: name
+        character (len=40) :: name
         real :: grwat_i = 0.       !none          |On/off Flag for waterway simulation
         real :: grwat_n = 0.       !none          |Mannings"s n for grassed waterway
         real :: grwat_spcon = 0.   !none          |sediment transport coefficant defined by user
@@ -44,7 +57,7 @@
       type (grwaterway_operation),dimension(:), allocatable :: grwaterway_db
 
       type bmpuser_operation  
-        character (len=13) :: name
+        character (len=40) :: name
         integer :: bmp_flag = 0
         real :: bmp_sed = 0.       !%              | Sediment removal by BMP       
         real :: bmp_pp = 0.        !%              | Particulate P removal by BMP
@@ -55,7 +68,7 @@
       end type bmpuser_operation 
       
       type bmpuser_operation1  
-        character (len=13) :: name
+        character (len=40) :: name
         integer :: bmp_flag = 0
         real :: surf_flo = 0.       !%              | Surface Flow removal by BMP  
         real :: surf_sed = 0.       !%              | Surface Sediment removal by BMP       
@@ -82,9 +95,9 @@
       type (bmpuser_operation),dimension(:), allocatable :: bmpuser_db
       
       type chemical_application_operation
-        character (len=16) :: name
-        character (len=16) :: form = " "        !           |solid; liquid
-        character (len=16) :: op_typ = " "      !           |operation type-spread; spray; inject; direct
+        character (len=40) :: name
+        character (len=40) :: form = " "        !           |solid; liquid
+        character (len=40) :: op_typ = " "      !           |operation type-spread; spray; inject; direct
         real :: app_eff = 0.                    !           |application efficiency
         real :: foliar_eff = 0.                 !           |foliar efficiency
         real :: inject_dep = 0.                 !mm         |injection depth
@@ -95,8 +108,8 @@
       type (chemical_application_operation),dimension(:), allocatable :: chemapp_db
 
       type harvest_operation
-        character (len=13) :: name
-        character (len=13) :: typ   !none              |grain;biomass;residue;tree;tuber
+        character (len=40) :: name
+        character (len=40) :: typ   !none              |grain;biomass;residue;tree;tuber
         real :: hi_ovr = 0.         !(kg/ha)/(kg/ha)   |harvest index target specified at harvest
         real :: eff = 0.            !none              |harvest efficiency: fraction of harvested yield that is removed 
                                                        !the remainder becomes residue on the soil surface
@@ -107,8 +120,8 @@
       type (harvest_operation) :: hkop
       
       type grazing_operation
-        character (len=13) :: name
-        character (len=13) :: fertnm = " "
+        character (len=40) :: name
+        character (len=40) :: fertnm = " "
         integer :: manure_id                             !fertilizer number from fertilizer.frt
         real :: eat = 0.              !!(kg/ha)/day      |dry weight of biomass removed by grazing daily
         real :: tramp = 0.            !!(kg/ha)/day      |dry weight of biomass removed by trampling daily
@@ -119,7 +132,7 @@
       type (grazing_operation) :: graze
       
       type streetsweep_operation
-        character (len=13) :: name
+        character (len=40) :: name
         real :: eff = 0.               !!none             |removal efficiency of sweeping operation
         real :: fr_curb = 0.           !!none             |availability factor, the fraction of the
                                        !!                    curb length that is sweepable
@@ -128,8 +141,8 @@
       type (streetsweep_operation) :: sweepop
       
       type management_ops1
-        character(len=16) :: name
-        character(len=16) :: op  
+        character(len=40) :: name
+        character(len=40) :: op  
         !! operation code 4-digit char name
         !!  1 pcom - establish plant community  
         !!  2 plnt - plant  
@@ -156,8 +169,8 @@
         integer :: jday = 0
         integer :: year = 0
         real :: husc = 0.
-        character(len=16) :: op_char
-        character (len=16) :: op_plant
+        character(len=40) :: op_char
+        character (len=40) :: op_plant
         integer :: op1 = 0
         integer :: op2 = 0              !! |none          |plant number in community for hu scheduling
         real :: op3 = 0                 !! |none          |application amount (mm or kg/ha)
@@ -165,8 +178,8 @@
       end type management_ops1
       
       type management_ops
-        character(len=16) :: name
-        character(len=16) :: op  
+        character(len=40) :: name
+        character(len=40) :: op  
         !! operation code 4-digit char name
         !! plnt; autoplnt - plant
         !! harv; autoharv - harvest only
@@ -186,8 +199,8 @@
         integer :: jday = 0
         integer :: year = 0
         real :: husc = 0.
-        character(len=16) :: op_char
-        character (len=16) :: op_plant
+        character(len=40) :: op_char
+        character (len=40) :: op_plant
         integer :: op1 = 0
         integer :: op2 = 0              !! |none          |plant number in community for hu scheduling
         real :: op3 = 0                 !! |none          |application amount (mm or kg/ha)
@@ -198,12 +211,14 @@
       type (management_ops), dimension(1) :: mgt2
       
       type management_schedule
-        character(len=35) :: name
+        character(len=40) :: name
         integer :: num_ops = 0
         integer :: num_autos = 0
         integer :: first_op = 0
         type (management_ops), dimension (:), allocatable :: mgt_ops
-        character(len=16), dimension (:), allocatable :: auto_name
+        character(len=40), dimension (:), allocatable :: auto_name
+        character(len=40), dimension (:), allocatable :: auto_crop
+        integer :: auto_crop_num
         integer, dimension (:), allocatable :: num_db
         integer :: irr
       end type management_schedule

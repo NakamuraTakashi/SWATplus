@@ -7,7 +7,7 @@
       use soil_module
       use plant_module
       use plant_data_module
-      use hydrograph_module, only : sp_ob, res, res_om_init, ch_stor, ch_om_water_init, wet, wet_om_init
+      use hydrograph_module !, only : sp_ob, res, res_om_init, ch_stor, ch_om_water_init, wet, wet_om_init
       use calibration_data_module
       use reservoir_data_module
       use aquifer_module
@@ -44,6 +44,7 @@
         allocate (pl_mass_init(iihru)%seed(nplt))
         allocate (pl_mass_init(iihru)%root(nplt))
         allocate (pl_mass_init(iihru)%yield_tot(nplt))
+        allocate (pl_mass_init(iihru)%yield_yr(nplt))
 
         isched = hru(iihru)%mgt_ops
         allocate (pcom_init(iihru)%dtbl(sched(isched)%num_autos))
@@ -87,6 +88,7 @@
       if (sp_ob%chandeg > 0) then
         sdch_init = sd_ch
         ch_stor = ch_om_water_init
+        fp_stor = fp_om_water_init
       end if
       
       !! initialize reservoir storage

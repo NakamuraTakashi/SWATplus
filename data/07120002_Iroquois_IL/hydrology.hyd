@@ -1,5 +1,5 @@
 hydrology.hyd
-NAME           LAT_TTIME   LAT_SED   CAN_MAX      ESCO      EPCO ORGN_ENRICH ORGP_ENRICH   CN3_SWF   BIO_MIX     PERCO  LAT_ORGN  LAT_ORGP  HARG_PET   LATQ_CO
+NAME           LAT_TTIME   LAT_SED   CAN_MAX      ESCO      EPCO ORGN_ENRICH ORGP_ENRICH   CN3_SWF   BIO_MIX     PERCO  LAT_ORGN  LAT_ORGP     PET_CO   LATQ_CO
 hy2691401               0         0         0       0.5       0.5           0           0       0.3       0.2       0.1         0         0    0.0023       0.3
 hy2691402               0         0         0       0.5       0.5           0           0       0.3       0.2       0.1         0         0    0.0023       0.3
 hy2691403               0         0         0       0.5       0.5           0           0       0.3       0.2       0.1         0         0    0.0023       0.3

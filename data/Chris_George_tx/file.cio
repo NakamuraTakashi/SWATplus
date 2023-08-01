@@ -16,13 +16,13 @@ WATER_RIGHTS  null  null  null
 LINK          null  null   
 HYDROLOGY     null  topography.hyd     field.fld   
 STRUCTURAL    null  null  null  null  null  
-HRU_PARM_DB   plants.plt  fertilizer.frt  tillage.til  pesticide.pst      null  null  null  urban.urb  septic.sep  null  
+HRU_PARM_DB   plants.plt  fertilizer.frt  tillage.til  pesticide.pes      null  null  null  urban.urb  septic.sep  null  
 OPS           null  null  null  null  null  null  
 LUM           null  null  null  null  null  
 CHG           null  null  null  null  null  null  null  null  null  
 INIT          null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  null  
 SOILS         null  null  soils-lte.sol  
-DECISION      lum.dtl     res_rel.dtl     scen_lu_dtl     flo_con.dtl 
+DECISION      lum.dtl  null  null  null
 REGIONS       ls_unit.ele       ls_unit.def      null  null  null  null  null  null  null  null  null  null  null  null  null  null  null
 PATH_PCP	  null
 PATH_TMP      null

@@ -5,12 +5,11 @@
       use basin_module
       use input_file_module
       use time_module
-      
+
       implicit none
             
       character (len=80) :: titldum   !           |title of file
       character (len=80) :: header    !           |header of file
-      character (len=5) :: hr_min     !           |
       integer :: eof                  !           |end of file
       integer :: imax                 !none       |determine max number for array (imax) and total number in file
       integer :: iyr                  !none       |number of years 
@@ -21,6 +20,9 @@
       integer :: iyr_prev             !none       |previous year
       integer :: iyrs                 !           |
       integer :: iss                  !none       |counter
+      integer :: mo
+      integer :: day_mo
+      integer :: ihr
             
        mpcp = 0
        eof = 0
@@ -86,10 +88,9 @@
           ! the precip time step has to be the same as time%step
           allocate (pcp(i)%tss(time%step,366,pcp(i)%nbyr))
         else
-          allocate (pcp(i)%ts(366,pcp(i)%nbyr))
+         allocate (pcp(i)%ts(366,pcp(i)%nbyr))
         end if
 
-        
         ! read and save start jd and yr
          read (108,*,iostat=eof) iyr, istep
          if (eof < 0) exit        
@@ -108,24 +109,25 @@
         do
           read (108,*,iostat=eof) iyr, istep
           if (eof < 0) exit
-          if (iyr == time%yrc .and. istep == time%day_start) exit
+          if (iyr >= time%yrc .and. istep >= time%day_start) exit
         end do
 
        backspace (108)
        iyr_prev = iyr
        iyrs = 1
-       
-       do 
+       iss = 1
+
+       do
          if (pcp(i)%tstep > 0) then
-           do iss = 1, time%step
-             read (108,*,iostat=eof)iyr, istep, hr_min, pcp(i)%tss(iss,istep,iyrs)
-             if (eof < 0) exit
-           end do
+           read (108,*,iostat=eof)iyr, istep, mo, day_mo, ihr, pcp(i)%tss(iss,istep,iyrs)
+           iss = iss + 1
+           if (iss > time%step) iss = 1
+           if (eof < 0) exit
          else    
            read (108,*,iostat=eof)iyr, istep, pcp(i)%ts(istep,iyrs)
            if (eof < 0) exit
          endif
-         !check to see when next year
+         !! check to see when next year
          if (istep == 365 .or. istep == 366) then
            read (108,*,iostat=eof) iyr, istep
            if (eof < 0) exit
@@ -136,8 +138,9 @@
            end if
          end if
        end do
+       
        close (108)
-             
+                    
        ! save end jd and year
        pcp(i)%end_day = istep
        pcp(i)%end_yr = iyr

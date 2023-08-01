@@ -34,9 +34,9 @@
 
           !! calculate optimal biomass
           !! adjust radiation-use efficiency for CO2
-          if (hru(j)%parms%co2 > 350.) then
-            beadj = 100. * hru(j)%parms%co2 / (hru(j)%parms%co2 +        &
-                Exp(plcp(idp)%ruc1 - hru(j)%parms%co2 * plcp(idp)%ruc2))
+          if (bsn_prm%co2 > 350.) then
+            beadj = 100. * co2y(time%yrs) / (co2y(time%yrs) +        &
+                Exp(plcp(idp)%ruc1 - co2y(time%yrs) * plcp(idp)%ruc2))
           else
             beadj = pldb(idp)%bio_e
           end if
@@ -101,14 +101,18 @@
             pcom(j)%plstr(ipl)%strsp = 1.
             pcom(j)%plstr(ipl)%strsa = 1.
           end if
-          !pcom(j)%plstr(ipl)%strsa = 1.
-          !pcom(j)%plstr(ipl)%strsn = 1.
+   
           !! code to turn off nutrient plant stress only
           if (bsn_cc%nostress == 2) then
             pcom(j)%plstr(ipl)%strsn = 1.
             pcom(j)%plstr(ipl)%strsp = 1.
           end if
           
+        !if (j==1689) then
+        !  if (pcom(j)%plstr(1)%strsn < 0.5 .or. pcom(j)%plstr(2)%strsn < 0.5) then
+        !    rto = 1.
+        !  end if
+        !end if
           !! reduce predicted biomass due to stress on plant
           pcom(j)%plstr(ipl)%reg = Min(pcom(j)%plstr(ipl)%strsw, pcom(j)%plstr(ipl)%strst,      &
             pcom(j)%plstr(ipl)%strsn, pcom(j)%plstr(ipl)%strsp, pcom(j)%plstr(ipl)%strsa)

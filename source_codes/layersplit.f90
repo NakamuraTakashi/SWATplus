@@ -15,41 +15,44 @@
       real :: dif                  !             |
 	  real, intent(in):: dep_new   !             |
       
-	  nly = soil(j)%nly
+	  nly = soil(ihru)%nly
 
       allocate (layer1(nly))
+      allocate (phys1(nly))
       do ly = 1, nly
         layer1(ly) = soil(ihru)%ly(ly)
+        phys1(ly) = soil(ihru)%phys(ly)
       end do
       
-      do ly = 2, nly 
-        dif = Abs(dep_new - soil(ihru)%phys(ly)%d)
-        !! if values are within 10 mm of one another, reset boundary
-        if (dif < 10.) then
-          soil(ihru)%phys(ly)%d = dep_new
-          exit
-        end if
-
-        !! set a soil layer at dep_new and adjust all lower layers                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         (ihru)%ly)
-        deallocate (soil(ihru)%phys)
-        !!!deallocate (soil(ihru)%nut)
-        deallocate (soil(ihru)%ly)
-        deallocate (cs_soil(ihru)%ly)
-        nly1 = soil(ihru)%nly + 1                                                                                                         
-        allocate (soil(ihru)%ly(nly1))
-        allocate (cs_soil(ihru)%ly(nly1))
-        allocate (soil(ihru)%phys(nly1))
-        allocate (soil1(ihru)%tot(nly1))
-        allocate (soil1_init(ihru)%tot(nly1))
-        if (soil(ihru)%phys(ly)%d > dep_new) then                                                                                                     
-          isep_ly = ly
-          soil(ihru)%phys(ly)%d = dep_new
+      deallocate (soil(ihru)%phys)
+      deallocate (soil(ihru)%ly)
+      do ly = 2, nly
+        !! set a soil layer at dep_new and adjust all lower layer
+        if (phys1(ly)%d > dep_new) then
+          soil(ihru)%nly = soil(ihru)%nly + 1
+          nly1 = soil(ihru)%nly
+          allocate (soil(ihru)%ly(nly1))
+          allocate (soil(ihru)%phys(nly1))
+          do lyn = 1, ly
+            soil(ihru)%ly(lyn) = layer1(lyn)
+            soil(ihru)%phys(lyn) = phys1(lyn)
+            if (lyn == ly) then
+              soil(ihru)%phys(lyn)%d = dep_new
+              soil(ihru)%phys(lyn)%thick = dep_new - soil(ihru)%phys(lyn-1)%d
+            end if
+          end do
           do lyn = ly, nly
             soil(ihru)%ly(lyn+1) = layer1(lyn)
+            soil(ihru)%phys(lyn+1) = phys1(lyn)
+            if (lyn == ly) then
+              soil(ihru)%phys(lyn+1)%thick = soil(ihru)%phys(lyn+1)%d - dep_new
+            end if
           end do
+          exit
         end if
       end do
       
       deallocate (layer1)
+      deallocate (phys1)
 	  return
       end        

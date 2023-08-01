@@ -28,7 +28,7 @@
 !!                               |soil (enters soil)
 !!    lat_pst(:)  |kg pst/ha     |amount of pesticide in lateral flow in HRU for
 !!                               |the day
-!!    peakr       |m^3/s         |peak runoff rate for the day in HRU
+!!    qp_cms      |m^3/s         |peak runoff rate for the day in HRU
 !!    pet_day     |mm H2O        |potential evapotranspiration for day in HRU
 !!    qtile       |mm H2O        |drainage tile flow for day in HRU
 !!    sepday      |mm H2O        |percolation from bottom of the soil layer on
@@ -41,8 +41,6 @@
 !!                               |HRU
 !!    sw_excess   |mm H2O        |amount of water in soil that exceeds field 
 !!                               |capacity (gravity drained water)
-!!    tloss       |mm H2O        |amount of water removed from surface runoff
-!!                               |via transmission losses on day in HRU
 !!    uno3d       |kg N/ha       |plant nitrogen deficiency for day in HRU
 !!    usle_ei     |none          |USLE erodibility index on day for HRU
 !!    vpd         |kPa           |vapor pressure deficit
@@ -59,10 +57,11 @@
       use time_module
       use hru_module, only : hhqday, ihru, albday,                                      &
         bioday, bsprev, canev, ep_day, ep_max, es_day, fertn, fertp, grazn, grazp,      &
-        hhsedy, inflpcp, latqrunon, ls_overq, lyrtile, peakr, yield,                    &
+        hhsedy, inflpcp, latqrunon, ls_overq, lyrtile, qp_cms,                          &
         pet_day, qday, qtile, sepday, snoev, snofall, snomlt,                           &
-        sw_excess, tloss, ubnrunoff, ubntss, uno3d, usle, usle_ei, voltot, vpd, fixn 
+        sw_excess, ubnrunoff, ubntss, uno3d, usle, usle_ei, voltot, vpd, fixn 
       use soil_module
+      use hydrograph_module
       
       implicit none
 
@@ -103,7 +102,7 @@
         if (time%step > 0)  hhqday(j,:) = 0.
         inflpcp = 0.
         lyrtile = 0.
-        peakr = 0.
+        qp_cms = 0.
         pet_day = 0.
         qday = 0.
         qtile = 0.
@@ -115,7 +114,6 @@
         snofall = 0.
         snomlt = 0.
         sw_excess = 0.
-        tloss = 0.
         uno3d = 0.
         usle = 0.
         usle_ei = 0.
@@ -123,13 +121,16 @@
         voltot = 0.
 
 	!! urban modeling by J.Jeong
-	    sedprev = 0.
-	    ubnrunoff = 0.
-	    irmmdt = 0.
+	  sedprev = 0.
+	  ubnrunoff = 0.
+	  irmmdt = 0.
         hhsedy = 0.
         ubntss = 0.
-        
-        yield = 0.
+        wet_seep_day(:)%no3 = 0
+        wet_seep_day(:)%nh3 = 0
+        wet_seep_day(:)%orgn =0
+        wet_seep_day(:)%solp =0
+        wet_seep_day(:)%sedp =0
 
        return
        end subroutine varinit

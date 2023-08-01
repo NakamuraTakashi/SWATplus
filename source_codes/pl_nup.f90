@@ -41,6 +41,7 @@
       use hru_module, only : uno3d, un2, nplnt, fixn, ihru, ipl, rto_no3, uptake
       use soil_module
       use plant_module
+      use output_landscape_module
 
       implicit none
 
@@ -50,10 +51,8 @@
       real :: uno3l          !kg N/ha   |plant nitrogen demand
       integer :: idp         !          |       
       real :: root_depth     !mm        |root depth
-      real :: unmx           !kg N/ha   |maximum amount of nitrogen that can be 
-                             !          |removed from soil layer
-      real :: gx             !mm        |lowest depth in layer from which nitrogen
-                             !          |may be removed
+      real :: unmx           !kg N/ha   |maximum amount of nitrogen that can be removed from soil layer
+      real :: soil_depth     !mm        |lowest depth in layer from which nitrogen may be removed
       real :: uobn           !none      |nitrogen uptake normalization parameter
                              !          |This variable normalizes the nitrogen uptake
                              !          |so that the model can easily verify that
@@ -65,18 +64,26 @@
 
       idp = pcom(j)%plcur(ipl)%idplt
       pcom(j)%plstr(ipl)%strsn = 1.
+      hnb_d(j)%nuptake = 0.
       if (uno3d(ipl) < 1.e-6) return
-
+      
+      !! find depth of soil layer the roots are into
+      root_depth = amax1 (10.1, pcom(j)%plg(ipl)%root_dep)
+      soil_depth = 0.
       do l = 1, soil(j)%nly
-        root_depth = amax1 (10., pcom(j)%plg(ipl)%root_dep)
-        if (pcom(j)%plg(ipl)%root_dep <= soil(j)%phys(l)%d) then
+        soil_depth = soil(j)%phys(l)%d
+        if (root_depth < soil_depth) then
+          root_depth = soil(j)%phys(l)%d
           exit
-        else
-          gx = soil(j)%phys(l)%d
         end if
-
-        unmx = uno3d(ipl) * rto_no3 * (1. - Exp(-bsn_prm%n_updis * gx / root_depth)) / uptake%n_norm
+      end do
+        
+      do l = 1, soil(j)%nly
+        soil_depth = soil(j)%phys(l)%d
+        if (root_depth < soil_depth) exit
+        unmx = uno3d(ipl) * rto_no3 * (1. - Exp(-bsn_prm%n_updis * soil_depth / root_depth)) / uptake%n_norm
         uno3l = Min(unmx - nplnt(j), soil1(j)%mn(l)%no3)
+        !uno3l = Min(unmx, soil1(j)%mn(l)%no3)
         nplnt(j) = nplnt(j) + uno3l 
         soil1(j)%mn(l)%no3 = soil1(j)%mn(l)%no3 - uno3l
       end do
@@ -89,7 +96,10 @@
 
       nplnt(j) = nplnt(j) + fixn
       pl_mass(j)%tot(ipl)%n = pl_mass(j)%tot(ipl)%n + nplnt(j)
+      pl_mass(j)%ab_gr(ipl)%n = pl_mass(j)%ab_gr(ipl)%n + nplnt(j) * (1. - pcom(j)%plg(ipl)%root_frac)
+      pl_mass(j)%root(ipl)%n = pl_mass(j)%root(ipl)%n + nplnt(j) * pcom(j)%plg(ipl)%root_frac
       pl_mass_up%n = nplnt(j)
+      hnb_d(j)%nuptake = hnb_d(j)%nuptake + nplnt(j)
  
       !! compute nitrogen stress
 

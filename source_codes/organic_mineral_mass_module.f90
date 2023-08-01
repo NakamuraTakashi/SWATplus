@@ -37,14 +37,21 @@
       
       type soil_profile_mass1
         character (len=16) :: name
+        real :: tot_mn                                              !       |total mineral n pool (no3+nh4) in soil profile
+        real :: tot_mp                                              !       |mineral p pool (wsol+lab+act+sta) in soil profile
+        type (organic_mass) :: tot_org                              !       |total organics in soil profile
         real, dimension(:), allocatable :: sw                       !mm     |soil water dimensioned by layer
         real, dimension(:), allocatable :: cbn                      !%      |percent carbon
         type (sediment), dimension(:), allocatable :: sed           !       |sediment dimensioned by layer
         type (mineral_nitrogen), dimension(:), allocatable :: mn    !       |mineral n pool dimensioned by layer
         type (mineral_phosphorus), dimension(:), allocatable :: mp  !       |mineral p humus pool dimensioned by layer
         type (organic_mass), dimension(:), allocatable :: tot       !       |total organic pool dimensioned by layer
-        type (organic_mass), dimension(:), allocatable :: hs        !       |slow humus
-        type (organic_mass), dimension(:), allocatable :: hp        !       |passive humus
+        type (organic_mass), dimension(:), allocatable :: hact      !       |active humus for old mineralization model dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hsta      !       |stable humus for old mineralization model dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hs        !       |slow humus dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: hp        !       |passive humus dimensioned by layer
+        type (organic_mass), dimension(:), allocatable :: rsd       !       |fresh residue-all plants in one pool by layer
+        !! rest are used in CENTURY model
         type (organic_mass), dimension(:), allocatable :: microb    !       |microbial biomass
         type (organic_mass), dimension(:), allocatable :: str       !       |structural litter pool dimensioned by layer
         type (organic_mass), dimension(:), allocatable :: lig       !       |lignin pool dimensioned by layer
@@ -57,8 +64,9 @@
       type (soil_profile_mass1), dimension(:), allocatable, target :: soil1
       type (soil_profile_mass1), dimension(:), allocatable :: soil1_init
       type (soil_profile_mass1), pointer :: s1
-      type (soil_profile_mass1), dimension(:), allocatable :: sol1
       type (organic_mass) :: soil_prof_tot                          !       |total litter pool
+      type (organic_mass) :: soil_prof_hact                         !       |total litter pool
+      type (organic_mass) :: soil_prof_hsta                         !       |total litter pool
       type (organic_mass) :: soil_prof_str                          !       |total litter pool
       type (organic_mass) :: soil_prof_lig                          !       |total litter pool
       type (organic_mass) :: soil_prof_meta                         !       |total litter pool
@@ -72,6 +80,11 @@
       type (mineral_phosphorus) :: soil_prof_mp                     !       |active humus pool
       type (mineral_nitrogen) :: soil_mn_z
       type (mineral_phosphorus) :: soil_mp_z
+      type (organic_mass) :: bsn_org_soil                           !       |total soil organics in basin
+      type (organic_mass) :: bsn_org_pl                             !       |total plant organics in basin
+      type (organic_mass) :: bsn_org_rsd                            !       |total residue organics in basin
+      real :: bsn_mn                                                !       |total mineral n pool (no3+nh4) in soil profile
+      real :: bsn_mp                                                !       |mineral p pool (wsol+lab+act+sta) in soil profile
 
       type residue_mass1
         character (len=16) :: name
@@ -85,8 +98,6 @@
         type (organic_mass) :: lig                                  !       |
         type (organic_mass) :: bm                                   !       |microbial biomass pool
         type (organic_mass) :: man                                  !       |manure pool
-        type (mineral_nitrogen) :: mn
-        type (mineral_phosphorus) :: mp
       end type residue_mass1
       !soil profile object - dimensioned to number of hrus, using the hru pointer
       type (residue_mass1), dimension(:), allocatable :: rsd1
@@ -100,7 +111,8 @@
        type (organic_mass), dimension(:), allocatable :: stem       !kg/ha      |wood/stalk mass for individual plant in community
        type (organic_mass), dimension(:), allocatable :: root       !kg/ha      |root mass for individual plant in community (by soil layer)
        type (organic_mass), dimension(:), allocatable :: seed       !kg/ha      |seed (grain) mass for individual plant in community
-       type (organic_mass), dimension(:), allocatable :: yield_tot  !kg/ha      |running sum of yield at harvest
+       type (organic_mass), dimension(:), allocatable :: yield_tot  !kg/ha      |running total sum of yield at harvest -  ave annual print
+       type (organic_mass), dimension(:), allocatable :: yield_yr   !kg/ha      |running yearly sum of yield at harvest - yearly print
        type (organic_mass) :: tot_com                               !kg/ha      |total biomass for entire community
        type (organic_mass) :: ab_gr_com                             !kg/ha      |above ground mass for entire community
        type (organic_mass) :: leaf_com                              !kg/ha      |leaf mass for entire community
@@ -115,7 +127,8 @@
       type (organic_mass) :: pl_residue
       type (organic_mass) :: harv_seed, harv_leaf, harv_stem, harv_left
       type (organic_mass) :: graz_plant, graz_seed, graz_leaf, graz_stem
-      type (organic_mass) :: leaf_drop
+      type (organic_mass) :: leaf_drop                              !kg/ha      |organic mass of falling leaves
+      type (organic_mass) :: abgr_drop                              !kg/ha      |above ground that dies at dormancy
       type (organic_mass) :: plt_mass_z
 
       type organic_mineral_hydrograph1

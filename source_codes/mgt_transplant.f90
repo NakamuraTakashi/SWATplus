@@ -11,6 +11,8 @@
       integer :: j                   !none       |counter
       integer :: icom                !none       |plant community counter 
       integer :: idp                 !none       |plant database number - plants.plt
+      real :: xx
+      real :: laimx_pop
 
       j = ihru
       icom = hru(j)%plant_cov
@@ -35,10 +37,19 @@
           Exp(plcp(idp)%nup1 - plcp(idp)%nup2 *                                 &
           pcom(j)%plcur(ipl)%phuacc))) + pldb(idp)%pltnfr3
           
+      !! check plant population to set max lai
+      if (transpl(itrans)%pop < 1.e-6) then
+        laimx_pop = pldb(idp)%blai
+      else
+        xx = transpl(itrans)%pop 
+        laimx_pop = pldb(idp)%blai * xx / (xx + exp(plcp(idp)%popsc1 - plcp(idp)%popsc2 * xx))
+      end if
+      pcom(j)%plcur(ipl)%lai_pot = laimx_pop
+          
       !! initialize plant mass
-      call pl_root_gro
-      call pl_seed_gro
-      call pl_partition
+      call pl_root_gro(j)
+      call pl_seed_gro(j)
+      call pl_partition(j)
 
       return
       end subroutine mgt_transplant

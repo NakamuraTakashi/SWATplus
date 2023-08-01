@@ -16,8 +16,6 @@
 !!    name        |units         |definition
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !!    frad(:,:)   |none          |fraction of solar radiation occuring during 
-!!                               |hour in day in HRU
-!!    hru_rmx(:)  |MJ/m^2        |maximum possible radiation for the day in HRU
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 !!    ~ ~ ~ LOCAL DEFINITIONS ~ ~ ~
@@ -33,7 +31,6 @@
 !!    totrho      |none          |sum of cosrho values for all hours of day
 !!    yc          |none          |Cos(sd)*Cos(lat)
 !!    ys          |none          |Sin(sd)*Sin(lat)
-!!    w           |none          |hour angle
 !!    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 
@@ -59,7 +56,7 @@
       real :: dd                  !none          |relative distance of the earth from the sun
       real :: cosrho(time%step)   !none          |Cos(zenith angle for hour)
       real :: totrho              !none          |sum of cosrho values for all hours of day
-      real :: w                   !none          |hour angle
+      real :: hr_angle            !none          |hour angle
 
       !! Reset prior day category for precipitation     
       if (wst(iwst)%weat%precip >= 0.1) then
@@ -68,19 +65,16 @@
         wst(iwst)%weat%precip_prior_day = "dry"
       end if
 
-      !! Calculate Daylength !!
+      !! Calculate Daylength
       !! calculate solar declination: equation 2.1.2 in SWAT manual
       sd = Asin(.4 * Sin((Real(time%day) - 82.) / 58.09))  !!365/2pi = 58.09
 
-      !! calculate the relative distance of the earth from the sun
-      !! the eccentricity of the orbit
-      !! equation 2.1.1 in SWAT manual
+      !! calculate the relative distance of the earth from the sun the eccentricity of the orbit
       dd = 1.0 + 0.033 * Cos(Real(time%day) / 58.09)
 
       !!daylength = 2 * Acos(-Tan(sd) * Tan(lat)) / omega
       !!where the angular velocity of the earth"s rotation, omega, is equal
       !! to 15 deg/hr or 0.2618 rad/hr and 2/0.2618 = 7.6374
-      !! equation 2.1.6 in SWAT manual
 
       sdlat = -wgn_pms(iwgn)%latsin * Tan(sd) / wgn_pms(iwgn)%latcos
       
@@ -112,9 +106,8 @@
         !!radiation for an hour, the hour angle for the midpoint of the 
         !!time period is used. time = 0. at solar noon with positive values
         !! in the morning and negative in the evening
-        w = 0.
-        w = (12.5 - Real(ii)) * 0.2618 * time%dtm / 60.   !!0.2618 rad/hr
-        cosrho(ii) = ys + yc * Cos(w)
+        hr_angle = (12.5 - Real(ii)) * 0.2618 * time%dtm / 60.   !!0.2618 rad/hr
+        cosrho(ii) = ys + yc * Cos(hr_angle)
         if (cosrho(ii) <= 0.) cosrho(ii) = 0.
         totrho = totrho + cosrho(ii)
       end do

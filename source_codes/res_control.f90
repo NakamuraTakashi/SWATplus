@@ -19,70 +19,84 @@
       integer :: irel                 !              |
       integer :: inut                 !none          |counter
       integer :: iob                  !none          |counter
+      integer :: ictbl
       real :: pvol_m3
       real :: evol_m3
+      real :: dep
+      real :: weir_hgt
 
-      iob = res_ob(jres)%ob
-      
-      !! set water body pointer to res
-      wbody => res(jres)
-      wbody_wb => res_wat_d(jres)
-      
       ht1 = ob(icmd)%hin    !! set incoming flow
       ht2 = resz            !! zero outgoing flow
 
-      !! add incoming flow to reservoir
-      res(jres) = res(jres) + ht1
-
       if (time%yrc > res_hyd(jres)%iyres .or. (time%mo >= res_hyd(jres)%mores   &
                                    .and. time%yrc == res_hyd(jres)%iyres)) then
+        iob = res_ob(jres)%ob
+        iwst = ob(iob)%wst
+      
+        !! adjust precip and temperature for elevation using lapse rates
+        w = wst(iwst)%weat
+        if (bsn_cc%lapse == 1) call cli_lapse
+        wst(iwst)%weat = w
+      
+        !! set water body pointer to res
+        wbody => res(jres)
+        wbody_wb => res_wat_d(jres)
+      
+        !! add incoming flow to reservoir
+        res(jres) = res(jres) + ht1
+
         !! perform reservoir water/sediment balance
         idat = res_ob(jres)%props
         ihyd = res_dat(idat)%hyd
         ised = res_dat(idat)%sed
-        if(time%step == 0) then
+        if(res_ob(jres)%rel_tbl == "d") then
           !! determine reservoir outflow
           irel = res_dat(idat)%release
           d_tbl => dtbl_res(irel)
           pvol_m3 = res_ob(jres)%pvol
           evol_m3 = res_ob(jres)%evol
+          if (res_wat_d(jres)%area_ha > 1.e-6) then
+            dep = wbody%flo / res_wat_d(jres)%area_ha / 10000.     !m = m3 / ha / 10000m2/ha
+          else
+            dep = 0.
+          end if
+          weir_hgt = res_ob(jres)%weir_hgt
           call conditions (jres, irel)
-          call res_hydro (jres, irel, ihyd, pvol_m3, evol_m3)
+          call res_hydro (jres, irel, ihyd, pvol_m3, evol_m3, dep, weir_hgt)
           call res_sediment (jres, ihyd, ised)
 	    else
-	      !call res_hourly
+	      ictbl = res_dat(idat)%release                              !! Osvaldo
+          call res_rel_conds (ictbl, res(jres)%flo, ht1%flo, 0.)
         endif
-
         
-      !! calculate water balance for day
-      iwst = ob(iob)%wst
-      res_wat_d(jres)%evap = 10. * res_hyd(ihyd)%evrsv * wst(iwst)%weat%pet * res_wat_d(jres)%area_ha
-      res_wat_d(jres)%seep = 240. * res_hyd(ihyd)%k * res_wat_d(jres)%area_ha
-      res_wat_d(jres)%precip = 10. * wst(iwst)%weat%precip * res_wat_d(jres)%area_ha
+        !! calculate water balance for day
+        res_wat_d(jres)%evap = 10. * res_hyd(ihyd)%evrsv * wst(iwst)%weat%pet * res_wat_d(jres)%area_ha
+        res_wat_d(jres)%seep = 240. * res_hyd(ihyd)%k * res_wat_d(jres)%area_ha
+        res_wat_d(jres)%precip = 10. * wst(iwst)%weat%precip * res_wat_d(jres)%area_ha
 
-      !! add precip to reservoir storage
-      res(jres)%flo = res(jres)%flo + res_wat_d(jres)%precip
+        !! add precip to reservoir storage
+        res(jres)%flo = res(jres)%flo + res_wat_d(jres)%precip
 
-      !! subtract outflow from reservoir storage
-      res(jres)%flo = res(jres)%flo - ht2%flo
-      if (res(jres)%flo < 0.) then
-        ht2%flo = ht2%flo + res(jres)%flo
-        res(jres)%flo = 0.
-      end if
+        !! subtract outflow from reservoir storage
+        res(jres)%flo = res(jres)%flo - ht2%flo
+        if (res(jres)%flo < 0.) then
+          ht2%flo = ht2%flo + res(jres)%flo
+          res(jres)%flo = 0.
+        end if
 
-      !! subtract evaporation from reservoir storage
-      res(jres)%flo = res(jres)%flo - res_wat_d(jres)%evap
-      if (res(jres)%flo < 0.) then
-        res_wat_d(jres)%evap = res_wat_d(jres)%evap + res(jres)%flo
-        res(jres)%flo = 0.
-      end if
+        !! subtract evaporation from reservoir storage
+        res(jres)%flo = res(jres)%flo - res_wat_d(jres)%evap
+        if (res(jres)%flo < 0.) then
+          res_wat_d(jres)%evap = res_wat_d(jres)%evap + res(jres)%flo
+          res(jres)%flo = 0.
+        end if
       
-      !! subtract seepage from reservoir storage
-      res(jres)%flo = res(jres)%flo - res_wat_d(jres)%seep
-      if (res(jres)%flo < 0.) then
-        res_wat_d(jres)%seep = res_wat_d(jres)%seep + res(jres)%flo
-        res(jres)%flo = 0.
-      end if
+        !! subtract seepage from reservoir storage
+        res(jres)%flo = res(jres)%flo - res_wat_d(jres)%seep
+        if (res(jres)%flo < 0.) then
+          res_wat_d(jres)%seep = res_wat_d(jres)%seep + res(jres)%flo
+          res(jres)%flo = 0.
+        end if
 
         !! update surface area
         if (res(jres)%flo > 0.) then
@@ -92,9 +106,9 @@
         end if
 
         !! subtract sediment leaving from reservoir
-        res(jres)%sed = res(jres)%sed - ht2%sed
-        res(jres)%sil = res(jres)%sil - ht2%sil
-        res(jres)%cla = res(jres)%cla - ht2%cla
+        res(jres)%sed = amax1 (0., res(jres)%sed - ht2%sed)
+        res(jres)%sil = amax1 (0., res(jres)%sil - ht2%sil)
+        res(jres)%cla = amax1 (0., res(jres)%cla - ht2%cla)
           
         !! perform reservoir nutrient balance
         inut = res_dat(idat)%nut
@@ -106,6 +120,11 @@
         !! set values for outflow variables
         ob(icmd)%hd(1) = ht2
 
+        !! total incoming to output to SWIFT
+        ob(icmd)%hin_tot = ob(icmd)%hin_tot + ob(icmd)%hin     
+        !! total outgoing to output to SWIFT
+        ob(icmd)%hout_tot = ob(icmd)%hout_tot + ht2
+        
         if (time%step > 0) then
           do ii = 1, time%step
             ob(icmd)%ts(1,ii) = ht2 / real(time%step)

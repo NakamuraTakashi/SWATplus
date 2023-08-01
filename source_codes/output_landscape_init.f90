@@ -94,6 +94,68 @@
             end if
         endif
         
+!!!  HRU - NEW Nutrient cycling output
+        if (pco%nb_hru%d == "y") then
+          open (3333,file="hru_ncycle_day.txt", recl = 1500)
+          write (3333,*)  bsn%name, prog
+          write (3333,*) nb_hdr1
+          write (3333,*) nb_hdr_units1
+          write (9000,*) "HRU                       hru_ncycle_day.txt"
+            if (pco%csvout == "y") then
+              open (3334,file="hru_ncycle_day.csv", recl = 1500)
+              write (3334,*)  bsn%name, prog
+              write (3334,'(*(G0.3,:,","))') nb_hdr1
+              write (3334,'(*(G0.3,:,","))') nb_hdr_units1
+              write (9000,*) "HRU                       hru_ncycle_day.csv"
+            end if
+        endif
+        
+        if (pco%nb_hru%m == "y") then
+          open (3335,file="hru_ncycle_mon.txt", recl = 1500)
+          write (3335,*)  bsn%name, prog
+          write (3335,*) nb_hdr1
+          write (3335,*) nb_hdr_units1
+          write (9000,*) "HRU                       hru_ncycle_mon.txt"
+            if (pco%csvout == "y") then
+              open (3336,file="hru_ncycle_mon.csv", recl = 1500)
+              write (3336,*)  bsn%name, prog
+              write (3336,'(*(G0.3,:,","))') nb_hdr1
+              write (3336,'(*(G0.3,:,","))') nb_hdr_units1
+              write (9000,*) "HRU                       hru_ncycle_mon.csv"
+            end if
+        endif
+        
+     if (pco%nb_hru%y == "y") then
+          open (3337,file="hru_ncycle_yr.txt", recl = 1500)
+          write (3337,*)  bsn%name, prog
+          write (3337,*) nb_hdr1
+          write (3337,*) nb_hdr_units1
+          write (9000,*) "HRU                       hru_ncycle_yr.txt"
+            if (pco%csvout == "y") then
+              open (3338,file="hru_ncycle_yr.csv", recl = 1500)
+              write (3338,*)  bsn%name, prog
+              write (3338,'(*(G0.3,:,","))') nb_hdr1
+              write (3338,'(*(G0.3,:,","))') nb_hdr_units1
+              write (9000,*) "HRU                       hru_ncycle_yr.csv"
+            end if
+        endif
+        
+        if (pco%nb_hru%a == "y") then
+          open (3339,file="hru_ncycle_aa.txt", recl = 1500)
+          write (3339,*)  bsn%name, prog
+          write (3339,*) nb_hdr1
+          write (3339,*) nb_hdr_units1
+          write (9000,*) "HRU                       hru_ncycle_aa.txt"
+            if (pco%csvout == "y") then
+              open (3340,file="hru_ncycle_aa.csv", recl = 1500)
+              write (3340,*)  bsn%name, prog
+              write (3340,'(*(G0.3,:,","))') nb_hdr1
+              write (3340,'(*(G0.3,:,","))') nb_hdr_units1
+              write (9000,*) "HRU                       hru_ncycle_aa.csv"
+            end if
+        endif
+!!!  HRU - NEW Nutrient cycling output
+        
        if (pco%nb_hru%m == "y") then
         open (2021,file="hru_nb_mon.txt", recl = 1500)
           write (2021,*) bsn%name, prog
@@ -155,6 +217,69 @@
             end if 
         endif
         
+                
+!!!  HRU - New nutcarb gain loss file
+        if (pco%ls_hru%d == "y") then
+          open (3341,file="hru_nut_carb_gl_day.txt", recl = 1500)
+          write (3341,*) bsn%name, prog
+          write (3341,*) ls_hdr1    !! hru
+          write (3341,*) ls_hdr_units1
+          write (9000,*) "HRU                       hru_nut_carb_gl_day.txt"
+            if (pco%csvout == "y") then
+              open (3342,file="hru_nut_carb_gl_day.csv", recl = 1500)
+              write (3342,*) bsn%name, prog
+              write (3342,'(*(G0.3,:,","))') ls_hdr1    !! hru
+              write (3342,'(*(G0.3,:,","))') ls_hdr_units1
+              write (9000,*) "HRU                       hru_nut_carb_gl_day.csv"
+            end if 
+        endif
+
+        if (pco%ls_hru%m == "y") then
+          open (3343,file="hru_nut_carb_gl_mon.txt", recl = 1500)
+          write (3343,*) bsn%name, prog
+          write (3343,*) ls_hdr1    !! hru
+          write (3343,*) ls_hdr_units1
+          write (9000,*) "HRU                       hru_nut_carb_gl_mon.txt"
+            if (pco%csvout == "y") then
+              open (3344,file="hru_nut_carb_gl_mon.csv", recl = 1500)
+              write (3344,*) bsn%name, prog
+              write (3344,'(*(G0.3,:,","))') ls_hdr1    !! hru
+              write (3344,'(*(G0.3,:,","))') ls_hdr_units1
+              write (9000,*) "HRU                       hru_nut_carb_gl_mon.csv"
+            end if 
+        endif
+        
+        if (pco%ls_hru%y == "y") then
+          open (3345,file="hru_nut_carb_gl_yr.txt", recl = 1500)
+          write (3345,*) bsn%name, prog
+          write (3345,*) ls_hdr1    !! hru
+          write (3345,*) ls_hdr_units1
+          write (9000,*) "HRU                       hru_nut_carb_gl_yr.txt"
+            if (pco%csvout == "y") then
+              open (3346,file="hru_nut_carb_gl_yr.csv", recl = 1500)
+              write (3346,*) bsn%name, prog
+              write (3346,'(*(G0.3,:,","))') ls_hdr1    !! hru
+              write (3346,'(*(G0.3,:,","))') ls_hdr_units1
+              write (9000,*) "HRU                       hru_nut_carb_gl_yr.csv"
+            end if 
+        endif
+        
+        if (pco%ls_hru%a == "y") then
+          open (3347,file="hru_nut_carb_gl_aa.txt", recl = 1500)
+          write (3347,*) bsn%name, prog
+          write (3347,*) ls_hdr1    !! hru
+          write (3347,*) ls_hdr_units1
+          write (9000,*) "HRU                       hru_nut_carb_gl_aa.txt"
+            if (pco%csvout == "y") then
+              open (3348,file="hru_nut_carb_gl_aa.csv", recl = 1500)
+              write (3348,*) bsn%name, prog
+              write (3348,'(*(G0.3,:,","))') ls_hdr1    !! hru
+              write (3348,'(*(G0.3,:,","))') ls_hdr_units1
+              write (9000,*) "HRU                       hru_nut_carb_gl_aa.csv"
+            end if 
+        endif
+!!!  HRU - New nutcarb gain loss file       
+           
        if (pco%ls_hru%m == "y") then
         open (2031,file="hru_ls_mon.txt",recl = 1500)
         write (2031,*) bsn%name, prog
@@ -467,7 +592,7 @@
       end if  
       
 !!!  Water Balance
-      if (db_mx%lsu_out > 0 .and. time%step == 0) then   !! Water Balance  
+      if (db_mx%lsu_out > 0) then   !! Water Balance  
         if (pco%wb_lsu%d == "y") then
           open (2140,file="lsunit_wb_day.txt",recl = 1500)
           write (2140,*) bsn%name, prog
@@ -499,7 +624,7 @@
           end if
         end if 
 
-     if (sp_ob%ru > 0 .and. time%step == 0) then   
+     if (sp_ob%ru > 0) then   
         if (pco%wb_lsu%y == "y") then
           open (2142,file="lsunit_wb_yr.txt",recl = 1500)
           write (2142,*) bsn%name, prog
@@ -717,7 +842,6 @@
       end if
       
 !!!  BASIN - Water balance 
-      if (time%step == 0) then
         if (pco%wb_bsn%d == "y") then
           open (2050,file="basin_wb_day.txt",recl = 1500)
           write (2050,*) bsn%name, prog
@@ -748,7 +872,6 @@
         end if
        end if 
 
-      if (time%step == 0) then
         if (pco%wb_bsn%y == "y") then
           open (2052,file="basin_wb_yr.txt",recl = 1500)
           write (2052,*) bsn%name, prog
@@ -763,7 +886,6 @@
             write (9000,*) "BASIN                    basin_wb_yr.csv"
           end if 
         endif
-      end if
         
        if (pco%wb_bsn%a == "y") then 
         open (2053,file="basin_wb_aa.txt",recl = 1500)
@@ -961,15 +1083,28 @@
           write (2087,'(*(G0.3,:,","))') pw_hdr_units
           write (9000,*) "BASIN                     basin_pw_aa.csv"
        end if
+       end if
+       
+!!! CROP YIELDS - output file only written for yearly or annual timesteps; "b" = both files written;
+      if (pco%crop_yld == "y" .or. pco%crop_yld == "b") then
+        !! headers for yearly crop yields
+        open (4010,file="crop_yld_yr.txt")
+        write (4010,*) bsn%name, prog
+          write (4010,1000)
+        write (9000,*) "CROP                      crop_yld_yr.txt"
+        if (pco%csvout == "y") then
+            open (4011,file="crop_yld_yr.csv")
+            write (4011,*) bsn%name, prog
+            write (4011,'(*(G0.3,:,","))') "jday","mon","day","year","unit","plantnm","yield"
+            write (9000,*) "CROP                      crop_yld_yr.csv"
+        end if
       end if
-      end if
-!!! CROP YIELDS
-      if (sp_ob%hru > 0) then
+              
+      !! headers for annual crop yields
+      if (pco%crop_yld == "a" .or. pco%crop_yld == "b") then
         open (4008,file="crop_yld_aa.txt")
         write (4008,*) bsn%name, prog
           write (4008,1000)
-1000    format (76x,"--YIELD (kg/ha)--",/,1x," jday",1x,"  mon",1x,"  day",1x,"   yr",1x,"   unit", 1x,"PLANTNM",   &
-                 18x,"       MASS","          C", "           N","           P")
         write (9000,*) "CROP                      crop_yld_aa.txt"
         if (pco%csvout == "y") then
             open (4009,file="crop_yld_aa.csv")
@@ -978,6 +1113,9 @@
             write (9000,*) "CROP                      crop_yld_aa.csv"
         end if
       end if
-                 
+      
+1000    format (76x,"--YIELD (kg/ha)--",/,1x," jday",1x,"  mon",1x,"  day",1x,"   yr",1x,"   unit", 1x,"PLANTNM",   &
+                 18x,"       MASS","          C", "           N","           P")
+        
       return
       end subroutine output_landscape_init

@@ -43,8 +43,8 @@
         !if (ith > 0 .and. ichan > 0) then                  
         ! compute tc for the subbasin
           tov = .0556 * (topo_db(ith)%slope_len * ru_n(iru)) ** .6 /     &
-                                              (topo_db(ith)%slope + .0001) ** .3
-          ch_slope = .5 * (topo_db(ith)%slope + 0001)
+                                              (topo_db(ith)%slope + .001) ** .3
+          ch_slope = .5 * (topo_db(ith)%slope + .001)
           ch_n = ru_n(iru)
           ch_l = ru(iru)%field%length / 1000.
           t_ch = .62 * ch_l * ch_n**.75 / (ru(iru)%da_km2**.125 * ch_slope**.375)
@@ -57,11 +57,13 @@
         ith = hru(ihru)%dbs%topo
         ifld = hru(ihru)%dbs%field
         t_ov(ihru) = .0556 * (hru(ihru)%topo%slope_len *                    &
-           hru(ihru)%luse%ovn) ** .6 / (hru(ihru)%topo%slope + .00001) ** .3
+           hru(ihru)%luse%ovn) ** .6 / (hru(ihru)%topo%slope + .0001) ** .3
         ch_slope = .5 * topo_db(ith)%slope
         ch_n = hru(ihru)%luse%ovn
-        ch_l = hru(ihru)%field%length / 1000.
-        t_ch = .62 * ch_l * ch_n**.75 / (hru(ihru)%km**.125 * (ch_slope + .00001)**.375)
+        !! assume length to width (l/w) ratio of 2 --> A=l*w - A=l*l/2 - l=sqrt(A/2)
+        ch_l = sqrt(hru(ihru)%area_ha / 2.)
+        !ch_l = hru(ihru)%field%length / 1000.
+        t_ch = .31 * ch_l * ch_n**.75 / (hru(ihru)%km**.125 * (ch_slope + .001)**.375)
         tconc(ihru) = t_ov(ihru) + t_ch
         !! compute fraction of surface runoff that is reaching the main channel
         if (time%step > 0) then

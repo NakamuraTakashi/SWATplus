@@ -96,7 +96,8 @@
         end if
       end if
 
- 100   format (4i6,2x,2a,2x,a17,f14.4,59(1x,e14.4))
+ !100   format (4i6,2x,2a,2x,a17,f14.4,59(1x,e14.4))
+100   format (4i6,2x,2a,2x,a17,f16.4,59(1x,e14.4))
       return
       
       end subroutine basin_sdchannel_output

@@ -41,11 +41,13 @@
       integer :: npests               !           |pesticides counter
       integer :: npaths               !           |pathogens counter
       integer :: nmetals              !           |heavy metals counter
-      integer :: nsalts                !           |salts counter
+      integer :: nsalts               !           |salts counter
+      integer :: aqu_found            !           |rtb gwflow
       
       eof = 0
       imax = 0
       cmd_prev = 0
+      aqu_found = 0
   
       !! read hru spatial data
       inquire (file=con_file, exist=i_exist)
@@ -65,6 +67,11 @@
               ob(i)%typ = obtyp
               ob(i)%nhyds = nhyds
               allocate (ob(i)%hd(nhyds))
+              allocate (ob(i)%hd_aa(nhyds))
+              ob(i)%trans = hz
+              ob(i)%hin_tot = hz
+              ob(i)%hout_tot = hz
+              ob(i)%hd_aa(:) = hz
               if (cs_db%num_tot > 0) then
                 allocate (obcs(i)%hd(nhyds))
                 npests = cs_db%num_pests
@@ -121,8 +128,16 @@
                 ob(i)%uh = 0.
                 ob(i)%hyd_flo = 0.
               end if
-              read (107,*,iostat=eof) ob(i)%num, ob(i)%name, ob(i)%gis_id, ob(i)%area_ha, ob(i)%lat, ob(i)%long, ob(i)%elev,   &
-                ob(i)%props, ob(i)%wst_c, ob(i)%constit, ob(i)%props2, ob(i)%ruleset, ob(i)%src_tot
+              read (107,*,iostat=eof) ob(i)%num, ob(i)%name, ob(i)%gis_id, ob(i)%area_ha, ob(i)%lat, ob(i)%long, &
+                ob(i)%elev, ob(i)%props, ob(i)%wst_c, ob(i)%constit, ob(i)%props2, ob(i)%ruleset, ob(i)%src_tot
+              
+              !! intialize area to calcluate drainage areas in hyd_connect
+              if (ob(i)%typ == "hru" .or. ob(i)%typ == "ru" .or. ob(i)%typ == "recall") then
+                ob(i)%area_ha_calc = ob(i)%area_ha
+              else
+                ob(i)%area_ha_calc = 0.
+              end if
+              
               if (eof < 0) exit
 
               if (ob(i)%src_tot > 0) then
@@ -174,7 +189,21 @@
                   ob(i)%props, ob(i)%wst_c, ob(i)%constit, ob(i)%props2, ob(i)%ruleset, ob(i)%src_tot,      &
                   (ob(i)%obtyp_out(isp), ob(i)%obtypno_out(isp), ob(i)%htyp_out(isp),                       &
                   ob(i)%frac_out(isp), isp = 1, nout)
-                if (eof < 0) exit
+                
+                  !rtb gwflow
+                  if (sp_ob%gwflow > 0) then
+                    aqu_found = 0
+                    do k=1,ob(i)%src_tot
+                      if(ob(i)%obtyp_out(k).eq.'aqu') then
+                        aqu_found = 1  
+                      endif
+                    enddo
+                  endif
+                  if(aqu_found.eq.1) then
+                    ob(i)%src_tot = ob(i)%src_tot - 1
+                  endif
+                  
+                  if (eof < 0) exit
               else
                 !! set outflow object type to 0 - needed in final hyd_read_connect loop 
                 allocate (ob(i)%obtypno_out(1))

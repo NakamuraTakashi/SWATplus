@@ -1,8 +1,7 @@
       subroutine cli_rhgen(iwgn)
       
 !!    ~ ~ ~ PURPOSE ~ ~ ~
-!!    this subroutine generates weather relative humidity, solar
-!!    radiation, and wind speed.
+!!    this subroutine generates weather relative humidity
 
 !!    ~ ~ ~ INCOMING VARIABLES ~ ~ ~
 !!    name        |units         |definition
@@ -43,13 +42,15 @@
       integer :: iwgn             !              |
       
 
-      !! Climate Paramenters required for Penman-Monteith !!
-
-      !! Generate relative humidity !!
-      tmpmean = (wgn(iwgn)%tmpmx(time%mo) + wgn(iwgn)%tmpmn(time%mo)) / 2.
-
-      !! convert dewpoint to relative humidity
-      rhmo = Ee(wgn(iwgn)%dewpt(time%mo)) / Ee(tmpmean)
+      !! Climate Paramenters required for Penman-Monteith
+      
+      !! convert dewpoint to relative humidity (idewpt == 0)
+      if (wgn_pms(iwgn)%idewpt == 0) then
+        tmpmean = (wgn(iwgn)%tmpmx(time%mo) + wgn(iwgn)%tmpmn(time%mo)) / 2.
+        rhmo = Ee(wgn(iwgn)%dewpt(time%mo)) / Ee(tmpmean)
+      else
+        rhmo = wgn(iwgn)%dewpt(time%mo)
+      end if
 
       yy = 0.9 * wgn_pms(iwgn)%pr_wdays(time%mo)
       rhm = (rhmo - yy) / (1.0 - yy)

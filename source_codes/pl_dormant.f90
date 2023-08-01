@@ -18,6 +18,9 @@
       integer :: idp                !              |
       integer :: iob                !              |
       integer :: iwgn               !              |
+      real :: rto                   !              |
+      real :: lai_init              !
+      real :: lai_drop
 
       j = ihru
       idp = pcom(j)%plcur(ipl)%idplt
@@ -29,17 +32,46 @@
       if (pcom(j)%plcur(ipl)%idorm == "n" .and. wst(iwst)%weat%daylength - dormhr(j) < wgn_pms(iwgn)%daylmn) then
 
         !! beginning of temperature based perennial dormant period - leaf drop
-        if (pldb(idp)%typ == "perennial") then
-          pcom(j)%plcur(ipl)%idorm = "y"
-          !! add leaf mass to residue pool
-          rsd1(j)%tot(1) = pl_mass(j)%leaf(ipl) + rsd1(j)%tot(1)
-        end if
+        !if (pldb(idp)%typ == "perennial") then
+        !  pcom(j)%plcur(ipl)%idorm = "y"
+        !  !! add leaf mass to residue pool
+        !  rsd1(j)%tot(1) = pl_mass(j)%leaf(ipl) + rsd1(j)%tot(1)
+        !end if
 
-        !! beginning of temperature based perennial dormant period - mortality
+        !! beginning of temperature based perennial dormant period - above ground senescence
         if (pldb(idp)%typ == "perennial") then
           pcom(j)%plcur(ipl)%idorm = "y"
-          !! add stem mass to residue pool
-          rsd1(j)%tot(1) = pl_mass(j)%stem(ipl) + rsd1(j)%tot(1)
+          !! add dead stem mass to residue pool
+          rto = pldb(idp)%bm_dieoff
+          abgr_drop = rto * pl_mass(j)%stem(ipl)
+          !! drop lai to minimum if not already
+          lai_init = pcom(j)%plg(ipl)%lai
+          pcom(j)%plg(ipl)%lai = pldb(idp)%alai_min
+          !! compute leaf biomass drop
+          if (lai_init > 0.001) then
+          lai_drop = (lai_init - pcom(j)%plg(ipl)%lai) / lai_init
+            else
+            lai_drop = 0.
+          end if
+          lai_drop = amax1 (0., lai_drop)
+          lai_drop = amin1 (1., lai_drop)
+          leaf_drop%m = lai_drop * pl_mass(j)%leaf(ipl)%m
+          leaf_drop%n = leaf_drop%m * pcom(j)%plm(ipl)%n_fr
+          leaf_drop%n = amax1 (0., leaf_drop%n)
+          leaf_drop%p = leaf_drop%m * pcom(j)%plm(ipl)%p_fr
+          leaf_drop%p = amax1 (0., leaf_drop%p)
+
+          pl_mass(j)%tot(ipl) = pl_mass(j)%tot(ipl) - abgr_drop - leaf_drop
+          pl_mass(j)%ab_gr(ipl) = pl_mass(j)%ab_gr(ipl) - abgr_drop - leaf_drop
+          pl_mass(j)%stem(ipl) = pl_mass(j)%stem(ipl) - abgr_drop
+          pl_mass(j)%leaf(ipl) = pl_mass(j)%leaf(ipl) - leaf_drop
+          rsd1(j)%tot(1) = rsd1(j)%tot(1) + abgr_drop + leaf_drop
+          !! add all seed/fruit mass to residue poolpool
+          abgr_drop = pl_mass(j)%seed(ipl)
+          pl_mass(j)%tot(ipl) = pl_mass(j)%tot(ipl) - abgr_drop
+          pl_mass(j)%ab_gr(ipl) = pl_mass(j)%ab_gr(ipl) - abgr_drop
+          pl_mass(j)%seed(ipl) = plt_mass_z
+          rsd1(j)%tot(1) = rsd1(j)%tot(1) + abgr_drop
         end if
 
         !! beginning of cool season annual dormant period
@@ -58,6 +90,7 @@
           !! end of perennial dormant period
           pcom(j)%plcur(ipl)%idorm = "n"
           pcom(j)%plcur(ipl)%phuacc = 0.
+          pcom(j)%plg(ipl)%d_senes = 0
         end if
 
         !! end of cool season annual dormant period
